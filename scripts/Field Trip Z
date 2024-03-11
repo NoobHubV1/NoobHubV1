@@ -110,3 +110,7 @@ local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/Noo
 			end
 		end
 	})
+
+     Notify('Loaded!', "Script Successfully Loaded!\nJoin Our Discord At (https://discord.com/invite/XHS5WPxMrr) For Support, Questions And Updates!\nThe Script Is Open Source So Feel Free To Look At The Code!", 'rbxassetid://4483345998', 15)
+	OrionLib:Init()
+end
