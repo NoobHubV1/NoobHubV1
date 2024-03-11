@@ -1,4 +1,92 @@
 -- Place Check
 if game.PlaceId ~= 13864667823 then
+	if game.PlaceId == 14775231477 or game.PlaceId == 13864661000 then
 
-local OrionLib = loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/OrionLib'))()
+		local OrionLib = loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/OrionLib'))()
+		local Window = OrionLib:MakeWindow({
+			Name = "Field Trip Z",
+			HidePremium = false,
+			SaveConfig = true,
+			ConfigFolder = "OrionTest",
+			IntroText = "Loading..."
+		})
+		local Tab = Window:MakeTab({
+			Name = "Item",
+			Icon = "rbxassetid://4483345998",
+			PremiumOnly = false
+		})
+		Tab:AddButton({
+			Name = "Get Bandage",
+			Callback = function()
+				game.ReplicatedStorage.NetworkEvents.RemoteFunction:InvokeServer("PICKUP_ITEM", "Bandage")
+			end
+		})
+		Tab:AddButton({
+			Name = "Get Med Kit",
+			Callback = function()
+				game.ReplicatedStorage.NetworkEvents.RemoteFunction:InvokeServer("PICKUP_ITEM", "MedKit")
+			end
+		})
+    Tab:AddButton({
+			Name = "Get Donut",
+			Callback = function()
+				game.ReplicatedStorage.NetworkEvents.RemoteFunction:InvokeServer("PICKUP_ITEM", "Donut")
+			end
+		})
+    local Section = Tab:AddSection({
+		        Name = "Heal Yourself"
+	  })
+    Tab:AddButton({
+			      Name = "Heal Yourself",
+			      Callback = function()
+				game.ReplicatedStorage.NetworkEvents.RemoteFunction:InvokeServer("HEAL_PLAYER", game.Players.LocalPlayer, math.huge)
+			end
+		})
+    Tab:AddToggle({
+		        Name = "Loop Heal Yourself",
+		        Default = false,
+		        Callback = function(Value)
+			              getgenv().HealLoop = Value
+			              while HealLoop do
+				                    game.ReplicatedStorage.NetworkEvents.RemoteFunction:InvokeServer("HEAL_PLAYER", game.Players.LocalPlayer, math.huge)
+				                    task.wait()
+			              end
+		        end
+	  })
+    local Section = Tab:AddSection({
+		        Name = "Heal All"
+	  })
+    Tab:AddButton({
+			      Name = "Heal All",
+			      Callback = function()
+				            for i, v in pairs(game.Players:GetPlayers()) do
+                if v.Name ~= game:GetService("Players").LocalPlayer then
+                    game:GetService("ReplicatedStorage").NetworkEvents.RemoteFunction:InvokeServer(
+                        "HEAL_PLAYER",
+                        v,
+                        9e9
+                    )
+                end
+            end
+			 end
+		})
+    Tab:AddToggle({
+		        Name = "Loop Heal All",
+		        Default = false,
+		        Callback = function(Value)
+			              getgenv().HealAllLoop = Value
+			              while HealAllLoop do
+				                    for i, v in pairs(game.Players:GetPlayers()) do
+                if v.Name ~= game:GetService("Players").LocalPlayer then
+                    game:GetService("ReplicatedStorage").NetworkEvents.RemoteFunction:InvokeServer(
+                        "HEAL_PLAYER",
+                        v,
+                        9e9
+                    )
+                end
+            end
+				                    task.wait()
+			              end
+		        end
+	  })
+		OrionLib:Init()
