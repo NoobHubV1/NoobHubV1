@@ -3,7 +3,7 @@ if game.PlaceId ~= 13864667823 then
 	if game.PlaceId == 14775231477 or game.PlaceId == 13864661000 then
 		
 	-- Free Gamepasses (LOBBY)
-		local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/RScriptz/RobloxScripts/main/OrionLibKeybind.lua')))()
+		local OrionLib = loadstring(Game:HttpGet('https://ră.githubusercontent.com/NoobHubV1/NoobHubV1/main/OrionLib'))()
 		local Window = OrionLib:MakeWindow({
 			Name = "Break In 2 (Lobby)",
 			HidePremium = false,
@@ -107,6 +107,7 @@ else
 	local ItemsTable = {
 		"Crowbar 1",
 		"Crowbar 2",
+                "Crowbar 3",
 		"Bat",
 		"Pitchfork",
 		"Hammer",
@@ -133,6 +134,7 @@ else
 		"Bottle",
 		"Ladder",
 		"Battery"
+                "Crowbar"
 	}
 
 	-- Functions
@@ -170,7 +172,7 @@ else
 	local function GiveItem(Item)
 		if Item == "Armor" then
 			Events:WaitForChild("Vending"):FireServer(3, "Armor2", "Armor", tostring(LocalPlayer), 1)
-		elseif Item == "Crowbar 1" or Item == "Crowbar 2" or Item == "Bat" or Item == "Pitchfork" or Item == "Hammer" or Item == "Wrench" or Item == "Broom" then
+		elseif Item == "Crowbar 1" or Item == "Crowbar 2" or Item == "Crowbar 3" or Item == "Bat" or Item == "Pitchfork" or Item == "Hammer" or Item == "Wrench" or Item == "Broom" then
 			Events.Vending:FireServer(3, tostring(Item:gsub(" ", "")), "Weapons", LocalPlayer.Name, 1)
 			Notify('Credits To', "Leo Dicap On V3rmillion For Making This Feature!", 'rbxassetid://4483345998', 3)
 		else
