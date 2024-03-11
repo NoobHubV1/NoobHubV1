@@ -27,22 +27,22 @@ if game.PlaceId ~= 13864667823 then
 				game.ReplicatedStorage.NetworkEvents.RemoteFunction:InvokeServer("PICKUP_ITEM", "MedKit")
 			end
 		})
-    Tab:AddButton({
+                Tab:AddButton({
 			Name = "Get Donut",
 			Callback = function()
 				game.ReplicatedStorage.NetworkEvents.RemoteFunction:InvokeServer("PICKUP_ITEM", "Donut")
 			end
 		})
-    local Section = Tab:AddSection({
+                local Section = Tab:AddSection({
 		        Name = "Heal Yourself"
-	  })
-    Tab:AddButton({
+	              })
+                      Tab:AddButton({
 			      Name = "Heal Yourself",
 			      Callback = function()
 				game.ReplicatedStorage.NetworkEvents.RemoteFunction:InvokeServer("HEAL_PLAYER", game.Players.LocalPlayer, math.huge)
 			end
 		})
-    Tab:AddToggle({
+                Tab:AddToggle({
 		        Name = "Loop Heal Yourself",
 		        Default = false,
 		        Callback = function(Value)
@@ -51,15 +51,15 @@ if game.PlaceId ~= 13864667823 then
 				                    game.ReplicatedStorage.NetworkEvents.RemoteFunction:InvokeServer("HEAL_PLAYER", game.Players.LocalPlayer, math.huge)
 				                    task.wait()
 			              end
-		        end
-	  })
-    local Section = Tab:AddSection({
+		           end
+	         })
+                 local Section = Tab:AddSection({
 		        Name = "Heal All"
-	  })
-    Tab:AddButton({
-			      Name = "Heal All",
-			      Callback = function()
-				            for i, v in pairs(game.Players:GetPlayers()) do
+	         })
+                 Tab:AddButton({
+		         Name = "Heal All",
+			 Callback = function()
+			         for i, v in pairs(game.Players:GetPlayers()) do
                 if v.Name ~= game:GetService("Players").LocalPlayer then
                     game:GetService("ReplicatedStorage").NetworkEvents.RemoteFunction:InvokeServer(
                         "HEAL_PLAYER",
@@ -70,7 +70,7 @@ if game.PlaceId ~= 13864667823 then
             end
 			 end
 		})
-    Tab:AddToggle({
+                Tab:AddToggle({
 		        Name = "Loop Heal All",
 		        Default = false,
 		        Callback = function(Value)
@@ -87,6 +87,6 @@ if game.PlaceId ~= 13864667823 then
             end
 				                    task.wait()
 			              end
-		        end
-	  })
+		           end
+	        })
 		OrionLib:Init()
