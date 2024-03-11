@@ -1,4 +1,4 @@
 -- Place Check
 if game.PlaceId ~= 13864667823 then
 
-local OrionLib = loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/scripts/main/OrionLib'))()
+local OrionLib = loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/OrionLib'))()
