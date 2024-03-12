@@ -1,4 +1,8 @@
-
+game:GetService("StarterGui"):SetCore("SendNotification",{
+                Title = "NoobHubV1 Hub";
+                Text = "Loaded";
+                Duration = 3.5;
+            })
 getupvalues = getupvalues or debug.getupvalues
 setupvalue = setupvalue or debug.setupvalue
 if not (getrawmetatable and getupvalues and setupvalue and (getreg or debug.getregistry)) then
