@@ -406,11 +406,11 @@ else
 	
 	-- Main Script / GUI
 	local Window = OrionLib:MakeWindow({
-		Name = "Breaking Blitz",
+		Name = "Break In 2 (Game)",
 		HidePremium = false,
 		SaveConfig = false,
 		ConfigFolder = "OrionTest",
-		IntroText = "Loading Script..."
+		IntroText = "Loading..."
 	})
 
 	local Tab = Window:MakeTab({
