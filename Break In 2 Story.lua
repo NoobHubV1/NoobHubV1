@@ -3,7 +3,7 @@ if game.PlaceId ~= 13864667823 then
 	if game.PlaceId == 14775231477 or game.PlaceId == 13864661000 then
 		
 	-- Free Gamepasses (LOBBY)
-		local OrionLib = loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/OrionLib'))()
+		local OrionLib = loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/OrionLib.lua'))()
 		local Window = OrionLib:MakeWindow({
 			Name = "Break In 2 (Lobby)",
 			HidePremium = false,
@@ -46,7 +46,7 @@ else
 	Part.Transparency = 1
 
 	-- Locals
-	local OrionLib = loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/OrionLib'))()
+	local OrionLib = loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/OrionLib.lua'))()
 	local Events = game:GetService("ReplicatedStorage"):WaitForChild("Events")
 	local SelectedItem = "Med Kit"
 	local Damange = 5
