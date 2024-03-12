@@ -119,6 +119,27 @@ if game.PlaceId ~= 1701332290 then
                 end
         })
 
+        local Tab = Window:MakeTab({
+		Name = "Others",
+		Icon = "rbxassetid://4483345998",
+		PremiumOnly = false
+	})
+        local Section = Tab:AddSection({
+		Name = "Others Section"
+	})
+
+        Tab:AddToggle({
+                Name = "Inf Jump"
+                Callback = function(Value)
+                        InfJump = Value
+game:GetService("UserInputService").JumpRequest:connect(function()
+	if InfJump then
+		game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid'):ChangeState("Jumping")
+ end
+end)
+                end
+        })
+
         Notify('Loaded!', "Script Successfully Loaded!\nJoin Our Discord At (https://discord.gg/NoobHubV1) For Support, Questions And Updates!\nThe Script Is Open Source So Feel Free To Look At The Code!", 'rbxassetid://4483345998', 15)
 	OrionLib:Init()
 end
