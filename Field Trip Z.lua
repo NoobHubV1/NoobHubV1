@@ -25,22 +25,18 @@ if game.PlaceId ~= 1701332290 then
         local Section = Tab:AddSection({
 		Name = "Get Item"
 	})
-	Tab:AddButton({
-		Name = "Get Bandage",
-		Callback = function()
-			game.ReplicatedStorage.NetworkEvents.RemoteFunction:InvokeServer("PICKUP_ITEM", "Bandage")
-		end
-	})
-	Tab:AddButton({
-		Name = "Get Med Kit",
-		Callback = function()
-			game.ReplicatedStorage.NetworkEvents.RemoteFunction:InvokeServer("PICKUP_ITEM", "MedKit")
+	Tab:AddDropdown({
+		Name = "Item",
+		Default = "Bandage",
+	        Options = {"Bandage", "MedKit", "Donut"},
+                Callback = function(Item)
+                        SelectedItem = Item
 		end
 	})
         Tab:AddButton({
-		Name = "Get Donut",
+		Name = "Get Item",
 		Callback = function()
-			game.ReplicatedStorage.NetworkEvents.RemoteFunction:InvokeServer("PICKUP_ITEM", "Donut")
+			game.ReplicatedStorage.NetworkEvents.RemoteFunction:InvokeServer("PICKUP_ITEM", SelectedItem)
 		end
 	})
         local Section = Tab:AddSection({
