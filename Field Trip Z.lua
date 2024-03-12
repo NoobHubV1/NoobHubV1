@@ -137,7 +137,36 @@ game:GetService("UserInputService").JumpRequest:connect(function()
 end)
                 end
         })
+        Tab:AddButton({
+                Name = "Fly",
+                Callback = function()
+                        loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/Fly.lua'))()
+               end
+         })
+         Tab:AddButton({
+                Name = "Noclip",
+                Callback = function()
+                        loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/Noclip.lua'))()
+               end
+         })
+         Tab:AddButton({
+                Name = "Shift Lock",
+                Callback = function()
+                        loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/Shift%20Lock.lua'))()
+               end
+         })
+         local Tab = Window:MakeTab({
+		Name = "Destroy Script",
+		Icon = "rbxassetid://4483345998",
+		PremiumOnly = false
+	 })
+         Tab:AddButton({
+                Name = "Destroy",
+                Callback = function()
+                        OrionLib:Destroy()
+               end
+         })
 
-        Notify('Loaded!', "Script Successfully Loaded!\nJoin Our Discord At (https://discord.gg/NoobHubV1) For Support, Questions And Updates!\nThe Script Is Open Source So Feel Free To Look At The Code!", 'rbxassetid://4483345998', 15)
+         Notify('Loaded!', "Script Successfully Loaded!\nJoin Our Discord At (https://discord.gg/NoobHubV1) For Support, Questions And Updates!\nThe Script Is Open Source So Feel Free To Look At The Code!", 'rbxassetid://4483345998', 15)
 	OrionLib:Init()
 end
