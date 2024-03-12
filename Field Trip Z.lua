@@ -118,7 +118,6 @@ if game.PlaceId ~= 1701332290 then
                         end
                 end
         })
-
         local Tab = Window:MakeTab({
 		Name = "Others",
 		Icon = "rbxassetid://4483345998",
@@ -127,9 +126,8 @@ if game.PlaceId ~= 1701332290 then
         local Section = Tab:AddSection({
 		Name = "Others Section"
 	})
-
         Tab:AddToggle({
-                Name = "Inf Jump"
+                Name = "Inf Jump",
                 Callback = function(Value)
                         InfJump = Value
 game:GetService("UserInputService").JumpRequest:connect(function()
