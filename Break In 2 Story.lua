@@ -48,7 +48,7 @@ else
 	-- Locals
 	local Events = game:GetService("ReplicatedStorage"):WaitForChild("Events")
 	local SelectedItem = "Armor"
-	local Damange = 5
+	local SelectedDamange = SelectedDamange
 	local namecall
 	local ScriptLoaded = false
 	local LocalPlayer = game:GetService("Players").LocalPlayer
