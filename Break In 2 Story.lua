@@ -360,7 +360,7 @@ else
 		HidePremium = false,
 		SaveConfig = true,
 		ConfigFolder = "OrionTest",
-		IntroText = "Loading...
+		IntroText = "Loading..."
 	})
 	local Tab = Window:MakeTab({
 		Name = "Overpowered",
