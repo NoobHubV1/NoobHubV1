@@ -1018,6 +1018,40 @@ else
 		end    
 	})
 
+        local Tab = Window:MakeTab({
+		Name = "Others",
+		Icon = "rbxassetid://4483345998",
+		PremiumOnly = false
+	})
+
+	local Section = Tab:AddSection({
+		Name = "Others Section"
+	})
+
+        Tab:AddButton({
+		Name = "Keyboard",
+		Callback = function()
+			loadstring(game:HttpGet("https://raw.githubusercontent.com/advxzivhsjjdhxhsidifvsh/mobkeyboard/main/main.txt", true))()
+		end
+	})
+
+        local Tab = Window:MakeTab({
+		Name = "Destroy Script",
+		Icon = "rbxassetid://4483345998",
+		PremiumOnly = false
+	})
+
+	local Section = Tab:AddSection({
+		Name = "Destroy"
+	})
+
+        Tab:AddButton({
+		Name = "Destroy",
+		Callback = function()
+			OrionLib:Destroy()
+		end
+	})
+
 	Notify('Loaded!', "Script Successfully Loaded!\nJoin Our Discord At (https://discord.com/invite/NoobHubV1) For Support, Questions And Updates!\nThe Script Is Open Source So Feel Free To Look At The Code!", 'rbxassetid://4483345998', 15)
 	ScriptLoaded = true
 	OrionLib:Init()
