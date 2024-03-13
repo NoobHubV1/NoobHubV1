@@ -48,15 +48,15 @@ else
 	-- Locals
 	local Events = game:GetService("ReplicatedStorage"):WaitForChild("Events")
 	local SelectedItem = "Armor"
-	local SelectedDamange = SelectedDamange
+	local SelectedDamange = 5
 	local namecall
 	local ScriptLoaded = false
 	local LocalPlayer = game:GetService("Players").LocalPlayer
 	local Lighting = game:GetService("Lighting")
 	local OriginalWalkspeed = LocalPlayer.Character.Humanoid.WalkSpeed
 	local OriginalJumpPower = LocalPlayer.Character.Humanoid.JumpPower
-	local ModifiedWalkspeed = ModifiedWalkSpeed
-	local ModifiedJumpPower = ModifiedJumpPower
+	local ModifiedWalkspeed = 100
+	local ModifiedJumpPower = 200
 	local OriginalBrightness = Lighting.Brightness
 	local OriginalFog = Lighting.FogEnd
 	local OriginalShadow = Lighting.GlobalShadows
@@ -660,7 +660,7 @@ else
 		Default = "Amount",
 		TextDisappear = false,
 		Callback = function(Value)
-			ModifieldWalkSpeed = Value
+			ModifiedWalkSpeed = Value
 		end	  
 	})
 	Tab:AddTextbox({
@@ -680,7 +680,7 @@ else
 		Callback = function(Value)
 			if Value == true then
 				OriginalWalkspeed = LocalPlayer.Character.Humanoid.WalkSpeed
-				LocalPlayer.Character.Humanoid.WalkSpeed = ModifiedWalkspeed
+				LocalPlayer.Character.Humanoid.WalkSpeed = ModifiedWalkSpeed
 			else
 				LocalPlayer.Character.Humanoid.WalkSpeed = OriginalWalkspeed
 			end
@@ -692,7 +692,7 @@ else
 		Callback = function(Value)
 			if Value == true then
 				OriginalJumpPower = LocalPlayer.Character.Humanoid.JumpPower
-				LocalPlayer.Character.Humanoid.JumpPower = ModifiedJumpPower
+				LocalPlayer.Character.Humanoid.JumpPower = ModifieldJumpPower
 				LocalPlayer.Character.Humanoid.UseJumpPower = Value
 			else
 				LocalPlayer.Character.Humanoid.JumpPower = OriginalJumpPower
