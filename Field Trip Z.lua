@@ -58,23 +58,6 @@ if game.PlaceId ~= 1701332290 then
                 end
         })
         local Section = Tab:AddSection({
-                Name = "Selected Heal Player"
-        })
-        Tab:AddTextbox({
-		Name = "Selected Heal Player",
-		Default = "PlayerName",
-		TextDisappear = false,
-		Callback = function(Value)
-			SelectedHealPlayer = Value
-		end	  
-	})
-        Tab:AddButton({
-		Name = "Heal Player",
-		Callback = function()
-			game.ReplicatedStorage.NetworkEvents.RemoteFunction:InvokeServer("HEAL_PLAYER", SelectedHealPlayer, math.huge)
-		end
-	})
-        local Section = Tab:AddSection({
                 Name = "Heal All"
         })
         Tab:AddButton({
