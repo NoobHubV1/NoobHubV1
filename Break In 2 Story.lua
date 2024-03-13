@@ -55,8 +55,8 @@ else
 	local Lighting = game:GetService("Lighting")
 	local OriginalWalkspeed = LocalPlayer.Character.Humanoid.WalkSpeed
 	local OriginalJumpPower = LocalPlayer.Character.Humanoid.JumpPower
-	local ModifiedWalkspeed = 50
-	local ModifiedJumpPower = 100
+	local ModifiedWalkspeed = ModifiedWalkSpeed
+	local ModifiedJumpPower = ModifiedJumpPower
 	local OriginalBrightness = Lighting.Brightness
 	local OriginalFog = Lighting.FogEnd
 	local OriginalShadow = Lighting.GlobalShadows
