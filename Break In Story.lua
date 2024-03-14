@@ -28,7 +28,7 @@ if game.PlaceId ~= 1318971886 then
 	Tab:AddDropdown({
 		Name = "Item",
 		Default = "Bandage",
-	        Options = {"Chips", "BloxyCola", "ExpiredBloxyCola", "Pizza2", "Key", "Apple", "Cookie", "Plank", "LinkedSword", "Bat", "TeddyBloxpin", "GoldKey"},
+	        Options = {"Chips", "BloxyCola", "ExpiredBloxyCola", "Pizza2", "Key", "Apple", "Cookie", "Plank", "LinkedSword", "Bat", "TeddyBloxpin"},
                 Callback = function(Item)
                         SelectedItem = Item
 		end
@@ -186,7 +186,7 @@ end)
 		PremiumOnly = false
 	})
         local Section = Tab:AddSection({
-		Name = "Kill Zombies"
+		Name = "Kill BadGuys"
 	})
         Tab:AddToggle({
                 Name = "Kill Aura",
