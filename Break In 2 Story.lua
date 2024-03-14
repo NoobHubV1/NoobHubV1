@@ -159,6 +159,29 @@ else
 			Events:WaitForChild("GiveTool"):FireServer(tostring(Item:gsub(" ", "")))
 		end
 	end
+        local function GetBestTool()
+		for i, v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.Assets.Note.Note.Note:GetChildren()) do
+			if v.Name:match("Circle") and v.Visible == true then
+				GiveItem(tostring(v.Name:gsub("Circle", "")))
+			end
+		end
+	end
+        local function GiveAll()
+		GetBestTool()
+		task.wait()
+		GiveItem("Armor")
+		task.wait()
+		for i = 1, 5 do
+			Train("Speed")
+			Train("Strength")
+		end
+		task.wait()
+		UnequipAllTools()
+		for i = 1, 15 do
+			GiveItem("Gold Pizza")
+			task.wait()
+		end
+	end
 	local function Train(Ability)
 		Events:WaitForChild("RainbowWhatStat"):FireServer(Ability)
 	end
@@ -234,10 +257,10 @@ else
 				Events:WaitForChild("CatFed"):FireServer(tostring(v.Name:gsub("Circle", "")))
 			end
 		end
-		task.wait(2)
+		task.wait()
 		for i = 1, 3 do
 			TeleportTo(CFrame.new(-203.533081, 30.4500484, -790.901428, -0.0148558766, 8.85941187e-09, -0.999889672, 2.65695732e-08, 1, 8.46563175e-09, 0.999889672, -2.64408779e-08, -0.0148558766) + Vector3.new(0, 5, 0))
-			task.wait(.1)
+			task.wait()
 		end
 	end
 
@@ -343,6 +366,12 @@ else
 		GetAgent()
 		task.wait()
 		GetUncle()
+                task.wait()
+        end
+        local function GetAvoidHumiliationBadge()
+                GiveAll()
+                task.wait()
+                GetDreamTeam()
                 task.wait()
         end
 	-- Main Script / GUI
@@ -809,6 +838,44 @@ else
 				BringAllEnemies()
 				task.wait()
 			end
+		end
+	})
+        local Tab = Window:MakeTab({
+		Name = "Badges",
+		Icon = "rbxassetid://4483345998",
+		PremiumOnly = false
+	})
+	local Section = Tab:AddSection({
+		Name = "Badges"
+	})
+        Tab:AddButton({
+		Name = "Get Golden Apple Badge",
+		Callback = function()
+			GetGAppleBadge()
+		end    
+	})
+        Tab:AddButton({
+		Name = "Get Agent Bradley Badge",
+		Callback = function()
+			GetAgent()
+		end
+	})
+        Tab:AddButton({
+		Name = "Get Uncle Pete Badge",
+		Callback = function()
+			GetUncle()
+		end
+	})
+        Tab:AddButton({
+		Name = "Get Dog Badge",
+		Callback = function()
+			GetDog()
+		end
+	})
+        Tab:AddButton({
+		Name = "Get Avoid Humiliation Badge",
+		Callback = function()
+			GetAvoidHumiliationBadge()
 		end
 	})
 	local Tab = Window:MakeTab({
