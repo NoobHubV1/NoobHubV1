@@ -159,29 +159,6 @@ else
 			Events:WaitForChild("GiveTool"):FireServer(tostring(Item:gsub(" ", "")))
 		end
 	end
-        local function GetBestTool()
-		for i, v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.Assets.Note.Note.Note:GetChildren()) do
-			if v.Name:match("Circle") and v.Visible == true then
-				GiveItem(tostring(v.Name:gsub("Circle", "")))
-			end
-		end
-	end
-        local function GiveAll()
-		GetBestTool()
-		task.wait()
-		GiveItem("Armor")
-		task.wait()
-		for i = 1, 5 do
-			Train("Speed")
-			Train("Strength")
-		end
-		task.wait()
-		UnequipAllTools()
-		for i = 1, 15 do
-			GiveItem("Gold Pizza")
-			task.wait()
-		end
-	end
 	local function Train(Ability)
 		Events:WaitForChild("RainbowWhatStat"):FireServer(Ability)
 	end
@@ -369,10 +346,7 @@ else
                 task.wait()
         end
         local function GetAvoidHumiliationBadge()
-                GiveAll()
-                task.wait()
-                GetDreamTeam()
-                task.wait()
+                Events.AvoidHumiliation:FireServer()
         end
 	-- Main Script / GUI
 	local OrionLib = loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/OrionLib.lua'))()
