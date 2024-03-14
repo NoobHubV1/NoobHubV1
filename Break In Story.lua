@@ -48,6 +48,7 @@ if game.PlaceId ~= 1318971886 then
 			for i = 1, 100 do
                                 game.ReplicatedStorage.RemoteEvents.GiveTool:FireServer("Apple")
                                 game.ReplicatedStorage.RemoteEvents.Energy:FireServer(15, "Apple")
+                        end
 		end
 	})
         Tab:AddToggle({
@@ -285,4 +286,4 @@ end)
 
          Notify('Loaded!', "Script Successfully Loaded!\nJoin Our Discord At (https://discord.gg/NoobHubV1) For Support Script, You Execute Script NoobHubV1 Loader", 'rbxassetid://4483345998', 15)
 	OrionLib:Init()
-  end
+end
