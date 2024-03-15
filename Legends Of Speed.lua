@@ -199,6 +199,29 @@ if game.PlaceId ~= 1119466531 then
                         end
                 end
         })
+        local Section = Tab:AddSection({
+		Name = "Get Gem And Orb"
+	})
+        Tab:AddTextbox({
+		Name = "Gem",
+		Default = "Amount",
+		TextDisappear = false,
+		Callback = function(Amount)
+			for i = 1, Amount do
+                                game.ReplicatedStorage.rEvents.orbEvent:FireServer("collectOrb", "Gem", "City")
+                        end
+		end	  
+	})
+        Tab:AddTextbox({
+		Name = "Orb",
+		Default = "Amount",
+		TextDisappear = false,
+		Callback = function(Amount)
+			for i = 1, Amount do
+                                game.ReplicatedStorage.rEvents.orbEvent:FireServer("collectOrb", SelectedOrb, "City")
+                        end
+		end	  
+	})
         local Tab = Window:MakeTab({
 		Name = "Others",
 		Icon = "rbxassetid://4483345998",
