@@ -388,7 +388,7 @@ do
 	States.AntiArrest = false
 	States.OnePunch = false
 	States.killaura = false
-	States.anticrash = false
+	States.anticrash = true
 	States.AntiTouch = false
 	States.ShootBack = false
 	States.AntiFling = false
