@@ -27,8 +27,8 @@ if game.PlaceId ~= 1318971886 then
 	})
 	Tab:AddDropdown({
 		Name = "Item",
-		Default = "Bandage",
-	        Options = {"Chips", "BloxyCola", "ExpiredBloxyCola", "Pizza2", "Key", "Apple", "Cookie", "Plank", "LinkedSword", "Bat", "TeddyBloxpin"},
+		Default = "Chips",
+	        Options = {"Chips", "BloxyCola", "ExpiredBloxyCola", "Pizza2", "Key", "Apple", "Cookie", "Plank", "LinkedSword", "Bat", "TeddyBloxpin", "Cure", "MedKit"},
                 Callback = function(Item)
                         SelectedItem = Item
 		end
