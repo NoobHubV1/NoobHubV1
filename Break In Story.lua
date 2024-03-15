@@ -60,10 +60,21 @@ if game.PlaceId ~= 1318971886 then
                                         game.ReplicatedStorage.RemoteEvents.GiveTool:FireServer("Apple")
                                 game.ReplicatedStorage.RemoteEvents.Energy:FireServer(15, "Apple")
                                 end
-                                task.wait()
+                                task.wait(WaitTimeLoopHealYourself)
                         end
                 end
         })
+        local Section = Tab:AddSection({
+		Name = "Wait Time Loop Heal Yourself"
+	})
+        Tab:AddTextbox({
+		Name = "Wait Time",
+		Default = "Amount",
+		TextDisappear = false,
+		Callback = function(Amount)
+			WaitTimeLoopHealYourself = Amount
+		end	  
+	})
         local Tab = Window:MakeTab({
 		Name = "Teleport",
 		Icon = "rbxassetid://4483345998",
@@ -196,9 +207,21 @@ end)
                                 for i, v in pairs(game.Workspace.BadGuys:GetChildren()) do
         game:GetService("ReplicatedStorage").RemoteEvents.HitBadguy:FireServer(v, 8)
     end
+                                task.wait(WaitTimeKillAura)
                         end
                 end
         })
+        local Section = Tab:AddSection({
+		Name = "Wait time Kill Aura"
+	})
+        Tab:AddTextbox({
+		Name = "Wait Time",
+		Default = "Amount",
+		TextDisappear = false,
+		Callback = function(Amount)
+			WaitTimeKillAura = Amount
+		end	  
+	})
         local Tab = Window:MakeTab({
 		Name = "Misc",
 		Icon = "rbxassetid://4483345998",
