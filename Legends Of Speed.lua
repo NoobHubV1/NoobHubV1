@@ -41,10 +41,10 @@ if game.PlaceId ~= 1119466531 then
                 Callback = function(Value)
                         getgenv().OrbLoop = Value
                         while OrbLoop do
-                                for i = 1, 20 do
+                                for i = 1, 3 do
                                         game.ReplicatedStorage.rEvents.orbEvent:FireServer("collectOrb", SelectedOrb, "City")
                                 end
-                                task.wait()
+                                task.wait(WaitTimeAutoOrb)
                         end
                 end
         })
@@ -53,10 +53,10 @@ if game.PlaceId ~= 1119466531 then
                 Callback = function(Value)
                         getgenv().GemLoop = Value
                         while GemLoop do
-                                for i = 1, 20 do
+                                for i = 1, 3 do
                                         game.ReplicatedStorage.rEvents.orbEvent:FireServer("collectOrb", "Gem", "City")
                                 end
-                                task.wait()
+                                task.wait(WaitTimeAutoGem)
                         end
                 end
         })
@@ -70,10 +70,53 @@ if game.PlaceId ~= 1119466531 then
                         wait()
                         firetouchinterest(v, game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, 1)
                     end
-                                task.wait()
+                                task.wait(WaitTimeAutoHoop)
                         end
                 end
         })
+        local Section = Tab:AddSection({
+		Name = "Wait Time"
+	})
+        Tab:AddTextbox({
+		Name = "Wait Time Auto Orb",
+		Default = "Amount",
+		TextDisappear = false,
+		Callback = function(Amount)
+			WaitTimeAutoOrb = Amount
+		end	  
+	})
+        Tab:AddTextbox({
+		Name = "Wait Time Auto Gem",
+		Default = "Amount",
+		TextDisappear = false,
+		Callback = function(Amount)
+			WaitTimeAutoGem = Amount
+		end	  
+	})
+        Tab:AddTextbox({
+		Name = "Wait Time Auto Hoop",
+		Default = "Amount",
+		TextDisappear = false,
+		Callback = function(Amount)
+			WaitTimeAutoHoop = Amount
+		end	  
+	})
+        Tab:AddTextbox({
+		Name = "Wait Time Bug Pet",
+		Default = "Amount",
+		TextDisappear = false,
+		Callback = function(Amount)
+			WaitTimeBugPet = Amount
+		end	  
+	})
+        Tab:AddTextbox({
+		Name = "Wait Time Auto Rebirth",
+		Default = "Amount",
+		TextDisappear = false,
+		Callback = function(Amount)
+			WaitTimeAutoRebirth = Amount
+		end	  
+	})
         local Tab = Window:MakeTab({
 		Name = "Teleport",
 		Icon = "rbxassetid://4483345998",
@@ -134,10 +177,10 @@ if game.PlaceId ~= 1119466531 then
                 Callback = function(Value)
                         getgenv().BugLoop = Value
                         while BugLoop do
-                                for i = 1, 20 do
+                                for i = 1, 3 do
                                         game.ReplicatedStorage.rEvents.orbEvent:FireServer("collectOrb", "Yellow Orb", "City")
                                 end
-                                task.wait()
+                                task.wait(WaitTimeBugPet)
                         end
                 end
         })
