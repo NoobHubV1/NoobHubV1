@@ -17,3 +17,6 @@ end)
 
 AnimeBall:CreateButton("FFJ Hub Anime Ball", function()loadstring(game:HttpGet("https://raw.githubusercontent.com/FFJ1/Roblox-Exploits/main/scripts/AnimeBall.lua"))()
 end)
+
+AnimeBall:CreateButton("Fly", function()loadstring(game:HttpGet("https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/Fly.lua"))()
+end)
