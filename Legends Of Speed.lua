@@ -1,5 +1,5 @@
 -- Place Check
-if game.PlaceId ~= 1701332290 then
+if game.PlaceId ~= 3101667897 then
 
 	local OrionLib = loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/OrionLib.lua'))()
         local function Notify(name, content, image, time)
