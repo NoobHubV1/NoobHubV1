@@ -40,12 +40,23 @@ if game.PlaceId ~= 1318971886 then
 		end
 	})
         local Section = Tab:AddSection({
+		Name = "Custom Heal Yourself"
+	})
+        Tab:AddTextbox({
+		Name = "Custom Heal",
+		Default = "Amount",
+		TextDisappear = false,
+		Callback = function(Amount)
+			CustomHealYourself = Amount
+		end	  
+	})
+        local Section = Tab:AddSection({
 		Name = "Heal Yourself"
 	})
         Tab:AddButton({
 		Name = "Heal Yourself",
 		Callback = function()
-			for i = 1, 100 do
+			for i = 1, CustomHealYourself do
                                 game.ReplicatedStorage.RemoteEvents.GiveTool:FireServer("Apple")
                                 game.ReplicatedStorage.RemoteEvents.Energy:FireServer(15, "Apple")
                         end
@@ -56,7 +67,7 @@ if game.PlaceId ~= 1318971886 then
                 Callback = function(Value)
                         getgenv().HealLoop = Value
                         while HealLoop do
-                                for i = 1, 2 do
+                                for i = 1, CustomHealYourself do
                                         game.ReplicatedStorage.RemoteEvents.GiveTool:FireServer("Apple")
                                 game.ReplicatedStorage.RemoteEvents.Energy:FireServer(15, "Apple")
                                 end
