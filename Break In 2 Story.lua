@@ -403,13 +403,24 @@ else
 			end
 		end
 	})
+        local Section = Tab:AddSection({
+		Name = "Custom Heal Youself"
+	})
+        Tab:AddTextbox({
+		Name = "Custom Heal Yourself",
+		Default = "Amount",
+		TextDisappear = false,
+		Callback = function(Value)
+			CustomHealYourself = Value
+		end	  
+	})
 	local Section = Tab:AddSection({
 		Name = "Heal Youself"
 	})
 	Tab:AddButton({
 		Name = "Heal Yourself",
 		Callback = function()
-			for i = 1, 100 do
+			for i = 1, CustomHealYourself do
 				HealYourself()
 			end
 		end
@@ -420,8 +431,10 @@ else
 		Callback = function(Value)
 			getgenv().HealLoop = Value
 			while HealLoop do
-				HealYourself()
-				task.wait()
+				for i = 1, CustomHealYourself do
+                                        HealYourself()
+                                end
+				task.wait(WaitTimeLoopHealYourself)
 			end
 		end
 	})
@@ -441,11 +454,30 @@ else
 			getgenv().HealAllLoop = Value
 			while HealAllLoop do
 				HealAllPlayers()
-				task.wait(.1)
+				task.wait(WaitTimeLoopHealAll)
 			end
 		end
 	})
-	local Section = Tab:AddSection({
+        local Section = Tab:AddSection({
+		Name = "Wait Time"
+	})
+        Tab:AddTextbox({
+		Name = "Wait Time Loop Heal Yourself",
+		Default = "Amount",
+		TextDisappear = false,
+		Callback = function(Amount)
+			WaitTimeLoopHealYourself = Amount
+		end	  
+	})
+        Tab:AddTextbox({
+		Name = "Wait Time Loop Heal All",
+		Default = "Amount",
+		TextDisappear = false,
+		Callback = function(Amount)
+			WaitTimeLoopHealAll = Amount
+		end	  
+	})
+        local Section = Tab:AddSection({
 		Name = "Quality Of Life"
 	})
 	Tab:AddToggle({
