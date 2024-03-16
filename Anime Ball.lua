@@ -4,9 +4,19 @@ local PhantomForcesWindow = Library:NewWindow("NoobHubV1 Hub")
 
 local AnimeBall = PhantomForcesWindow:NewSection("Main")
 
-AnimeBall:CreateButton("Auto Parry", function()--Red Circle Auto-Block:
+AnimeBall:CreateButton("Auto Parry V3", function()--Red Circle Auto-Block:
 getgenv().visualizer = true
 loadstring(Game:HttpGet('https://raw.githubusercontent.com/1f0yt/community/main/Circle'))()
+end)
+
+AnimeBall:CreateButton("Auto Parry V2", function()--Red Circle Auto-Block:
+getgenv().visualizer = true
+loadstring(Game:HttpGet('https://raw.githubusercontent.com/1f0yt/community/main/RedCircleBlock'))()
+end)
+
+AnimeBall:CreateButton("Auto Parry V1", function()--Red Circle Auto-Block:
+getgenv().visualizer = true
+loadstring(Game:HttpGet('https://raw.githubusercontent.com/1f0yt/community/main/autoparrybest'))()
 end)
 
 AnimeBall:CreateButton("Fps Boost", function()loadstring(game:HttpGet("https://shz.al/KWfS"))()
