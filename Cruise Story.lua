@@ -23,6 +23,13 @@ local GetItem = game.ReplicatedStorage.Remotes.buyItemEvent
 GetItem:FireServer(A_1, A_2, A_3)
 end)
 
+CruiseStory:CreateButton("Cola", function()local A_1 = "Bloxycola"
+local A_2 = "Cash"
+local A_3 = 10
+local GetItem = game.ReplicatedStorage.Remotes.buyItemEvent
+GetItem:FireServer(A_1, A_2, A_3)
+end)
+
 CruiseStory:CreateButton("Pizza", function()local A_1 = "Pizza"
 local A_2 = "Cash"
 local A_3 = 25
@@ -30,12 +37,12 @@ local GetItem = game.ReplicatedStorage.Remotes.buyItemEvent
 GetItem:FireServer(A_1, A_2, A_3)
 end)
 
-local CruiseStory = PhantomForcesWindow:NewSection("Inf Money")
+local CruiseStory = PhantomForcesWindow:NewSection("Money")
 
-CruiseStory:CreateTextbox("Inf Money Amount", function(Amount)InfMoneyAmount = Amount
+CruiseStory:CreateTextbox("Get Money Amount", function(Amount)GetMoneyAmount = Amount
 end)
 
-CruiseStory:CreateButton("Get Money", function()local A_1 = InfMoneyAmount
+CruiseStory:CreateButton("Get Money", function()local A_1 = GetMoneyAmount
 local GetMoney = game.ReplicatedStorage.Remotes.giveCashEvent
 GetMoney:FireServer(A_1)
 end)
@@ -45,29 +52,10 @@ local CruiseStory = PhantomForcesWindow:NewSection("God Mode")
 CruiseStory:CreateButton("Heal Yourself", function()game.ReplicatedStorage.Remotes.healPlayerEvent:FireServer(math.huge)
 end)
 
-CruiseStory:CreateButton("Heal All", function()for i, v in pairs(game.Players:GetPlayers()) do
-                if v.Name ~= game:GetService("Players").LocalPlayer then
-                    game.ReplicatedStorage.Remotes.healPlayerEvent:FireServer(math.huge)
-                end
-            end
-end)
-
 CruiseStory:CreateToggle("God Mode Yourself", function(Value)_G.Heal = Value
 while _G.Heal do
 wait()
 game.ReplicatedStorage.Remotes.healPlayerEvent:FireServer(math.huge)
-wait()
-end
-end)
-
-CruiseStory:CreateToggle("God Mode All", function(Value)_G.HealAll = Value
-while _G.HealAll do
-wait()
-for i, v in pairs(game.Players:GetPlayers()) do
-                if v.Name ~= game:GetService("Players").LocalPlayer then
-                    game.ReplicatedStorage.Remotes.healPlayerEvent:FireServer(math.huge)
-                end
-            end
 wait()
 end
 end)
