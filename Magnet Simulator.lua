@@ -57,8 +57,24 @@ end)
 
 local MagnetSimulator = PhantomForcesWindow:NewSection("Player")
 
-MagnetSimulator:CreateTextbox("Walk Speed", function(Amount)game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = Amount
+MagnetSimulator:CreateTextbox("Walk Speed Amount", function(Amount)WalkSpeedAmount = Amount
 end)
 
-MagnetSimulator:CreateTextbox("Jump Power", function(Amount)game.Players.LocalPlayer.Character.Humanoid.JumpPower = Amount
+MagnetSimulator:CreateToggle("Walk Speed", function(Value)_G.WalkSpeed = Value
+while _G.WalkSpeed do
+wait()
+game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = WalkSpeedAmount
+wait()
+end
+end)
+
+MagnetSimulator:CreateTextbox("Jump Power Amount", function(Amount)JumpPowerAmount = Amount
+end)
+
+MagnetSimulator:CreateToggle("Jump Power", function(Value)_G.JumpPower = Value
+while _G.JumpPower do
+wait()
+game.Players.LocalPlayer.Character.Humanoid.JumpPower = JumpPowerAmount
+wait()
+end
 end)
