@@ -4,8 +4,8 @@ local PhantomForcesWindow = Library:NewWindow("NoobHubV1 Hub")
 
 local AnimeBall = PhantomForcesWindow:NewSection("Main")
 
-AnimeBall:CreateButton("Auto Parry V4", function()--Red Circle Auto-Block:
-getgenv().visualizer = true
+AnimeBall:CreateToggle("Auto Parry V4", function(Value)--Red Circle Auto-Block:
+getgenv().visualizer = Value
 loadstring(Game:HttpGet('https://raw.githubusercontent.com/1f0yt/community/main/Circle'))()
 end)
 
