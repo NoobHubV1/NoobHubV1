@@ -5178,7 +5178,7 @@ task.spawn(C_f1);
 local function C_fe()
 	local script = AZY["fe"];
 	script.Parent.MouseButton1Click:Connect(function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/AZYsGithub/chillz-workshop/main/Arceus%20Aimbot.lua"))()
+		loadstring(game:HttpGet("https://github.com/NoobHubV1/NoobHubV1/raw/main/Arceus%20X%20V3%20Aimbot.lua"))()
 	end)
 end;
 task.spawn(C_fe);
@@ -5217,7 +5217,7 @@ task.spawn(C_106);
 local function C_10a()
 	local script = AZY["10a"];
 	script.Parent.MouseButton1Click:Connect(function()
-		loadstring(request({ Url = "https://raw.githubusercontent.com/fatesc/fates-esp/main/main.lua", Method = "GET"}).Body)()
+		loadstring(Game:HttpGet('https://github.com/NoobHubV1/NoobHubV1/raw/main/Arceus%20X%20V3%20Fates%20Esp.lua'))()
 	end)
 end;
 task.spawn(C_10a);
@@ -5225,7 +5225,7 @@ task.spawn(C_10a);
 local function C_10e()
 	local script = AZY["10e"];
 	script.Parent.MouseButton1Click:Connect(function()
-		loadstring(game:HttpGet("https://raw.githubusercontent.com/AZYsGithub/chillz-workshop/main/Arceus%20Fly.lua"))()
+		loadstring(game:HttpGet("https://github.com/NoobHubV1/NoobHubV1/blob/main/Arceus%20X%20V3%20Fly.lua"))()
 	end)
 end;
 task.spawn(C_10e);
