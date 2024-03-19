@@ -76,6 +76,35 @@ if game.PlaceId ~= 1318971886 then
                 end
         })
         local Section = Tab:AddSection({
+		Name = "Heal All Players"
+	})
+        Tab:AddButton({
+                Name = "Heal All Players",
+                Callback = function()
+                        for i,v in pairs(game:GetService("Players"):GetPlayers()) do
+	
+	        game:GetService("ReplicatedStorage").RemoteEvents.CurePlayer:FireServer(v)
+	        game:GetService("ReplicatedStorage").RemoteEvents.HealPlayer:FireServer(v)
+	    
+	    end
+                end
+        })
+        Tab:AddButton({
+                Name = "Loop Heal All Players",
+                Callback = function(Value)
+                        getgenv().HealAllLoop = Value
+                        while HealAllLoop do
+                                for i,v in pairs(game:GetService("Players"):GetPlayers()) do
+	
+	        game:GetService("ReplicatedStorage").RemoteEvents.CurePlayer:FireServer(v)
+	        game:GetService("ReplicatedStorage").RemoteEvents.HealPlayer:FireServer(v)
+	    
+	    end
+                                task.wait()
+                        end
+                end
+        })
+        local Section = Tab:AddSection({
 		Name = "Wait Time Loop Heal Yourself"
 	})
         Tab:AddTextbox({
@@ -216,7 +245,7 @@ end)
                         getgenv().KillBadGuysLoop = Value
                         while KillBadGuysLoop do
                                 for i, v in pairs(game.Workspace.BadGuys:GetChildren()) do
-        game:GetService("ReplicatedStorage").RemoteEvents.HitBadguy:FireServer(v, 8)
+        game:GetService("ReplicatedStorage").RemoteEvents.HitBadguy:FireServer(v, 500)
     end
                                 task.wait(WaitTimeKillAura)
                         end
@@ -284,6 +313,30 @@ end)
             game:GetService("ReplicatedStorage").RemoteEvents.ToxicDrown:FireServer(1, v)
         end
     end
+                end
+        })
+        local Section = Tab:AddSection({
+		Name = "Befriend Cat"
+	})
+        Tab:AddButton({
+                Name = "Befriend Cat",
+                Callback = function()
+                        game.ReplicatedStorage.RemoteEvents.Cattery:Fireserver()
+                end
+        })
+        local Section = Tab:AddSection({
+		Name = "Tools"
+	})
+        Tab:AddButton({
+                Name = "Unequip All Tools",
+                Callback = function()
+                        loadstring(game:HttpGet("https://raw.githubusercontent.com/megamoeus/HHubmega/master/BreakIn", true))()
+                end
+        })
+        Tab:AddButton({
+                Name = "Equip All Tools",
+                Callback = function()
+                        loadstring(game:HttpGet("https://raw.githubusercontent.com/megamoeus/HHubmega/master/BreakIn", true))()
                 end
         })
         local Tab = Window:MakeTab({
