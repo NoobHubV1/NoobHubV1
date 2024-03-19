@@ -29,7 +29,7 @@ local function gotoGem()
   local tweenInfo = TweenInfo.new(0.01)
   local tween = tweenserv:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, tweenInfo, goal)
   tween:Play()
-  wait()
+  wait(WaitTime)
   if(gem.Parent) then
    gem.Parent:Destroy()
   end
@@ -52,7 +52,7 @@ local rebirthconnect = rebirthtext:GetPropertyChangedSignal("Text"):Connect(func
       print('rebirthing')
       doit = false
       rebirthevent:InvokeServer()
-      wait(3)
+      wait()
       if(game.Players.LocalPlayer.Character.HumanoidRootPart.StarterWorm.Head:FindFirstChild("FaceCenterAttachment")) then
            game.Players.LocalPlayer.Character.HumanoidRootPart.StarterWorm.Head:FindFirstChild("FaceCenterAttachment"):Destroy()
       end
@@ -71,4 +71,7 @@ while getgenv().active do
   end
   wait()
 end
+end)
+
+WormFace:CreateTextbox("Wait Time", function(Amount)WaitTime = Amount
 end)
