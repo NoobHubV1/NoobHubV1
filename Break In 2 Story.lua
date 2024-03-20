@@ -4,6 +4,16 @@ if game.PlaceId ~= 13864667823 then
 		
 	-- Free Gamepasses (LOBBY)
 	local OrionLib = loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/OrionLib.lua'))()
+        local RemoteEvents = game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents")
+
+        local RolesTable = {
+                "Book",
+                "Phone"
+        }
+
+        local function GetRole(Role)
+                RemoteEvents:WaitForChild("OutsideRole"):FireServer(Role)
+        end
 	local Window = OrionLib:MakeWindow({
 		Name = "Break In 2 (Lobby)",
 		HidePremium = false,
@@ -16,16 +26,21 @@ if game.PlaceId ~= 13864667823 then
 		Icon = "rbxassetid://4483345998",
 		PremiumOnly = false
 	})
-	Tab:AddButton({
-		Name = "Free Hacker Role",
-		Callback = function()
-			game:GetService("ReplicatedStorage").RemoteEvents.OutsideRole:FireServer("Phone", true, false)
+        local Section = Tab:AddSection({
+		Name = "Role"
+	})
+	Tab:AddDropdown({
+		Name = "Selected Role",
+                Default = "Phone",
+                Options = RolesTable,
+		Callback = function(Role)
+			SelectedRole = Role
 		end
 	})
 	Tab:AddButton({
-		Name = "Free Nerd Kid Role",
+		Name = "Get Role",
 		Callback = function()
-			game:GetService("ReplicatedStorage").RemoteEvents.OutsideRole:FireServer("Book", true, false)
+			GetRole(SelectedRole)
 		end
 	})
 	OrionLib:Init()
@@ -46,6 +61,7 @@ else
 	Part.Transparency = 1
 
 	-- Locals
+        local OrionLib = loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/OrionLib.lua'))()
 	local Events = game:GetService("ReplicatedStorage"):WaitForChild("Events")
         local TeleportService = game:GetService("TeleportService")
 	local SelectedItem = "Armor"
@@ -458,8 +474,6 @@ else
         local function UnequipItem(Item)
                 LocalPlayer.Character:WaitForChild(tostring(Item:gsub(" ", ""))).Parent = LocalPlayer.Backpack
         end
-	-- Main Script / GUI
-	local OrionLib = loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/OrionLib.lua'))()
 	local function Notify(name, content, image, time)
 		OrionLib:MakeNotification({
 			Name = name,
