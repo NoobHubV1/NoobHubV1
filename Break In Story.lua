@@ -2,6 +2,111 @@
 if game.PlaceId ~= 1318971886 then
 
 	local OrionLib = loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/OrionLib.lua'))()
+        local RemoteEvents = game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents")
+        local SelectedItem = "Cure"
+        local Damange = 10
+        local ScriptLoaded = false
+        local LocalPlayer = game:GetService("Players").LocalPlayer
+
+        -- Tables
+        local ItemsTable = {
+                "Chips",
+                "Bloxy Cola",
+                "Expired Bloxy Cola",
+                "Pizza 2",
+                "Key",
+                "Apple",
+                "Cookie",
+                "Med Kit",
+                "Cure",
+                "Bat",
+                "Linked Sword",
+                "Teddy Bloxpin",
+                "Plank"
+        }
+        local RolesTable = {
+                "Bat",
+                "Gun",
+                "Swat Gun"
+        }
+        local ItemsHealAllPlayersTable = {
+                "Med Kit",
+                "Cure"
+        }
+
+        -- Functions
+        local function UnequipAllTools()
+                for i, v in pairs(LocalPlayer.Character:GetChildren()) do
+			if v:IsA("Tool") then
+				v.Parent = LocalPlayer.Backpack
+			end
+		end
+        end
+        local function EquipAllTools()
+                for i, v in pairs(LocalPlayer.Backpack:GetChildren()) do
+			if v:IsA("Tool") then
+				v.Parent = LocalPlayer.Character
+			end
+		end
+        end
+        local function RemoveAllTools()
+                UnequipAllTools()
+                task.wait(.1)
+                for i, v in pairs(LocalPlayer.Backpack:GetChildren()) do
+			if v:IsA("Tool") then
+				v:Destroy()
+			end
+		end
+        end
+        local function GiveItem(Item)
+                RemoteEvents:WaitForChild("GiveTool"):FireServer(tostring(Item:gsub(" ", "")))
+        end
+        local function TakeDamange(Amount)
+                RemoteEvents:WaitForChild("Energy"):FireServer(-Amount)
+        end
+        local function HealYourself()
+                GiveItem("Apple")
+                RemoteEvents.Energy:FireServer(15, "Apple")
+        end
+        local function HealAllPlayers()
+                UnequipAllTools()
+                task.wait(1)
+                GiveItem(SelectedItemAllPlayers)
+                task.wait(1)
+                LocalPlayer.Backpack:WaitForChild(tostring(SelectedItemAllPlayers:gsub(" ", ""))).Parent = LocalPlayer.Character
+                task.wait(1)
+                for i,v in pairs(game:GetService("Players"):GetPlayers()) do
+	
+	        RemoteEvents.CurePlayer:FireServer(v)
+	        RemoteEvents.HealPlayer:FireServer(v)
+	    
+	    end
+                task.wait(1)
+                LocalPlayer.Character:WaitForChild(tostring(SelectedItemAllPlayers:gsub(" ", ""))).Parent = LocalPlayer.Backpack
+                task.wait(1)
+                LocalPlayer.Backpack:WaitForChild(tostring(SelectedItemAllPlayers:gsub(" ", ""))):Destroy()
+        end
+        local function KillEnemies()
+                for i, v in pairs(game.Workspace.BadGuys:GetChildren()) do
+        RemoteEvents.HitBadguy:FireServer(v, 500)
+    end
+        end
+        local function KillAllPlayers()
+                for i, v in pairs(game.Players:GetPlayers()) do
+        if v ~= LocalPlayer and v.Name ~= "Ashleegreninja" then
+            RemoteEvents.ToxicDrown:FireServer(1, v)
+        end
+    end
+        end
+        local function GetRole(Role)
+                RemoteEvents.OutsideRole:FireServer(tostring(Role:gsub(" ", "")))
+        end
+        local function BefriendCat()
+                RemoteEvents:WaitForChild("Cattery"):FireServer()
+        end
+        local function IceSlip()
+                RemoteEvents:WaitForChild("IceSlip"):FireServer()
+        end
         local function Notify(name, content, image, time)
 		OrionLib:MakeNotification({
 			Name = name,
@@ -28,7 +133,7 @@ if game.PlaceId ~= 1318971886 then
 	Tab:AddDropdown({
 		Name = "Item",
 		Default = "Chips",
-	        Options = {"Chips", "BloxyCola", "ExpiredBloxyCola", "Pizza2", "Key", "Apple", "Cookie", "Plank", "LinkedSword", "Bat", "TeddyBloxpin", "Cure", "MedKit"},
+	        Options = ItemsTable,
                 Callback = function(Item)
                         SelectedItem = Item
 		end
@@ -36,7 +141,7 @@ if game.PlaceId ~= 1318971886 then
         Tab:AddButton({
 		Name = "Get Item",
 		Callback = function()
-			game.ReplicatedStorage.RemoteEvents.GiveTool:FireServer(SelectedItem)
+			GiveItem(SelectedItem)
 		end
 	})
         local Section = Tab:AddSection({
@@ -57,8 +162,7 @@ if game.PlaceId ~= 1318971886 then
 		Name = "Heal Yourself",
 		Callback = function()
 			for i = 1, CustomHealYourself do
-                                game.ReplicatedStorage.RemoteEvents.GiveTool:FireServer("Apple")
-                                game.ReplicatedStorage.RemoteEvents.Energy:FireServer(15, "Apple")
+                                HealYourself()
                         end
 		end
 	})
@@ -68,39 +172,39 @@ if game.PlaceId ~= 1318971886 then
                         getgenv().HealLoop = Value
                         while HealLoop do
                                 for i = 1, CustomHealYourself do
-                                        game.ReplicatedStorage.RemoteEvents.GiveTool:FireServer("Apple")
-                                game.ReplicatedStorage.RemoteEvents.Energy:FireServer(15, "Apple")
+                                        HealYourself()
                                 end
                                 task.wait(WaitTimeLoopHealYourself)
                         end
                 end
         })
         local Section = Tab:AddSection({
+		Name = "Heal All Players Settings"
+	})
+        Tab:AddDropdown({
+		Name = "Item Heal All Players",
+		Default = "Med Kit",
+	        Options = ItemsHealAllPlayersTable,
+                Callback = function(Item)
+                        SelectedItemAllPlayers = Item
+		end
+	})
+        local Section = Tab:AddSection({
 		Name = "Heal All Players"
 	})
         Tab:AddButton({
                 Name = "Heal All Players",
                 Callback = function()
-                        for i,v in pairs(game:GetService("Players"):GetPlayers()) do
-	
-	        game:GetService("ReplicatedStorage").RemoteEvents.CurePlayer:FireServer(v)
-	        game:GetService("ReplicatedStorage").RemoteEvents.HealPlayer:FireServer(v)
-	    
-	    end
+                        HealAllPlayers()
                 end
         })
-        Tab:AddButton({
+        Tab:AddToggle({
                 Name = "Loop Heal All Players",
                 Callback = function(Value)
                         getgenv().HealAllLoop = Value
                         while HealAllLoop do
-                                for i,v in pairs(game:GetService("Players"):GetPlayers()) do
-	
-	        game:GetService("ReplicatedStorage").RemoteEvents.CurePlayer:FireServer(v)
-	        game:GetService("ReplicatedStorage").RemoteEvents.HealPlayer:FireServer(v)
-	    
-	    end
-                                task.wait()
+                                HealAllPlayers()
+                                task.wait(1)
                         end
                 end
         })
@@ -126,37 +230,37 @@ if game.PlaceId ~= 1318971886 then
         Tab:AddButton({
 		Name = "Basement",
 		Callback = function()
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(71, -15, -163)
+	                LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(71, -15, -163)
 		end
 	})
         Tab:AddButton({
 		Name = "House",
 		Callback = function()
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-36, 3, -200)
+	                LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-36, 3, -200)
 		end
 	})
         Tab:AddButton({
 		Name = "Attic",
 		Callback = function()
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-16, 35, -220)
+			LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-16, 35, -220)
 		end
 	})
         Tab:AddButton({
 		Name = "Store",
 		Callback = function()
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-422, 3, -121)
+			LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-422, 3, -121)
 		end
 	})
         Tab:AddButton({
 		Name = "Sewer",
 		Callback = function()
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(129, 3, -125)
+			LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(129, 3, -125)
 		end
 	})
         Tab:AddButton({
 		Name = "Boss Room",
 		Callback = function()
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-39, -287, -1480)
+			LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-39, -287, -1480)
 		end
 	})
         local Tab = Window:MakeTab({
@@ -218,9 +322,9 @@ end)
 		Name = "Role"
 	})
         Tab:AddDropdown({
-		Name = "Item",
+		Name = "Role",
 		Default = "Bat",
-	        Options = {"Bat", "Gun", "SwatGun"},
+	        Options = RolesTable,
                 Callback = function(Role)
                         SelectedRole = Role
 		end
@@ -228,7 +332,7 @@ end)
         Tab:AddButton({
 		Name = "Get Role",
 		Callback = function()
-			game.ReplicatedStorage.RemoteEvents.OutsideRole:FireServer(SelectedRole)
+			GetRole(SelectedRole)
 		end
 	})
         local Tab = Window:MakeTab({
@@ -244,9 +348,7 @@ end)
                 Callback = function(Value)
                         getgenv().KillBadGuysLoop = Value
                         while KillBadGuysLoop do
-                                for i, v in pairs(game.Workspace.BadGuys:GetChildren()) do
-        game:GetService("ReplicatedStorage").RemoteEvents.HitBadguy:FireServer(v, 500)
-    end
+                                KillEnemies()
                                 task.wait(WaitTimeKillAura)
                         end
                 end
@@ -281,7 +383,7 @@ end)
         Tab:AddButton({
                 Name = "Damange Yourself",
                 Callback = function()
-                        game.ReplicatedStorage.RemoteEvents.Energy:FireServer(-DamangeAmount)
+                        TakeDamange(DamangeAmount)
                 end
         })
         local Section = Tab:AddSection({
@@ -290,7 +392,7 @@ end)
         Tab:AddButton({
                 Name = "Slip",
                 Callback = function()
-                        game.ReplicatedStorage.RemoteEvents.IceSlip:FireServer()
+                        IceSlip()
                 end
         })
         Tab:AddToggle({
@@ -298,7 +400,7 @@ end)
                 Callback = function(Value)
                         getgenv().SlipLoop = Value
                         while SlipLoop do
-                                game.ReplicatedStorage.RemoteEvents.IceSlip:FireServer()
+                                IceSlip()
                         end
                 end
         })
@@ -308,11 +410,7 @@ end)
         Tab:AddButton({
                 Name = "Kill All Players",
                 Callback = function()
-                        for i, v in pairs(game.Players:GetPlayers()) do
-        if v ~= game.Players.LocalPlayer and v.Name ~= "Ashleegreninja" then
-            game:GetService("ReplicatedStorage").RemoteEvents.ToxicDrown:FireServer(1, v)
-        end
-    end
+                        KillAllPlayers()
                 end
         })
         local Section = Tab:AddSection({
@@ -321,7 +419,7 @@ end)
         Tab:AddButton({
                 Name = "Befriend Cat",
                 Callback = function()
-                        game.ReplicatedStorage.RemoteEvents.Cattery:FireServer()
+                        BefriendCat()
                 end
         })
         local Section = Tab:AddSection({
@@ -330,13 +428,19 @@ end)
         Tab:AddButton({
                 Name = "Unequip All Tools",
                 Callback = function()
-                        loadstring(game:HttpGet("https://raw.githubusercontent.com/megamoeus/HHubmega/master/BreakIn", true))()
+                        UnequipAllTools()
                 end
         })
         Tab:AddButton({
                 Name = "Equip All Tools",
                 Callback = function()
-                        loadstring(game:HttpGet("https://raw.githubusercontent.com/megamoeus/HHubmega/master/BreakIn", true))()
+                        EquipAllTools()
+                end
+        })
+        Tab:AddButton({
+                Name = "Remove All Tools",
+                Callback = function()
+                        RemoveAllTools()
                 end
         })
         local Tab = Window:MakeTab({
@@ -372,5 +476,6 @@ end)
          })
 
          Notify('Loaded!', "Script Successfully Loaded!\nJoin Our Discord At (https://discord.gg/NoobHubV1) For Support Script, You Execute Script NoobHubV1 Loader", 'rbxassetid://4483345998', 15)
-	OrionLib:Init()
+         ScriptLoaded = true
+	 OrionLib:Init()
 end
