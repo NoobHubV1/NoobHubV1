@@ -91,21 +91,28 @@ if game.PlaceId ~= 1318971886 then
         RemoteEvents.HitBadguy:FireServer(v, 500)
     end
         end
-        local function KillAllPlayers()
-                for i, v in pairs(game.Players:GetPlayers()) do
-        if v ~= LocalPlayer and v.Name ~= "Ashleegreninja" then
-            RemoteEvents.ToxicDrown:FireServer(1, v)
-        end
-    end
-        end
         local function GetRole(Role)
                 RemoteEvents.OutsideRole:FireServer(tostring(Role:gsub(" ", "")))
         end
         local function BefriendCat()
                 RemoteEvents:WaitForChild("Cattery"):FireServer()
         end
+        local function KillOthersPlayers()
+                for i, v in pairs(game.Players:GetPlayers()) do
+        if v.Name ~= LocalPlayer then
+            RemoteEvents:WaitForChild("ToxicDrown"):FireServer(1, v.Name)
+        end
+    end
+        end
+        local function KillAllPlayers()
+                for i, v in pairs(game.Players:GetPlayers()) do
+                if v.Name ~= LocalPlayer then
+                    RemoteEvents:WaitForChild("ToxicDrown"):FireServer(1, v)
+                end
+            end
+        end
         local function IceSlip()
-                RemoteEvents:WaitForChild("IceSlip"):FireServer()
+                RemoteEvents:WaitForChild("IceSlip"):FireServer(LocalPlayer)
         end
         local function Notify(name, content, image, time)
 		OrionLib:MakeNotification({
@@ -183,7 +190,7 @@ if game.PlaceId ~= 1318971886 then
 	})
         Tab:AddDropdown({
 		Name = "Item Heal All Players",
-		Default = "Med Kit",
+		Default = "Cure",
 	        Options = ItemsHealAllPlayersTable,
                 Callback = function(Item)
                         SelectedItemAllPlayers = Item
@@ -204,7 +211,7 @@ if game.PlaceId ~= 1318971886 then
                         getgenv().HealAllLoop = Value
                         while HealAllLoop do
                                 HealAllPlayers()
-                                task.wait(1)
+                                task.wait(3)
                         end
                 end
         })
@@ -401,11 +408,18 @@ end)
                         getgenv().SlipLoop = Value
                         while SlipLoop do
                                 IceSlip()
+                                task.wait()
                         end
                 end
         })
         local Section = Tab:AddSection({
-		Name = "Kill All Players"
+		Name = "Kill Players"
+	})
+        Tab:AddButton({
+		Name = "Kill Others Players",
+		Callback = function()
+			KillOthersPlayers()
+		end	  
 	})
         Tab:AddButton({
                 Name = "Kill All Players",
