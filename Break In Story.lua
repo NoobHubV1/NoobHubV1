@@ -321,7 +321,7 @@ end)
         Tab:AddButton({
                 Name = "Befriend Cat",
                 Callback = function()
-                        game.ReplicatedStorage.RemoteEvents.Cattery:Fireserver()
+                        game.ReplicatedStorage.RemoteEvents.Cattery:FireServer()
                 end
         })
         local Section = Tab:AddSection({
