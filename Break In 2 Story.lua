@@ -47,6 +47,7 @@ else
 
 	-- Locals
 	local Events = game:GetService("ReplicatedStorage"):WaitForChild("Events")
+        local TeleportService = game:GetService("TeleportService")
 	local SelectedItem = "Armor"
 	local SelectedDamange = 5
 	local namecall
@@ -134,6 +135,99 @@ else
 		"Battery",
                 "Crowbar"
 	}
+        local RemoveItemsTable = {
+                "Crowbar 1",
+                "Crowbar 2",
+                "Crowbar 3",
+                "Bat",
+                "Pitchfork",
+                "Hammer",
+                "Wrench",
+                "Broom",
+		"Med Kit",
+		"Key",
+		"Gold Key",
+		"Louise",
+		"Lollipop",
+		"Chips",
+		"Golden Apple",
+		"Pizza",
+		"Gold Pizza",
+		"Rainbow Pizza",
+		"Rainbow Pizza Box",
+		"Book",
+		"Phone",
+		"Cookie",
+		"Apple",
+		"Bloxy Cola",
+		"Expired Bloxy Cola",
+		"Bottle",
+		"Ladder",
+		"Battery",
+                "Crowbar"
+	}
+        local EquipItemsTable = {
+                "Crowbar 1",
+                "Crowbar 2",
+                "Crowbar 3",
+                "Bat",
+                "Pitchfork",
+                "Hammer",
+                "Wrench",
+                "Broom",
+		"Med Kit",
+		"Key",
+		"Gold Key",
+		"Louise",
+		"Lollipop",
+		"Chips",
+		"Golden Apple",
+		"Pizza",
+		"Gold Pizza",
+		"Rainbow Pizza",
+		"Rainbow Pizza Box",
+		"Book",
+		"Phone",
+		"Cookie",
+		"Apple",
+		"Bloxy Cola",
+		"Expired Bloxy Cola",
+		"Bottle",
+		"Ladder",
+		"Battery",
+                "Crowbar"
+	}
+        local UnequipItemsTable = {
+                "Crowbar 1",
+                "Crowbar 2",
+                "Crowbar 3",
+                "Bat",
+                "Pitchfork",
+                "Hammer",
+                "Wrench",
+                "Broom",
+		"Med Kit",
+		"Key",
+		"Gold Key",
+		"Louise",
+		"Lollipop",
+		"Chips",
+		"Golden Apple",
+		"Pizza",
+		"Gold Pizza",
+		"Rainbow Pizza",
+		"Rainbow Pizza Box",
+		"Book",
+		"Phone",
+		"Cookie",
+		"Apple",
+		"Bloxy Cola",
+		"Expired Bloxy Cola",
+		"Bottle",
+		"Ladder",
+		"Battery",
+                "Crowbar"
+	}
 
 	-- Functions
 	local function UnequipAllTools()
@@ -147,6 +241,13 @@ else
 		for i, v in pairs(LocalPlayer.Backpack:GetChildren()) do
 			if v:IsA("Tool") then
 				v.Parent = LocalPlayer.Character
+			end
+		end
+	end
+        local function RemoveAllTools()
+		for i, v in pairs(LocalPlayer.Backpack:GetChildren()) do
+			if v:IsA("Tool") then
+				v:Destroy()
 			end
 		end
 	end
@@ -335,7 +436,7 @@ else
 		end
 	end
         local function PrivateLobby()
-                game:GetService("TeleportService"):Teleport(14775231477, LocalPlayer)
+                TeleportService:Teleport(14775231477, LocalPlayer)
         end
         local function GetDreamTeam()
                 GetDog()
@@ -347,6 +448,15 @@ else
         end
         local function GetAvoidHumiliationBadge()
                 Events.AvoidHumiliation:FireServer()
+        end
+        local function RemoveItem(Item)
+                LocalPlayer.Backpack:WaitForChild(tostring(Item:gsub(" ", ""))):Destroy()
+        end
+        local function EquipItem(Item)
+                LocalPlayer.Backpack:WaitForChild(tostring(Item:gsub(" ", ""))).Parent = LocalPlayer.Character
+        end
+        local function UnequipItem(Item)
+                LocalPlayer.Character:WaitForChild(tostring(Item:gsub(" ", ""))).Parent = LocalPlayer.Backpack
         end
 	-- Main Script / GUI
 	local OrionLib = loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/OrionLib.lua'))()
@@ -936,6 +1046,12 @@ else
 			UnequipAllTools()
 		end
 	})
+        Tab:AddButton({
+		Name = "Remove All",
+		Callback = function()
+			RemoveAllTools()
+		end
+	})
 	local Section = Tab:AddSection({
 		Name = "Bosses"
 	})
@@ -1107,6 +1223,43 @@ else
 			loadstring(game:HttpGet("https://raw.githubusercontent.com/advxzivhsjjdhxhsidifvsh/mobkeyboard/main/main.txt", true))()
 		end
 	})
+
+        local Tab = Window:MakeTab({
+		Name = "Others 2",
+		Icon = "rbxassetid://4483345998",
+		PremiumOnly = false
+	})
+
+	local Section = Tab:AddSection({
+		Name = "Others 2"
+	})
+
+        Tab:AddDropdown({
+		Name = "Remove Item",
+		Default = "Med Kit",
+		Options = RemoveItemsTable,
+		Callback = function(Item)
+                        RemoveItem(Item)
+                end
+        })
+
+        Tab:AddDropdown({
+		Name = "Equip Item",
+		Default = "Med Kit",
+		Options = EquipItemsTable,
+		Callback = function(Item)
+                        EquipItem(Item)
+                end
+        })
+
+        Tab:AddDropdown({
+		Name = "Unequip Item",
+		Default = "Med Kit",
+		Options = UnequipItemsTable,
+		Callback = function(Item)
+                        UnequipItem(Item)
+                end
+        })
 
         local Tab = Window:MakeTab({
 		Name = "Destroy Script",
