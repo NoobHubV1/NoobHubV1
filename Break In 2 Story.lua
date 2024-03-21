@@ -78,6 +78,7 @@ else
         local BadGuysFront = game:GetService("Workspace").BadGuysFront
         local Backpack = LocalPlayer.Backpack
         local Character = LocalPlayer.Character
+	local FallenTrees = game:GetService("Workspace").FallenTrees
 	local Lighting = game:GetService("Lighting")
 	local OriginalWalkspeed = LocalPlayer.Character.Humanoid.WalkSpeed
 	local OriginalJumpPower = LocalPlayer.Character.Humanoid.JumpPower
@@ -253,37 +254,44 @@ else
 		"Battery",
                 "Crowbar"
 	}
+	local ItemsHealYourselfTable = {
+	        "Pizza",
+		"Bloxy Cola",
+		"Expired Bloxy Cola",
+		"Apple",
+		"Cookie"
+	}
 
 	-- Functions
 	local function UnequipAllTools()
-		for i, v in pairs(LocalPlayer.Character:GetChildren()) do
+		for i, v in pairs(Character:GetChildren()) do
 			if v:IsA("Tool") then
-				v.Parent = LocalPlayer.Backpack
+				v.Parent = Backpack
 			end
 		end
 	end
 	local function EquipAllTools()
-		for i, v in pairs(LocalPlayer.Backpack:GetChildren()) do
+		for i, v in pairs(Backpack:GetChildren()) do
 			if v:IsA("Tool") then
-				v.Parent = LocalPlayer.Character
+				v.Parent = Character
 			end
 		end
 	end
         local function RemoveAllTools()
-		for i, v in pairs(LocalPlayer.Backpack:GetChildren()) do
+		for i, v in pairs(Backpack:GetChildren()) do
 			if v:IsA("Tool") then
 				v:Destroy()
 			end
 		end
 	end
         local function RemoveItem(Item)
-                LocalPlayer.Backpack:WaitForChild(tostring(Item:gsub(" ", ""))):Destroy()
+                Backpack:WaitForChild(tostring(Item:gsub(" ", ""))):Destroy()
         end
         local function EquipItem(Item)
-                LocalPlayer.Backpack:WaitForChild(tostring(Item:gsub(" ", ""))).Parent = LocalPlayer.Character
+                Backpack:WaitForChild(tostring(Item:gsub(" ", ""))).Parent = LocalPlayer.Character
         end
         local function UnequipItem(Item)
-                LocalPlayer.Character:WaitForChild(tostring(Item:gsub(" ", ""))).Parent = LocalPlayer.Backpack
+                Character:WaitForChild(tostring(Item:gsub(" ", ""))).Parent = LocalPlayer.Backpack
         end
 	local function GiveItem(Item)
 		if Item == "Armor" then
@@ -298,7 +306,7 @@ else
 		Events:WaitForChild("RainbowWhatStat"):FireServer(Ability)
 	end
 	local function TakeDamange(Amount)
-		Events:WaitForChild("Energy"):FireServer(-Amount, false, false)
+		Events:WaitForChild("Energy"):FireServer(-Amount)
 	end
 	local function TeleportTo(CFrameArg)
 		LocalPlayer.Character.HumanoidRootPart.CFrame = CFrameArg
@@ -316,12 +324,21 @@ else
 		HealTheNoobs()
                 task.wait(.1)
 	end
+	local function Energy(Item)
+		if Item == "Pizza" then
+			Events.Energy:FireServer(25, "Pizza")
+		elseif Item == "Bloxy Cola" then
+			Events.Energy:FireServer(15, "BloxyCola")
+		else
+			Events.Energy:FireServer(15, tostring(Item:gsub(" ", "")))
+		end
+	end
 	local function HealYourself()
-		GiveItem("Pizza")
-		Events.Energy:FireServer(25, "Pizza")
+		GiveItem(SelectedItemHealYourself)
+	        Energy(SelectedItemHealYourself)
 	end
 	local function BreakBarricades()
-		for i, v in pairs(game:GetService("Workspace").FallenTrees:GetChildren()) do
+		for i, v in pairs(FallenTrees:GetChildren()) do
 			for i = 1, 20 do
 				if v:FindFirstChild("TreeHitPart") then
 					Events.RoadMissionEvent:FireServer(1, v.TreeHitPart, 5)
@@ -1066,9 +1083,40 @@ else
 			end
 		end
 	})
-        
+
 	local Section = Tab:AddSection({
 		Name = "Tools"
+	})
+	
+	Tab:AddDropdown({
+		Name = "Remove Item",
+		Default = "Med Kit",
+		Options = RemoveItemsTable,
+		Callback = function(Item)
+                        RemoveItem(Item)
+                end
+        })
+
+	Tab:AddDropdown({
+		Name = "Equip Item",
+		Default = "Med Kit",
+		Options = EquipItemsTable,
+		Callback = function(Item)
+                        EquipItem(Item)
+                end
+        })
+
+	Tab:AddDropdown({
+		Name = "Unequip Item",
+		Default = "Med Kit",
+		Options = UnequipItemsTable,
+		Callback = function(Item)
+                        UnequipItem(Item)
+                end
+        })
+        
+	local Section = Tab:AddSection({
+		Name = "All Tools"
 	})
 	Tab:AddButton({
 		Name = "Equip All",
@@ -1259,43 +1307,6 @@ else
 			loadstring(game:HttpGet("https://raw.githubusercontent.com/advxzivhsjjdhxhsidifvsh/mobkeyboard/main/main.txt", true))()
 		end
 	})
-
-        local Tab = Window:MakeTab({
-		Name = "Others 2",
-		Icon = "rbxassetid://4483345998",
-		PremiumOnly = false
-	})
-
-	local Section = Tab:AddSection({
-		Name = "Others 2"
-	})
-
-        Tab:AddDropdown({
-		Name = "Remove Item",
-		Default = "Med Kit",
-		Options = RemoveItemsTable,
-		Callback = function(Item)
-                        RemoveItem(Item)
-                end
-        })
-
-        Tab:AddDropdown({
-		Name = "Equip Item",
-		Default = "Med Kit",
-		Options = EquipItemsTable,
-		Callback = function(Item)
-                        EquipItem(Item)
-                end
-        })
-
-        Tab:AddDropdown({
-		Name = "Unequip Item",
-		Default = "Med Kit",
-		Options = UnequipItemsTable,
-		Callback = function(Item)
-                        UnequipItem(Item)
-                end
-        })
 
         local Tab = Window:MakeTab({
 		Name = "Destroy Script",
