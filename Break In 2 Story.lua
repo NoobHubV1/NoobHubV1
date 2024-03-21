@@ -7,12 +7,16 @@ if game.PlaceId ~= 13864667823 then
         local RemoteEvents = game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents")
 
         local RolesTable = {
-                "Book",
-                "Phone"
+                "Hacker",
+                "Nerd"
         }
 
         local function GetRole(Role)
-                RemoteEvents:WaitForChild("OutsideRole"):FireServer(Role)
+                if Role == "Hacker" then
+			RemoteEvents:WaitForChild("OutsideRole"):FireServer("Phone", true)
+		elseif Role == "Nerd" then
+                        RemoteEvents:WaitForChild("OutsideRole"):FireServer("Book", true)
+                end
         end
 	local Window = OrionLib:MakeWindow({
 		Name = "Break In 2 (Lobby)",
@@ -50,7 +54,7 @@ if game.PlaceId ~= 13864667823 then
 			end
 		end
 	else
-		game:GetService("Players").LocalPlayer:Kick("Error! Game Not Supported!")
+	        game.Players.LocalPlayer:Kick("Error! Game Not Supported!")
 	end
 else
     	-- Floating Part
@@ -69,6 +73,11 @@ else
 	local namecall
 	local ScriptLoaded = false
 	local LocalPlayer = game:GetService("Players").LocalPlayer
+        local BadGuys = game:GetService("Workspace").BadGuys
+        local BadGuysBoss = game:GetService("Workspace").BadGuysBoss
+        local BadGuysFront = game:GetService("Workspace").BadGuysFront
+        local Backpack = LocalPlayer.Backpack
+        local Character = LocalPlayer.Character
 	local Lighting = game:GetService("Lighting")
 	local OriginalWalkspeed = LocalPlayer.Character.Humanoid.WalkSpeed
 	local OriginalJumpPower = LocalPlayer.Character.Humanoid.JumpPower
@@ -267,6 +276,15 @@ else
 			end
 		end
 	end
+        local function RemoveItem(Item)
+                LocalPlayer.Backpack:WaitForChild(tostring(Item:gsub(" ", ""))):Destroy()
+        end
+        local function EquipItem(Item)
+                LocalPlayer.Backpack:WaitForChild(tostring(Item:gsub(" ", ""))).Parent = LocalPlayer.Character
+        end
+        local function UnequipItem(Item)
+                LocalPlayer.Character:WaitForChild(tostring(Item:gsub(" ", ""))).Parent = LocalPlayer.Backpack
+        end
 	local function GiveItem(Item)
 		if Item == "Armor" then
 			Events:WaitForChild("Vending"):FireServer(3, "Armor2", "Armor", tostring(LocalPlayer), 1)
@@ -285,14 +303,18 @@ else
 	local function TeleportTo(CFrameArg)
 		LocalPlayer.Character.HumanoidRootPart.CFrame = CFrameArg
 	end
+        local function HealTheNoobs()
+                Events:WaitForChild("HealTheNoobs"):FireServer()
+        end
 	local function HealAllPlayers()
 		UnequipAllTools()
 		task.wait(.1)
 		GiveItem("Golden Apple")
 		task.wait(.1)
-		LocalPlayer.Backpack:WaitForChild("GoldenApple").Parent = LocalPlayer.Character
+		EquipItem("Golden Apple")
 		task.wait(.1)
-		Events:WaitForChild("HealTheNoobs"):FireServer()
+		HealTheNoobs()
+                task.wait(.1)
 	end
 	local function HealYourself()
 		GiveItem("Pizza")
@@ -309,26 +331,26 @@ else
 	end
 	local function BreakEnemies()
 		pcall(function()
-			for i, v in pairs(game:GetService("Workspace").BadGuys:GetChildren()) do
+			for i, v in pairs(BadGuys:GetChildren()) do
 				v:FindFirstChild("Humanoid", true).Health = 0
 			end
-			for i, v in pairs(game:GetService("Workspace").BadGuysBoss:GetChildren()) do
+			for i, v in pairs(BadGuysBoss:GetChildren()) do
 				v:FindFirstChild("Humanoid", true).Health = 0
 			end
-			for i, v in pairs(game:GetService("Workspace").BadGuysFront:GetChildren()) do
+			for i, v in pairs(BadGuysFront:GetChildren()) do
 				v:FindFirstChild("Humanoid", true).Health = 0
 			end
 		end)
 	end
 	local function KillEnemies()
 		pcall(function()
-			for i, v in pairs(game:GetService("Workspace").BadGuys:GetChildren()) do
+			for i, v in pairs(BadGuys:GetChildren()) do
 				Events:WaitForChild("HitBadguy"):FireServer(v, 64.8, 4)
 			end
-			for i, v in pairs(game:GetService("Workspace").BadGuysBoss:GetChildren()) do
+			for i, v in pairs(BadGuysBoss:GetChildren()) do
 				Events:WaitForChild("HitBadguy"):FireServer(v, 64.8, 4)
 			end
-			for i, v in pairs(game:GetService("Workspace").BadGuysFront:GetChildren()) do
+			for i, v in pairs(BadGuysFront:GetChildren()) do
 				Events:WaitForChild("HitBadguy"):FireServer(v, 64.8, 4)
 			end
 			if game:GetService("Workspace"):FindFirstChild("BadGuyPizza", true) then
@@ -358,19 +380,28 @@ else
 		end
 	end
 
+        local function ClickAgent()
+                Events.LouiseGive:FireServer(2)
+        end
+
 	local function GetAgent()
 		GiveItem("Louise")
 		task.wait(.1)
-		LocalPlayer.Backpack:WaitForChild("Louise").Parent = LocalPlayer.Character
-		Events:WaitForChild("LouiseGive"):FireServer(2)
+		EquipItem("Louise")
+                task.wait(.1)
+                ClickAgent()
 	end
+
+        local function ClickUncle()
+                Events.KeyEvent:FireServer()
+        end
 
 	local function GetUncle()
 		GiveItem("Key")
 		task.wait(.1)
-		LocalPlayer.Backpack:WaitForChild("Key").Parent = LocalPlayer.Character
-		wait(.5)
-		Events.KeyEvent:FireServer()
+		EquipItem("Key")
+		task.wait(.1)
+		ClickUncle()
 	end
 	local function ClickPete()
 		fireclickdetector(game:GetService("Workspace").UnclePete.ClickDetector)
@@ -464,15 +495,6 @@ else
         end
         local function GetAvoidHumiliationBadge()
                 Events.AvoidHumiliation:FireServer()
-        end
-        local function RemoveItem(Item)
-                LocalPlayer.Backpack:WaitForChild(tostring(Item:gsub(" ", ""))):Destroy()
-        end
-        local function EquipItem(Item)
-                LocalPlayer.Backpack:WaitForChild(tostring(Item:gsub(" ", ""))).Parent = LocalPlayer.Character
-        end
-        local function UnequipItem(Item)
-                LocalPlayer.Character:WaitForChild(tostring(Item:gsub(" ", ""))).Parent = LocalPlayer.Backpack
         end
 	local function Notify(name, content, image, time)
 		OrionLib:MakeNotification({
