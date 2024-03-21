@@ -13,9 +13,9 @@ if game.PlaceId ~= 13864667823 then
 
         local function GetRole(Role)
                 if Role == "Hacker" then
-			RemoteEvents:WaitForChild("OutsideRole"):FireServer("Phone", true)
+			RemoteEvents:WaitForChild("OutsideRole"):FireServer("Phone")
 		elseif Role == "Nerd" then
-                        RemoteEvents:WaitForChild("OutsideRole"):FireServer("Book", true)
+                        RemoteEvents:WaitForChild("OutsideRole"):FireServer("Book")
                 end
         end
 	local Window = OrionLib:MakeWindow({
