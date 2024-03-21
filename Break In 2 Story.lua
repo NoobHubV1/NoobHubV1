@@ -380,13 +380,13 @@ else
 	end
 
 	local function GetDog()
-		for i, v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.Assets.Note.Note.Note:GetChildren()) do
+		for i, v in pairs(LocalPlayer.PlayerGui.Assets.Note.Note.Note:GetChildren()) do
 			if v.Name:match("Circle") and v.Visible == true then
 				GiveItem(tostring(v.Name:gsub("Circle", "")))
 				task.wait(.1)
-				LocalPlayer.Backpack:WaitForChild(tostring(v.Name:gsub("Circle", ""))).Parent = LocalPlayer.Character
+				Backpack:WaitForChild(tostring(v.Name:gsub("Circle", ""))).Parent = LocalPlayer.Character
 				TeleportTo(CFrame.new(-257.56839, 29.4499969, -910.452637, -0.238445505, 7.71292363e-09, 0.971155882, 1.2913591e-10, 1, -7.91029819e-09, -0.971155882, -1.76076387e-09, -0.238445505))
-				task.wait(.5)
+				task.wait(.2)
 				Events:WaitForChild("CatFed"):FireServer(tostring(v.Name:gsub("Circle", "")))
 			end
 		end
@@ -439,16 +439,16 @@ else
 	end
 	local function BringAllEnemies()
 		pcall(function()
-			for i, v in pairs(game:GetService("Workspace").BadGuys:GetChildren()) do
+			for i, v in pairs(BadGuys:GetChildren()) do
 				v.HumanoidRootPart.Anchored = true
-				v.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -4)
+				v.HumanoidRootPart.CFrame = LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -4)
 			end
-			for i, v in pairs(game:GetService("Workspace").BadGuysBoss:GetChildren()) do
+			for i, v in pairs(BadGuysBoss:GetChildren()) do
 				v.HumanoidRootPart.Anchored = true
-				v.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -4)
+				v.HumanoidRootPart.CFrame = LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -4)
 			end
 			
-			for i, v in pairs(game:GetService("Workspace").BadGuysFront:GetChildren()) do
+			for i, v in pairs(BadGuysFront:GetChildren()) do
 				v.HumanoidRootPart.Anchored = true
 				v.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -4)
 			end
