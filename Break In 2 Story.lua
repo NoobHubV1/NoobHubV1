@@ -13,9 +13,9 @@ if game.PlaceId ~= 13864667823 then
 
         local function GetRole(Role)
                 if Role == "Hacker" then
-			RemoteEvents:WaitForChild("OutsideRole"):FireServer("Phone")
+			RemoteEvents:WaitForChild("OutsideRole"):FireServer("Phone", true)
 		elseif Role == "Nerd" then
-                        RemoteEvents:WaitForChild("OutsideRole"):FireServer("Book")
+                        RemoteEvents:WaitForChild("OutsideRole"):FireServer("Book", true)
                 end
         end
 	local Window = OrionLib:MakeWindow({
@@ -255,11 +255,11 @@ else
                 "Crowbar"
 	}
 	local ItemsHealYourselfTable = {
-	        "Pizza",
+		"Pizza",
 		"Bloxy Cola",
 		"Expired Bloxy Cola",
-		"Apple",
-		"Cookie"
+		"Cookie",
+		"Apple"
 	}
 
 	-- Functions
@@ -306,14 +306,11 @@ else
 		Events:WaitForChild("RainbowWhatStat"):FireServer(Ability)
 	end
 	local function TakeDamange(Amount)
-		Events:WaitForChild("Energy"):FireServer(-Amount)
+		Events:WaitForChild("Energy"):FireServer(-Amount, false, false)
 	end
 	local function TeleportTo(CFrameArg)
 		LocalPlayer.Character.HumanoidRootPart.CFrame = CFrameArg
 	end
-        local function HealTheNoobs()
-                Events:WaitForChild("HealTheNoobs"):FireServer()
-        end
 	local function HealAllPlayers()
 		UnequipAllTools()
 		task.wait(.1)
@@ -321,21 +318,16 @@ else
 		task.wait(.1)
 		EquipItem("Golden Apple")
 		task.wait(.1)
-		HealTheNoobs()
-                task.wait(.1)
+		Events:WaitForChild("HealTheNoobs"):FireServer()
 	end
-	local function Energy(Item)
-		if Item == "Pizza" then
-			Events.Energy:FireServer(25, "Pizza")
-		elseif Item == "Bloxy Cola" then
-			Events.Energy:FireServer(15, "BloxyCola")
+	local function HealYourself(Item)
+	        if Item == "Pizza" then
+			GiveItem("Pizza")
+			Events:WaitForChild("Energy"):FireServer(25, "Pizza")
 		else
-			Events.Energy:FireServer(15, tostring(Item:gsub(" ", "")))
+			GiveItem(Item)
+			Events:WaitForChild("Energy"):FireServer(15, tostring(Item:gsub(" ", "")))
 		end
-	end
-	local function HealYourself()
-		GiveItem(SelectedItemHealYourself)
-	        Energy(SelectedItemHealYourself)
 	end
 	local function BreakBarricades()
 		for i, v in pairs(FallenTrees:GetChildren()) do
@@ -380,13 +372,13 @@ else
 	end
 
 	local function GetDog()
-		for i, v in pairs(LocalPlayer.PlayerGui.Assets.Note.Note.Note:GetChildren()) do
+		for i, v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.Assets.Note.Note.Note:GetChildren()) do
 			if v.Name:match("Circle") and v.Visible == true then
 				GiveItem(tostring(v.Name:gsub("Circle", "")))
 				task.wait(.1)
-				Backpack:WaitForChild(tostring(v.Name:gsub("Circle", ""))).Parent = LocalPlayer.Character
+				LocalPlayer.Backpack:WaitForChild(tostring(v.Name:gsub("Circle", ""))).Parent = LocalPlayer.Character
 				TeleportTo(CFrame.new(-257.56839, 29.4499969, -910.452637, -0.238445505, 7.71292363e-09, 0.971155882, 1.2913591e-10, 1, -7.91029819e-09, -0.971155882, -1.76076387e-09, -0.238445505))
-				task.wait(.2)
+				task.wait(.5)
 				Events:WaitForChild("CatFed"):FireServer(tostring(v.Name:gsub("Circle", "")))
 			end
 		end
@@ -397,28 +389,20 @@ else
 		end
 	end
 
-        local function ClickAgent()
-                Events.LouiseGive:FireServer(2)
-        end
-
 	local function GetAgent()
 		GiveItem("Louise")
 		task.wait(.1)
 		EquipItem("Louise")
                 task.wait(.1)
-                ClickAgent()
+                Events.LouiseGive:FireServer(2)
 	end
-
-        local function ClickUncle()
-                Events.KeyEvent:FireServer()
-        end
 
 	local function GetUncle()
 		GiveItem("Key")
 		task.wait(.1)
 		EquipItem("Key")
 		task.wait(.1)
-		ClickUncle()
+		Events.KeyEvent:FireServer()
 	end
 	local function ClickPete()
 		fireclickdetector(game:GetService("Workspace").UnclePete.ClickDetector)
@@ -439,16 +423,16 @@ else
 	end
 	local function BringAllEnemies()
 		pcall(function()
-			for i, v in pairs(BadGuys:GetChildren()) do
+			for i, v in pairs(game:GetService("Workspace").BadGuys:GetChildren()) do
 				v.HumanoidRootPart.Anchored = true
-				v.HumanoidRootPart.CFrame = LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -4)
+				v.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -4)
 			end
-			for i, v in pairs(BadGuysBoss:GetChildren()) do
+			for i, v in pairs(game:GetService("Workspace").BadGuysBoss:GetChildren()) do
 				v.HumanoidRootPart.Anchored = true
-				v.HumanoidRootPart.CFrame = LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -4)
+				v.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -4)
 			end
 			
-			for i, v in pairs(BadGuysFront:GetChildren()) do
+			for i, v in pairs(game:GetService("Workspace").BadGuysFront:GetChildren()) do
 				v.HumanoidRootPart.Anchored = true
 				v.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, -4)
 			end
@@ -566,6 +550,17 @@ else
 			end
 		end
 	})
+	local Section = Tab:AddSection({
+		Name = "Settings Heal Youself"
+	})
+	Tab:AddDropdown({
+		Name = "Item Heal Yourself",
+		Default = "Pizza",
+		Options = ItemsHealYourselfTable,
+		Callback = function(Value)
+			SelectedItemHealYourself = Value
+		end
+	})
         local Section = Tab:AddSection({
 		Name = "Custom Heal Youself"
 	})
@@ -584,7 +579,7 @@ else
 		Name = "Heal Yourself",
 		Callback = function()
 			for i = 1, CustomHealYourself do
-				HealYourself()
+				HealYourself(SelectedItemHealYourself)
 			end
 		end
 	})
@@ -595,7 +590,7 @@ else
 			getgenv().HealLoop = Value
 			while HealLoop do
 				for i = 1, CustomHealYourself do
-                                        HealYourself()
+                                        HealYourself(SelectedItemHealYourself)
                                 end
 				task.wait(WaitTimeLoopHealYourself)
 			end
@@ -1087,7 +1082,7 @@ else
 	local Section = Tab:AddSection({
 		Name = "Tools"
 	})
-	
+
 	Tab:AddDropdown({
 		Name = "Remove Item",
 		Default = "Med Kit",
