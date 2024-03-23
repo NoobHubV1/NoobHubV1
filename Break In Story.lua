@@ -70,20 +70,20 @@ if game.PlaceId ~= 1318971886 then
         end
         local function HealAllPlayers()
                 UnequipAllTools()
-                task.wait(1)
+                task.wait(.3)
                 GiveItem(SelectedItemAllPlayers)
-                task.wait(1)
+                task.wait(.3)
                 LocalPlayer.Backpack:WaitForChild(tostring(SelectedItemAllPlayers:gsub(" ", ""))).Parent = LocalPlayer.Character
-                task.wait(1)
+                task.wait(.3)
                 for i,v in pairs(game:GetService("Players"):GetPlayers()) do
 	
 	        RemoteEvents.CurePlayer:FireServer(v)
 	        RemoteEvents.HealPlayer:FireServer(v)
 	    
 	    end
-                task.wait(1)
+                task.wait(.3)
                 LocalPlayer.Character:WaitForChild(tostring(SelectedItemAllPlayers:gsub(" ", ""))).Parent = LocalPlayer.Backpack
-                task.wait(1)
+                task.wait(.3)
                 LocalPlayer.Backpack:WaitForChild(tostring(SelectedItemAllPlayers:gsub(" ", ""))):Destroy()
         end
         local function KillEnemies()
@@ -211,7 +211,7 @@ if game.PlaceId ~= 1318971886 then
                         getgenv().HealAllLoop = Value
                         while HealAllLoop do
                                 HealAllPlayers()
-                                task.wait(3)
+                                task.wait(1)
                         end
                 end
         })
