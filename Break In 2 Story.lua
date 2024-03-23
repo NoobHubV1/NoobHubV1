@@ -687,7 +687,7 @@ else
 		Default = "Amount",
 		TextDisappear = false,
 		Callback = function(Amount)
-			ModifiedJumpPower = Value
+			ModifiedJumpPower = Amount
 		end	  
 	})
 	local Section = Tab:AddSection({
