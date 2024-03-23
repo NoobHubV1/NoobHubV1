@@ -248,7 +248,7 @@ else
 				task.wait(.1)
 				LocalPlayer.Backpack:WaitForChild(tostring(v.Name:gsub("Circle", ""))).Parent = LocalPlayer.Character
 				TeleportTo(CFrame.new(-257.56839, 29.4499969, -910.452637, -0.238445505, 7.71292363e-09, 0.971155882, 1.2913591e-10, 1, -7.91029819e-09, -0.971155882, -1.76076387e-09, -0.238445505))
-				task.wait(.5)
+				task.wait(.1)
 				Events:WaitForChild("CatFed"):FireServer(tostring(v.Name:gsub("Circle", "")))
 			end
 		end
