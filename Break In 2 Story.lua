@@ -4,6 +4,22 @@ if game.PlaceId ~= 13864667823 then
 		
 	-- Free Gamepasses (LOBBY)
 	local OrionLib = loadstring(game:HttpGet(('https://github.com/NoobHubV1/NoobHubV1/raw/main/OrionLib.lua')))()
+        local RemoteEvents = game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents")
+
+        -- Tables
+        local RolesTable = {
+                "Hacker",
+                "Nerd"
+        }
+
+        -- Functions
+        local function GetRole(Role)
+                if Role == "Hacker" then
+                        RemoteEvents.OutsideRole:FireServer("Phone")
+                elseif Role == "Nerd" then
+                        RemoteEvents.OutsideRole:FireServer("Book")
+                end
+        end
 	local Window = OrionLib:MakeWindow({
 		Name = "Break In 2 (Lobby)",
 		HidePremium = false,
@@ -16,16 +32,18 @@ if game.PlaceId ~= 13864667823 then
 		Icon = "rbxassetid://4483345998",
 		PremiumOnly = false
 	})
-	Tab:AddButton({
-		Name = "Free Hacker Role",
-		Callback = function()
-			game:GetService("ReplicatedStorage").RemoteEvents.OutsideRole:FireServer("Phone", true, false)
+	Tab:AddDropdown({
+		Name = "Item",
+		Default = "Med Kit",
+		Options = RolesTable,
+		Callback = function(Value)
+			SelectedRole = Value
 		end
 	})
 	Tab:AddButton({
-		Name = "Free Nerd Kid Role",
+		Name = "Get Role",
 		Callback = function()
-			game:GetService("ReplicatedStorage").RemoteEvents.OutsideRole:FireServer("Book", true, false)
+			GetRole(SelectedRole)
 		end
 	})
 	OrionLib:Init()
@@ -687,7 +705,7 @@ else
 		Default = "Amount",
 		TextDisappear = false,
 		Callback = function(Amount)
-			ModifiedJumpPower = Amount
+			ModifiedJumpPower = Value
 		end	  
 	})
 	local Section = Tab:AddSection({
