@@ -71,9 +71,9 @@ if game.PlaceId ~= 1318971886 then
         local function HealAllPlayers()
                 UnequipAllTools()
                 task.wait(.3)
-                GiveItem(SelectedItemAllPlayers)
+                GiveItem("Cure")
                 task.wait(.3)
-                LocalPlayer.Backpack:WaitForChild(tostring(SelectedItemAllPlayers:gsub(" ", ""))).Parent = LocalPlayer.Character
+                LocalPlayer.Backpack:WaitForChild("Cure").Parent = LocalPlayer.Character
                 task.wait(.3)
                 for i,v in pairs(game:GetService("Players"):GetPlayers()) do
 	
@@ -82,9 +82,34 @@ if game.PlaceId ~= 1318971886 then
 	    
 	    end
                 task.wait(.3)
-                LocalPlayer.Character:WaitForChild(tostring(SelectedItemAllPlayers:gsub(" ", ""))).Parent = LocalPlayer.Backpack
+                LocalPlayer.Character:WaitForChild("Cure").Parent = LocalPlayer.Backpack
                 task.wait(.3)
-                LocalPlayer.Backpack:WaitForChild(tostring(SelectedItemAllPlayers:gsub(" ", ""))):Destroy()
+                LocalPlayer.Backpack:WaitForChild("Cure"):Destroy()
+        end
+        local function HealOthersPlayers()
+                UnequipAllTools()
+                task.wait(.3)
+                GiveItem("Med Kit")
+                task.wait(.3)
+                LocalPlayer.Backpack:WaitForChild("MedKit").Parent = LocalPlayer.Character
+                task.wait(.3)
+                for i, v in pairs(game.Players:GetPlayers()) do
+        if v ~= LocalPlayer and v.Name ~= "Ashleegreninja" then
+            RemoteEvents:WaitForChild("CurePlayer"):FireServer(v)
+            RemoteEvents:WaitForChild("HealPlayer"):FireServer(v)
+        end
+    end
+                task.wait(.3)
+                LocalPlayer.Character:WaitForChild("MedKit").Parent = LocalPlayer.Backpack
+                task.wait(.3)
+                LocalPlayer.Backpack:WaitForChild("MedKit"):Destroy()
+        end
+        local function HealAll(Item)
+                if Item == "Med Kit" then
+                        HealOthersPlayers()
+                elseif Item == "Cure" then
+                        HealAllPlayers()
+                end
         end
         local function KillEnemies()
                 for i, v in pairs(game.Workspace.BadGuys:GetChildren()) do
@@ -202,7 +227,7 @@ if game.PlaceId ~= 1318971886 then
         Tab:AddButton({
                 Name = "Heal All Players",
                 Callback = function()
-                        HealAllPlayers()
+                        HealAll(SelectedItemAllPlayers)
                 end
         })
         Tab:AddToggle({
@@ -210,7 +235,7 @@ if game.PlaceId ~= 1318971886 then
                 Callback = function(Value)
                         getgenv().HealAllLoop = Value
                         while HealAllLoop do
-                                HealAllPlayers()
+                                HealAll(SelectedItemAllPlayers)
                                 task.wait(1)
                         end
                 end
