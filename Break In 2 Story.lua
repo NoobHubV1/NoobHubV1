@@ -21,6 +21,15 @@ if game.PlaceId ~= 13864667823 then
                         RemoteEvents.OutsideRole:FireServer("Book")
                 end
         end
+	local function Notify(name, content, image, time)
+		OrionLib:MakeNotification({
+			Name = name,
+			Content = content,
+			Image = image,
+			Time = time
+		})
+	end
+	Notify('Check Id', "Check Id Game", 'rbxassetid://4483345998', 7)
 	local Window = OrionLib:MakeWindow({
 		Name = "Break In 2 (Lobby)",
 		HidePremium = false,
@@ -354,6 +363,7 @@ else
 			Time = time
 		})
 	end
+	Notify('Check Id', "Check Id Game", 'rbxassetid://4483345998', 7)
 	local Window = OrionLib:MakeWindow({
 		Name = "Break In 2 (Game)",
 		HidePremium = false,
