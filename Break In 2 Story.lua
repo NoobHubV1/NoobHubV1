@@ -32,13 +32,17 @@ if game.PlaceId ~= 13864667823 then
 	Notify('Check Id', "Check Id Game", 'rbxassetid://4483345998', 7)
 
                 wait(7)
-		
+
+	Notify('Check Id Complete', "Loading Game", 'rbxassetid://4483345998', 1)
+
+		wait(1)
+
 	local Window = OrionLib:MakeWindow({
 		Name = "Break In 2 (Lobby)",
 		HidePremium = false,
 		SaveConfig = true,
 		ConfigFolder = "OrionTest",
-		IntroText = "Loading..."
+		IntroText = "Orion Library"
 	})
 	local Tab = Window:MakeTab({
 		Name = "Free Gamepasses",
@@ -367,6 +371,13 @@ else
 		})
 	end
 	Notify('Check Id', "Check Id Game", 'rbxassetid://4483345998', 7)
+
+                wait(7)
+
+	Notify('Check Id Complete', "Loading Game", 'rbxassetid://4483345998', 1)
+
+	        wait(1)
+
 	local Window = OrionLib:MakeWindow({
 		Name = "Break In 2 (Game)",
 		HidePremium = false,
