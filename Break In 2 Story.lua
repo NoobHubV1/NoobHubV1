@@ -72,7 +72,8 @@ else
 	local Damange = 5
 	local namecall
 	local ScriptLoaded = false
-	local LocalPlayer = game:GetService("Players").LocalPlayer
+	local Players = game:GetService("Players")
+	local LocalPlayer = Players.LocalPlayer
 	local Lighting = game:GetService("Lighting")
 	local OriginalWalkspeed = LocalPlayer.Character.Humanoid.WalkSpeed
 	local OriginalJumpPower = LocalPlayer.Character.Humanoid.JumpPower
@@ -685,48 +686,6 @@ else
 		Name = "Golden Apple",
 		Callback = function()
 			TeleportTo(game:GetService("Workspace").GoldenApple.CFrame)
-		end
-	})
-	Tab:AddButton({
-		Name = "Bloxy Cola",
-		Callback = function()
-			TeleportTo(game:GetService("Workspace").BloxyCola.CFrame)
-		end
-	})
-	Tab:AddButton({
-		Name = "Expired Bloxy Cola",
-		Callback = function()
-			TeleportTo(game:GetService("Workspace").ExpiredBloxyCola.CFrame)
-		end
-	})
-	Tab:AddButton({
-		Name = "Cookie",
-		Callback = function()
-			TeleportTo(game:GetService("Workspace").Cookie.CFrame)
-		end
-	})
-	Tab:AddButton({
-		Name = "Apple",
-		Callback = function()
-			TeleportTo(game:GetService("Workspace").Apple.CFrame)
-		end
-	})
-	Tab:AddButton({
-		Name = "Gold Pizza",
-		Callback = function()
-			TeleportTo(game:GetService("Workspace").GoldPizza.CFrame)
-		end
-	})
-	Tab:AddButton({
-		Name = "Ladder",
-		Callback = function()
-			TeleportTo(game:GetService("Workspace").Ladder.CFrame)
-		end
-	})
-	Tab:AddButton({
-		Name = "Chips",
-		Callback = function()
-			TeleportTo(game:GetService("Workspace").Chips.CFrame)
 		end
 	})
 	local Tab = Window:MakeTab({
