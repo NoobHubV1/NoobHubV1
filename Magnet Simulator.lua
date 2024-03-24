@@ -16,12 +16,6 @@ end
 local function Rebirth(Amount)RebirthEvents.requestRebirth:InvokeServer(Amount)
 end
 
-local function WalkSpeed(Amount)LocalPlayer.Character.Humanoid.WalkSpeed = Amount
-end
-
-local function JumpPower(Anount)LocalPlayer.Character.Humanoid.JumpPower = Amount
-end
-
 local function Notify(Name, Content, Image, Time)OrionLib:MakeNotification({
                                                          Name = Name,
                                                          Content = Content,
@@ -97,7 +91,7 @@ end)
 
 MagnetSimulator:CreateToggle("Walk Speed", function(State)getgenv().WalkSpeedLoop = State
 while WalkSpeedLoop do
-WalkSpeed(WalkSpeed)
+LocalPlayer.Character.Humanoid.WalkSpeed = WalkSpeed
 task.wait()
 end
 end)
@@ -107,7 +101,7 @@ end)
 
 MagnetSimulator:CreateToggle("Jump Power", function(State)getgenv().JumpPowerLoop = State
 while JumpPowerLoop do
-JumpPower(JumpPower)
+LocalPlayer.Character.Humanoid.JumpPower = JumpPower
 task.wait()
 end
 end)
