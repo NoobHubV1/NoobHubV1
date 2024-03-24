@@ -24,7 +24,7 @@ Notify("NoobHubV1 Hub", "Loaded Script!", 3)
 
                                                  wait(3)
 
-local PhantomForcesWindow = Library:NewWindow("NoobHubV1 Hub")
+local PhantomForcesWindow = Library:NewWindow("NoobHubV1")
 
 local CruiseStory = PhantomForcesWindow:NewSection("Item")
 
