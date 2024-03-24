@@ -33,7 +33,7 @@ if game.PlaceId ~= 13864667823 then
 
                 wait(5)
 
-	Notify('Check Id Complete', "Loading Game", 'rbxassetid://4483345998', 2)
+	Notify('Check Id Complete', "Loading Script", 'rbxassetid://4483345998', 2)
 
 		wait(2)
 
@@ -42,7 +42,7 @@ if game.PlaceId ~= 13864667823 then
 		HidePremium = false,
 		SaveConfig = true,
 		ConfigFolder = "OrionTest",
-		IntroText = "Orion Library"
+		IntroText = "Loading Script..."
 	})
 	local Tab = Window:MakeTab({
 		Name = "Free Gamepasses",
@@ -374,7 +374,7 @@ else
 
                 wait(5)
 
-	Notify('Check Id Complete', "Loading Game", 'rbxassetid://4483345998', 2)
+	Notify('Check Id Complete', "Loading Script", 'rbxassetid://4483345998', 2)
 
 	        wait(2)
 
@@ -383,7 +383,7 @@ else
 		HidePremium = false,
 		SaveConfig = true,
 		ConfigFolder = "OrionTest",
-		IntroText = "Orion Library"
+		IntroText = "Loading Script..."
 	})
 	local Tab = Window:MakeTab({
 		Name = "Overpowered",
