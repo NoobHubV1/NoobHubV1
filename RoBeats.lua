@@ -1,8 +1,40 @@
-game:GetService("StarterGui"):SetCore("SendNotification",{
-                Title = "NoobHubV1 Hub";
-                Text = "Auto Play Enabled";
-                Duration = 3.5;
-            })
+-- Place Check
+if game.PlaceId ~= 301252049 then
+
+        local OrionLib = loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/OrionLib.lua'))()
+
+        local function Notify(Name, Content, Image, Time)
+                OrionLib:MakeNotification({
+                        Name = Name,
+                        Content = Content,
+                        Image = Image,
+                        Time = Time
+                })
+        end
+        Notify("Check Id", "Check Id Game", "rbxassetid://4483345998", 5)
+
+                wait(5)
+
+        Notify("Check Id Complete", "Loading Script.", "rbxassetid://4483345998", 3)
+
+                wait(3)
+
+        Notify("Loading...", "Loading Script..", "rbxassetid://4483345998", 3)
+
+                wait(3)
+
+        Notify("Loading...", "Loading Script...", "rbxassetid://4483345998", 3)
+
+                wait(3)
+
+        Notify("Loaded!", "Loaded Script!", "rbxassetid://4483345998", 5)
+
+                wait(5)
+
+        Notify("Script", "Auto Play Enabled", "rbxassetid://4483345998", 8)
+
+                wait(3)
+
 --// variables
 
 local player = game:GetService("Players").LocalPlayer;
