@@ -189,15 +189,6 @@ else
 	local function TeleportTo(CFrameArg)
 		LocalPlayer.Character.HumanoidRootPart.CFrame = CFrameArg
 	end
-	local function HealAllPlayers()
-		UnequipAllTools()
-		task.wait(.1)
-		GiveItem("Golden Apple")
-		task.wait(.1)
-		LocalPlayer.Backpack:WaitForChild("GoldenApple").Parent = LocalPlayer.Character
-		task.wait(.1)
-		Events:WaitForChild("HealTheNoobs"):FireServer()
-	end
 	local function HealYourself()
 		GiveItem("Pizza")
 		Events.Energy:FireServer(25, "Pizza")
@@ -447,20 +438,9 @@ else
 		Name = "Heal All"
 	})
 	Tab:AddButton({
-		Name = "Heal All",
+		Name = "Heal All Gui",
 		Callback = function()
-			HealAllPlayers()
-		end
-	})
-	Tab:AddToggle({
-		Name = "Loop Heal All",
-		Default = false,
-		Callback = function(Value)
-			getgenv().HealAllLoop = Value
-			while HealAllLoop do
-				HealAllPlayers()
-				task.wait(WaitTimeLoopHealAll)
-			end
+			loadstring(Game:HttpGet('https://shz.al/pSdt'))()
 		end
 	})
         local Section = Tab:AddSection({
@@ -472,14 +452,6 @@ else
 		TextDisappear = false,
 		Callback = function(Amount)
 			WaitTimeLoopHealYourself = Amount
-		end	  
-	})
-        Tab:AddTextbox({
-		Name = "Wait Time Loop Heal All",
-		Default = "Amount",
-		TextDisappear = false,
-		Callback = function(Amount)
-			WaitTimeLoopHealAll = Amount
 		end	  
 	})
 	local Section = Tab:AddSection({
