@@ -2,11 +2,14 @@
 if game.PlaceId ~= 1318971886 then
 
 	local OrionLib = loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/OrionLib.lua'))()
-        local RemoteEvents = game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents")
+	local ReplicatedStorage = game:GetService("ReplicatedStorage")
+        local RemoteEvents = ReplicatedStorage:WaitForChild("RemoteEvents")
         local SelectedItem = "Cure"
+	local SelectedItemAllPlayers = "Cure"
         local Damange = 10
         local ScriptLoaded = false
-        local LocalPlayer = game:GetService("Players").LocalPlayer
+	local Players = game:GetService("Players")
+        local LocalPlayer = Players.LocalPlayer
 
         -- Tables
         local ItemsTable = {
