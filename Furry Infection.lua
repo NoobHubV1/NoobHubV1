@@ -41,7 +41,7 @@ end
 
 local fagfolder1 = workspace:FindFirstChild("FagFolder")
 
-local W1 = OrionLib:MakeWindow({Name = "Furry Infection Fucker nigger", HidePremium = false, SaveConfig = false, ConfigFolder = "Furry Infection Fucker nigger"})
+local W1 = OrionLib:MakeWindow({Name = "Furry Infection", HidePremium = false, SaveConfig = false, ConfigFolder = "Furry Infection Fucker nigger"})
 
 OrionLib:MakeNotification({
     Name = "Furry Infection NoobHubV1",
@@ -298,6 +298,13 @@ end)
 end
 end)
   end
+})
+
+Toggles:AddButton({
+	Name = "KeyBoard",
+	Callback = function()
+	    loadstring(game:HttpGet("https://raw.githubusercontent.com/advxzivhsjjdhxhsidifvsh/mobkeyboard/main/main.txt", true))()
+      end
 })
 
 Toggles:AddToggle({
