@@ -593,12 +593,6 @@ else
 		end
 	})
 	Tab:AddButton({
-		Name = "Golden Apple",
-		Callback = function()
-			TeleportTo(game:GetService("Workspace").GoldenApple.CFrame)
-		end
-	})
-	Tab:AddButton({
 		Name = "Feeding Instructions",
 		Callback = function()
 			TeleportTo(CFrame.new(-207.885056, 60.4500465, -830.583557, 0.118373089, 3.89876789e-08, -0.992969215, 3.47791551e-09, 1, 3.96783406e-08, 0.992969215, -8.15031065e-09, 0.118373089))
@@ -633,13 +627,6 @@ else
 		Name = "Cafeteria",
 		Callback = function()
 			TeleportTo(game:GetService("Workspace").Final.Factory:FindFirstChild("Legs", true).CFrame)
-		end
-	})
-
-	Tab:AddButton({
-		Name = "Rainbow Pizza Box",
-		Callback = function()
-			TeleportTo(game:GetService("Workspace").RainbowPizzaBox.CFrame)
 		end
 	})
 
@@ -683,6 +670,63 @@ else
 		Name = "Homeless Kid",
 		Callback = function()
 			TeleportTo(CFrame.new(-79.4871826, 29.4477024, -932.782715, -0.215949073, 3.18771427e-08, 0.976404607, -7.60385461e-08, 1, -4.94647345e-08, -0.976404607, -8.49262562e-08, -0.215949073))
+		end
+	})
+	local Section = Tab:AddSection({
+		Name = "Teleport To Item"
+	})
+	Tab:AddButton({
+		Name = "Rainbow Pizza",
+		Callback = function()
+			TeleportTo(game:GetService("Workspace").RainbowPizzaBox.CFrame)
+		end
+	})
+	Tab:AddButton({
+		Name = "Golden Apple",
+		Callback = function()
+			TeleportTo(game:GetService("Workspace").GoldenApple.CFrame)
+		end
+	})
+	Tab:AddButton({
+		Name = "Bloxy Cola",
+		Callback = function()
+			TeleportTo(game:GetService("Workspace").BloxyCola.CFrame)
+		end
+	})
+	Tab:AddButton({
+		Name = "Expired Bloxy Cola",
+		Callback = function()
+			TeleportTo(game:GetService("Workspace").ExpiredBloxyCola.CFrame)
+		end
+	})
+	Tab:AddButton({
+		Name = "Cookie",
+		Callback = function()
+			TeleportTo(game:GetService("Workspace").Cookie.CFrame)
+		end
+	})
+	Tab:AddButton({
+		Name = "Apple",
+		Callback = function()
+			TeleportTo(game:GetService("Workspace").Apple.CFrame)
+		end
+	})
+	Tab:AddButton({
+		Name = "Gold Pizza",
+		Callback = function()
+			TeleportTo(game:GetService("Workspace").GoldPizza.CFrame)
+		end
+	})
+	Tab:AddButton({
+		Name = "Ladder",
+		Callback = function()
+			TeleportTo(game:GetService("Workspace").Ladder.CFrame)
+		end
+	})
+	Tab:AddButton({
+		Name = "Chips",
+		Callback = function()
+			TeleportTo(game:GetService("Workspace").Chips.CFrame)
 		end
 	})
 	local Tab = Window:MakeTab({
