@@ -1,5 +1,5 @@
 local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
-local OrionLib = loadstring(Game:HttpGet('https://raw.githubysercontent.com/NoobHubV1/NoobHubV1/main/OrionLib.lua'))()
+local OrionLib = loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/OrionLib.lua'))()
 
 local function Notify(Name, Content, Time)OrionLib:MakeNotification({
                                                          Name = Name,
