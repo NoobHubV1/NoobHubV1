@@ -150,12 +150,20 @@ if game.PlaceId ~= 1318971886 then
 			Time = time
 		})
 	end
+	Notify("Check Id", "Check Id Game", "rbxassetid://4483345998", 5)
+
+	        wait(5)
+
+	Notify("Check Id Complete", "Loading Game", "rbxassetid://4483345998", 2)
+
+                wait(2)
+
 	local Window = OrionLib:MakeWindow({
 		Name = "Break In",
 		HidePremium = false,
 		SaveConfig = true,
 		ConfigFolder = "OrionTest",
-		IntroText = "Loading..."
+		IntroText = "Orion Library"
 	})
 	local Tab = Window:MakeTab({
 		Name = "Main",
