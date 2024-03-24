@@ -70,7 +70,12 @@ if game.PlaceId ~= 13864667823 then
 			end
 		end
 	else
-		game:GetService("Players").LocalPlayer:Kick("Error! Game Not Supported!")
+		OrionLib:MakeNotification({
+			Name = "Warning",
+			Content = "Error! Game Not Support",
+			Image = "rbxassetid://4483345998",
+			Time = 5
+		})
 	end
 else
     	-- Floating Part
