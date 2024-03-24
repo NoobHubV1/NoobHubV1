@@ -5,6 +5,10 @@ if game.PlaceId ~= 1701332290 then
 	local ReplicatedStorage = game:GetService("ReplicatedStorage")
 	local NetworkEvents = ReplicatedStorage:WaitForChild("NetworkEvents")
 
+        -- Functions
+	local function GiveItem(Item)
+		NetworkEvents.RemoteFunction:InvokeServer("PICKUP_ITEM", tostring(Item:gsub(" ", "")))
+	end
         local function Notify(name, content, image, time)
 		OrionLib:MakeNotification({
 			Name = name,
