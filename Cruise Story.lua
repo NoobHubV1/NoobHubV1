@@ -1,8 +1,35 @@
 game:GetService("StarterGui"):SetCore("SendNotification",{
                 Title = "NoobHubV1 Hub";
-                Text = "Script Loaded!";
-                Duration = 3.5;
+                Text = "Loading Script.";
+                Duration = 3;
             })
+
+            wait(3)
+
+game:GetService("StarterGui"):SetCore("SendNotification",{
+                Title = "NoobHubV1 Hub";
+                Text = "Loading Script..";
+                Duration = 3;
+            })
+
+            wait(3)
+
+game:GetService("StarterGui"):SetCore("SendNotification",{
+                Title = "NoobHubV1 Hub";
+                Text = "Loading Script...";
+                Duration = 3;
+            })
+
+            wait(3)
+
+game:GetService("StarterGui"):SetCore("SendNotification",{
+                Title = "NoobHubV1 Hub";
+                Text = "Loaded Script!";
+                Duration = 3;
+            })
+
+            wait(3)
+
 local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
 
 local PhantomForcesWindow = Library:NewWindow("NoobHubV1 Hub")
