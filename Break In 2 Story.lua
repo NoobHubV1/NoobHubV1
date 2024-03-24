@@ -30,6 +30,9 @@ if game.PlaceId ~= 13864667823 then
 		})
 	end
 	Notify('Check Id', "Check Id Game", 'rbxassetid://4483345998', 7)
+
+                wait(7)
+		
 	local Window = OrionLib:MakeWindow({
 		Name = "Break In 2 (Lobby)",
 		HidePremium = false,
