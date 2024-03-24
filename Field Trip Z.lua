@@ -5,13 +5,6 @@ if game.PlaceId ~= 1701332290 then
 	local ReplicatedStorage = game:GetService("ReplicatedStorage")
 	local NetworkEvents = ReplicatedStorage:WaitForChild("NetworkEvents")
 
-	-- Tables
-	local ItemsTable = {
-		"Bandage",
-		"Donut",
-		"Med Kit'
-	}
-
         local function Notify(name, content, image, time)
 		OrionLib:MakeNotification({
 			Name = name,
