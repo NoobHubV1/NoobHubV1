@@ -29,19 +29,19 @@ local function Notify(Name, Content, Image, Time)OrionLib:MakeNotification({
                                                          Time = Time
                                                  })
 end
-Notify("NoobHubV1 Hub", "Loading Script.", "rbxassetid://1461971147", 3)
+Notify("NoobHubV1 Hub", "Loading Script.", "rbxassetid://4483345998", 3)
 
                                                  wait(3)
 
-Notify("NoobHubV1 Hub", "Loading Script..", "rbxassetid://1461971147", 3)
+Notify("NoobHubV1 Hub", "Loading Script..", "rbxassetid://4483345998", 3)
 
                                                  wait(3)
 
-Notify("NoobHubV1 Hub", "Loading Script...", "rbxassetid://1461971147", 3)
+Notify("NoobHubV1 Hub", "Loading Script...", "rbxassetid://4483345998", 3)
 
                                                  wait(3)
 
-Notify("NoobHubV1 Hub", "Loaded Script!", "rbxassetid://1461971147", 3)
+Notify("NoobHubV1 Hub", "Loaded Script!", "rbxassetid://4483345998", 3)
 
                                                  wait(3)
 
