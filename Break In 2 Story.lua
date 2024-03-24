@@ -595,7 +595,7 @@ else
 	Tab:AddButton({
 		Name = "Golden Apple",
 		Callback = function()
-			TeleportTo(CFrame.new(61.8781624, 29.4499969, -534.381165, -0.584439218, -1.05103076e-07, 0.811437488, -3.12853778e-08, 1, 1.06993674e-07, -0.811437488, 3.71451705e-08, -0.584439218))
+			TeleportTo(game:GetService("Workspace").GoldenApple.CFrame)
 		end
 	})
 	Tab:AddButton({
