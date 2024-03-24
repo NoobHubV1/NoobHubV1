@@ -29,13 +29,13 @@ if game.PlaceId ~= 13864667823 then
 			Time = time
 		})
 	end
-	Notify('Check Id', "Check Id Game", 'rbxassetid://4483345998', 7)
+	Notify("Check Id", "Check Id Game", 'rbxassetid://4483345998', 5)
 
-                wait(7)
+                wait(5)
 
-	Notify('Check Id Complete', "Loading Game", 'rbxassetid://4483345998', 1)
+	Notify('Check Id Complete', "Loading Game", 'rbxassetid://4483345998', 2)
 
-		wait(1)
+		wait(2)
 
 	local Window = OrionLib:MakeWindow({
 		Name = "Break In 2 (Lobby)",
@@ -370,20 +370,20 @@ else
 			Time = time
 		})
 	end
-	Notify('Check Id', "Check Id Game", 'rbxassetid://4483345998', 7)
+	Notify('Check Id', "Check Id Game", 'rbxassetid://4483345998', 5)
 
-                wait(7)
+                wait(5)
 
-	Notify('Check Id Complete', "Loading Game", 'rbxassetid://4483345998', 1)
+	Notify('Check Id Complete', "Loading Game", 'rbxassetid://4483345998', 2)
 
-	        wait(1)
+	        wait(2)
 
 	local Window = OrionLib:MakeWindow({
 		Name = "Break In 2 (Game)",
 		HidePremium = false,
 		SaveConfig = true,
 		ConfigFolder = "OrionTest",
-		IntroText = "Loading..."
+		IntroText = "Orion Library"
 	})
 	local Tab = Window:MakeTab({
 		Name = "Overpowered",
