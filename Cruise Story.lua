@@ -1,26 +1,27 @@
 local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
+local OrionLib = loadstring(Game:HttpGet('https://raw.githubysercontent.com/NoobHubV1/NoobHubV1/main/OrionLib.lua'))()
 
-local function Notify(Name, Content, Time)game:GetService("StarterGui"):SetCore("SendNotification",{
-                Title = Name;
-                Text = Content;
-                Duration = Time;
-            })
+local function Notify(Name, Content, Time)OrionLib:MakeNotification({
+                                                         Name = Name,
+                                                         Content = Content,
+                                                         Image = "rbxassetid://4483345998",
+                                                         Time = Time
+                                                 })
 end
 Notify("NoobHubV1 Hub", "Loading Script.", 3)
 
-            wait(3)
+                                                 wait(3)
 
 Notify("NoobHubV1 Hub", "Loading Script..", 3)
 
-            wait(3)
+                                                 wait(3)
 
 Notify("NoobHubV1 Hub", "Loading Script...", 3)
 
-            wait(3)
+                                                 wait(3)
 
 Notify("NoobHubV1 Hub", "Loaded Script!", 3)
-
-            wait(3)
+                                                 wait(3)
 
 local PhantomForcesWindow = Library:NewWindow("NoobHubV1 Hub")
 
