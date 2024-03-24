@@ -12,7 +12,7 @@ Notify("NoobHubV1 Hub", "Loading Script.", "rbxassetid://4483345998", 3)
 
                                                  wait(3)
 
-Notify("NoobHubV1 Hub", "Loading Script..", "rbxassetid://4483345998", 3)
+Notify("NoobHubV1", "Loading Script..", "rbxassetid://4483345998", 3)
 
                                                  wait(3)
 
