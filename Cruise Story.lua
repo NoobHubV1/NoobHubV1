@@ -21,6 +21,7 @@ Notify("NoobHubV1 Hub", "Loading Script...", 3)
                                                  wait(3)
 
 Notify("NoobHubV1 Hub", "Loaded Script!", 3)
+
                                                  wait(3)
 
 local PhantomForcesWindow = Library:NewWindow("NoobHubV1 Hub")
