@@ -66,6 +66,12 @@ local Toggles = W1:MakeTab({
     PremiumOnly = false
 })
 
+local Others = W1:MakeTab({
+    Name = "Others",
+    Icon = "rbxassetid://6890648157", --- rbxassetid://4483345998
+    PremiumOnly = false
+})
+
 Toggles:AddToggle({
     Name = "AntiFagInfect",
     Default = false,
@@ -222,6 +228,54 @@ end
   end
 })
 
+Others:AddButton({
+	Name = "KeyBoard",
+	Callback = function()
+	    loadstring(game:HttpGet("https://raw.githubusercontent.com/advxzivhsjjdhxhsidifvsh/mobkeyboard/main/main.txt", true))()
+      end
+})
+
+Others:AddButton({
+	Name = "Rejoin Button",
+	Callback = function()
+	    game:GetService("StarterGui"):SetCore("SendNotification",{
+ Title = "NoobHubV1";
+ Text = "Executed";
+ Duration = 5;
+ Icon = "rbxassetid://4483345998";
+})
+	    --Auto execute highly recommended (use it)
+gui = game.CoreGui.RobloxPromptGui.promptOverlay:WaitForChild("ErrorPrompt")
+
+gui.Size = UDim2.new(0, 400, 0, 230)
+
+leave = gui.MessageArea.ErrorFrame.ButtonArea.LeaveButton
+
+gui.MessageArea.MessageAreaPadding.PaddingTop = UDim.new(0,-20)
+gui.MessageArea.ErrorFrame.ErrorFrameLayout.Padding = UDim.new(0, 5)
+
+gui.MessageArea.ErrorFrame.ButtonArea.ButtonLayout.CellPadding = UDim2.new(0, 0, 0, 5)
+
+rejoin = leave:Clone()
+rejoin.Parent = leave.Parent
+rejoin.ButtonText.Text = "Rejoin"
+
+Players = game:GetService("Players")
+TeleportService = game:GetService("TeleportService")
+
+rejoin.MouseButton1Up:Connect(function()
+ if #Players:GetPlayers() <= 1 then
+game.Players.LocalPlayer:Kick("Rejoining...")
+rejoin: destroy ()
+wait(1)
+  TeleportService:Teleport(game.PlaceId, Players.LocalPlayer)
+ else
+  TeleportService:TeleportToPlaceInstance(game.PlaceId, game.JobId, Players.LocalPlayer)
+ end
+end)
+       end
+})
+
 Toggles:AddToggle({
 	Name = "Loop Kill All",
 	Callback = function(lkillall)
@@ -298,13 +352,6 @@ end)
 end
 end)
   end
-})
-
-Toggles:AddButton({
-	Name = "KeyBoard",
-	Callback = function()
-	    loadstring(game:HttpGet("https://raw.githubusercontent.com/advxzivhsjjdhxhsidifvsh/mobkeyboard/main/main.txt", true))()
-      end
 })
 
 Toggles:AddToggle({
