@@ -2,6 +2,16 @@
 if game.PlaceId ~= 1701332290 then
 
 	local OrionLib = loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/OrionLib.lua'))()
+	local ReplicatedStorage = game:GetService("ReplicatedStorage")
+	local NetworkEvents = ReplicatedStorage:WaitForChild("NetworkEvents")
+
+	-- Tables
+	local ItemsTable = {
+		"Bandage",
+		"Donut",
+		"Med Kit'
+	}
+
         local function Notify(name, content, image, time)
 		OrionLib:MakeNotification({
 			Name = name,
