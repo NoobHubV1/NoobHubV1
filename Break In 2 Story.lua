@@ -4,7 +4,8 @@ if game.PlaceId ~= 13864667823 then
 		
 	-- Free Gamepasses (LOBBY)
 	local OrionLib = loadstring(game:HttpGet(('https://github.com/NoobHubV1/NoobHubV1/raw/main/OrionLib.lua')))()
-        local RemoteEvents = game:GetService("ReplicatedStorage"):WaitForChild("RemoteEvents")
+	local ReplicatedStorage = game:GetService("ReplicatedStorage")
+        local RemoteEvents = ReplicatedStorage:WaitForChild("RemoteEvents")
 
         -- Tables
         local RolesTable = {
@@ -33,8 +34,8 @@ if game.PlaceId ~= 13864667823 then
 		PremiumOnly = false
 	})
 	Tab:AddDropdown({
-		Name = "Item",
-		Default = "Med Kit",
+		Name = "Role",
+		Default = "Hacker",
 		Options = RolesTable,
 		Callback = function(Value)
 			SelectedRole = Value
@@ -65,7 +66,8 @@ else
 
 	-- Locals
         local OrionLib = loadstring(game:HttpGet(('https://github.com/NoobHubV1/NoobHubV1/raw/main/OrionLib.lua')))()
-	local Events = game:GetService("ReplicatedStorage"):WaitForChild("Events")
+	local ReplicatedStorage = game:GetService("ReplicatedStorage")
+	local Events = ReplicatedStorage:WaitForChild("Events")
 	local SelectedItem = "Med Kit"
 	local Damange = 5
 	local namecall
