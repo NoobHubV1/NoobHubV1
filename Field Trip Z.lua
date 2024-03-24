@@ -38,6 +38,14 @@ if game.PlaceId ~= 1701332290 then
 			Time = time
 		})
 	end
+	Notify("Check Id", "Check Id Game", "rbxassetid://4483345998", 5)
+
+	        wait(5)
+
+	Notify("Check Id Complete", "Loading Script", "rbxassetid://4483345998", 2)
+
+	        wait(2)
+
 	local Window = OrionLib:MakeWindow({
 		Name = "Field Trip Z",
 		HidePremium = false,
