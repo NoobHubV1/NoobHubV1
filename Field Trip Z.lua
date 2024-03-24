@@ -4,10 +4,31 @@ if game.PlaceId ~= 1701332290 then
 	local OrionLib = loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/OrionLib.lua'))()
 	local ReplicatedStorage = game:GetService("ReplicatedStorage")
 	local NetworkEvents = ReplicatedStorage:WaitForChild("NetworkEvents")
+	local Players = game:GetService("Players")
+	local LocalPlayer = Players.LocalPlayer
 
         -- Functions
 	local function GiveItem(Item)
 		NetworkEvents.RemoteFunction:InvokeServer("PICKUP_ITEM", tostring(Item:gsub(" ", "")))
+	end
+	local function HealYourself()
+		NetworkEvents.RemoteFunction:InvokeServer("HEAL_PLAYER", LocalPlayer, math.huge)
+	end
+	local function HealAllPlayers()
+		for i, v in pairs(game.Players:GetPlayers()) do
+                if v.Name ~= LocalPlayer then
+                    NetworkEvents.RemoteFunction:InvokeServer("HEAL_PLAYER", v, math.huge)
+                end
+		end
+	end
+	local function KillZombies()
+		for i, v in pairs(game:GetService("Workspace").NPC:GetChildren()) do
+                NetworkEvents.RemoteFunction:InvokeServer(
+                    "DO_DAMAGE",
+                    v.Humanoid,
+                    math.huge
+                )
+		end
 	end
         local function Notify(name, content, image, time)
 		OrionLib:MakeNotification({
@@ -36,14 +57,14 @@ if game.PlaceId ~= 1701332290 then
 		Name = "Item",
 		Default = "Bandage",
 	        Options = {"Bandage", "MedKit", "Donut"},
-                Callback = function(Item)
-                        SelectedItem = Item
+                Callback = function(Value)
+                        SelectedItem = Value
 		end
 	})
         Tab:AddButton({
 		Name = "Get Item",
 		Callback = function()
-			game.ReplicatedStorage.NetworkEvents.RemoteFunction:InvokeServer("PICKUP_ITEM", SelectedItem)
+			GiveItem(SelectedItem)
 		end
 	})
         local Section = Tab:AddSection({
@@ -52,15 +73,15 @@ if game.PlaceId ~= 1701332290 then
         Tab:AddButton({
 		Name = "Heal Yourself",
 		Callback = function()
-			game.ReplicatedStorage.NetworkEvents.RemoteFunction:InvokeServer("HEAL_PLAYER", game.Players.LocalPlayer, math.huge)
+			HealYourself()
 		end
 	})
         Tab:AddToggle({
                 Name = "Loop Heal Yourself",
-                Callback = function(Value)
-                        getgenv().HealLoop = Value
+                Callback = function(State)
+                        getgenv().HealLoop = State
                         while HealLoop do
-                                game.ReplicatedStorage.NetworkEvents.RemoteFunction:InvokeServer("HEAL_PLAYER", game.Players.LocalPlayer, math.huge)
+                                HealYourself()
                         end
                 end
         })
@@ -70,31 +91,15 @@ if game.PlaceId ~= 1701332290 then
         Tab:AddButton({
                 Name = "Heal All",
                 Callback = function()
-                        for i, v in pairs(game.Players:GetPlayers()) do
-                if v.Name ~= game:GetService("Players").LocalPlayer then
-                    game:GetService("ReplicatedStorage").NetworkEvents.RemoteFunction:InvokeServer(
-                        "HEAL_PLAYER",
-                        v,
-                        9e9
-                    )
-                end
-            end
+                        HealAllPlayers()
                end
          })
          Tab:AddToggle({
                 Name = "Loop Heal All",
-                Callback = function(Value)
-                        getgenv().HealAllLoop = Value
+                Callback = function(State)
+                        getgenv().HealAllLoop = State
                         while HealAllLoop do
-                                for i, v in pairs(game.Players:GetPlayers()) do
-                if v.Name ~= game:GetService("Players").LocalPlayer then
-                    game:GetService("ReplicatedStorage").NetworkEvents.RemoteFunction:InvokeServer(
-                        "HEAL_PLAYER",
-                        v,
-                        9e9
-                    )
-                end
-            end
+                                HealAllPlayers()
                         end
                 end
         })
@@ -108,16 +113,10 @@ if game.PlaceId ~= 1701332290 then
 	})
         Tab:AddToggle({
                 Name = "Kill Aura",
-                Callback = function(Value)
-                        getgenv().KillZombiesLoop = Value
+                Callback = function(State)
+                        getgenv().KillZombiesLoop = State
                         while KillZombiesLoop do
-                                for i, v in pairs(game:GetService("Workspace").NPC:GetChildren()) do
-                game:GetService("ReplicatedStorage").NetworkEvents.RemoteFunction:InvokeServer(
-                    "DO_DAMAGE",
-                    v.Humanoid,
-                    math.huge
-                )
-            end
+                                KillZombies()
                         end
                 end
         })
@@ -131,8 +130,8 @@ if game.PlaceId ~= 1701332290 then
 	})
         Tab:AddToggle({
                 Name = "Inf Jump",
-                Callback = function(Value)
-                        InfJump = Value
+                Callback = function(State)
+                        InfJump = State
 game:GetService("UserInputService").JumpRequest:connect(function()
 	if InfJump then
 		game.Players.LocalPlayer.Character:FindFirstChildOfClass('Humanoid'):ChangeState("Jumping")
