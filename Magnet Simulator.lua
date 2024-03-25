@@ -185,7 +185,7 @@ MagnetSimulator:CreateButton("Disabled Notifications", function()GameHUD.FullBac
 end)
 
 MagnetSimulator:CreateButton("Inf Badge", function()InfBadge()
-end
+end)
 
 local MagnetSimulator = PhantomForcesWindow:NewSection("Player")
 
