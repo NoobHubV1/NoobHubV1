@@ -1,4 +1,5 @@
 local Library = loadstring(Game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard"))()
+local OrionLib = loadstring(Game:HttpGet(("https://github.com/NoobHubV1/NoobHubV1/raw/main/OrionLib.lua")))()
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
@@ -29,6 +30,25 @@ local function HealAllPlayers()UnequipAllTools()
                                HealTheNoobs()
 end
 
+local function Notify(Name, Content, Image, Time)OrionLib:MakeNotification({
+			                                 Name = Name,
+			                                 Content = Content,
+			                                 Image = Image,
+			                                 Time = Time
+		                                 })
+end
+Notify("Heal All Gui", "Loading Script.", "rbxassetid://4483345998", 3)
+
+                                                 wait(3)
+
+Notify("Heal All Gui", "Loading Script..", "rbxassetid://4483345998", 3)
+
+                                                 wait(3)
+
+Notify("Heal All Gui", "Loading Script...", "rbxassetid://4483345998", 3)
+
+                                                 wait(3)
+
 local PhantomForcesWindow = Library:NewWindow("NoobHubV1 Hub")
 
 local BreakIn2 = PhantomForcesWindow:NewSection("Heal All Gui")
@@ -42,3 +62,5 @@ HealAllPlayers()
 task.wait(.1)
 end
 end)
+
+Notify("Heal All Gui", "Loaded Script!", "rbxassetid://4483345998", 5)
