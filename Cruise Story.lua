@@ -20,10 +20,6 @@ Notify("NoobHubV1 Hub", "Loading Script...", "rbxassetid://4483345998", 3)
 
                                                  wait(3)
 
-Notify("NoobHubV1 Hub", "Loaded Script!", "rbxassetid://4483345998", 3)
-
-                                                 wait(3)
-
 local PhantomForcesWindow = Library:NewWindow("NoobHubV1 Hub")
 
 local CruiseStory = PhantomForcesWindow:NewSection("Item")
@@ -86,3 +82,5 @@ end)
 
 CruiseStory:CreateTextbox("Jump Power", function(Amount)game.Players.LocalPlayer.Character.Humanoid.JumpPower = Amount
 end)
+
+Notify("NoobHubV1 Hub", "Loaded Script!", "rbxassetid://4483345998", 5)
