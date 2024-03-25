@@ -469,7 +469,7 @@ else
 	Tab:AddButton({
 		Name = "Heal All Gui",
 		Callback = function()
-			loadstring(Game:HttpGet('https://shz.al/pSdt'))()
+			loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/Break%20In%202%20Story%20Heal%20All%20Gui.lua'))()
 		end
 	})
         local Section = Tab:AddSection({
