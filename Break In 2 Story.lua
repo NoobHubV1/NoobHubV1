@@ -89,7 +89,6 @@ else
         local OrionLib = loadstring(game:HttpGet(('https://github.com/NoobHubV1/NoobHubV1/raw/main/OrionLib.lua')))()
 	local ReplicatedStorage = game:GetService("ReplicatedStorage")
 	local Events = ReplicatedStorage:WaitForChild("Events")
-	local HealTheNoobs = Events:WaitForChild("HealTheNoobs")
 	local SelectedItem = "Med Kit"
 	local Damange = 5
 	local namecall
@@ -215,7 +214,7 @@ else
 		LocalPlayer.Character.HumanoidRootPart.CFrame = CFrameArg
 	end
 	local function HealTheNoobs()
-		HealTheNoobs:FireServer(LocalPlayer)
+		Events.HealTheNoobs:FireServer()
 	end
 	local function HealAllPlayers()
 		UnequipAllTools()
