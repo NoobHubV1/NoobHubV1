@@ -85,17 +85,17 @@ end)
 local BreakIn2 = PhantomForcesWindow:NewSection("Equip Item")
 
 BreakIn2:CreateDropdown("Equip Item", ItemsTable, 2, function(Value)SelectedItemEquip = Value
-end
+end)
 
 BreakIn2:CreateButton("Equip", function()EquipItem(SelectedItemEquip)
-end
+end)
 
 local BreakIn2 = PhantomForcesWindow:NewSection("Unequip Item")
 
 BreakIn2:CreateDropdown("Unequip Item", ItemsTable, 2, function(Value)SelectedItemUnequip = Value
-end
+end)
 
 BreakIn2:CreateButton("Unequip", function()UnequipItem(SelectedItemUnequip)
-end
+end)
 
 Notify("Heal All Gui", "Loaded Script!", "rbxassetid://4483345998", 5)
