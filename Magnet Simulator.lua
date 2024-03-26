@@ -18,9 +18,9 @@ end
 local function Rebirth(Amount)RebirthEvents.requestRebirth:InvokeServer(Amount)
 end
 
-local function AutoSell(Sell)if Sell == "X2 Coin" then
+local function AutoSell(Area)if Area == "X2 Coin" then
                              LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-419.514709, 5.21380043, -849.897949) + Vector3.new(1, 1, 0)
-                             elseif Sell == "Spawn" then
+                             elseif Area == "Spawn" then
                              LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(133.744507, 14.6463766, -52.6264954) + Vector3.new(1, 1, 0)
                              end
 end
@@ -74,12 +74,12 @@ end)
 
 MagnetSimulator:CreateToggle("Auto Sell", function(State)getgenv().SellLoop = State
 while SellLoop do
-AutoSell(Area)
+AutoSell(SelectedArea)
 task.wait()
 end
 end)
 
-MagnetSimulator:CreateDropdown("Auto Sell Area", {"Spawn","X2 Coin"}, 2, function(Value)Area = Value
+MagnetSimulator:CreateDropdown("Auto Sell Area", {"Spawn","X2 Coin"}, 2, function(Value)SelectedArea = Value
 end)
 
 MagnetSimulator:CreateDropdown("Rebirth Amount", {"1","5","25","50","100","250","500","1000","2500","5000","10000","25000","50000","75000","100000","125000","200000"}, 2, function(Value)RebirthAmount = Value
