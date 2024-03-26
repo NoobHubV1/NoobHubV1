@@ -89,6 +89,7 @@ else
         local OrionLib = loadstring(game:HttpGet(('https://github.com/NoobHubV1/NoobHubV1/raw/main/OrionLib.lua')))()
 	local ReplicatedStorage = game:GetService("ReplicatedStorage")
 	local Events = ReplicatedStorage:WaitForChild("Events")
+	local HealTheNoobs = Events:WaitForChild("HealTheNoobs")
 	local SelectedItem = "Med Kit"
 	local Damange = 5
 	local namecall
@@ -192,6 +193,9 @@ else
 			end
 		end
 	end
+	local function EquipItem(Item)
+		LocalPlayer.Backpack:WaitForChild(tostring(Item:gsub(" ", ""))).Parent = LocalPlayer.Character
+	end
 	local function GiveItem(Item)
 		if Item == "Armor" then
 			Events:WaitForChild("Vending"):FireServer(3, "Armor2", "Armor", tostring(LocalPlayer), 1)
@@ -209,6 +213,18 @@ else
 	end
 	local function TeleportTo(CFrameArg)
 		LocalPlayer.Character.HumanoidRootPart.CFrame = CFrameArg
+	end
+	local function HealTheNoobs()
+		HealTheNoobs:FireServer(LocalPlayer)
+	end
+	local function HealAllPlayers()
+		UnequipAllTools()
+		task.wait(.1)
+		GiveItem("Golden Apple")
+		task.wait(.1)
+		EquipItem("Golden Apple")
+		task.wait(.1)
+		HealTheNoobs()
 	end
 	local function HealYourself()
 		GiveItem("Pizza")
@@ -467,9 +483,20 @@ else
 		Name = "Heal All"
 	})
 	Tab:AddButton({
-		Name = "Heal All Gui",
+		Name = "Heal All Players",
 		Callback = function()
-			loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/Break%20In%202%20Story%20Heal%20All%20Gui.lua'))()
+			HealAllPlayers()
+		end
+	})
+	Tab:AddToggle({
+		Name = "Loop Heal All Players",
+		Default = false,
+		Callback = function(Value)
+			getgenv().HealAllLoop = Value
+			while HealAllLoop do
+			        HealAllPlayers()
+				task.wait(.1)
+			end
 		end
 	})
         local Section = Tab:AddSection({
@@ -1087,6 +1114,13 @@ else
 		Callback = function()
 			loadstring(game:HttpGet("https://shz.al/3FMB", true))()
 		end    
+	})
+
+	Tab:AddButton({
+		Name = "Heal All Gui",
+		Callback = function()
+			loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/Break%20In%202%20Story%20Heal%20All%20Gui.lua'))()
+		end
 	})
 
 	Notify('Loaded!', "Script Successfully Loaded!\nJoin Our Discord At (https://discord.com/invite/XHS5WPxMrr) For Support, Questions And Updates!\nThe Script Is Open Source So Feel Free To Look At The Code!", 'rbxassetid://4483345998', 15)
