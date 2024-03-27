@@ -51,38 +51,38 @@ local PhantomForcesWindow = Library:NewWindow("NoobHubV1 Hub")
 
 local MagnetSimulator = PhantomForcesWindow:NewSection("Main")
 
-MagnetSimulator:CreateToggle("Auto Coin", true, function(State)getgenv().CoinLoop = State
+MagnetSimulator:CreateToggle("Auto Coin", function(State)getgenv().CoinLoop = State
 while CoinLoop do
 Coin()
 task.wait()
 end
 end)
 
-MagnetSimulator:CreateToggle("Auto Clover", false, function(State)getgenv().CloverLoop = State
+MagnetSimulator:CreateToggle("Auto Clover", function(State)getgenv().CloverLoop = State
 while CloverLoop do
 Clover()
 task.wait()
 end
 end)
 
-MagnetSimulator:CreateToggle("Auto Rebirth", false, function(State)getgenv().RebirthLoop = State
+MagnetSimulator:CreateToggle("Auto Rebirth", function(State)getgenv().RebirthLoop = State
 while RebirthLoop do
 Rebirth(RebirthAmount)
 task.wait()
 end
 end)
 
-MagnetSimulator:CreateToggle("Auto Sell", false, function(State)getgenv().SellLoop = State
+MagnetSimulator:CreateToggle("Auto Sell", function(State)getgenv().SellLoop = State
 while SellLoop do
 AutoSell(SelectedArea)
 task.wait()
 end
 end)
 
-MagnetSimulator:CreateDropdown("Auto Sell Area", {"Spawn","X2 Coin"}, "Spawn", 2, function(Value)SelectedArea = Value
+MagnetSimulator:CreateDropdown("Auto Sell Area", {"Spawn","X2 Coin"}, 2, function(Value)SelectedArea = Value
 end)
 
-MagnetSimulator:CreateDropdown("Rebirth Amount", {"1","5","25","50","100","250","500","1000","2500","5000","10000","25000","50000","75000","100000","125000","200000"}, "1", 2, function(Value)RebirthAmount = Value
+MagnetSimulator:CreateDropdown("Rebirth Amount", {"1","5","25","50","100","250","500","1000","2500","5000","10000","25000","50000","75000","100000","125000","200000"}, 2, function(Value)RebirthAmount = Value
 end)
 
 MagnetSimulator:CreateButton("Disabled Notifications", function()DisabledNotifications()
