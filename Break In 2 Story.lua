@@ -1116,9 +1116,9 @@ else
 	})
 
 	Tab:AddButton({
-		Name = "Heal All Gui",
+		Name = "Heal All Gui And More",
 		Callback = function()
-			loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/Break%20In%202%20Story%20Heal%20All%20Gui.lua'))()
+			loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/Break%20In%202%20Story%20Heal%20All%20Gui%20And%20More.lua'))()
 		end
 	})
 
