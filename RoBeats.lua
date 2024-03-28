@@ -1,3 +1,30 @@
+game:GetService("StarterGui"):SetCore("SendNotification",{
+                Title = "NoobHubV1 Hub";
+                Text = "Loading Script.";
+                Icon = "rbxassetid://4483345998";
+                Duration = 3;
+            })
+
+            wait(3)
+
+game:GetService("StarterGui"):SetCore("SendNotification",{
+                Title = "NoobHubV1 Hub";
+                Text = "Loading Script..";
+                Icon = "rbxassetid://4483345998";
+                Duration = 3;
+            })
+
+            wait(3)
+
+game:GetService("StarterGui"):SetCore("SendNotification",{
+                Title = "NoobHubV1 Hub";
+                Text = "Loading Script...";
+                Icon = "rbxassetid://4483345998";
+                Duration = 3;
+            })
+
+            wait(3)
+
 --// variables
 
 local player = game:GetService("Players").LocalPlayer;
@@ -143,3 +170,10 @@ track_system.new = function(...)
     
     return track_functions;
 end;
+
+game:GetService("StarterGui"):SetCore("SendNotification",{
+                Title = "NoobHubV1 Hub";
+                Text = "Auto Play Enabled";
+                Icon = "rbxassetid://4483345998";
+                Duration = 10;
+            })
