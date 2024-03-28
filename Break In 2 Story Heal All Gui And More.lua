@@ -47,7 +47,7 @@ local function HealYourself()
         Events.Energy:FireServer(25, "Pizza")
 end
 
-local function SelectedHeal(Heal)if Heal == "Heal All Players" then
+local function Heal(Heal)if Heal == "Heal All Players" then
 		                 HealAllPlayers()
 	                         elseif Heal == "Heal Yourself" then
 		                 HealYourself()
@@ -88,12 +88,12 @@ local BreakIn2 = PhantomForcesWindow:NewSection("Selected Heal")
 BreakIn2:CreateDropdown("Selected Heal", {"Heal All Players","Heal Yourself"}, 2, function(Value)SelectedHeal = Value
 end)
 
-BreakIn2:CreateButton("Heal", function()SelectedHeal(SelectedHeal)
+BreakIn2:CreateButton("Heal", function()Heal(SelectedHeal)
 end)
 
 BreakIn2:CreateToggle("Loop Heal", function(State)getgenv().HealLoop = State
 while HealLoop do
-SelectedHeal(SelectedHeal)
+Heal(SelectedHeal)
 task.wait(WaitTime)
 end
 end)
