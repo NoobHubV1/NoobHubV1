@@ -66,7 +66,7 @@ local PhantomForcesWindow = Library:NewWindow("NoobHubV1 Hub")
 
 local BreakIn2 = PhantomForcesWindow:NewSection("Item Gui")
 
-BreakIn2:CreateDropdown("Item", {"Crowbar 1","Crowbar 2","Crowbar 3","Bat","Pitchfork","Hammer","Wrench","Broom","Med Kit","Key","Gold Key","Louise","Lollipop","Chips","Golden Apple","Pizza","Gold Pizza","Rainbow Pizza","Rainbow Pizza Box","Book","Phone","Cookie","Apple","Bloxy Cola","Expired Bloxy Cola","Bottle","Ladder","Battery"}, 2, function(Value)SelectedItem = Value
+BreakIn2:CreateDropdown("Item", {"Crowbar 1","Crowbar 2","Crowbar 3","Bat","Pitchfork","Hammer","Wrench","Broom","Armor","Med Kit","Key","Gold Key","Louise","Lollipop","Chips","Golden Apple","Pizza","Gold Pizza","Rainbow Pizza","Rainbow Pizza Box","Book","Phone","Cookie","Apple","Bloxy Cola","Expired Bloxy Cola","Bottle","Ladder","Battery"}, 2, function(Value)SelectedItem = Value
 end)
 
 BreakIn2:CreateButton("Get Item", function()GiveItem(SelectedItem)
