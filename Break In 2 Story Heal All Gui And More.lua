@@ -43,12 +43,24 @@ local function HealAllPlayers()UnequipAllTools()
                                HealTheNoobs()
 end
 
-local function Notify(Name, Content, Image, Time)OrionLib:MakeNotification({
-			                                 Name = Name,
-			                                 Content = Content,
-			                                 Image = Image,
-			                                 Time = Time
-		                                 })
+local function HealYourself()
+	GiveItem("Pizza")
+        Events.Energy:FireServer(25, "Pizza")
+end
+
+local function SelectedHeal(Heal)if Heal == "Heal All Players" then
+		                 HealAllPlayers()
+	                         elseif Heal == "Heal Yourself" then
+		                 HealYourself()
+	                         end
+end
+
+local function Notify(Name, Content, Image, Time)game:GetService("StarterGui"):SetCore("SendNotification",{
+                Title = Name;
+                Text = Content;
+		Icon = Image;
+                Duration = Time;
+            })
 end
 Notify("Heal All Gui And More", "Loading Script.", "rbxassetid://4483345998", 3)
 
@@ -72,16 +84,22 @@ end)
 BreakIn2:CreateButton("Get Item", function()GiveItem(SelectedItem)
 end)
 
-local BreakIn2 = PhantomForcesWindow:NewSection("Heal All Gui")
+local BreakIn2 = PhantomForcesWindow:NewSection("Selected Heal")
 
-BreakIn2:CreateButton("Heal All", function()HealAllPlayers()
+BreakIn2:CreateDropdown("Selected Heal", {"Heal All Players","Heal Yourself"}, 2, function(Value)SelectedHeal = Value
 end)
 
-BreakIn2:CreateToggle("Loop Heal All", function(State)getgenv().HealAllLoop = State
-while HealAllLoop do
-HealAllPlayers()
-task.wait(.1)
+BreakIn2:CreateButton("Heal", function()SelectedHeal(SelectedHeal)
+end)
+
+BreakIn2:CreateToggle("Loop Heal", function(State)getgenv().HealLoop = State
+while HealLoop do
+SelectedHeal(SelectedHeal)
+task.wait(WaitTime)
 end
+end)
+
+BreakIn2:CreateTextbox("Wait Time Loop Heal", function(Amount)WaitTime = Amount
 end)
 
 local BreakIn2 = PhantomForcesWindow:NewSection("Equip Item")
