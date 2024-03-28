@@ -1108,13 +1108,6 @@ else
 		end    
 	})
 
-        Tab:AddButton({
-		Name = "Remove Item And Equip Item And Unequip Item",
-		Callback = function()
-			loadstring(game:HttpGet("https://shz.al/3FMB", true))()
-		end    
-	})
-
 	Tab:AddButton({
 		Name = "Heal All Gui And More",
 		Callback = function()
