@@ -378,6 +378,10 @@ do
 	States.antipunch = false
 	States.AutoRespawn = true
 	States.AutoItems = false
+	States.AutoShotgun = false
+	States.AutoAk = false
+	States.AutoM9 = false
+	States.AutoM4A1 = false
 	States.ClickKill = false
 	States.ClickArrest = false
 	States.AntiTase = false
@@ -409,7 +413,7 @@ do
 	Temp.LoopmKilling = {}
 	Temp.Viruses = {}
 	Temp.SavedAdmins = {}
-	Running = false
+	Running = true
 end
 
 if writefile and makefolder and readfile and isfile then
@@ -2656,6 +2660,18 @@ do
 			wait(.4)
 			plr.Backpack:WaitForChild("AK-47").Parent = plr.Character
   end)
+	API:CreateCmd("Auto Shotgun", "Loop gets a shotgun", function(args)
+		local value = ChangeState(args[2],"AutoShotgun")
+	end,nil,"[ON/OFF]")
+	API:CreateCmd("Auto Ak", "Loop gets a ak gun", function(args)
+		local value = ChangeState(args[2],"AutoAk")
+	end,nil,"[ON/OFF]")
+	API:CreateCmd("Auto M9", "Loop gets a m9 gun", function(args)
+		local value = ChangeState(args[2],"AutoM9")
+	end,nil,"[ON/OFF]")
+	API:CreateCmd("Auto M4A1", "Loop gets a m4a1 gun", function(args)
+		local value = ChangeState(args[2],"AutoM4A1")
+	end,nil,"[ON/OFF]")
 	API:CreateCmd("knife", "Gets a knife", function(args)
 		workspace.Remote.ItemHandler:InvokeServer({Position=game:GetService("Players").LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.single["Crude Knife"]})
 	end)
@@ -3566,6 +3582,22 @@ coroutine.wrap(function()
 			if Temp and Temp.Loopkillall then
 				wait(2)
 				API:killall()
+			end
+			if States.AutoShotgun then
+				wait()
+				API:GetGun("Remington 870")
+			end
+			if States.AutoAk then
+				wait()
+				API:GetGun("AK-47")
+			end
+			if States.AutoM9 then
+				wait()
+				API:GetGun("M9")
+			end
+			if States.AutoM4A1 then
+				wait()
+				API:GetGun("M4A1")
 			end
 		end)()
 		coroutine.wrap(function()
