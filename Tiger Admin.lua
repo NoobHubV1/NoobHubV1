@@ -2276,6 +2276,51 @@ do
   API:CreateCmd("ff", "Forcefield", function(args)
     local value = ChangeState(args[2],"ff")
   end,true,"[ON/OFF]")
+  API:CreateCmd("godmode", "Turns on all settings that prevent you from harm", function(args)
+			local Value = ChangeState(args[2],"Godmode")
+			if Value then
+				States.AntiArrest = true
+				States.AntiTase = true
+				States.AntiFling = true
+				States.antipunch = true
+				States.ShootBack = true
+				States.AutoItems = true
+				States.Antishield = true
+				States.anticrash = true
+				States.AutoRespawn = true
+				States.ff = true
+				wait(.1)
+				API:Refresh(true)
+			else
+				States.AntiArrest = false
+				States.AntiTase = false
+				States.AntiFling = false
+				States.antipunch = false
+				States.ShootBack = false
+				States.AutoItems = false
+				States.Antishield = false
+				States.anticrash = false
+				States.ff = false
+			end
+		end,nil,"[ON/OFF]")
+	API:CreateCmd("oneshot", "Makes a gun oneshot", function(args)
+			ChangeState(args[2],"OneShot")
+		end,nil,"[ON/OFF]")
+		API:CreateCmd("anticrash", "Tries to stop simple crashes (DOESNT WORK WITH TIGER ADMIN CRASH)", function(args)
+			local Value = ChangeState(args[2],"anticrash")
+			if Value then
+				pcall(function()
+					game:GetService("Players").LocalPlayer.PlayerScripts.ClientGunReplicator.Disabled = true
+				end)
+			else
+				pcall(function()
+					game:GetService("Players").LocalPlayer.PlayerScripts.ClientGunReplicator.Disabled = false
+				end)
+			end
+		end,nil,"[ON/OFF]")
+	API:CreateCmd("antifling", "prevents players from flinging you", function(args)
+			local Value = ChangeState(args[2],"AntiFling")
+		end,nil,"[ON/OFF]")
 	API:CreateCmd("neutral", "Changes your team to Neutral", function(args)
 		API:ChangeTeam(game.Teams.Neutral,true)
 	end)
@@ -2413,9 +2458,9 @@ do
 		API:MoveTo(Oldc)
 	end)
 
-	API:CreateCmd("refresh", "refreshes your character", function(args)
-		API:Refresh()
-	end)
+  API:CreateCmd("refresh", "refreshes your character", function(args)
+	  API:Refresh()
+  end)
   API:CreateCmd("prefix", "Sets a different prefix", function(args)
 			local New = args[2]
 			if New and tostring(New) then
@@ -2425,7 +2470,7 @@ do
 			else
 				API:Notif("no prefix selected?",false)
 			end
-		end,nil,"[NEW PREFIX]")
+  end,nil,"[NEW PREFIX]")
   API:CreateCmd("opendoors", "Opens every single door", function(args)
 			if not firetouchinterest then
 				return API:Notif("Your exploit doesnt support this command!",false)
@@ -2485,7 +2530,7 @@ do
 					API:ChangeTeam(LastTeam)
 				end
 			end
-	end,nil,"[ON/OFF]")
+  end,nil,"[ON/OFF]")
   API:CreateCmd("od", "Opens every single door", function(args)
 			if not firetouchinterest then
 				return API:Notif("Your exploit doesnt support this command!",false)
@@ -2508,7 +2553,7 @@ do
 			end
 			wait(1)
 			API:ChangeTeam(LastTeam)
-	end,true)
+  end,true)
   API:CreateCmd("lod", "Opens every single door on loop", function(args)
 			local value = ChangeState(args[2],"loopopendoors")
 			if value then
@@ -2737,6 +2782,12 @@ do
 			Temp.CmdsC = false
 		end
 	end)
+	API:CreateCmd("Vereus", "FE Vereus", function(args)
+		loadstring(Game:HttpGetAsync(("https://raw.githubusercontent.com/NoobHubV1/RobloxScripts/main/Vereus.txt")))()
+	end)
+	API:CreateCmd("keyboard", "FE Keyboard", function(args)
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/advxzivhsjjdhxhsidifvsh/mobkeyboard/main/main.txt", true))()
+	end)
 	API:CreateCmd("rejoin", "rejoins the same server (UNLOADS SCRIPT)", function(args)
 		wait(.3)
 		if #game:GetService("Players"):GetPlayers() ==1 then
@@ -2935,48 +2986,20 @@ do
 			API:Notif("AutoInfAmmo has been changed to "..tostring(States.AutoInfAmmo))
 		end
 	end)
-  API:CreateCmd("godmode", "Turns on all settings that prevent you from harm", function(args)
-			local Value = ChangeState(args[2],"Godmode")
-			if Value then
-				States.AntiArrest = true
-				States.AntiTase = true
-				States.AntiFling = true
-				States.antipunch = true
-				States.ShootBack = true
-				States.AutoItems = true
-				States.Antishield = true
-				States.anticrash = true
-				States.AutoRespawn = true
-				wait(.1)
-				API:Refresh(true)
-			else
-				States.AntiArrest = false
-				States.AntiTase = false
-				States.AntiFling = false
-				States.antipunch = false
-				States.ShootBack = false
-				States.AutoItems = false
-				States.Antishield = false
-				States.anticrash = false
-			end
-		end,nil,"[ON/OFF]",true)
-  API:CreateCmd("antifling", "prevents players from flinging you", function(args)
-			local Value = ChangeState(args[2],"AntiFling")
-		end,nil,"[ON/OFF]",true)
   API:CreateCmd("loopmkill", "kills player by teleport loopkill", function(args)
 			local r = API:FindPlayer(args[2])
 			if r and not table.find(Temp.LoopmKilling,r.Name) then
 				table.insert(Temp.LoopmKilling, r.Name)
 				API:Notif("Now loopkilling player")
 			end
-		end,nil,"[PLAYER]",true)
+		end,nil,"[PLAYER]")
 		API:CreateCmd("unloopmkill", "kills player by teleport loopkill", function(args)
 			local r = API:FindPlayer(args[2])
 			if r and table.find(Temp.LoopmKilling,r.Name) then
 				table.remove(Temp.LoopmKilling,table.find(Temp.LoopmKilling,r.Name))
 				API:Notif("Now unloopkilling player")
 			end
-		end,nil,"[PLAYER]",true)
+		end,nil,"[PLAYER]")
   API:CreateCmd("music", "plays sound id in your game", function(args)
 			local r = args[2]
 			if r == "stop" then
@@ -2993,7 +3016,7 @@ do
 				a:Play()
 				Temp.MUSICP = a
 			end
-		end,nil,"[ID] OR [STOP]",true)
+		end,nil,"[ID] OR [STOP]")
   API:CreateCmd("joinlogs", "tells you who is leaving and joining", function(args)
 			local Value = ChangeState(args[2],"joinlogs")
 			if Value then
@@ -3010,7 +3033,7 @@ do
 					Temp.joinning:Disconnect()
 				end)
 			end
-		end,nil,"[ON/OFF]",true)
+		end,nil,"[ON/OFF]")
   API:CreateCmd("unadmin", "Unadmins a player", function(args)
 			local Target = API:FindPlayer(args[2])
 			if Target then
@@ -3020,9 +3043,9 @@ do
 					API:Notif("This player is not an admin!",false)
 				end
 			end
-		end,nil,nil,true)
+		end,nil,"[PLAYER]")
   API:CreateCmd("kick", "!KICKS TIGER ADMIN USERS ONLY! SAY IN CHAT", function(args)
-		end,nil,"[TIGER ADMIN USER]",true)
+		end,nil,"[TIGER ADMIN USER]")
   API:CreateCmd("admin", "The selected player can use certain commands", function(args)
 			local Target = API:FindPlayer(args[2])
 			if Target then
@@ -3035,10 +3058,10 @@ do
 					API:Notif("This player is already an admin!",false)
 				end
 			end
-		end,nil,nil,true)
+		end,nil,"[PLAYER]")
   API:CreateCmd("lag", "lags the server", function(args)
 			API:lag()
-		end,nil,nil,true)
+		end)
   API:CreateCmd("admins", "Tells you all admins", function(args)
 			local Compiled = ""
 			for i,v in pairs(Temp.Admins) do
@@ -3050,7 +3073,7 @@ do
 		end,nil,nil,true)
   API:CreateCmd("crashserver", "Crashes the server", function(args)
 			API:CrashServer()
-		end,nil,nil,true)
+		end)
   API:CreateCmd("lagspike", "Freezes everyones screen for some seconds", function(args)
 			local a = game:GetService("RunService").Stepped:Connect(function()
 				pcall(function()
@@ -3077,22 +3100,7 @@ do
 			task.spawn(function()
 				workspace.Remote.TeamEvent:FireServer("Bright orange")
 			end)
-		end,nil,"",true)
-  API:CreateCmd("oneshot", "Makes a gun oneshot", function(args)
-			ChangeState(args[2],"OneShot")
-		end,nil,"[ON/OFF]",true)
-		API:CreateCmd("anticrash", "Tries to stop simple crashes (DOESNT WORK WITH TIGER ADMIN CRASH)", function(args)
-			local Value = ChangeState(args[2],"anticrash")
-			if Value then
-				pcall(function()
-					game:GetService("Players").LocalPlayer.PlayerScripts.ClientGunReplicator.Disabled = true
-				end)
-			else
-				pcall(function()
-					game:GetService("Players").LocalPlayer.PlayerScripts.ClientGunReplicator.Disabled = false
-				end)
-			end
-		end,nil,"[ON/OFF]",true)
+		end)
   API:CreateCmd("virus", "Anyone who touches the player dies", function(args)
 			local r = API:FindPlayer(args[2])
 			if r and not table.find(Temp.Viruses,r) then
@@ -4201,5 +4209,5 @@ game:GetService("RunService").Heartbeat:Connect(function()
 	end
 end)
 local DefaultChatSystemChatEvents = game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents
-API:Notif("Script Loaded!",nil,true)
+API:Notif("Script Loaded!noinvite to disable discord",nil,true)
 CmdBarFrame:TweenPosition(UDim2.new(0.5, 0, 0.899999998, 0)-UDim2.new(0,0,.05,0),"Out","Back",.5)
