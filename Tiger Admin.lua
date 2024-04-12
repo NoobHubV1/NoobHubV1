@@ -1,14 +1,11 @@
-if game.PlaceId ~= 73885730 then
-
-for i, v in pairs(game:GetService("Workspace"):GetChildren()) do
-			if v.Name == "Part" and v:FindFirstChild("TouchInterest") then
-				firetouchinterest(v, game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, 0)
-			end
-		end
-	else
-		game.Players.LocalPlayer:Kick("Error!Game Not Support")
-	end
-else
+if not getconnections or not hookmetamethod or not getnamecallmethod or not ((getgenv and getgenv()) or _G) then
+	game.Players.LocalPlayer:Kick("Tiger Admin Executor is not supported!")
+end
+if not workspace:FindFirstChild("Criminals Spawn") or not workspace:FindFirstChild("Criminals Spawn"):FindFirstChild("SpawnLocation") then
+	game.Players.LocalPlayer:Kick("Tiger Admin Criminals spawn not found! Please rejoin.")
+end
+game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+if game:FindFirstChild("Tiger_revamp_loaded") then  ((getgenv and getgenv()) or _G)game:GetService("StarterGui"):SetCore("SendNotification", {Title = "Tiger Admin",Text = "Tiger admin is already executed!",Duration = 5,}) return warn("Already loaded") end
 local Player, plr,Folder = game:GetService("Players").LocalPlayer, game:GetService("Players").LocalPlayer,Instance.new("Folder",game)
 local OldHook, hookmetamethod, getnamecallmethod = nil, hookmetamethod, getnamecallmethod
 local HasGamepass,UserInputService = game:GetService("MarketplaceService"):UserOwnsGamePassAsync(Player.UserId, 96651),game:GetService("UserInputService")
