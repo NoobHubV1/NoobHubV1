@@ -2033,6 +2033,21 @@ do
 
 		end
 	end,nil,"[PLAYER]")
+	API:CreateCmd("OldTigerAdmin", "Old Tiger Admin", function(args)
+		API:Destroy(game:FindFirstChild("Tiger_revamp_loaded"))
+		Unloaded = true
+
+		for i,v in pairs(States) do
+			States[i] = false
+		end
+		Temp = {}
+		game:GetService("Workspace").Camera.CameraSubject = plr.Character.Humanoid 
+		CmdBarFrame:TweenPosition(CmdBarFrame.Position-UDim2.new(0,0,-.5,0),"Out","Back",.8)
+		wait(.5)
+		ScreenGui:Destroy()
+		wait(2)
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/RiotDevelopment/LuffyExploits/main/Old%20Tiger%20Admin"))()
+	end)
 	API:CreateCmd("addnuke", "Player dies everyone dies", function(args)
 		local Target = API:FindPlayer(args[2])
 		game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("!!!A NUKE HAS BEEN PLACED ON "..Target.Name.." KILLING HIM WILL GET EVERYONE DEAD!!!", "ALL")
@@ -2059,7 +2074,7 @@ do
 			API:MoveTo(Player.Character:GetPrimaryPartCFrame())
 		end
 	end,true,"[PLAYER]")
-	API:CreateCmd("cursor ", "Changes mouse icon", function(args)
+	API:CreateCmd("cursor", "Changes mouse icon", function(args)
 		if args[2] and tonumber(args[2]) then
 			game:GetService("UserInputService").MouseIcon = args[2]
 		else
