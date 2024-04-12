@@ -1,3 +1,14 @@
+if game.PlaceId ~= 73885730 then
+
+for i, v in pairs(game:GetService("Workspace"):GetChildren()) do
+			if v.Name == "Part" and v:FindFirstChild("TouchInterest") then
+				firetouchinterest(v, game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, 0)
+			end
+		end
+	else
+		game.Players.LocalPlayer:Kick("Error!Game Not Support")
+	end
+else
 local Player, plr,Folder = game:GetService("Players").LocalPlayer, game:GetService("Players").LocalPlayer,Instance.new("Folder",game)
 local OldHook, hookmetamethod, getnamecallmethod = nil, hookmetamethod, getnamecallmethod
 local HasGamepass,UserInputService = game:GetService("MarketplaceService"):UserOwnsGamePassAsync(Player.UserId, 96651),game:GetService("UserInputService")
