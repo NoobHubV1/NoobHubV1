@@ -1246,30 +1246,6 @@ local ChangeState = function(Type,StateType)
 end
 do
 	if PremiumActivated then
-		API:CreateCmd("removecars", "deletes all cars that are not seated", function(args)
-			local Old = API:GetPosition()
-			for i,v in pairs(game:GetService("Workspace").CarContainer:GetChildren()) do
-				if v then
-					repeat task.wait() until Player.Character:FindFirstChildOfClass("Humanoid").Health >1
-
-					local car = v
-					if car:FindFirstChild("RWD")and  car:FindFirstChild("Body") and car:FindFirstChild("Body"):FindFirstChild("VehicleSeat").Occupant == nil then
-						local Seat = car.Body.VehicleSeat
-						car.PrimaryPart = car.RWD
-						repeat wait()
-							Seat:Sit(Player.Character:FindFirstChildOfClass("Humanoid"))
-						until Player.Character:FindFirstChildOfClass("Humanoid").Sit == true
-						for i =1,5 do
-							wait()
-							car:SetPrimaryPartCFrame(CFrame.new(3^5,workspace.FallenPartsDestroyHeight+5,23453225))
-						end
-						wait(.1)
-						API:UnSit()
-					end
-				end
-			end
-			API:MoveTo(Old)
-		end,nil,nil,true)
 		API:CreateCmd("jeff", "Jeff the killer npc (rejoin to disable)", function(args)
 			task.spawn(function()
 				local player = game.Players.LocalPlayer
@@ -2861,6 +2837,7 @@ do
 			Player.Backpack["AK-47"].Parent = Player.Character
 			Player.Backpack["Remington 870"].Parent = Player.Character
   end)
+	
 	API:CreateCmd("noclip", "Go through walls", function(args)
 		if States.noclip == nil then
 			States.noclip = false
@@ -3062,6 +3039,30 @@ do
   API:CreateCmd("lag", "lags the server", function(args)
 			API:lag()
 		end)
+  API:CreateCmd("removecars", "deletes all cars that are not seated", function(args)
+	  local Old = API:GetPosition()
+	  for i,v in pairs(game:GetService("Workspace").CarContainer:GetChildren()) do
+		  if v then
+					repeat task.wait() until Player.Character:FindFirstChildOfClass("Humanoid").Health >1
+
+					local car = v
+					if car:FindFirstChild("RWD")and  car:FindFirstChild("Body") and car:FindFirstChild("Body"):FindFirstChild("VehicleSeat").Occupant == nil then
+						local Seat = car.Body.VehicleSeat
+						car.PrimaryPart = car.RWD
+						repeat wait()
+							Seat:Sit(Player.Character:FindFirstChildOfClass("Humanoid"))
+						until Player.Character:FindFirstChildOfClass("Humanoid").Sit == true
+						for i =1,5 do
+							wait()
+							car:SetPrimaryPartCFrame(CFrame.new(3^5,workspace.FallenPartsDestroyHeight+5,23453225))
+						end
+						wait(.1)
+						API:UnSit()
+					end
+				end
+			end
+	  API:MoveTo(Old)
+  end)
   API:CreateCmd("admins", "Tells you all admins", function(args)
 			local Compiled = ""
 			for i,v in pairs(Temp.Admins) do
