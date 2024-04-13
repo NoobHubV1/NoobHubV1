@@ -2264,7 +2264,7 @@ do
     local value = ChangeState(args[2],"ff")
   end,nil,"[ON/OFF]")
   API:CreateCmd("ff", "Forcefield", function(args)
-    local value = ChangeState(args[2],"ff")
+          local value = ChangeState(args[2],"ff")
   end,true,"[ON/OFF]")
   API:CreateCmd("godmode", "Turns on all settings that prevent you from harm", function(args)
 			local Value = ChangeState(args[2],"Godmode")
@@ -2448,20 +2448,20 @@ do
 		API:MoveTo(Oldc)
 	end)
 
-  API:CreateCmd("refresh", "refreshes your character", function(args)
-	  API:Refresh()
-  end)
-  API:CreateCmd("prefix", "Sets a different prefix", function(args)
-			local New = args[2]
-			if New and tostring(New) then
-				local Prefixn = tostring(New)
-				Settings.Prefix = Prefixn
-				API:Notif("prefix set to "..New)
-			else
-				API:Notif("no prefix selected?",false)
-			end
-  end,nil,"[NEW PREFIX]")
-  API:CreateCmd("opendoors", "Opens every single door", function(args)
+        API:CreateCmd("refresh", "refreshes your character", function(args)
+	        API:Refresh()
+        end)
+        API:CreateCmd("prefix", "Sets a different prefix", function(args)
+		local New = args[2]
+		if New and tostring(New) then
+			local Prefixn = tostring(New)
+			Settings.Prefix = Prefixn
+			API:Notif("prefix set to "..New)
+		else
+			API:Notif("no prefix selected?",false)
+		end
+        end,nil,"[NEW PREFIX]")
+        API:CreateCmd("opendoors", "Opens every single door", function(args)
 			if not firetouchinterest then
 				return API:Notif("Your exploit doesnt support this command!",false)
 			end
@@ -2484,7 +2484,7 @@ do
 			wait(1)
 			API:ChangeTeam(LastTeam)
 	end)
-  API:CreateCmd("loopopendoors", "Opens every single door on loop", function(args)
+        API:CreateCmd("loopopendoors", "Opens every single door on loop", function(args)
 			local value = ChangeState(args[2],"loopopendoors")
 			if value then
 				while wait(2.4) do
@@ -2520,9 +2520,9 @@ do
 					API:ChangeTeam(LastTeam)
 				end
 			end
-  end,nil,"[ON/OFF]")
-  API:CreateCmd("od", "Opens every single door", function(args)
-			if not firetouchinterest then
+        end,nil,"[ON/OFF]")
+        API:CreateCmd("od", "Opens every single door", function(args)
+		if not firetouchinterest then
 				return API:Notif("Your exploit doesnt support this command!",false)
 			end
 			local LastTeam =plr.Team
@@ -2543,8 +2543,8 @@ do
 			end
 			wait(1)
 			API:ChangeTeam(LastTeam)
-  end,true)
-  API:CreateCmd("lod", "Opens every single door on loop", function(args)
+         end,true)
+         API:CreateCmd("lod", "Opens every single door on loop", function(args)
 			local value = ChangeState(args[2],"loopopendoors")
 			if value then
 				while wait(2) do
@@ -2623,7 +2623,7 @@ do
 	API:CreateCmd("ak", "Gets a ak-47", function(args)
 		API:GetGun("AK-47")
 	end)
-  API:CreateCmd("minigun", "makes a minigun", function(args)
+        API:CreateCmd("minigun", "makes a minigun", function(args)
 			API:GetGun("AK-47")
 			wait(.7)
 			local Tool = plr.Backpack:FindFirstChildOfClass("Tool")
@@ -2654,7 +2654,7 @@ do
 			plr.Backpack:WaitForChild("Remington 870").Parent = plr.Character
 			wait(.4)
 			plr.Backpack:WaitForChild("AK-47").Parent = plr.Character
-  end)
+        end)
 	API:CreateCmd("AutoShotgun", "Loop gets a shotgun", function(args)
 		local value = ChangeState(args[2],"AutoShotgun")
 	end,nil,"[ON/OFF]")
@@ -2848,7 +2848,7 @@ do
 	API:CreateCmd("items", "Gets every single gun", function(args)
 		API:AllGuns()
 	end)
-  API:CreateCmd("pp", "sus", function(args)
+        API:CreateCmd("pp", "sus", function(args)
 			API:AllGuns()
 			wait(1)
 			for i,v in pairs(Player.Character:GetChildren()) do
@@ -2873,7 +2873,7 @@ do
 			Player.Backpack.M9.Parent = Player.Character
 			Player.Backpack["AK-47"].Parent = Player.Character
 			Player.Backpack["Remington 870"].Parent = Player.Character
-  end)
+        end)
 	
 	API:CreateCmd("noclip", "Go through walls", function(args)
 		if States.noclip == nil then
@@ -2912,7 +2912,7 @@ do
 		API:Refresh(true)
 		API:Notif("Noclip disabled")
 	end)
-  API:CreateCmd("mkill", "kills player by teleport", function(args)
+        API:CreateCmd("mkill", "kills player by teleport", function(args)
 			    local r = API:FindPlayer(args[2])
 			    if r then
 				          API:MKILL(r)
@@ -3000,21 +3000,21 @@ do
 			API:Notif("AutoInfAmmo has been changed to "..tostring(States.AutoInfAmmo))
 		end
 	end)
-  API:CreateCmd("loopmkill", "kills player by teleport loopkill", function(args)
+        API:CreateCmd("loopmkill", "kills player by teleport loopkill", function(args)
 			local r = API:FindPlayer(args[2])
 			if r and not table.find(Temp.LoopmKilling,r.Name) then
 				table.insert(Temp.LoopmKilling, r.Name)
 				API:Notif("Now loopkilling player")
 			end
-		end,nil,"[PLAYER]")
-		API:CreateCmd("unloopmkill", "kills player by teleport loopkill", function(args)
+	end,nil,"[PLAYER]")
+	API:CreateCmd("unloopmkill", "kills player by teleport loopkill", function(args)
 			local r = API:FindPlayer(args[2])
 			if r and table.find(Temp.LoopmKilling,r.Name) then
 				table.remove(Temp.LoopmKilling,table.find(Temp.LoopmKilling,r.Name))
 				API:Notif("Now unloopkilling player")
 			end
-		end,nil,"[PLAYER]")
-  API:CreateCmd("music", "plays sound id in your game", function(args)
+	end,nil,"[PLAYER]")
+        API:CreateCmd("music", "plays sound id in your game", function(args)
 			local r = args[2]
 			if r == "stop" then
 				if Temp.MUSICP then
@@ -3030,8 +3030,8 @@ do
 				a:Play()
 				Temp.MUSICP = a
 			end
-		end,nil,"[ID] OR [STOP]")
-  API:CreateCmd("joinlogs", "tells you who is leaving and joining", function(args)
+	end,nil,"[ID] OR [STOP]")
+        API:CreateCmd("joinlogs", "tells you who is leaving and joining", function(args)
 			local Value = ChangeState(args[2],"joinlogs")
 			if Value then
 				Temp.joinning = game:GetService("Players").PlayerAdded:Connect(function(a)
@@ -3047,8 +3047,8 @@ do
 					Temp.joinning:Disconnect()
 				end)
 			end
-		end,nil,"[ON/OFF]")
-  API:CreateCmd("unadmin", "Unadmins a player", function(args)
+	end,nil,"[ON/OFF]")
+        API:CreateCmd("unadmin", "Unadmins a player", function(args)
 			local Target = API:FindPlayer(args[2])
 			if Target then
 				if table.find(Temp.Admins,Target.Name) then
@@ -3057,10 +3057,10 @@ do
 					API:Notif("This player is not an admin!",false)
 				end
 			end
-		end,nil,"[PLAYER]")
-  API:CreateCmd("kick", "!KICKS TIGER ADMIN USERS ONLY! SAY IN CHAT", function(args)
-		end,nil,"[TIGER ADMIN USER]")
-  API:CreateCmd("admin", "The selected player can use certain commands", function(args)
+	end,nil,"[PLAYER]")
+        API:CreateCmd("kick", "!KICKS TIGER ADMIN USERS ONLY! SAY IN CHAT", function(args)
+	end,nil,"[TIGER ADMIN USER]")
+        API:CreateCmd("admin", "The selected player can use certain commands", function(args)
 			local Target = API:FindPlayer(args[2])
 			if Target then
 				if not table.find(Temp.Admins,Target.Name) then
@@ -3072,12 +3072,12 @@ do
 					API:Notif("This player is already an admin!",false)
 				end
 			end
-		end,nil,"[PLAYER]")
-  API:CreateCmd("lag", "lags the server", function(args)
+	end,nil,"[PLAYER]")
+        API:CreateCmd("lag", "lags the server", function(args)
 			API:lag()
-		end)
-  API:CreateCmd("removecars", "deletes all cars that are not seated", function(args)
-	  local Old = API:GetPosition()
+        end)
+        API:CreateCmd("removecars", "deletes all cars that are not seated", function(args)
+	        local Old = API:GetPosition()
 	  for i,v in pairs(game:GetService("Workspace").CarContainer:GetChildren()) do
 		  if v then
 					repeat task.wait() until Player.Character:FindFirstChildOfClass("Humanoid").Health >1
@@ -3099,8 +3099,8 @@ do
 				end
 			end
 	  API:MoveTo(Old)
-  end)
-  API:CreateCmd("admins", "Tells you all admins", function(args)
+        end)
+        API:CreateCmd("admins", "Tells you all admins", function(args)
 			local Compiled = ""
 			for i,v in pairs(Temp.Admins) do
 				if v then
@@ -3108,11 +3108,11 @@ do
 				end
 			end
 			API:Notif("Admins: "..Compiled,4)
-		end,nil,nil,true)
-  API:CreateCmd("crashserver", "Crashes the server", function(args)
+	end)
+        API:CreateCmd("crashserver", "Crashes the server", function(args)
 			API:CrashServer()
-		end)
-  API:CreateCmd("lagspike", "Freezes everyones screen for some seconds", function(args)
+	end)
+        API:CreateCmd("lagspike", "Freezes everyones screen for some seconds", function(args)
 			local a = game:GetService("RunService").Stepped:Connect(function()
 				pcall(function()
 					plr.Character:Destroy()
@@ -3138,21 +3138,21 @@ do
 			task.spawn(function()
 				workspace.Remote.TeamEvent:FireServer("Bright orange")
 			end)
-		end)
-  API:CreateCmd("virus", "Anyone who touches the player dies", function(args)
+	end)
+        API:CreateCmd("virus", "Anyone who touches the player dies", function(args)
 			local r = API:FindPlayer(args[2])
 			if r and not table.find(Temp.Viruses,r) then
 				table.insert(Temp.Viruses, r)
 				API:Notif("Player now has covid-19")
 			end
-		end,nil,"[PLAYER]",true)
-		API:CreateCmd("unvirus", "Removes virus from player", function(args)
+	end,nil,"[PLAYER]",true)
+	API:CreateCmd("unvirus", "Removes virus from player", function(args)
 			local r = API:FindPlayer(args[2])
 			if r and table.find(Temp.Viruses,r) then
 				table.remove(Temp.Viruses,table.find(Temp.Viruses,r))
 				API:Notif("Removed covid-19 from player")
 			end
-		end,nil,"[PLAYER]",true)
+	end,nil,"[PLAYER]",true)
 	API:CreateCmd("unload", "Destroys the script unloading it", function(args)
 		API:Destroy(game:FindFirstChild("Tiger_revamp_loaded"))
 		Unloaded = true
