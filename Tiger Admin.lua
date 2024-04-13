@@ -765,7 +765,7 @@ function API:ChangeTeam(TeamPath,NoForce,Pos)
 		until plr.Team == game:GetService("Teams").Criminals
 		game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1].CFrame = CFrame.new(0, 3125, 0)
 	else
-		if TeamPath == game.Teams.Neutral then
+		if TeamPath == game.Teams.Neutrals then
 			workspace['Remote']['TeamEvent']:FireServer("Bright orange")
 		else
 			if not TeamPath or not TeamPath.TeamColor then
@@ -890,15 +890,15 @@ function API:killall(TeamToKill)
 	if not TeamToKill then
 		local LastTeam = Player.Team
 		local BulletTable = {}
-		if Player.Team ~= game.Teams.Criminals then
-			API:ChangeTeam(game.Teams.Criminals,true)
+		if Player.Team ~= game.Teams.Neutrals then
+			API:ChangeTeam(game.Teams.Neutrals,true)
 		end
 		API:GetGun("Remington 870")
 		local Gun = Player.Backpack:FindFirstChild("Remington 870") or Player.Character:FindFirstChild("Remington 870")
 		repeat API:swait() Gun = Player.Backpack:FindFirstChild("Remington 870") or Player.Character:FindFirstChild("Remington 870") until Gun
 
 		for i,v in pairs(game:GetService("Players"):GetPlayers()) do
-			if v and v~=Player  and v.Team == game.Teams.Inmates or v.Team == game.Teams.Guards and not table.find(API.Whitelisted,v)  then
+			if v and v~=Player  and v.Team == game.Teams.Inmates or v.Team == game.Teams.Guards or v.Team == game.Teams.Criminals and not table.find(API.Whitelisted,v)  then
 				for i =1,15 do
 					BulletTable[#BulletTable + 1] = {
 						["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),
@@ -931,13 +931,13 @@ function API:killall(TeamToKill)
 			API:ChangeTeam(LastTeam,true)
 		end
 	elseif TeamToKill then
-		if TeamToKill == game.Teams.Inmates or TeamToKill == game.Teams.Guards  then
+		if TeamToKill == game.Teams.Inmates or TeamToKill == game.Teams.Guards or TeamToKill == game.Teams.Criminals then
+			if Player.Team ~= game.Teams.Neutrals then
+				API:ChangeTeam(game.Teams.Neutrals)
+			end
+		elseif TeamToKill == game.Teams.Neutrals then
 			if Player.Team ~= game.Teams.Criminals then
 				API:ChangeTeam(game.Teams.Criminals)
-			end
-		elseif TeamToKill == game.Teams.Criminals then
-			if Player.Team ~= game.Teams.Inmates then
-				API:ChangeTeam(game.Teams.Inmates)
 			end
 		end
 		local BulletTable = {}
@@ -957,7 +957,7 @@ function API:killall(TeamToKill)
 		repeat task.wait() Gun = Player.Backpack:FindFirstChild("M9") or Player.Character:FindFirstChild("M9") until Gun
 
 		task.spawn(function()
-			game:GetService("ReplicatedStorage").ShootEvent:FireServer(BulletTable, Gun)
+			game.ReplicatedStorage.ShootEvent:FireServer(BulletTable, Gun)
 		end)
 	end
 end
@@ -1683,6 +1683,8 @@ do
 			API:killall(game.Teams.Inmates)
 		elseif args[2] == "criminals" then
 			API:killall(game.Teams.Criminals)
+		elseif args[2] == "neutrals" then
+			API:killall(game.Teams.Neutrals)
 		elseif args[2] == "random" then
 			local random = nil
 			while true do
@@ -2309,7 +2311,7 @@ do
 			local Value = ChangeState(args[2],"AntiFling")
 		end,nil,"[ON/OFF]")
 	API:CreateCmd("neutral", "Changes your team to Neutral", function(args)
-		API:ChangeTeam(game.Teams.Neutral,true)
+		API:ChangeTeam(game.Teams.Neutrals,true)
 	end)
 	API:CreateCmd("inmate", "Changes your team to inmate", function(args)
 		API:ChangeTeam(game.Teams.Inmates,true)
