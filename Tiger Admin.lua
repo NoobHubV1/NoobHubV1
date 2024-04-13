@@ -910,7 +910,7 @@ function API:killall(TeamToKill)
 		task.spawn(function()
 			game:GetService("ReplicatedStorage").ShootEvent:FireServer(BulletTable, Gun)
 		end)
-		API:ChangeTeam(game.Teams.Inmates,true)
+		API:ChangeTeam(game.Teams.Neutrals,true)
 		API:GetGun("Remington 870")
 		repeat API:swait() Gun = Player.Backpack:FindFirstChild("Remington 870") or Player.Character:FindFirstChild("Remington 870") until Gun
 		local Gun = Player.Backpack:FindFirstChild("Remington 870") or Player.Character:FindFirstChild("Remington 870")
@@ -927,7 +927,7 @@ function API:killall(TeamToKill)
 		task.spawn(function()
 			game:GetService("ReplicatedStorage").ShootEvent:FireServer(BulletTable, Gun)
 		end)
-		if LastTeam ~= game.Teams.Inmates then
+		if LastTeam ~= game.Teams.Neutrals then
 			API:ChangeTeam(LastTeam,true)
 		end
 	elseif TeamToKill then
@@ -959,6 +959,7 @@ function API:killall(TeamToKill)
 		task.spawn(function()
 			game.ReplicatedStorage.ShootEvent:FireServer(BulletTable, Gun)
 		end)
+		API:ChangeTeam(game.Teams.Inmates)
 	end
 end
 function API:GuardsFull(a)
