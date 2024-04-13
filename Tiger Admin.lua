@@ -766,7 +766,7 @@ function API:ChangeTeam(TeamPath,NoForce,Pos)
 		game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1].CFrame = CFrame.new(0, 3125, 0)
 	else
 		if TeamPath == game.Teams.Neutrals then
-			workspace['Remote']['TeamEvent']:FireServer("Bright orange")
+			workspace['Remote']['TeamEvent']:FireServer("Bright grey")
 		else
 			if not TeamPath or not TeamPath.TeamColor then
 				workspace['Remote']['TeamEvent']:FireServer("Bright orange")
@@ -914,7 +914,7 @@ function API:killall(TeamToKill)
 		API:GetGun("Remington 870")
 		repeat API:swait() Gun = Player.Backpack:FindFirstChild("Remington 870") or Player.Character:FindFirstChild("Remington 870") until Gun
 		local Gun = Player.Backpack:FindFirstChild("Remington 870") or Player.Character:FindFirstChild("Remington 870")
-		for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
+		for i,v in pairs(game.Teams.Neutrals:GetPlayers()) do
 			if v and v~=Player and not table.find(API.Whitelisted,v) then
 				for i =1,15 do
 					BulletTable[#BulletTable + 1] = {
