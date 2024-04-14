@@ -935,9 +935,9 @@ function API:killall(TeamToKill)
 			if Player.Team ~= game.Teams.Neutrals then
 				API:ChangeTeam(game.Teams.Neutrals)
 			end
-		elseif TeamToKill == game.Teams.Neutrals then
-			if Player.Team ~= game.Teams.Criminals then
-				API:ChangeTeam(game.Teams.Criminals)
+		elseif TeamToKill == game.Teams.Neutral then
+			if Player.Team ~= game.Teams.Inmates then
+				API:ChangeTeam(game.Teams.Inmates)
 			end
 		end
 		local BulletTable = {}
@@ -1157,7 +1157,7 @@ plr.CharacterAdded:Connect(function(NewCharacter)
 	end
 	task.spawn(function()
 		if States.AutoItems then
-			wait(.5)
+			wait()
 			API:AllGuns()
 		end
 	end)
@@ -1685,7 +1685,7 @@ do
 		elseif args[2] == "criminals" then
 			API:killall(game.Teams.Criminals)
 		elseif args[2] == "neutrals" then
-			API:killall(game.Teams.Neutrals)
+			API:killall(game.Teams.Neutral)
 		elseif args[2] == "random" then
 			local random = nil
 			while true do
