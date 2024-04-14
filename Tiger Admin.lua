@@ -3,6 +3,7 @@ local OldHook, hookmetamethod, getnamecallmethod = nil, hookmetamethod, getnamec
 local HasGamepass,UserInputService = game:GetService("MarketplaceService"):UserOwnsGamePassAsync(Player.UserId, 96651),game:GetService("UserInputService")
 local GlobalVar = ((getgenv and getgenv()) or _G)
 local Unloaded = false
+local ScriptLoaded = false
 local CriminalCFRAME = workspace["Criminals Spawn"].SpawnLocation.CFrame
 local API_Prem = loadstring(game:HttpGet("https://raw.githubusercontent.com/dalloc2/Roblox/main/Listing.lua"))()
 local PremiumActivated = API_Prem.CheckPremium()
@@ -4263,5 +4264,6 @@ game:GetService("RunService").Heartbeat:Connect(function()
 	end
 end)
 local DefaultChatSystemChatEvents = game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents
-API:Notif("Script Loaded!noinvite to disable discord",nil,true)
+API:Notif("Script Loaded!noinvite to disable discord",nil,false)
+local ScriptLoaded = true
 CmdBarFrame:TweenPosition(UDim2.new(0.5, 0, 0.899999998, 0)-UDim2.new(0,0,.05,0),"Out","Back",.5)
