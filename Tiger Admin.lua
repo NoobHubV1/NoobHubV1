@@ -4264,6 +4264,6 @@ game:GetService("RunService").Heartbeat:Connect(function()
 	end
 end)
 local DefaultChatSystemChatEvents = game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents
-API:Notif("Script Loaded!noinvite to disable discord",nil,false)
+API:Notif("Script Loaded!noinvite to disable discord",nil,true)
 local ScriptLoaded = true
 CmdBarFrame:TweenPosition(UDim2.new(0.5, 0, 0.899999998, 0)-UDim2.new(0,0,.05,0),"Out","Back",.5)
