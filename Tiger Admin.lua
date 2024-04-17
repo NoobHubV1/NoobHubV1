@@ -7,6 +7,27 @@ local ScriptLoaded = false
 local CriminalCFRAME = workspace["Criminals Spawn"].SpawnLocation.CFrame
 local API_Prem = loadstring(game:HttpGet("https://raw.githubusercontent.com/dalloc2/Roblox/main/Listing.lua"))()
 local PremiumActivated = API_Prem.CheckPremium()
+local OrionLib = loadstring(Game:HttpGetAsync(("https://raw.githubusercontent.com/NoobHubV1/RobloxScripts/main/OrionLib.lua")))()
+
+local function Notify(Name, Content, Time)
+	OrionLib:MakeNotification({
+		Name = Name,
+		Content = Content,
+		Icon = "rbxassetid://4483345998",
+		Time = Time
+	})
+end
+Notify("NoobHubV1 Hub", "Loading Script.", 3)
+
+        wait(3)
+
+Notify("NoobHubV1 Hub", "Loading Script..", 3)
+
+        wait(3)
+
+Notify("NoobHubV1 Hub", "Loading Script...", 3)
+
+        wait(3)
 
 local Temp = {}
 local API = {}
@@ -4281,6 +4302,6 @@ game:GetService("RunService").Heartbeat:Connect(function()
 	end
 end)
 local DefaultChatSystemChatEvents = game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents
-API:Notif("Script Loaded!noinvite to disable discord",nil,true)
+API:Notif("Script Loaded!noinvite to disabled discord")
 local ScriptLoaded = true
 CmdBarFrame:TweenPosition(UDim2.new(0.5, 0, 0.899999998, 0)-UDim2.new(0,0,.05,0),"Out","Back",.5)
