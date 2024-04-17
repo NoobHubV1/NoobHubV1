@@ -375,6 +375,7 @@ do
 	States.AutoAk = false
 	States.AutoM9 = false
 	States.AutoM4A1 = false
+	States.AutoFastFire = false
 	States.ClickKill = false
 	States.ClickArrest = false
 	States.AntiTase = false
@@ -2947,6 +2948,9 @@ do
 			API:Notif("You need to hold the tool you want to mod!",false)
 		end
 	end)
+	API:CreateCmd("AutoFastFire", "hold a tool to mod your gun", function(args)
+		local value = ChangeState(args[2],"AutoFastFire")
+	end,nil,"[ON/OFF]")
 	API:CreateCmd("infammo", "hold a tool to mod your gun", function(args)
 		if plr.Character:FindFirstChildOfClass("Tool") then
 			local Tool = plr.Character:FindFirstChildOfClass("Tool")
@@ -3594,6 +3598,19 @@ coroutine.wrap(function()
 			if States.AutoM4A1 then
 				wait()
 				API:GetGun("M4A1")
+			end
+			if States.AutoFastFire then
+				wait()
+				if plr.Character:FindFirstChildOfClass("Tool") then
+			local Tool = plr.Character:FindFirstChildOfClass("Tool")
+			if not Tool:FindFirstChild("GunStates") then
+				return API:Notif("Needs to be a gun!",false)
+			end
+			local cc = require(Tool.GunStates)
+			cc["FireRate"] = 0.001
+			table.insert(Reload_Guns, Tool)
+			Player.Character:FindFirstChildOfClass("Humanoid"):UnequipTools()
+			        end
 			end
 		end)()
 		coroutine.wrap(function()
