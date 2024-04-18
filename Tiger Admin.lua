@@ -1,12 +1,3 @@
-if game.PlaceId ~= 73885730 then
-	for i, v in pairs(game:GetService("Workspace"):GetChildren()) do
-			if v.Name == "Part" and v:FindFirstChild("TouchInterest") then
-				firetouchinterest(v, game:GetService("Players").LocalPlayer.Character.HumanoidRootPart, 0)
-			end
-		end
-	else
-		game.Players.LocalPlayer:Kick("Error! Game Not Support")
-else
 local OrionLib = loadstring(Game:HttpGetAsync(("https://raw.githubusercontent.com/NoobHubV1/RobloxScripts/main/OrionLib.lua")))()
 
 local function Notify(Name, Content, Time)
