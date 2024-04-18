@@ -1,3 +1,25 @@
+local OrionLib = loadstring(Game:HttpGetAsync(("https://raw.githubusercontent.com/NoobHubV1/RobloxScripts/main/OrionLib.lua")))()
+
+local function Notify(Name, Content, Time)
+	OrionLib:MakeNotification({
+		Name = Name,
+		Content = Content,
+		Image = "rbxassetid://4483345998",
+		Time = Time
+	})
+end
+Notify("NoobHubV1 Hub", "Tiger Admin Loading Script.", 3)
+
+        wait(3)
+
+Notify("NoobHubV1 Hub", "Tiger Admin Loading Script..", 3)
+
+        wait(3)
+
+Notify("NoobHubV1 Hub", "Tiger Admin Loading Script...", 3)
+
+        wait(3)
+
 local Player, plr,Folder = game:GetService("Players").LocalPlayer, game:GetService("Players").LocalPlayer,Instance.new("Folder",game)
 local OldHook, hookmetamethod, getnamecallmethod = nil, hookmetamethod, getnamecallmethod
 local HasGamepass,UserInputService = game:GetService("MarketplaceService"):UserOwnsGamePassAsync(Player.UserId, 96651),game:GetService("UserInputService")
@@ -7,27 +29,6 @@ local ScriptLoaded = false
 local CriminalCFRAME = workspace["Criminals Spawn"].SpawnLocation.CFrame
 local API_Prem = loadstring(game:HttpGet("https://raw.githubusercontent.com/dalloc2/Roblox/main/Listing.lua"))()
 local PremiumActivated = API_Prem.CheckPremium()
-local OrionLib = loadstring(Game:HttpGetAsync(("https://raw.githubusercontent.com/NoobHubV1/RobloxScripts/main/OrionLib.lua")))()
-
-local function Notify(Name, Content, Time)
-	OrionLib:MakeNotification({
-		Name = Name,
-		Content = Content,
-		Icon = "rbxassetid://4483345998",
-		Time = Time
-	})
-end
-Notify("NoobHubV1 Hub", "Loading Script.", 3)
-
-        wait(3)
-
-Notify("NoobHubV1 Hub", "Loading Script..", 3)
-
-        wait(3)
-
-Notify("NoobHubV1 Hub", "Loading Script...", 3)
-
-        wait(3)
 
 local Temp = {}
 local API = {}
