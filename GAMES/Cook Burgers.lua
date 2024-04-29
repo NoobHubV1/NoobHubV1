@@ -538,7 +538,7 @@ Sit.TextSize = 23.000
 UICorner_21.CornerRadius = UDim.new(0, 4)
 UICorner_21.Parent = Sit
 
-Kick.Name = "Sit"
+Kick.Name = "Kick"
 Kick.Parent = ScrollingFrame
 Kick.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
 Kick.BackgroundTransparency = 0.500
@@ -547,7 +547,7 @@ Kick.Position = UDim2.new(0.0351677425, 0, 0.190713778, 0)
 Kick.Size = UDim2.new(0, 131, 0, 40)
 Kick.ZIndex = 3
 Kick.Font = Enum.Font.SourceSansLight
-Kick.Text = "Sit"
+Kick.Text = "Kick"
 Kick.TextColor3 = Color3.fromRGB(255, 255, 255)
 Kick.TextSize = 23.000
 
