@@ -889,7 +889,7 @@ local function DoCommand(Command)
 								Remote:FireServer(Part,lp)
 							end
 						end
-						player:Kick("Admin Kick You")
+						player:Kick(("Admin Kick You"))
 					end
 				end
 			end)
