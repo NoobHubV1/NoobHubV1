@@ -37,6 +37,7 @@ print([[
 	.fix | Refresh the server
 	.slave (Plr) | Make a player follow you until they get to you
 	.jail (Plr) | Lock a player until they reset
+	.refresh | you refresh
 \\
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -664,6 +665,8 @@ local function DoCommand(Command)
 			game:GetService('TeleportService'):TeleportToPlaceInstance(game.PlaceId, game.JobId, lp)
 		elseif (string.sub(Command,1,#".cmds") == ".cmds") then
 			game:GetService("StarterGui"):SetCore("SendNotification", {Title = ("Cook burgers admin");Text = ("The commands are listed in the console! \n Press F9 to view");})
+		elseif (string.sub(Command,1,#".refresh") == ".refresh") or (string.sub(Command,1,#".re") == ".re") then
+			game.ReplicatedStorage.Events.Player.SpawnRequestEvent:FireServer()
 		elseif (string.sub(Command,1,#".netclaim") == ".netclaim") then
 			for i = 1,3 do
 				pcall(function()
