@@ -104,13 +104,15 @@ local Orbit = Instance.new("TextButton")
 local UICorner_19 = Instance.new("UICorner")
 local Goto = Instance.new("TextButton")
 local UICorner_20 = Instance.new("UICorner")
-local target = Instance.new("TextBox")
+local Sit = Instance.new("TextButton")
 local UICorner_21 = Instance.new("UICorner")
+local target = Instance.new("TextBox")
+local UICorner_22 = Instance.new("UICorner")
 local UIGradient_2 = Instance.new("UIGradient")
 local Refresh = Instance.new("TextButton")
-local UICorner_22 = Instance.new("UICorner")
-local search = Instance.new("TextBox")
 local UICorner_23 = Instance.new("UICorner")
+local search = Instance.new("TextBox")
+local UICorner_24 = Instance.new("UICorner")
 
 --Properties:
 
@@ -516,6 +518,22 @@ Goto.TextSize = 23.000
 UICorner_20.CornerRadius = UDim.new(0, 4)
 UICorner_20.Parent = Goto
 
+Sit.Name = "Sit"
+Sit.Parent = ScrollingFrame
+Sit.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
+Sit.BackgroundTransparency = 0.500
+Sit.BorderSizePixel = 0
+Sit.Position = UDim2.new(0.0351677425, 0, 0.190713778, 0)
+Sit.Size = UDim2.new(0, 131, 0, 40)
+Sit.ZIndex = 3
+Sit.Font = Enum.Font.SourceSansLight
+Sit.Text = "Sit"
+Sit.TextColor3 = Color3.fromRGB(255, 255, 255)
+Sit.TextSize = 23.000
+
+UICorner_21.CornerRadius = UDim.new(0, 4)
+UICorner_21.Parent = Sit
+
 target.Name = "target"
 target.Parent = Main
 target.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
@@ -528,8 +546,8 @@ target.Text = ""
 target.TextColor3 = Color3.fromRGB(255, 255, 255)
 target.TextSize = 23.000
 
-UICorner_21.CornerRadius = UDim.new(0, 4)
-UICorner_21.Parent = target
+UICorner_22.CornerRadius = UDim.new(0, 4)
+UICorner_22.Parent = target
 
 UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(122, 122, 122))}
 UIGradient_2.Rotation = 90
@@ -547,8 +565,8 @@ Refresh.TextColor3 = Color3.fromRGB(255, 255, 255)
 Refresh.TextSize = 26.000
 Refresh.TextWrapped = true
 
-UICorner_22.CornerRadius = UDim.new(0, 4)
-UICorner_22.Parent = Refresh
+UICorner_23.CornerRadius = UDim.new(0, 4)
+UICorner_23.Parent = Refresh
 
 search.Name = "search"
 search.Parent = Main
@@ -562,8 +580,8 @@ search.Text = ""
 search.TextColor3 = Color3.fromRGB(255, 255, 255)
 search.TextSize = 23.000
 
-UICorner_23.CornerRadius = UDim.new(0, 4)
-UICorner_23.Parent = search
+UICorner_24.CornerRadius = UDim.new(0, 4)
+UICorner_24.Parent = search
 
 local UserInputService = game:GetService("UserInputService")
 local dragging,dragInput,dragStart,startPos
@@ -814,16 +832,30 @@ local function DoCommand(Command)
 				end
 			end)
 		elseif (string.sub(Command,1,#".kill") == ".kill") then
-			local player = getPlayer(string.sub(Command,#".bring" + 2))
+			local player = getPlayer(string.sub(Command,#".kill" + 2))
 			pcall(function()
 				if (player ~= nil and player.Character ~= nil) then
 					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
 						for _, Part in pairs(player.Character:GetDescendants()) do
 							if (Part:IsA("BasePart")) then
 								Remote:FireServer(Part,lp)
-								Part.Position = Vector3.new(3208.08, 360.516, 265.241)
 							end
 						end
+						player.Character.Humanoid.Health = (0)
+					end
+				end
+			end)
+		elseif (string.sub(Command,1,#".sit") == ".sit") then
+			local player = getPlayer(string.sub(Command,#".sit" + 2))
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						player.Character.Humanoid.Sit = (true)
 					end
 				end
 			end)
