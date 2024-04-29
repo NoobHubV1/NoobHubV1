@@ -40,6 +40,7 @@ print([[
 	.refresh | you refresh
 	.sit (Plr) | Sit a player
 	.kick (Plr) |Kick a player
+	.void (Plr) |teleports the player to the void
 \\
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -110,13 +111,15 @@ local Sit = Instance.new("TextButton")
 local UICorner_21 = Instance.new("UICorner")
 local Kick = Instance.new("TextButton")
 local UICorner_22 = Instance.new("UICorner")
-local target = Instance.new("TextBox")
+local Void = Instance.new("TextButton")
 local UICorner_23 = Instance.new("UICorner")
+local target = Instance.new("TextBox")
+local UICorner_24 = Instance.new("UICorner")
 local UIGradient_2 = Instance.new("UIGradient")
 local Refresh = Instance.new("TextButton")
-local UICorner_24 = Instance.new("UICorner")
-local search = Instance.new("TextBox")
 local UICorner_25 = Instance.new("UICorner")
+local search = Instance.new("TextBox")
+local UICorner_26 = Instance.new("UICorner")
 
 --Properties:
 
@@ -554,6 +557,22 @@ Kick.TextSize = 23.000
 UICorner_22.CornerRadius = UDim.new(0, 4)
 UICorner_22.Parent = Kick
 
+Void.Name = "Void"
+Void.Parent = ScrollingFrame
+Void.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
+Void.BackgroundTransparency = 0.500
+Void.BorderSizePixel = 0
+Void.Position = UDim2.new(0.0351677425, 0, 0.190713778, 0)
+Void.Size = UDim2.new(0, 131, 0, 40)
+Void.ZIndex = 3
+Void.Font = Enum.Font.SourceSansLight
+Void.Text = "Void"
+Void.TextColor3 = Color3.fromRGB(255, 255, 255)
+Void.TextSize = 23.000
+
+UICorner_23.CornerRadius = UDim.new(0, 4)
+UICorner_23.Parent = Void
+
 target.Name = "target"
 target.Parent = Main
 target.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
@@ -566,8 +585,8 @@ target.Text = ""
 target.TextColor3 = Color3.fromRGB(255, 255, 255)
 target.TextSize = 23.000
 
-UICorner_23.CornerRadius = UDim.new(0, 4)
-UICorner_23.Parent = target
+UICorner_24.CornerRadius = UDim.new(0, 4)
+UICorner_24.Parent = target
 
 UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(122, 122, 122))}
 UIGradient_2.Rotation = 90
@@ -585,8 +604,8 @@ Refresh.TextColor3 = Color3.fromRGB(255, 255, 255)
 Refresh.TextSize = 26.000
 Refresh.TextWrapped = true
 
-UICorner_24.CornerRadius = UDim.new(0, 4)
-UICorner_24.Parent = Refresh
+UICorner_25.CornerRadius = UDim.new(0, 4)
+UICorner_25.Parent = Refresh
 
 search.Name = "search"
 search.Parent = Main
@@ -600,8 +619,8 @@ search.Text = ""
 search.TextColor3 = Color3.fromRGB(255, 255, 255)
 search.TextSize = 23.000
 
-UICorner_25.CornerRadius = UDim.new(0, 4)
-UICorner_25.Parent = search
+UICorner_26.CornerRadius = UDim.new(0, 4)
+UICorner_26.Parent = search
 
 local UserInputService = game:GetService("UserInputService")
 local dragging,dragInput,dragStart,startPos
@@ -890,6 +909,20 @@ local function DoCommand(Command)
 							end
 						end
 						player:Kick(("Admin Kick You"))
+					end
+				end
+			end)
+		elseif (string.sub(Command,1,#".void") == ".void") then
+			local player = getPlayer(string.sub(Command,#".kill" + 2))
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						player.Character.HumanoidRootPart.CFrame = CFrame.new(2^7,5^34,4^7)
 					end
 				end
 			end)
