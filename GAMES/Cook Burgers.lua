@@ -38,7 +38,6 @@ print([[
 	.slave (Plr) | Make a player follow you until they get to you
 	.jail (Plr) | Lock a player until they reset
 	.refresh | you refresh
-	.blackhole | black hole
 \\
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
