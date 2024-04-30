@@ -681,6 +681,79 @@ function getPlayer(Player)
 	return findPlayer(Player)
 end
 
+function GetPart(Target)
+	game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+
+	return Target.Character:FindFirstChild("HumanoidRootPart") or Target.Character:FindFirstChild("Head")
+end
+
+function ConvertPosition(Position)
+	if typeof(Position):lower() == "position" then
+		return CFrame.new(Position)
+	else
+		return Position
+	end
+end
+
+function MoveTo(Cframe)
+	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Cframe
+end
+
+function GetCameraPosition(Player)
+	return workspace["CurrentCamera"].CFrame
+end
+
+function GetPosition(Player)
+	game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+
+	if Player then
+		return GetPart(Player).CFrame
+	elseif not Player then
+		return GetPart(LocalPlayer).CFrame
+	end
+end
+
+function Loop(Times, calling)
+	for i = 1, tonumber(Times) do
+		calling()
+	end
+end
+
+function WaitForRespawn(Cframe)
+	game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+
+	local Cframe = ConvertPosition(Cframe)
+	local CameraCframe = GetCameraPosition()
+	coroutine.wrap(function()
+		local a
+		a = Player.CharacterAdded:Connect(function(NewCharacter)
+			pcall(function()
+				coroutine.wrap(function()
+					workspace.CurrentCamera:GetPropertyChangedSignal("CFrame"):Wait()
+					Loop(5, function()
+						workspace["CurrentCamera"].CFrame = CameraCframe
+					end)
+				end)()
+				NewCharacter:WaitForChild("HumanoidRootPart")
+				MoveTo(Cframe)
+				if NoForce then
+					task.spawn(function()
+						NewCharacter:WaitForChild("ForceField"):Destroy()
+					end)
+				end
+			end)
+			a:Disconnect()
+			Cframe = nil
+		end)
+		task.spawn(function()
+			wait(2)
+			if a then
+				a:Disconnect()
+			end
+		end)
+	end)()
+end
+
 local function DoCommand(Command)
 	spawn(function()
 		RemoteQueue = (RemoteQueue+1)
@@ -724,6 +797,8 @@ local function DoCommand(Command)
 			game:GetService("StarterGui"):SetCore("SendNotification", {Title = ("Cook burgers admin");Text = ("The commands are listed in the console! \n Press F9 to view");})
 		elseif (string.sub(Command,1,#".refresh") == ".refresh") or (string.sub(Command,1,#".re") == ".re") then
 			game.ReplicatedStorage.Events.Player.SpawnRequestEvent:FireServer()
+			wait(.10)
+			WaitForRespawn(Pos or GetPosition())
 		elseif (string.sub(Command,1,#".netclaim") == ".netclaim") then
 			for i = 1,3 do
 				pcall(function()
