@@ -113,6 +113,8 @@ local Kick = Instance.new("TextButton")
 local UICorner_22 = Instance.new("UICorner")
 local Void = Instance.new("TextButton")
 local UICorner_23 = Instance.new("UICorner")
+local Unspin = Instance.new("TextButton")
+local 
 local target = Instance.new("TextBox")
 local UICorner_24 = Instance.new("UICorner")
 local UIGradient_2 = Instance.new("UIGradient")
@@ -1028,17 +1030,15 @@ local function DoCommand(Command)
 								Remote:FireServer(Part,lp)
 								local bambam = Instance.new("BodyThrust",Part)
 								bambam.Force = Vector3.new(101,0,101)
-								bambam.Location = Part.Position
-								lp.Chatted:connect(function(Msg)
-									if (Msg == (string.sub(Msg,1,#(".unspin")))== (".unspin")) then
-										bambam:Destroy()
-									end
-								end)
+								bambam.Location = Part.Postions
+                                                         	end)
 							end
 						end
 					end
 				end
 			end)
+	        elseif (string.sub(Command,1,#".unspin") == (".unspin") then
+			bambam:Destroy()
 		elseif (string.sub(Command,1,#(".control")) == (".control")) then
 			local Player2 = getPlayer(string.sub(Command,#".control" + 2))
 			for _, Part in pairs(Player2.Character:GetDescendants()) do
