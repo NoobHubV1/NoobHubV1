@@ -113,15 +113,13 @@ local Kick = Instance.new("TextButton")
 local UICorner_22 = Instance.new("UICorner")
 local Void = Instance.new("TextButton")
 local UICorner_23 = Instance.new("UICorner")
-local Unspin = Instance.new("TextButton")
-local UICorner_24 = Instance.new("UICorner")
 local target = Instance.new("TextBox")
-local UICorner_25 = Instance.new("UICorner")
+local UICorner_24 = Instance.new("UICorner")
 local UIGradient_2 = Instance.new("UIGradient")
 local Refresh = Instance.new("TextButton")
-local UICorner_26 = Instance.new("UICorner")
+local UICorner_25 = Instance.new("UICorner")
 local search = Instance.new("TextBox")
-local UICorner_27 = Instance.new("UICorner")
+local UICorner_26 = Instance.new("UICorner")
 
 --Properties:
 
@@ -575,22 +573,6 @@ Void.TextSize = 23.000
 UICorner_23.CornerRadius = UDim.new(0, 4)
 UICorner_23.Parent = Void
 
-Unspin.Name = "Unspin"
-Unspin.Parent = ScrollingFrame
-Unspin.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
-Unspin.BackgroundTransparency = 0.500
-Unspin.BorderSizePixel = 0
-Unspin.Position = UDim2.new(0.0351677425, 0, 0.190713778, 0)
-Unspin.Size = UDim2.new(0, 131, 0, 40)
-Unspin.ZIndex = 3
-Unspin.Font = Enum.Font.SourceSansLight
-Unspin.Text = "Unspin"
-Unspin.TextColor3 = Color3.fromRGB(255, 255, 255)
-Unspin.TextSize = 23.000
-
-UICorner_24.CornerRadius = UDim.new(0, 4)
-UICorner_24.Parent = Unspin
-
 target.Name = "target"
 target.Parent = Main
 target.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
@@ -603,8 +585,8 @@ target.Text = ""
 target.TextColor3 = Color3.fromRGB(255, 255, 255)
 target.TextSize = 23.000
 
-UICorner_25.CornerRadius = UDim.new(0, 4)
-UICorner_25.Parent = target
+UICorner_24.CornerRadius = UDim.new(0, 4)
+UICorner_24.Parent = target
 
 UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(122, 122, 122))}
 UIGradient_2.Rotation = 90
@@ -622,8 +604,8 @@ Refresh.TextColor3 = Color3.fromRGB(255, 255, 255)
 Refresh.TextSize = 26.000
 Refresh.TextWrapped = true
 
-UICorner_26.CornerRadius = UDim.new(0, 4)
-UICorner_26.Parent = Refresh
+UICorner_25.CornerRadius = UDim.new(0, 4)
+UICorner_25.Parent = Refresh
 
 search.Name = "search"
 search.Parent = Main
@@ -637,8 +619,8 @@ search.Text = ""
 search.TextColor3 = Color3.fromRGB(255, 255, 255)
 search.TextSize = 23.000
 
-UICorner_27.CornerRadius = UDim.new(0, 4)
-UICorner_27.Parent = search
+UICorner_26.CornerRadius = UDim.new(0, 4)
+UICorner_26.Parent = search
 
 local UserInputService = game:GetService("UserInputService")
 local dragging,dragInput,dragStart,startPos
@@ -1046,15 +1028,17 @@ local function DoCommand(Command)
 								Remote:FireServer(Part,lp)
 								local bambam = Instance.new("BodyThrust",Part)
 								bambam.Force = Vector3.new(101,0,101)
-								bambam.Location = Part.Postions
+								bambam.Location = Part.Position
+								lp.Chatted:connect(function(Msg)
+									if (Msg == (string.sub(Msg,1,#(".unspin")))== (".unspin")) then
+										bambam:Destroy()
+									end
                                                          	end)
 							end
 						end
 					end
 				end
 			end)
-	        elseif (string.sub(Command,1,#".unspin") == (".unspin") then
-			bambam:Destroy()
 		elseif (string.sub(Command,1,#(".control")) == (".control")) then
 			local Player2 = getPlayer(string.sub(Command,#".control" + 2))
 			for _, Part in pairs(Player2.Character:GetDescendants()) do
