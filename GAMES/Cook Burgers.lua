@@ -1166,7 +1166,7 @@ local function DoCommand(Command)
 					end
 				end
 			end)
-		elseif (string.sub(Command,1,#,(".AutoRespawn") == (".AutoRespawn")
+		elseif (string.sub(Command,1,#,(".AutoRespawn") == (".AutoRespawn") then
 			game.ReplicatedStorage.Events.Player.SpawnRequestEvent:FireServer()
 			task.spawn(function()
 		elseif (string.sub(Command,1,#(".spin")) == (".spin")) then -- stop bein a skid lmfao
