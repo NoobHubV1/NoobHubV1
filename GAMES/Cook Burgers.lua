@@ -113,13 +113,17 @@ local Kick = Instance.new("TextButton")
 local UICorner_22 = Instance.new("UICorner")
 local Void = Instance.new("TextButton")
 local UICorner_23 = Instance.new("UICorner")
-local target = Instance.new("TextBox")
-local UICorner_24 = Instance.new("UICorner")
-local UIGradient_2 = Instance.new("UIGradient")
 local Refresh = Instance.new("TextButton")
+local UICorner_24 = Instance.new("UICorner")
+local AutoRespawn = Instance.new("TextButton")
 local UICorner_25 = Instance.new("UICorner")
-local search = Instance.new("TextBox")
+local StopAutoRespawn = Instance.new("TextButton")
 local UICorner_26 = Instance.new("UICorner")
+local target = Instance.new("TextBox")
+local UICorner_27 = Instance.new("UICorner")
+local UIGradient_2 = Instance.new("UIGradient")
+local search = Instance.new("TextBox")
+local UICorner_28 = Instance.new("UICorner")
 
 --Properties:
 
@@ -573,25 +577,6 @@ Void.TextSize = 23.000
 UICorner_23.CornerRadius = UDim.new(0, 4)
 UICorner_23.Parent = Void
 
-target.Name = "target"
-target.Parent = Main
-target.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
-target.BackgroundTransparency = 0.400
-target.Position = UDim2.new(0.0255349874, 0, 0.800595582, 0)
-target.Size = UDim2.new(0, 278, 0, 33)
-target.Font = Enum.Font.SourceSans
-target.PlaceholderText = "Player Name"
-target.Text = ""
-target.TextColor3 = Color3.fromRGB(255, 255, 255)
-target.TextSize = 23.000
-
-UICorner_24.CornerRadius = UDim.new(0, 4)
-UICorner_24.Parent = target
-
-UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(122, 122, 122))}
-UIGradient_2.Rotation = 90
-UIGradient_2.Parent = Main
-
 Refresh.Name = "Refresh"
 Refresh.Parent = Main
 Refresh.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
@@ -604,8 +589,27 @@ Refresh.TextColor3 = Color3.fromRGB(255, 255, 255)
 Refresh.TextSize = 26.000
 Refresh.TextWrapped = true
 
+UICorner_24.CornerRadius = UDim.new(0, 4)
+UICorner_24.Parent = Refresh
+
+target.Name = "target"
+target.Parent = Main
+target.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
+target.BackgroundTransparency = 0.400
+target.Position = UDim2.new(0.0255349874, 0, 0.800595582, 0)
+target.Size = UDim2.new(0, 278, 0, 33)
+target.Font = Enum.Font.SourceSans
+target.PlaceholderText = "Player Name"
+target.Text = ""
+target.TextColor3 = Color3.fromRGB(255, 255, 255)
+target.TextSize = 23.000
+
 UICorner_25.CornerRadius = UDim.new(0, 4)
-UICorner_25.Parent = Refresh
+UICorner_25.Parent = target
+
+UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(122, 122, 122))}
+UIGradient_2.Rotation = 90
+UIGradient_2.Parent = Main
 
 search.Name = "search"
 search.Parent = Main
@@ -809,6 +813,13 @@ function WaitForRespawn(Cframe,NoForce)
 		end)
 	end)()
 end
+        States.AutoRespawn = true
+end
+
+        if States.AutoRespawn then
+                game.ReplicatedStorage.Events.Player.SpawnRequestEvent:FireServer()
+                task.spawn(function()
+        end
 
 local function DoCommand(Command)
 	spawn(function()
@@ -1264,10 +1275,6 @@ lp.Chatted:connect(function(Msg) -- haha chat go brrrrr
 	wait(.1)
 	DoCommand(Msg:lower()) -- Idk
 	wait()
-end)
-
-Refresh.Activated:connect(function()
-	game.ReplicatedStorage.Events.Player.SpawnRequestEvent:FireServer()
 end)
 
 search:GetPropertyChangedSignal("Text"):connect(function()
