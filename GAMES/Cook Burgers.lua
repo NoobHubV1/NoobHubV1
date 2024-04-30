@@ -1217,6 +1217,7 @@ end
 
 if States.AutoRespawn then
 	game.ReplicatedStorage.Events.Player.SpawnRequestEvent:FireServer()
+	task.spawn(function()
 end
 local Sound = Instance.new(("Sound"),(workspace))
 Sound.SoundId = ("rbxassetid://1053296915") Sound:Play()
