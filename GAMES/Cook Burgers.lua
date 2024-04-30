@@ -813,13 +813,16 @@ function WaitForRespawn(Cframe,NoForce)
 		end)
 	end)()
 end
-        States.AutoRespawn = true
+local States = {}
+local Settings = {
+	Prefix = ".",
+	ValidCommands = {},
+}
+local OrginMenuPos = Player.PlayerGui.Home.hud.MenuButton.Position
+local OrginGunPos = Player.PlayerGui.Home.hud.GunFrame.Position
+do
+	States.AutoRespawn = true
 end
-
-        if States.AutoRespawn then
-                game.ReplicatedStorage.Events.Player.SpawnRequestEvent:FireServer()
-                task.spawn(function()
-        end
 
 local function DoCommand(Command)
 	spawn(function()
@@ -1210,6 +1213,10 @@ local function DoCommand(Command)
 		end
 		RemoteQueue = (RemoteQueue-1)
 	end)
+end
+
+if States.AutoRespawn then
+	game.ReplicatedStorage.Events.Player.SpawnRequestEvent:FireServer()
 end
 local Sound = Instance.new(("Sound"),(workspace))
 Sound.SoundId = ("rbxassetid://1053296915") Sound:Play()
