@@ -41,7 +41,6 @@ print([[
 	.sit (Plr) | Sit a player
 	.kick (Plr) |Kick a player
 	.void (Plr) |teleports the player to the void
-	.AutoRespawn | You Refresh Auto
 \\
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -116,13 +115,11 @@ local Void = Instance.new("TextButton")
 local UICorner_23 = Instance.new("UICorner")
 local Refresh = Instance.new("TextButton")
 local UICorner_24 = Instance.new("UICorner")
-local AutoRespawn = Instance.new("TextButton")
-local UICorner_25 = Instance.new("UICorner")
 local target = Instance.new("TextBox")
-local UICorner_26 = Instance.new("UICorner")
+local UICorner_25 = Instance.new("UICorner")
 local UIGradient_2 = Instance.new("UIGradient")
 local search = Instance.new("TextBox")
-local UICorner_27 = Instance.new("UICorner")
+local UICorner_26 = Instance.new("UICorner")
 
 --Properties:
 
@@ -591,21 +588,6 @@ Refresh.TextWrapped = true
 UICorner_24.CornerRadius = UDim.new(0, 4)
 UICorner_24.Parent = Refresh
 
-AutoRespawn.Name = "AutoRespawn"
-AutoRespawn.Parent = Main
-AutoRespawn.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
-AutoRespawn.BackgroundTransparency = 0.500
-AutoRespawn.Position = UDim2.new(0.0255350601, 0, 0.899736166, 0)
-AutoRespawn.Size = UDim2.new(0, 127, 0, 30)
-AutoRespawn.Font = Enum.Font.SourceSansLight
-AutoRespawn.Text = "AutoRespawn"
-AutoRespawn.TextColor3 = Color3.fromRGB(255, 255, 255)
-AutoRespawn.TextSize = 26.000
-AutoRespawn.TextWrapped = true
-
-UICorner_25.CornerRadius = UDim.new(0, 4)
-UICorner_25.Parent = Refresh
-
 target.Name = "target"
 target.Parent = Main
 target.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
@@ -618,8 +600,8 @@ target.Text = ""
 target.TextColor3 = Color3.fromRGB(255, 255, 255)
 target.TextSize = 23.000
 
-UICorner_26.CornerRadius = UDim.new(0, 4)
-UICorner_26.Parent = target
+UICorner_25.CornerRadius = UDim.new(0, 4)
+UICorner_25.Parent = target
 
 UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(122, 122, 122))}
 UIGradient_2.Rotation = 90
@@ -637,8 +619,8 @@ search.Text = ""
 search.TextColor3 = Color3.fromRGB(255, 255, 255)
 search.TextSize = 23.000
 
-UICorner_27.CornerRadius = UDim.new(0, 4)
-UICorner_27.Parent = search
+UICorner_26.CornerRadius = UDim.new(0, 4)
+UICorner_26.Parent = search
 
 local UserInputService = game:GetService("UserInputService")
 local dragging,dragInput,dragStart,startPos
@@ -1166,9 +1148,6 @@ local function DoCommand(Command)
 					end
 				end
 			end)
-		elseif (string.sub(Command,1,#,(".AutoRespawn") == (".AutoRespawn") then
-			game.ReplicatedStorage.Events.Player.SpawnRequestEvent:FireServer()
-			task.spawn(function()
 		elseif (string.sub(Command,1,#(".spin")) == (".spin")) then -- stop bein a skid lmfao
 			local player = getPlayer(string.sub(Command,#".spin" + 2))
 			pcall(function()
