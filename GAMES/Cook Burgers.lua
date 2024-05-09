@@ -625,6 +625,7 @@ UICorner_26.Parent = search
 local UserInputService = game:GetService("UserInputService")
 local dragging,dragInput,dragStart,startPos
 local RemoteQueue = (0)
+local remote = "nil"
 
 local function UpdatePos(input)
 	local delta = input.Position - dragStart
@@ -741,6 +742,10 @@ function GetPart(Target)
 	game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
 
 	return Target.Character:FindFirstChild("HumanoidRootPart") or Target.Character:FindFirstChild("Head")
+end
+
+function work(arg1)
+	remote:FireServer(arg1)
 end
 
 function ConvertPosition(Position)
@@ -1029,19 +1034,10 @@ local function DoCommand(Command)
 				end
 			end)
 		elseif (string.sub(Command,1,#".kick") == ".kick") then
-			local player = getPlayer(string.sub(Command,#".kick" + 2))
-			pcall(function()
-				if (player ~= nil and player.Character ~= nil) then
-					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
-						for _, Part in pairs(player.Character:GetDescendants()) do
-							if (Part:IsA("BasePart")) then
-								Remote:FireServer(Part,lp)
-							end
-						end
-						player:Kick(("Admin Kick You"))
-					end
-				end
-			end)
+			for i,v in pairs(getPlayer(target.Text)) do
+                              spawn(function()
+                                    work(game:GetService("Players")[v]
+                        end)
 		elseif (string.sub(Command,1,#".void") == ".void") then
 			local player = getPlayer(string.sub(Command,#".kill" + 2))
 			pcall(function()
