@@ -1279,9 +1279,8 @@ spawn(function()
 							end
 						end)
 					end
-				elseif target.Text:lower() ~= "all" and target.Text:lower() ~= "everyone" and target.Text:lower() ~= "@" and target.Text:lower() ~= "others" and target.Text:lower() == "@a" then
+				elseif target.Text:lower() ~= "all" and target.Text:lower() ~= "everyone" and target.Text:lower() ~= "@" and target.Text:lower() ~= "others" and target.Text:lower() ~= "@a" then
 					DoCommand('.'..button.Name:lower()..' '..target.Text)
-					end
 				end
 			end)
 		end
