@@ -115,8 +115,10 @@ local UICorner_23 = Instance.new("UICorner")
 local target = Instance.new("TextBox")
 local UICorner_24 = Instance.new("UICorner")
 local UIGradient_2 = Instance.new("UIGradient")
-local search = Instance.new("TextBox")
+local Refresh = Instance.new("TextButton")
 local UICorner_25 = Instance.new("UICorner")
+local search = Instance.new("TextBox")
+local UICorner_26 = Instance.new("UICorner")
 
 --Properties:
 
@@ -588,6 +590,21 @@ UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fr
 UIGradient_2.Rotation = 90
 UIGradient_2.Parent = Main
 
+Refresh.Name = "Refresh"
+Refresh.Parent = Main
+Refresh.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
+Refresh.BackgroundTransparency = 0.500
+Refresh.Position = UDim2.new(0.0255350601, 0, 0.899736166, 0)
+Refresh.Size = UDim2.new(0, 127, 0, 30)
+Refresh.Font = Enum.Font.SourceSansLight
+Refresh.Text = "Respawn"
+Refresh.TextColor3 = Color3.fromRGB(255, 255, 255)
+Refresh.TextSize = 26.000
+Refresh.TextWrapped = true
+
+UICorner_25.CornerRadius = UDim.new(0, 4)
+UICorner_25.Parent = Refresh
+
 search.Name = "search"
 search.Parent = Main
 search.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
@@ -600,8 +617,8 @@ search.Text = ""
 search.TextColor3 = Color3.fromRGB(255, 255, 255)
 search.TextSize = 23.000
 
-UICorner_25.CornerRadius = UDim.new(0, 4)
-UICorner_25.Parent = search
+UICorner_26.CornerRadius = UDim.new(0, 4)
+UICorner_26.Parent = search
 
 local UserInputService = game:GetService("UserInputService")
 local dragging,dragInput,dragStart,startPos
@@ -1231,6 +1248,10 @@ lp.Chatted:connect(function(Msg) -- haha chat go brrrrr
 	wait(.1)
 	DoCommand(Msg:lower()) -- Idk
 	wait()
+end)
+
+Refresh.Activated:connect(function()
+	game.ReplicatedStorage.Events.Player.SpawnRequestEvent:FireServer()
 end)
 
 search:GetPropertyChangedSignal("Text"):connect(function()
