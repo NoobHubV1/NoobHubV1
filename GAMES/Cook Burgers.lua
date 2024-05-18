@@ -1271,7 +1271,7 @@ spawn(function()
 							end
 						end)
 					end
-				elseif target.Text:lower() == "others" then
+				elseif target.Text:lower() == "others" or target.Text:lower() == "@a" then
 					for _,v in pairs(game.Players:GetPlayers()) do
 						pcall(function()
 							if v ~= nil and v.Character ~= nil and v.Name ~= lp.Name then
@@ -1279,27 +1279,8 @@ spawn(function()
 							end
 						end)
 					end
-				elseif string.sub:lower() == "all" or string.sub:lower() == "everyone" or string.sub:lower() == "@" then
-					for _,v in pairs(game.Players:GetPlayers()) do
-						pcall(function()
-							if v ~= nil and v.Character ~= nil then
-								DoCommand('.'..:lower()..' '..v.Name)
-							end
-						end)
-					end
-				elseif string.sub:lower() == "others" then
-					for _,v in pairs(game.Players:GetPlayers()) do
-						pcall(function()
-							if v ~= nil and v.Character ~= nil and v.Name ~= lp.Name then
-								DoCommand('.'..String.sub:lower()..' '..v.Name)
-							end
-						end)
-					end
-				elseif target.Text:lower() ~= "all" and target.Text:lower() ~= "everyone" and target.Text:lower() ~= "@" and target.Text:lower() ~= "others" then
+				elseif target.Text:lower() ~= "all" and target.Text:lower() ~= "everyone" and target.Text:lower() ~= "@" and target.Text:lower() ~= "others" and target.Text:lower() == "@a" then
 					DoCommand('.'..button.Name:lower()..' '..target.Text)
-				        end
-				elseif string.sub:lower() ~= "all" and string.sub:lower() ~= "everyone" and string.sub:lower() ~= "@" and string.sub:lower() ~= "others" then
-					DoCommand('.'..string.sub:lower()..' '..string.sub)
 					end
 				end
 			end)
