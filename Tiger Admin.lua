@@ -2707,52 +2707,52 @@ do
 		API:Fly(tonumber(args[2]) or 7)
 	end)
 	API:CreateCmd("opendoors", "Opens every single door", function(args)
-			if not firetouchinterest then
-				return API:Notif("Your exploit doesnt support this command!",false)
-			end
-			local LastTeam =plr.Team
-			API:ChangeTeam(game.Teams.Guards)
-			wait(.7)
-			task.spawn(function()
-				local Arg_1 = game:GetService("Workspace")["Prison_ITEMS"].buttons["Prison Gate"]["Prison Gate"]
-				local Event = game:GetService("Workspace").Remote.ItemHandler
-				Event:InvokeServer(Arg_1)
-			end)
-			for i,v in pairs(game:GetService("Workspace").Doors:GetChildren()) do
-				if v then
-					if v:FindFirstChild("block") and v:FindFirstChild("block"):FindFirstChild("hitbox") then
-						firetouchinterest(Player.Character.HumanoidRootPart,v.block.hitbox,0)
-						firetouchinterest(Player.Character.HumanoidRootPart,v.block.hitbox,1)
-					end
+		if not firetouchinterest then
+			return API:Notif("Your exploit doesnt support this command!",false)
+		end
+		local LastTeam =plr.Team
+		API:ChangeTeam(game.Teams.Guards)
+		wait(.7)
+		task.spawn(function()
+			local Arg_1 = game:GetService("Workspace")["Prison_ITEMS"].buttons["Prison Gate"]["Prison Gate"]
+			local Event = game:GetService("Workspace").Remote.ItemHandler
+			Event:InvokeServer(Arg_1)
+		end)
+		for i,v in pairs(game:GetService("Workspace").Doors:GetChildren()) do
+			if v then
+				if v:FindFirstChild("block") and v:FindFirstChild("block"):FindFirstChild("hitbox") then
+					firetouchinterest(Player.Character.HumanoidRootPart,v.block.hitbox,0)
+					firetouchinterest(Player.Character.HumanoidRootPart,v.block.hitbox,1)
 				end
 			end
-			wait(1)
-			API:ChangeTeam(LastTeam)
+		end
+		wait(1)
+		API:ChangeTeam(LastTeam)
 	end)
 	API:CreateCmd("removecars", "deletes all cars that are not seated", function(args)
-			local Old = API:GetPosition()
-			for i,v in pairs(game:GetService("Workspace").CarContainer:GetChildren()) do
-				if v then
-					repeat task.wait() until Player.Character:FindFirstChildOfClass("Humanoid").Health >1
+		local Old = API:GetPosition()
+		for i,v in pairs(game:GetService("Workspace").CarContainer:GetChildren()) do
+			if v then
+				repeat task.wait() until Player.Character:FindFirstChildOfClass("Humanoid").Health >1
 
-					local car = v
-					if car:FindFirstChild("RWD")and  car:FindFirstChild("Body") and car:FindFirstChild("Body"):FindFirstChild("VehicleSeat").Occupant == nil then
-						local Seat = car.Body.VehicleSeat
-						car.PrimaryPart = car.RWD
-						repeat wait()
-							Seat:Sit(Player.Character:FindFirstChildOfClass("Humanoid"))
-						until Player.Character:FindFirstChildOfClass("Humanoid").Sit == true
-						for i =1,5 do
-							wait()
-							car:SetPrimaryPartCFrame(CFrame.new(666, 666, 666))
-						end
-						wait(.1)
-						API:UnSit()
+				local car = v
+				if car:FindFirstChild("RWD")and  car:FindFirstChild("Body") and car:FindFirstChild("Body"):FindFirstChild("VehicleSeat").Occupant == nil then
+					local Seat = car.Body.VehicleSeat
+					car.PrimaryPart = car.RWD
+					repeat wait()
+						Seat:Sit(Player.Character:FindFirstChildOfClass("Humanoid"))
+					until Player.Character:FindFirstChildOfClass("Humanoid").Sit == true
+					for i =1,5 do
+						wait()
+						car:SetPrimaryPartCFrame(CFrame.new(666, 666, 666))
 					end
+					wait(.1)
+					API:UnSit()
 				end
 			end
-			API:MoveTo(Old)
-		end,nil,nil,true)
+		end
+		API:MoveTo(Old)
+	end)
 	API:CreateCmd("loopopendoors", "loop opendoors", function(args)
 		local value = ChangeState(args[2],"loopopendoors")
 	        if value then
