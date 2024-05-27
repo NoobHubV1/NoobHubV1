@@ -377,6 +377,7 @@ do
 	States.DraggableGuis = false
 	States.spawnguns = false
 	States.loopkillguards = false
+	States.loopkillneutral = false
 	States.Antishield = false
 	States.DoorsDestroy = false
 	States.antipunch = false
@@ -898,15 +899,15 @@ function API:killall(TeamToKill)
 	if not TeamToKill then
 		local LastTeam = Player.Team
 		local BulletTable = {}
-		if Player.Team ~= game.Teams.Criminals then
-			API:ChangeTeam(game.Teams.Criminals,true)
+		if Player.Team ~= game.Teams.Neutral then
+			API:ChangeTeam(game.Teams.Neutral,true)
 		end
 		API:GetGun("Remington 870")
 		local Gun = Player.Backpack:FindFirstChild("Remington 870") or Player.Character:FindFirstChild("Remington 870")
 		repeat API:swait() Gun = Player.Backpack:FindFirstChild("Remington 870") or Player.Character:FindFirstChild("Remington 870") until Gun
 
 		for i,v in pairs(game:GetService("Players"):GetPlayers()) do
-			if v and v~=Player  and v.Team == game.Teams.Inmates or v.Team == game.Teams.Guards and not table.find(API.Whitelisted,v)  then
+			if v and v~=Player  and v.Team == game.Teams.Inmates or v.Team == game.Teams.Guards or v.Team == game.Teams.Criminals and not table.find(API.Whitelisted,v)  then
 				for i =1,15 do
 					BulletTable[#BulletTable + 1] = {
 						["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),
@@ -922,7 +923,7 @@ function API:killall(TeamToKill)
 		API:GetGun("Remington 870")
 		repeat API:swait() Gun = Player.Backpack:FindFirstChild("Remington 870") or Player.Character:FindFirstChild("Remington 870") until Gun
 		local Gun = Player.Backpack:FindFirstChild("Remington 870") or Player.Character:FindFirstChild("Remington 870")
-		for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
+		for i,v in pairs(game.Teams.Neutral:GetPlayers()) do
 			if v and v~=Player and not table.find(API.Whitelisted,v) then
 				for i =1,15 do
 					BulletTable[#BulletTable + 1] = {
@@ -939,13 +940,13 @@ function API:killall(TeamToKill)
 			API:ChangeTeam(LastTeam,true)
 		end
 	elseif TeamToKill then
-		if TeamToKill == game.Teams.Inmates or TeamToKill == game.Teams.Guards  then
+		if TeamToKill == game.Teams.Inmates or TeamToKill == game.Teams.Guards or TeamToKill == game.Teams.Criminals then
+			if Player.Team ~= game.Teams.Neutral then
+				API:ChangeTeam(game.Teams.Neutral)
+			end
+		elseif TeamToKill == game.Teams.Neutral then
 			if Player.Team ~= game.Teams.Criminals then
 				API:ChangeTeam(game.Teams.Criminals)
-			end
-		elseif TeamToKill == game.Teams.Criminals then
-			if Player.Team ~= game.Teams.Inmates then
-				API:ChangeTeam(game.Teams.Inmates)
 			end
 		end
 		local BulletTable = {}
@@ -2044,14 +2045,18 @@ do
 			API:killall()
 		elseif args[2] == "everyone" then
 			API:killall()
-		elseif args[2] == "others" then
+		elseif args[2] == "@" then
 			API:killall()
+		elseif args[2] == "others" then
+		        API:killall()
 		elseif args[2] == "guards" then
 			API:killall(game.Teams.Guards)
 		elseif args[2] == "inmates" then
 			API:killall(game.Teams.Inmates)
 		elseif args[2] == "criminals" then
 			API:killall(game.Teams.Criminals)
+		elseif args[2] == "neutral" then
+			API:killall(game.Teams.Neutral)
 		elseif args[2] == "random" then
 			local random = nil
 			while true do
@@ -2126,6 +2131,10 @@ do
                 API:Notif("Loopkilling guards")
                 States.loopkillguards = true
                 return
+	    elseif Team == game.Teams.Neutral
+                API:Notif("Loopkilling neutral")
+		States.loopkillneutral = true
+		return
             end
         elseif args[2] == "all" then
             Temp.Loopkillall = true
@@ -2154,6 +2163,10 @@ do
 			elseif Team == game.Teams.Guards then
 				API:Notif("Loopkilling guards")
 				States.loopkillguards = true
+				return
+			elseif Team == game.Teams.Neutral then
+				API:Notif("Loopkilling neutral")
+			        States.loopkillneutral = true
 				return
 			end
 		elseif args[2] == "all" then
@@ -2184,6 +2197,10 @@ do
 				States.loopkillguards = false
 				API:Notif("unLoopkilling guards")
 				return
+			elseif Team == game.Teams.Neutral then
+				States.loopkillneutral = false
+				API:Notif("unLoopkilling neutral")
+				return
 			end
 		elseif args[2] == "all" then
 			Temp.Loopkillall = false
@@ -2212,6 +2229,10 @@ do
 			elseif Team == game.Teams.Guards then
 				States.loopkillguards = false
 				API:Notif("unLoopkilling guards")
+				return
+			elseif Team == game.Teams.Neutral then
+				States.loopkillneutral = false
+				API:Notif("unLoopkilling neutral")
 				return
 			end
 		elseif args[2] == "all" then
@@ -2704,6 +2725,90 @@ do
 		wait(.4)
 		API:Fly(tonumber(args[2]) or 7)
 	end)
+	API:CreateCmd("opendoors", "Opens every single door", function(args)
+			if not firetouchinterest then
+				return API:Notif("Your exploit doesnt support this command!",false)
+			end
+			local LastTeam =plr.Team
+			API:ChangeTeam(game.Teams.Guards)
+			wait(.7)
+			task.spawn(function()
+				local Arg_1 = game:GetService("Workspace")["Prison_ITEMS"].buttons["Prison Gate"]["Prison Gate"]
+				local Event = game:GetService("Workspace").Remote.ItemHandler
+				Event:InvokeServer(Arg_1)
+			end)
+			for i,v in pairs(game:GetService("Workspace").Doors:GetChildren()) do
+				if v then
+					if v:FindFirstChild("block") and v:FindFirstChild("block"):FindFirstChild("hitbox") then
+						firetouchinterest(Player.Character.HumanoidRootPart,v.block.hitbox,0)
+						firetouchinterest(Player.Character.HumanoidRootPart,v.block.hitbox,1)
+					end
+				end
+			end
+			wait(1)
+			API:ChangeTeam(LastTeam)
+	end)
+	API:CreateCmd("removecars", "deletes all cars that are not seated", function(args)
+			local Old = API:GetPosition()
+			for i,v in pairs(game:GetService("Workspace").CarContainer:GetChildren()) do
+				if v then
+					repeat task.wait() until Player.Character:FindFirstChildOfClass("Humanoid").Health >1
+
+					local car = v
+					if car:FindFirstChild("RWD")and  car:FindFirstChild("Body") and car:FindFirstChild("Body"):FindFirstChild("VehicleSeat").Occupant == nil then
+						local Seat = car.Body.VehicleSeat
+						car.PrimaryPart = car.RWD
+						repeat wait()
+							Seat:Sit(Player.Character:FindFirstChildOfClass("Humanoid"))
+						until Player.Character:FindFirstChildOfClass("Humanoid").Sit == true
+						for i =1,5 do
+							wait()
+							car:SetPrimaryPartCFrame(CFrame.new(666, 666, 666))
+						end
+						wait(.1)
+						API:UnSit()
+					end
+				end
+			end
+			API:MoveTo(Old)
+		end,nil,nil,true)
+	API:CreateCmd("loopopendoors", "loop opendoors", function(args)
+		local value = ChangeState(args[2],"loopopendoors")
+	        if value then
+			while wait(2.4) do
+				if not States.loopopendoors then
+					break
+				end
+				if not firetouchinterest then
+					return API:Notif("Your exploit doesnt support this command!",false)
+				end
+				local LastTeam =plr.Team
+				API:ChangeTeam(game.Teams.Guards)
+				wait(.7)
+				task.spawn(function()
+					local Arg_1 = game:GetService("Workspace")["Prison_ITEMS"].buttons["Prison Gate"]["Prison Gate"]
+					local Event = game:GetService("Workspace").Remote.ItemHandler
+					Event:InvokeServer(Arg_1)
+				end)
+				for i,v in pairs(game:GetService("Workspace").Doors:GetChildren()) do
+					if v then
+						if v:FindFirstChild("block") and v:FindFirstChild("block"):FindFirstChild("hitbox") then
+							if not States.loopopendoors then
+								break
+							end
+							firetouchinterest(Player.Character.HumanoidRootPart,v.block.hitbox,0)
+							firetouchinterest(Player.Character.HumanoidRootPart,v.block.hitbox,1)
+						end
+					end
+				end
+				if not States.loopopendoors then
+					break
+				end
+				wait(1)
+				API:ChangeTeam(LastTeam)
+			end
+		end
+	end,nil,"[ON/OFF]")
 	API:CreateCmd("carfly", "Car go flying", function(args)
 		API:Unfly()
 		wait()
@@ -2752,6 +2857,7 @@ do
 	API:CreateCmd("refresh", "refreshes your character", function(args)
 		API:Refresh(true)
 	end)
+	
 	API:CreateCmd("roof", "", function(args)
 		if args[2] then
 			local Target = API:FindPlayer(args[2])
@@ -3498,8 +3604,12 @@ coroutine.wrap(function()
 				wait(.5)
 				API:killall(game.Teams.Guards)
 			end
-			if Temp and Temp.Loopkillall then
+			if States.loopkillneutral then
 				wait(.5)
+				API:killall(game.Teams.Neutral)
+			end
+			if Temp and Temp.Loopkillall then
+				wait(.2)
 				API:killall()
 			end
 		end)()
