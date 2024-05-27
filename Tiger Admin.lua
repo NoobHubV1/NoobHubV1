@@ -377,7 +377,6 @@ do
 	States.DraggableGuis = false
 	States.spawnguns = false
 	States.loopkillguards = false
-	States.loopkillneutral = false
 	States.Antishield = false
 	States.DoorsDestroy = false
 	States.antipunch = false
@@ -2055,8 +2054,6 @@ do
 			API:killall(game.Teams.Inmates)
 		elseif args[2] == "criminals" then
 			API:killall(game.Teams.Criminals)
-		elseif args[2] == "neutral" then
-			API:killall(game.Teams.Neutral)
 		elseif args[2] == "random" then
 			local random = nil
 			while true do
@@ -2131,10 +2128,6 @@ do
                 API:Notif("Loopkilling guards")
                 States.loopkillguards = true
                 return
-	    elseif Team == game.Teams.Neutral
-                API:Notif("Loopkilling neutral")
-		States.loopkillneutral = true
-		return
             end
         elseif args[2] == "all" then
             Temp.Loopkillall = true
@@ -2163,10 +2156,6 @@ do
 			elseif Team == game.Teams.Guards then
 				API:Notif("Loopkilling guards")
 				States.loopkillguards = true
-				return
-			elseif Team == game.Teams.Neutral then
-				API:Notif("Loopkilling neutral")
-			        States.loopkillneutral = true
 				return
 			end
 		elseif args[2] == "all" then
@@ -2197,10 +2186,6 @@ do
 				States.loopkillguards = false
 				API:Notif("unLoopkilling guards")
 				return
-			elseif Team == game.Teams.Neutral then
-				States.loopkillneutral = false
-				API:Notif("unLoopkilling neutral")
-				return
 			end
 		elseif args[2] == "all" then
 			Temp.Loopkillall = false
@@ -2229,10 +2214,6 @@ do
 			elseif Team == game.Teams.Guards then
 				States.loopkillguards = false
 				API:Notif("unLoopkilling guards")
-				return
-			elseif Team == game.Teams.Neutral then
-				States.loopkillneutral = false
-				API:Notif("unLoopkilling neutral")
 				return
 			end
 		elseif args[2] == "all" then
@@ -3604,12 +3585,8 @@ coroutine.wrap(function()
 				wait(.5)
 				API:killall(game.Teams.Guards)
 			end
-			if States.loopkillneutral then
-				wait(.5)
-				API:killall(game.Teams.Neutral)
-			end
 			if Temp and Temp.Loopkillall then
-				wait(.2)
+				wait(2)
 				API:killall()
 			end
 		end)()
