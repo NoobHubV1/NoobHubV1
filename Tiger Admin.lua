@@ -763,6 +763,7 @@ function API:ChangeTeam(TeamPath,NoForce,Pos)
 	elseif TeamPath == game.Teams.Inmates then
 		task.spawn(function()
 			Workspace.Remote.TeamEvent:FireServer("Bright orange")
+		end)
 		repeat API:swait() until Player.Team == game.Teams.Inmates and Player.Character:FindFirstChild("HumanoidRootPart")
 		repeat
 			API:swait()
