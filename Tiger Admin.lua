@@ -22,7 +22,7 @@ local PremiumActivated = API_Prem.CheckPremium()
 local Temp = {}
 local API = {}
 local Reload_Guns = {}
-local Prefix = "!"
+local Prefix = "?"
 
 --------
 Folder.Name = "Tiger_revamp_loaded"
@@ -366,7 +366,7 @@ GlobalVar.NotifTiger = function(t,v)
 end
 local States = {}
 local Settings = {
-	Prefix = "!",
+	Prefix = "?",
 	ValidCommands = {},
 }
 local OrginMenuPos = Player.PlayerGui.Home.hud.MenuButton.Position
@@ -1987,25 +1987,25 @@ do
 	end,nil,"[PLAYER]")
 	API:CreateCmd("kill", "Kills a player", function(args)
 		if args[2] == "all" then
+			for i = 1, 5 do
+			game.Players.LocalPlayer.Backpack:WaitForChild("M9").Parent = game.Players.LocalPlayer.Character
 			API:killall(game.Teams.Guards)
 			API:killall(game.Teams.Inmates)
-		        wait(2)
-			API:killall(game.Teams.Criminals)
 		elseif args[2] == "everyone" then
+		        for i = 1, 5 do
+			game.Players.LocalPlayer.Backpack:WaitForChild("M9").Parent = game.Players.LocalPlayer.Character
 			API:killall(game.Teams.Guards)
 			API:killall(game.Teams.Inmates)
-		        wait(2)
-			API:killall(game.Teams.Criminals)
 		elseif args[2] == "@" then
+			for i = 1, 5 do
+			game.Players.LocalPlayer.Backpack:WaitForChild("M9").Parent = game.Players.LocalPlayer.Character
 			API:killall(game.Teams.Guards)
 			API:killall(game.Teams.Inmates)
-		        wait(2)
-			API:killall(game.Teams.Criminals)
 		elseif args[2] == "others" then
+			for i = 1, 5 do
+			game.Players.LocalPlayer.Backpack:WaitForChild("M9").Parent = game.Players.LocalPlayer.Character
 		        API:killall(game.Teams.Guards)
 			API:killall(game.Teams.Inmates)
-		        wait(2)
-			API:killall(game.Teams.Criminals)
 		elseif args[2] == "guards" then
 			API:killall(game.Teams.Guards)
 		elseif args[2] == "inmates" then
@@ -3544,11 +3544,11 @@ coroutine.wrap(function()
 				API:killall(game.Teams.Guards)
 			end
 			if Temp and Temp.Loopkillall then
+				wait(.1)
+				game.Players.LocalPlayer.Backpack:WaitForChild("M9").Parent = game.Players.LocalPlayer.Character
 				wait(3)
 				API:killall(game.Teams.Guards)
 				API:killall(game.Teams.Inmates)
-				wait(1)
-				API:killall(game.Teams.Criminals)
 			end
 		end)()
 		coroutine.wrap(function()
