@@ -758,10 +758,6 @@ function API:ChangeTeam(TeamPath,NoForce,Pos)
 	end)
 	if TeamPath == game.Teams.Criminals then
 		task.spawn(function()
-			game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1].CFrame = CFrame.new(0, 3125, 0)
-		end)
-	elseif TeamPath == game.Teams.Inmates then
-		task.spawn(function()
 			Workspace.Remote.TeamEvent:FireServer("Bright orange")
 		end)
 		repeat API:swait() until Player.Team == game.Teams.Inmates and Player.Character:FindFirstChild("HumanoidRootPart")
