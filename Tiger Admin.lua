@@ -22,7 +22,7 @@ local PremiumActivated = API_Prem.CheckPremium()
 local Temp = {}
 local API = {}
 local Reload_Guns = {}
-local Prefix = "?"
+local Prefix = "!"
 
 --------
 Folder.Name = "Tiger_revamp_loaded"
@@ -366,7 +366,7 @@ GlobalVar.NotifTiger = function(t,v)
 end
 local States = {}
 local Settings = {
-	Prefix = "?",
+	Prefix = "!",
 	ValidCommands = {},
 }
 local OrginMenuPos = Player.PlayerGui.Home.hud.MenuButton.Position
@@ -1989,15 +1989,19 @@ do
 	API:CreateCmd("kill", "Kills a player", function(args)
 		if args[2] == "all" then
 			API:killall(game.Teams.Guards)
+			wait(1)
 			API:killall(game.Teams.Inmates)
 		elseif args[2] == "everyone" then
 			API:killall(game.Teams.Guards)
+			wait(1)
 			API:killall(game.Teams.Inmates)
 		elseif args[2] == "@" then
 			API:killall(game.Teams.Guards)
+			wait(1)
 			API:killall(game.Teams.Inmates)
 		elseif args[2] == "others" then
 			API:killall(game.Teams.Guards)
+			wait(1)
 			API:killall(game.Teams.Inmates)
 		elseif args[2] == "guards" then
 			API:killall(game.Teams.Guards)
