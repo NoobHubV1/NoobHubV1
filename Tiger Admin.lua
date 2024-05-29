@@ -944,8 +944,8 @@ function API:killall(TeamToKill)
 				API:ChangeTeam(game.Teams.Criminals)
 			end
 		elseif TeamToKill == game.Teams.Criminals then
-			if Player.Team ~= game.Teams.Inmates then
-				API:ChangeTeam(game.Teams.Inmates)
+			if Player.Team ~= game.Teams.Guards then
+				API:ChangeTeam(game.Teams.Guards)
 			end
 		end
 		local BulletTable = {}
@@ -961,7 +961,6 @@ function API:killall(TeamToKill)
 		end
 		wait(.4)
 		API:GetGun("M9")
-		game.Players.LocalPlayer.Backpack:WaitForChild("M9").Parent = game.Players.LocalPlayer.Character
 		local Gun = Player.Backpack:FindFirstChild("M9") or Player.Character:FindFirstChild("M9")
 		repeat task.wait() Gun = Player.Backpack:FindFirstChild("M9") or Player.Character:FindFirstChild("M9") until Gun
 
@@ -1991,26 +1990,26 @@ do
 			API:killall(game.Teams.Guards)
 			wait(1)
 			API:killall(game.Teams.Inmates)
-			wait(.3)
-			game.Players.LocalPlayer.Character:WaitForChild("M9").Parent = game.Players.LocalPlayer.Backpack
+			wait(1)
+			API:killall(game.Teams.Criminals)
 		elseif args[2] == "everyone" then
 			API:killall(game.Teams.Guards)
 			wait(1)
 			API:killall(game.Teams.Inmates)
-			wait(.3)
-			game.Players.LocalPlayer.Character:WaitForChild("M9").Parent = game.Players.LocalPlayer.Backpack
+			wait(1)
+			API:killall(game.Teams.Criminals)
 		elseif args[2] == "@" then
 			API:killall(game.Teams.Guards)
 			wait(1)
 			API:killall(game.Teams.Inmates)
-			wait(.3)
-			game.Players.LocalPlayer.Character:WaitForChild("M9").Parent = game.Players.LocalPlayer.Backpack
+			wait(1)
+			API:killall(game.Teams.Criminals)
 		elseif args[2] == "others" then
 			API:killall(game.Teams.Guards)
 			wait(1)
 			API:killall(game.Teams.Inmates)
-			wait(.3)
-			game.Players.LocalPlayer.Character:WaitForChild("M9").Parent = game.Players.LocalPlayer.Backpack
+			wait(1)
+			API:killall(game.Teams.Criminals)
 		elseif args[2] == "guards" then
 			API:killall(game.Teams.Guards)
 		elseif args[2] == "inmates" then
