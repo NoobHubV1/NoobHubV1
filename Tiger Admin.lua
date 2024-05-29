@@ -1991,18 +1991,26 @@ do
 			API:killall(game.Teams.Guards)
 			wait(1)
 			API:killall(game.Teams.Inmates)
+			wait(.3)
+			game.Players.LocalPlayer.Character:WaitForChild("M9").Parent = game.Players.LocalPlayer.Backpack
 		elseif args[2] == "everyone" then
 			API:killall(game.Teams.Guards)
 			wait(1)
 			API:killall(game.Teams.Inmates)
+			wait(.3)
+			game.Players.LocalPlayer.Character:WaitForChild("M9").Parent = game.Players.LocalPlayer.Backpack
 		elseif args[2] == "@" then
 			API:killall(game.Teams.Guards)
 			wait(1)
 			API:killall(game.Teams.Inmates)
+			wait(.3)
+			game.Players.LocalPlayer.Character:WaitForChild("M9").Parent = game.Players.LocalPlayer.Backpack
 		elseif args[2] == "others" then
 			API:killall(game.Teams.Guards)
 			wait(1)
 			API:killall(game.Teams.Inmates)
+			wait(.3)
+			game.Players.LocalPlayer.Character:WaitForChild("M9").Parent = game.Players.LocalPlayer.Backpack
 		elseif args[2] == "guards" then
 			API:killall(game.Teams.Guards)
 		elseif args[2] == "inmates" then
@@ -3542,8 +3550,7 @@ coroutine.wrap(function()
 			end
 			if Temp and Temp.Loopkillall then
 				wait(3)
-				API:killall(game.Teams.Guards)
-				API:killall(game.Teams.Inmates)
+				API:killall()
 			end
 		end)()
 		coroutine.wrap(function()
