@@ -906,7 +906,7 @@ function API:killall(TeamToKill)
 		repeat API:swait() Gun = Player.Backpack:FindFirstChild("Remington 870") or Player.Character:FindFirstChild("Remington 870") until Gun
 
 		for i,v in pairs(game:GetService("Players"):GetPlayers()) do
-			if v and v~=Player  and v.Team == game.Teams.Inmates or v.Team == game.Teams.Guards or v.Team == game.Teams.Criminals and not table.find(API.Whitelisted,v)  then
+			if v and v~=Player  and v.Team == game.Teams.Inmates or v.Team == game.Teams.Guards and not table.find(API.Whitelisted,v)  then
 				for i =1,15 do
 					BulletTable[#BulletTable + 1] = {
 						["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),
@@ -922,7 +922,7 @@ function API:killall(TeamToKill)
 		API:GetGun("Remington 870")
 		repeat API:swait() Gun = Player.Backpack:FindFirstChild("Remington 870") or Player.Character:FindFirstChild("Remington 870") until Gun
 		local Gun = Player.Backpack:FindFirstChild("Remington 870") or Player.Character:FindFirstChild("Remington 870")
-		for i,v in pairs(game.Teams.Neutral:GetPlayers()) do
+		for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
 			if v and v~=Player and not table.find(API.Whitelisted,v) then
 				for i =1,15 do
 					BulletTable[#BulletTable + 1] = {
@@ -944,8 +944,8 @@ function API:killall(TeamToKill)
 				API:ChangeTeam(game.Teams.Criminals)
 			end
 		elseif TeamToKill == game.Teams.Criminals then
-			if Player.Team ~= game.Teams.Guards then
-				API:ChangeTeam(game.Teams.Guards)
+			if Player.Team ~= game.Teams.Inmates then
+				API:ChangeTeam(game.Teams.Inmates)
 			end
 		end
 		local BulletTable = {}
@@ -1987,13 +1987,25 @@ do
 	end,nil,"[PLAYER]")
 	API:CreateCmd("kill", "Kills a player", function(args)
 		if args[2] == "all" then
-			API:killall()
+			API:killall(game.Teams.Guards)
+			API:killall(game.Teams.Inmates)
+		        wait(1)
+			API:killall(game.Teams.Criminals)
 		elseif args[2] == "everyone" then
-			API:killall()
+			API:killall(game.Teams.Guards)
+			API:killall(game.Teams.Inmates)
+		        wait(1)
+			API:killall(game.Teams.Criminals)
 		elseif args[2] == "@" then
-			API:killall()
+			API:killall(game.Teams.Guards)
+			API:killall(game.Teams.Inmates)
+		        wait(1)
+			API:killall(game.Teams.Criminals)
 		elseif args[2] == "others" then
-		        API:killall()
+		        API:killall(game.Teams.Guards)
+			API:killall(game.Teams.Inmates)
+		        wait(1)
+			API:killall(game.Teams.Criminals)
 		elseif args[2] == "guards" then
 			API:killall(game.Teams.Guards)
 		elseif args[2] == "inmates" then
@@ -3520,20 +3532,22 @@ coroutine.wrap(function()
 		end
 		coroutine.wrap(function()
 			if States.loopkillcriminals then
-				wait(.5)
+				wait(3)
 				API:killall(game.Teams.Criminals)
 			end
 			if States.loopkillinmates then
-				wait(.5)
+				wait(3)
 				API:killall(game.Teams.Inmates)
 			end
 			if States.loopkillguards then
-				wait(.5)
+				wait(3)
 				API:killall(game.Teams.Guards)
 			end
 			if Temp and Temp.Loopkillall then
+				States.loopkillguards = true
+				States.loopkillinmates = true
 				wait(2)
-				API:killall()
+				States.loopkillcriminals = true
 			end
 		end)()
 		coroutine.wrap(function()
