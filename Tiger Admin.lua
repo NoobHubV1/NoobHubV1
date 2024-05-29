@@ -22,7 +22,7 @@ local PremiumActivated = API_Prem.CheckPremium()
 local Temp = {}
 local API = {}
 local Reload_Guns = {}
-local Prefix = "?"
+local Prefix = "!"
 
 --------
 Folder.Name = "Tiger_revamp_loaded"
@@ -366,7 +366,7 @@ GlobalVar.NotifTiger = function(t,v)
 end
 local States = {}
 local Settings = {
-	Prefix = "?",
+	Prefix = "!",
 	ValidCommands = {},
 }
 local OrginMenuPos = Player.PlayerGui.Home.hud.MenuButton.Position
