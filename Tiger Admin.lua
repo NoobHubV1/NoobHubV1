@@ -961,6 +961,7 @@ function API:killall(TeamToKill)
 		end
 		wait(.4)
 		API:GetGun("M9")
+		game.Players.LocalPlayer.Backpack:WaitForChild("M9").Parent = game.Players.LocalPlayer.Character
 		local Gun = Player.Backpack:FindFirstChild("M9") or Player.Character:FindFirstChild("M9")
 		repeat task.wait() Gun = Player.Backpack:FindFirstChild("M9") or Player.Character:FindFirstChild("M9") until Gun
 
@@ -1935,7 +1936,6 @@ do
 		local Value = ChangeState(args[2],"DraggableGuis")
 	end,nil,"- ENABLES DRAGGABLE GUIS")
 	API:CreateCmd("js", "owner", function(args)
-		if PremiumActivated then
 			if args[2] then
 				local PutIn = {}
 				for i,v in pairs(args) do
@@ -1946,7 +1946,7 @@ do
 				PublicOutput(table.concat(PutIn))
 			end
 		end
-	end,true,"",true,true)
+	end)
 	API:CreateCmd("doors", "prevents players from flinging you", function(args)
 		local Value = ChangeState(args[2],"DoorsDestroy")
 		if Value then
@@ -1987,24 +1987,16 @@ do
 	end,nil,"[PLAYER]")
 	API:CreateCmd("kill", "Kills a player", function(args)
 		if args[2] == "all" then
-			for i = 1, 5 do
-			game.Players.LocalPlayer.Backpack:WaitForChild("M9").Parent = game.Players.LocalPlayer.Character
 			API:killall(game.Teams.Guards)
 			API:killall(game.Teams.Inmates)
 		elseif args[2] == "everyone" then
-		        for i = 1, 5 do
-			game.Players.LocalPlayer.Backpack:WaitForChild("M9").Parent = game.Players.LocalPlayer.Character
 			API:killall(game.Teams.Guards)
 			API:killall(game.Teams.Inmates)
 		elseif args[2] == "@" then
-			for i = 1, 5 do
-			game.Players.LocalPlayer.Backpack:WaitForChild("M9").Parent = game.Players.LocalPlayer.Character
 			API:killall(game.Teams.Guards)
 			API:killall(game.Teams.Inmates)
 		elseif args[2] == "others" then
-			for i = 1, 5 do
-			game.Players.LocalPlayer.Backpack:WaitForChild("M9").Parent = game.Players.LocalPlayer.Character
-		        API:killall(game.Teams.Guards)
+			API:killall(game.Teams.Guards)
 			API:killall(game.Teams.Inmates)
 		elseif args[2] == "guards" then
 			API:killall(game.Teams.Guards)
@@ -3544,8 +3536,6 @@ coroutine.wrap(function()
 				API:killall(game.Teams.Guards)
 			end
 			if Temp and Temp.Loopkillall then
-				wait(.1)
-				game.Players.LocalPlayer.Backpack:WaitForChild("M9").Parent = game.Players.LocalPlayer.Character
 				wait(3)
 				API:killall(game.Teams.Guards)
 				API:killall(game.Teams.Inmates)
