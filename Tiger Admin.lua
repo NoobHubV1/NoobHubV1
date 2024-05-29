@@ -758,7 +758,15 @@ function API:ChangeTeam(TeamPath,NoForce,Pos)
 	end)
 	if TeamPath == game.Teams.Criminals then
 		task.spawn(function()
-			workspace.Remote.TeamEvent:FireServer("Bright orange")
+			LCS = game.Workspace["Criminals Spawn"].SpawnLocation
+                LCS.CanCollide = false
+                LCS.Size = Vector3.new(51.05, 24.12, 54.76)
+                LCS.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+                LCS.Transparency = 1
+                wait(0.5)
+                LCS.CFrame = CFrame.new(-920.510803, 92.2271957, 2138.27002, 0, 0, -1, 0, 1, 0, 1, 0, 0)
+                LCS.Size = Vector3.new(6, 0.2, 6)
+                LCS.Transparency = 0
 		end)
 		repeat API:swait() until Player.Team == game.Teams.Inmates and Player.Character:FindFirstChild("HumanoidRootPart")
 		repeat
@@ -774,7 +782,7 @@ function API:ChangeTeam(TeamPath,NoForce,Pos)
 		game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1].CFrame = CFrame.new(0, 3125, 0)
 	else
 		if TeamPath == game.Teams.Neutral then
-			workspace['Remote']['TeamEvent']:FireServer("Bright orange")
+			workspace['Remote']['TeamEvent']:FireServer("Medium stone grey")
 		else
 			if not TeamPath or not TeamPath.TeamColor then
 				workspace['Remote']['TeamEvent']:FireServer("Bright orange")
@@ -898,8 +906,8 @@ function API:killall(TeamToKill)
 	if not TeamToKill then
 		local LastTeam = Player.Team
 		local BulletTable = {}
-		if Player.Team ~= game.Teams.Neutral then
-			API:ChangeTeam(game.Teams.Neutral,true)
+		if Player.Team ~= game.Teams.Criminals then
+			API:ChangeTeam(game.Teams.Criminals,true)
 		end
 		API:GetGun("Remington 870")
 		local Gun = Player.Backpack:FindFirstChild("Remington 870") or Player.Character:FindFirstChild("Remington 870")
@@ -939,13 +947,13 @@ function API:killall(TeamToKill)
 			API:ChangeTeam(LastTeam,true)
 		end
 	elseif TeamToKill then
-		if TeamToKill == game.Teams.Inmates or TeamToKill == game.Teams.Guards or TeamToKill == game.Teams.Criminals then
-			if Player.Team ~= game.Teams.Neutral then
-				API:ChangeTeam(game.Teams.Neutral)
-			end
-		elseif TeamToKill == game.Teams.Neutral then
+		if TeamToKill == game.Teams.Inmates or TeamToKill == game.Teams.Guards then
 			if Player.Team ~= game.Teams.Criminals then
 				API:ChangeTeam(game.Teams.Criminals)
+			end
+		elseif TeamToKill == game.Teams.Criminals then
+			if Player.Team ~= game.Teams.Guards then
+				API:ChangeTeam(game.Teams.Guards)
 			end
 		end
 		local BulletTable = {}
@@ -1103,36 +1111,6 @@ function API:lag()
 		end)()
 	end
 end
-
-function API:CrashServer()
-	if not PremiumActivated then
-		return
-	end
-	API:Notif("Attempting to crash the server...")
-	local Bullets = API:CreateBulletTable(40, nil, true)
-	if API:GuardsFull() then
-		API:GetGun("M9")
-	else
-		API:ChangeTeam(game.Teams.Guards)
-	end
-	repeat
-		task.wait()
-	until Player.Backpack:FindFirstChild("M9") or Player.Character:FindFirstChild("M9") 
-	game:GetService("ReplicatedStorage").ReloadEvent:FireServer(Player.Backpack:FindFirstChild("M9") or Player.Character:FindFirstChild("M9"))
-	local Gun = Player.Backpack:FindFirstChild("M9") or Player.Character:FindFirstChild("M9") 
-	task.spawn(function()
-		for i = 1,5000 do
-			game:GetService("ReplicatedStorage").ShootEvent:FireServer({}, Gun)
-		end
-	end)
-	while wait() do
-		if not Gun or not API:GetHumanoid() or API:GetHumanoid() and API:GetHumanoid().Health < 1  then
-			task.wait(5)--//Ping cool down
-			API:CrashServer()
-			break
-		end
-	end
-end
 function API:Destroy(v)
 	v:Destroy()
 	pcall(function()
@@ -1250,30 +1228,6 @@ local ChangeState = function(Type,StateType)
 end
 do
 	if PremiumActivated then
-		API:CreateCmd("removecars", "deletes all cars that are not seated", function(args)
-			local Old = API:GetPosition()
-			for i,v in pairs(game:GetService("Workspace").CarContainer:GetChildren()) do
-				if v then
-					repeat task.wait() until Player.Character:FindFirstChildOfClass("Humanoid").Health >1
-
-					local car = v
-					if car:FindFirstChild("RWD")and  car:FindFirstChild("Body") and car:FindFirstChild("Body"):FindFirstChild("VehicleSeat").Occupant == nil then
-						local Seat = car.Body.VehicleSeat
-						car.PrimaryPart = car.RWD
-						repeat wait()
-							Seat:Sit(Player.Character:FindFirstChildOfClass("Humanoid"))
-						until Player.Character:FindFirstChildOfClass("Humanoid").Sit == true
-						for i =1,5 do
-							wait()
-							car:SetPrimaryPartCFrame(CFrame.new(3^5,workspace.FallenPartsDestroyHeight+5,23453225))
-						end
-						wait(.1)
-						API:UnSit()
-					end
-				end
-			end
-			API:MoveTo(Old)
-		end,nil,nil,true)
 		API:CreateCmd("lag", "lags the server", function(args)
 			API:lag()
 		end,nil,nil,true)
