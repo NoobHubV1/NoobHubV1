@@ -1991,11 +1991,15 @@ do
 			wait(1)
 			API:killall(game.Teams.Inmates)
 			wait(1)
+			API:ChangeTeam(game.Teams.Guards)
+			wait(1)
 			API:killall(game.Teams.Criminals)
 		elseif args[2] == "everyone" then
 			API:killall(game.Teams.Guards)
 			wait(1)
 			API:killall(game.Teams.Inmates)
+			wait(1)
+			API:ChangeTeam(game.Teams.Guards)
 			wait(1)
 			API:killall(game.Teams.Criminals)
 		elseif args[2] == "@" then
@@ -2003,11 +2007,15 @@ do
 			wait(1)
 			API:killall(game.Teams.Inmates)
 			wait(1)
+			API:ChangeTeam(game.Teams.Guards)
+			wait(1)
 			API:killall(game.Teams.Criminals)
 		elseif args[2] == "others" then
 			API:killall(game.Teams.Guards)
 			wait(1)
 			API:killall(game.Teams.Inmates)
+			wait(1)
+			API:ChangeTeam(game.Teams.Guards)
 			wait(1)
 			API:killall(game.Teams.Criminals)
 		elseif args[2] == "guards" then
