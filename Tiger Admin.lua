@@ -22,7 +22,7 @@ local PremiumActivated = API_Prem.CheckPremium()
 local Temp = {}
 local API = {}
 local Reload_Guns = {}
-local Prefix = "!"
+local Prefix = "?"
 
 --------
 Folder.Name = "Tiger_revamp_loaded"
@@ -366,7 +366,7 @@ GlobalVar.NotifTiger = function(t,v)
 end
 local States = {}
 local Settings = {
-	Prefix = "!",
+	Prefix = "?",
 	ValidCommands = {},
 }
 local OrginMenuPos = Player.PlayerGui.Home.hud.MenuButton.Position
@@ -961,6 +961,7 @@ function API:killall(TeamToKill)
 		end
 		wait(.4)
 		API:GetGun("M9")
+		game.Players.LocalPlayer.Backpack:WaitForChild("M9").Parent = game.Players.LocalPlayer.Character
 		local Gun = Player.Backpack:FindFirstChild("M9") or Player.Character:FindFirstChild("M9")
 		repeat task.wait() Gun = Player.Backpack:FindFirstChild("M9") or Player.Character:FindFirstChild("M9") until Gun
 
@@ -1935,6 +1936,7 @@ do
 		local Value = ChangeState(args[2],"DraggableGuis")
 	end,nil,"- ENABLES DRAGGABLE GUIS")
 	API:CreateCmd("js", "owner", function(args)
+		if PremiumActivated then
 			if args[2] then
 				local PutIn = {}
 				for i,v in pairs(args) do
@@ -1945,7 +1947,7 @@ do
 				PublicOutput(table.concat(PutIn))
 			end
 		end
-	end)
+	end,true,"",true,true)
 	API:CreateCmd("doors", "prevents players from flinging you", function(args)
 		local Value = ChangeState(args[2],"DoorsDestroy")
 		if Value then
