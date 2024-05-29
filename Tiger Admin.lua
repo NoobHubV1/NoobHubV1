@@ -1989,22 +1989,22 @@ do
 		if args[2] == "all" then
 			API:killall(game.Teams.Guards)
 			API:killall(game.Teams.Inmates)
-		        wait(1)
+		        wait(2)
 			API:killall(game.Teams.Criminals)
 		elseif args[2] == "everyone" then
 			API:killall(game.Teams.Guards)
 			API:killall(game.Teams.Inmates)
-		        wait(1)
+		        wait(2)
 			API:killall(game.Teams.Criminals)
 		elseif args[2] == "@" then
 			API:killall(game.Teams.Guards)
 			API:killall(game.Teams.Inmates)
-		        wait(1)
+		        wait(2)
 			API:killall(game.Teams.Criminals)
 		elseif args[2] == "others" then
 		        API:killall(game.Teams.Guards)
 			API:killall(game.Teams.Inmates)
-		        wait(1)
+		        wait(2)
 			API:killall(game.Teams.Criminals)
 		elseif args[2] == "guards" then
 			API:killall(game.Teams.Guards)
