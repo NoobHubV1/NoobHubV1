@@ -21,8 +21,92 @@ local ChangeTeam = function(Team)
         end
 end
 
+local function GiveItem(Item)
+        if Item == "Shotgun" then
+                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["Remington 870"]})
+        elseif Item == "Hammer" then
+                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.single["Hammer"]})
+        elseif Item == "Knife" then
+                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.single["Crude Knife"]})
+        elseif Item == "AK-47" then
+                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["AK-47"]})
+        elseif Item == "M9" then
+                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["M9"]})
+        elseif Item == "M4A1" then
+                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["M4A1"]})
+        end
+end
+
+local AllGuns = function()
+        GiveItem("Shotgun")
+        wait(.3)
+        GiveItem("AK-47")
+        wait(.3)
+        GiveItem("M9")
+        wait(.3)
+        GiveItem("M4A1")
+end
+
+local function AllItems()
+        GiveItem("Shotgun")
+        wait(.3)
+        GiveItem("AK-47")
+        wait(.3)
+        GiveItem("M9")
+        wait(.3)
+        GiveItem("M4A1")
+        wait(.3)
+        GiveItem("Hammer")
+        wait(.3)
+        GiveItem("Knife")
+end
+
 local function Respawn()
         ChangeTeam(plr.Team)
+end
+
+local function AutoInfAmmo(State)
+        getgenv().Loop = State
+        while Loop do
+        local gun = require(game.Players.LocalPlayer.Character:FindFirstChildOf("Tool").GunStates)
+        gun["MaxAmmo"] = 999999999999
+	gun["StoredAmmo"] = 999999999999
+	gun["AmmoPerClip"] = 999999999999
+	gun["CurrentAmmo"] = 999999999999
+        task.wait(.5)
+        end
+end
+
+local function InfAmmo()
+        local gun = require(game.Players.LocalPlayer.Character:FindFirstChildOf("Tool").GunStates)
+        gun["MaxAmmo"] = 999999999999
+	gun["StoredAmmo"] = 999999999999
+	gun["AmmoPerClip"] = 999999999999
+	gun["CurrentAmmo"] = 999999999999
+end
+
+local FastFire = function()
+        local gun = require(game.Players.LocalPlayer.Character:FindFirstChildOf("Tool").GunStates)
+        gun.FireRate = 0
+        gun.Range = math.huge
+        gun.Spread = 5
+        gun.ReloadTime = 0
+end
+
+local function AutoFastFire(State)
+        getgenv().Loop = State
+        while Loop do
+        local gun = require(game.Players.LocalPlayer.Character:FindFirstChildOf("Tool").GunStates)
+        gun.FireRate = 0
+        gun.Range = math.huge
+        gun.Spread = 5
+        gun.ReloadTime = 0
+        task.wait(.5)
+        end
+end
+
+local TigerAdmin = function()
+        loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/RobloxScripts/main/Tiger%20Admin.lua'))()
 end
 
 local Window = Library:NewWindow("NoobHubV1 Hub")
@@ -43,4 +127,31 @@ PrisonLife:CreateDropdown("Team", {"Inmate","Guard","Neutral","Criminal"}, 1, fu
 end)
 
 PrisonLife:CreateButton("Respawn", function()Respawn()
+end)
+
+local PrisonLife = Window:NewSection("Item")
+
+PrisonLife:CreateDropdown("Item", {"Shotgun","AK-47","M9","Hammer","Knife","M4A1"}, 1, function(Value)SelectedItem = Value
+end)
+
+PrisonLife:CreateButton("Give Item", function()GiveItem(SelectedItem)
+end)
+
+local PrisonLife = Window:NewSection("Gun Mode")
+
+PrisonLife:CreateButton("Inf Ammo", function()InfAmmo()
+end)
+
+PrisonLife:CreateToggle("Auto Inf Ammo", function(Value)AutoInfAmmo(Value)
+end)
+
+PrisonLife:CreateButton("Fast Fire", function()FastFire()
+end)
+
+PrisonLife:CreateToggle("Auto Fast Fire", function(Value)AutoFastFire(Value)
+end)
+
+local PrisonLife = Window:NewSection("Tiger Admin By NoobHubV1")
+
+PrisonLife:CreateButton("Tiger Admin", function()TigerAdmin()
 end)
