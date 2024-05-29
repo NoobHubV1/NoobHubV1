@@ -961,7 +961,6 @@ function API:killall(TeamToKill)
 		end
 		wait(.4)
 		API:GetGun("M9")
-		game.Players.LocalPlayer.Backpack:WaitForChild("M9").Parent = game.Players.LocalPlayer.Character
 		local Gun = Player.Backpack:FindFirstChild("M9") or Player.Character:FindFirstChild("M9")
 		repeat task.wait() Gun = Player.Backpack:FindFirstChild("M9") or Player.Character:FindFirstChild("M9") until Gun
 
