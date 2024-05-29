@@ -3544,10 +3544,11 @@ coroutine.wrap(function()
 				API:killall(game.Teams.Guards)
 			end
 			if Temp and Temp.Loopkillall then
-				States.loopkillguards = true
-				States.loopkillinmates = true
-				wait(2)
-				States.loopkillcriminals = true
+				wait(3)
+				API:killall(game.Teams.Guards)
+				API:killall(game.Teams.Inmates)
+				wait(1)
+				API:killall(game.Teams.Criminals)
 			end
 		end)()
 		coroutine.wrap(function()
