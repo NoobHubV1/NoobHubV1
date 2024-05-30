@@ -380,7 +380,7 @@ do
 	States.Antishield = false
 	States.DoorsDestroy = false
 	States.antipunch = false
-	States.AutoRespawn = false
+	States.AutoRespawn = true
 	States.AutoItems = false
 	States.ClickKill = false
 	States.ClickArrest = false
