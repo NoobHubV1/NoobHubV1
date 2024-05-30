@@ -758,7 +758,7 @@ function API:ChangeTeam(TeamPath,NoForce,Pos)
 	end)
 	if TeamPath == game.Teams.Criminals then
 		task.spawn(function()
-			Workspace.Remote.TeamEvent:FireServer("Bright blue")
+			Workspace.Remote.TeamEvent:FireServer("Bright orange")
 		end)
 		repeat API:swait() until Player.Team == game.Teams.Inmates and Player.Character:FindFirstChild("HumanoidRootPart")
 		repeat
@@ -944,8 +944,8 @@ function API:killall(TeamToKill)
 				API:ChangeTeam(game.Teams.Criminals)
 			end
 		elseif TeamToKill == game.Teams.Criminals then
-			if Player.Team ~= game.Teams.Guards then
-				API:ChangeTeam(game.Teams.Guards)
+			if Player.Team ~= game.Teams.Inmates then
+				API:ChangeTeam(game.Teams.Inmates)
 			end
 		end
 		local BulletTable = {}
@@ -1991,41 +1991,33 @@ do
 			wait(1)
 			API:killall(game.Teams.Inmates)
 			wait(1)
-			API:ChangeTeam(game.Teams.Guards)
+			API:ChangeTeam(game.Teams.Inmates)
 			wait(1)
 			API:killall(game.Teams.Criminals)
-			wait(1)
-			API:ChangeTeam(game.Teams.Inmates)
 		elseif args[2] == "everyone" then
 			API:killall(game.Teams.Guards)
 			wait(1)
 			API:killall(game.Teams.Inmates)
 			wait(1)
-			API:ChangeTeam(game.Teams.Guards)
+			API:ChangeTeam(game.Teams.Inmates)
 			wait(1)
 			API:killall(game.Teams.Criminals)
-			wait(1)
-			API:ChangeTeam(game.Teams.Inmates)
 		elseif args[2] == "@" then
 			API:killall(game.Teams.Guards)
 			wait(1)
 			API:killall(game.Teams.Inmates)
 			wait(1)
-			API:ChangeTeam(game.Teams.Guards)
+			API:ChangeTeam(game.Teams.Inmates)
 			wait(1)
 			API:killall(game.Teams.Criminals)
-			wait(1)
-			API:ChangeTeam(game.Teams.Inmates)
 		elseif args[2] == "others" then
 			API:killall(game.Teams.Guards)
 			wait(1)
 			API:killall(game.Teams.Inmates)
 			wait(1)
-			API:ChangeTeam(game.Teams.Guards)
+			API:ChangeTeam(game.Teams.Inmates)
 			wait(1)
 			API:killall(game.Teams.Criminals)
-			wait(1)
-			API:ChangeTeam(game.Teams.Inmates)
 		elseif args[2] == "guards" then
 			API:killall(game.Teams.Guards)
 		elseif args[2] == "inmates" then
