@@ -380,7 +380,7 @@ do
 	States.Antishield = false
 	States.DoorsDestroy = false
 	States.antipunch = false
-	States.AutoRespawn = true
+	States.AutoRespawn = false
 	States.AutoItems = false
 	States.ClickKill = false
 	States.ClickArrest = false
@@ -758,7 +758,7 @@ function API:ChangeTeam(TeamPath,NoForce,Pos)
 	end)
 	if TeamPath == game.Teams.Criminals then
 		task.spawn(function()
-			Workspace.Remote.TeamEvent:FireServer("Bright orange")
+			Workspace.Remote.TeamEvent:FireServer("Bright blue")
 		end)
 		repeat API:swait() until Player.Team == game.Teams.Inmates and Player.Character:FindFirstChild("HumanoidRootPart")
 		repeat
@@ -1994,6 +1994,8 @@ do
 			API:ChangeTeam(game.Teams.Guards)
 			wait(1)
 			API:killall(game.Teams.Criminals)
+			wait(1)
+			API:ChangeTeam(game.Teams.Inmates)
 		elseif args[2] == "everyone" then
 			API:killall(game.Teams.Guards)
 			wait(1)
@@ -2002,6 +2004,8 @@ do
 			API:ChangeTeam(game.Teams.Guards)
 			wait(1)
 			API:killall(game.Teams.Criminals)
+			wait(1)
+			API:ChangeTeam(game.Teams.Inmates)
 		elseif args[2] == "@" then
 			API:killall(game.Teams.Guards)
 			wait(1)
@@ -2010,6 +2014,8 @@ do
 			API:ChangeTeam(game.Teams.Guards)
 			wait(1)
 			API:killall(game.Teams.Criminals)
+			wait(1)
+			API:ChangeTeam(game.Teams.Inmates)
 		elseif args[2] == "others" then
 			API:killall(game.Teams.Guards)
 			wait(1)
@@ -2018,6 +2024,8 @@ do
 			API:ChangeTeam(game.Teams.Guards)
 			wait(1)
 			API:killall(game.Teams.Criminals)
+			wait(1)
+			API:ChangeTeam(game.Teams.Inmates)
 		elseif args[2] == "guards" then
 			API:killall(game.Teams.Guards)
 		elseif args[2] == "inmates" then
@@ -2760,6 +2768,12 @@ do
 			end
 		end
 	end,nil,"[ON/OFF]")
+	API:CreateCmd("forcefield", "You On Forcefield", function(args)
+		local value = ChangeState(args[2],"ff")
+	end,nil,"[ON/OFF]")
+	API:CreateCmd("ff", "You On Forcefield", function(args)
+		local value = ChangeState(args[2],"ff")
+	end,true,"[ON/OFF]")
 	API:CreateCmd("carfly", "Car go flying", function(args)
 		API:Unfly()
 		wait()
