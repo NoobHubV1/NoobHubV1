@@ -160,9 +160,9 @@ local ChangeTeam = function(TeamPath,NoForce,Pos)
 		task.spawn(function()
 			Workspace.Remote.TeamEvent:FireServer("Bright orange")
 		end)
-		repeat API:swait() until Player.Team == game.Teams.Inmates and Player.Character:FindFirstChild("HumanoidRootPart")
+		repeat swait() until Player.Team == game.Teams.Inmates and Player.Character:FindFirstChild("HumanoidRootPart")
 		repeat
-			API:swait()
+			swait()
 			if firetouchinterest then
 				firetouchinterest(plr.Character:FindFirstChildOfClass("Part"), game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1], 0)
 				firetouchinterest(plr.Character:FindFirstChildOfClass("Part"), game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1], 1)
