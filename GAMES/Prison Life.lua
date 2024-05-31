@@ -133,6 +133,16 @@ local function WaitForRespawn(Cframe,NoForce)
 	end)()
 end
 
+local function GetPosition(Player)
+	game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+
+	if Player then
+		return API:GetPart(Player).CFrame
+	elseif not Player then
+		return API:GetPart(plr).CFrame
+	end
+end
+
 local ChangeTeam = function(Team)
         if Team == game.Teams.Inmates then
                 workspace.Remote.TeamEvent:FireServer("Bright orange")
