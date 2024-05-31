@@ -154,7 +154,7 @@ local ChangeTeam = function(TeamPath,NoForce,Pos)
 		repeat task.wait() until game:GetService("Players").LocalPlayer.Character
 		game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
 
-		API:WaitForRespawn(Pos or API:GetPosition(),NoForce)
+		WaitForRespawn(Pos or GetPosition(),NoForce)
 	end)
 	if TeamPath == game.Teams.Criminals then
 		task.spawn(function()
@@ -169,7 +169,7 @@ local ChangeTeam = function(TeamPath,NoForce,Pos)
 			end
 			game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1].Transparency = 1
 			game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1].CanCollide = false
-			game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1].CFrame = API:GetPosition()
+			game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1].CFrame = GetPosition()
 		until plr.Team == game:GetService("Teams").Criminals
 		game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1].CFrame = CFrame.new(0, 3125, 0)
 	else
