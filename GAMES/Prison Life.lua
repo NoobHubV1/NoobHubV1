@@ -211,3 +211,5 @@ local PrisonLife = Window:NewSection("Tiger Admin By NoobHubV1")
 
 PrisonLife:CreateButton("Tiger Admin", function()TigerAdmin()
 end)
+
+Notif("(Prison Life Script By NoobHubV1) Script Loaded!)")
