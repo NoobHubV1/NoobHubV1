@@ -98,6 +98,22 @@ local function Loop(Times, calling)
 	end
 end
 
+local function GetPosition(Player)
+	game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+
+	if Player then
+		return API:GetPart(Player).CFrame
+	elseif not Player then
+		return API:GetPart(plr).CFrame
+	end
+end
+
+local GetPart = function(Target)
+	game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+
+	return Target.Character:FindFirstChild("HumanoidRootPart") or Target.Character:FindFirstChild("Head")
+end
+
 local function WaitForRespawn(Cframe,NoForce)
 	game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
 
@@ -133,37 +149,40 @@ local function WaitForRespawn(Cframe,NoForce)
 	end)()
 end
 
-local function GetPosition(Player)
-	game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+local ChangeTeam = function(TeamPath,NoForce,Pos)
+        pcall(function()
+		repeat task.wait() until game:GetService("Players").LocalPlayer.Character
+		game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
 
-	if Player then
-		return API:GetPart(Player).CFrame
-	elseif not Player then
-		return API:GetPart(plr).CFrame
+		API:WaitForRespawn(Pos or API:GetPosition(),NoForce)
+	end)
+	if TeamPath == game.Teams.Criminals then
+		task.spawn(function()
+			Workspace.Remote.TeamEvent:FireServer("Bright orange")
+		end)
+		repeat API:swait() until Player.Team == game.Teams.Inmates and Player.Character:FindFirstChild("HumanoidRootPart")
+		repeat
+			API:swait()
+			if firetouchinterest then
+				firetouchinterest(plr.Character:FindFirstChildOfClass("Part"), game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1], 0)
+				firetouchinterest(plr.Character:FindFirstChildOfClass("Part"), game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1], 1)
+			end
+			game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1].Transparency = 1
+			game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1].CanCollide = false
+			game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1].CFrame = API:GetPosition()
+		until plr.Team == game:GetService("Teams").Criminals
+		game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1].CFrame = CFrame.new(0, 3125, 0)
+	else
+		if TeamPath == game.Teams.Neutral then
+			workspace['Remote']['TeamEvent']:FireServer("Medium stone grey")
+		else
+			if not TeamPath or not TeamPath.TeamColor then
+				workspace['Remote']['TeamEvent']:FireServer("Bright orange")
+			else
+				workspace['Remote']['TeamEvent']:FireServer(TeamPath.TeamColor.Name)
+			end
+		end
 	end
-end
-
-local ChangeTeam = function(Team)
-        if Team == game.Teams.Inmates then
-                workspace.Remote.TeamEvent:FireServer("Bright orange")
-        elseif Team == game.Teams.Guards then
-                workspace.Remote.TeamEvent:FireServer("Bright blue")
-        elseif Team == game.Teams.Neutral then
-                workspace.Remote.TeamEvent:FireServer("Medium stone grey")
-        elseif Team == game.Teams.Criminals then
-		workspace.Remote.TeamEvent:FireServer("Bright orange")
-	        wait(.5)
-                LCS = game.Workspace["Criminals Spawn"].SpawnLocation
-                LCS.CanCollide = false
-                LCS.Size = Vector3.new(51.05, 24.12, 54.76)
-                LCS.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-                LCS.Transparency = 1
-                wait(0.5)
-                LCS.CFrame = CFrame.new(-920.510803, 92.2271957, 2138.27002, 0, 0, -1, 0, 1, 0, 1, 0, 0)
-                LCS.Size = Vector3.new(6, 0.2, 6)
-                LCS.Transparency = 0
-		WaitForRespawn(
-        end
 end
 
 local CreateBulletTable = function(Amount, Hit, IsTrue)
@@ -281,8 +300,6 @@ local PrisonLife = Window:NewSection("Main")
 
 PrisonLife:CreateDropdown("Team", {"Inmate","Guard","Neutral","Criminal"}, 1, function(Value)if Value == "Criminal" then
                                                                                                      ChangeTeam(game.Teams.Criminals)
-                                                                                                     wait(1)
-                                                                                                     Respawn()
                                                                                              elseif Value == "Inmate" then
                                                                                                      ChangeTeam(game.Teams.Inmates)
                                                                                              elseif Value == "Guard" then
