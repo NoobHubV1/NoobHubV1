@@ -1,5 +1,7 @@
 local Library = loadstring(Game:HttpGetAsync(("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard")))()
-local plr = game.Players.LocalPlayer
+local Players = game.Players
+local plr = Players.LocalPlayer
+local Player = Players.LocalPlayer
 
 local function Tween(Obj, Prop, New, Time)
 	if not Time then
@@ -19,6 +21,22 @@ local function Tween(Obj, Prop, New, Time)
 	}
 
 	TweenService:Create(Obj, info, propertyTable):Play()
+end
+
+local ConvertPosition = function(Position)
+	if typeof(Position):lower() == "position" then
+		return CFrame.new(Position)
+	else
+		return Position
+	end
+end
+
+local function UnSit()
+	plr.Character.Humanoid.Sit = false
+end
+
+local swait = function()
+	game:GetService("RunService").Stepped:Wait()
 end
 
 local function Notif(Text,Dur)
@@ -57,6 +75,64 @@ local function Notif(Text,Dur)
 	return
 end
 
+local function MoveTo(Cframe)
+	Cframe = ConvertPosition(Cframe)
+	local Amount = 5
+	if Player.PlayerGui['Home']['hud']['Topbar']['titleBar'].Title.Text:lower() == "lights out" or Player.PlayerGui.Home.hud.Topbar.titleBar.Title.Text:lower() == "lightsout" then
+		Amount = 11
+	end
+	for i = 1, Amount do
+		UnSit()
+		Player.Character:WaitForChild("HumanoidRootPart").CFrame = Cframe
+		swait()
+	end
+end
+
+local GetCameraPosition = function(Player)
+	return workspace["CurrentCamera"].CFrame
+end
+
+local function Loop(Times, calling)
+	for i = 1, tonumber(Times) do
+		calling()
+	end
+end
+
+local function WaitForRespawn(Cframe,NoForce)
+	game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+
+	local Cframe = ConvertPosition(Cframe)
+	local CameraCframe = GetCameraPosition()
+	coroutine.wrap(function()
+		local a
+		a = Player.CharacterAdded:Connect(function(NewCharacter)
+			pcall(function()
+				coroutine.wrap(function()
+					workspace.CurrentCamera:GetPropertyChangedSignal("CFrame"):Wait()
+					Loop(5, function()
+						workspace["CurrentCamera"].CFrame = CameraCframe
+					end)
+				end)()
+				NewCharacter:WaitForChild("HumanoidRootPart")
+				MoveTo(Cframe)
+				if NoForce then
+					task.spawn(function()
+						NewCharacter:WaitForChild("ForceField"):Destroy()
+					end)
+				end
+			end)
+			a:Disconnect()
+			Cframe = nil
+		end)
+		task.spawn(function()
+			wait(2)
+			if a then
+				a:Disconnect()
+			end
+		end)
+	end)()
+end
+
 local ChangeTeam = function(Team)
         if Team == game.Teams.Inmates then
                 workspace.Remote.TeamEvent:FireServer("Bright orange")
@@ -65,6 +141,8 @@ local ChangeTeam = function(Team)
         elseif Team == game.Teams.Neutral then
                 workspace.Remote.TeamEvent:FireServer("Medium stone grey")
         elseif Team == game.Teams.Criminals then
+		workspace.Remote.TeamEvent:FireServer("Bright orange")
+	        wait(.5)
                 LCS = game.Workspace["Criminals Spawn"].SpawnLocation
                 LCS.CanCollide = false
                 LCS.Size = Vector3.new(51.05, 24.12, 54.76)
@@ -74,7 +152,29 @@ local ChangeTeam = function(Team)
                 LCS.CFrame = CFrame.new(-920.510803, 92.2271957, 2138.27002, 0, 0, -1, 0, 1, 0, 1, 0, 0)
                 LCS.Size = Vector3.new(6, 0.2, 6)
                 LCS.Transparency = 0
+		WaitForRespawn(
         end
+end
+
+local CreateBulletTable = function(Amount, Hit, IsTrue)
+	local Args = {}
+	for i = 1, tonumber(Amount) do
+		if IsTrue then
+			Args[#Args + 1] = {
+				["RayObject"] = Ray.new(Vector3.new(990.272583, 101.489975, 2362.74878), Vector3.new(-799.978333, 0.23157759, -5.88794518)),
+				["Distance"] = 198.9905242919922,
+				["Cframe"] = CFrame.new(894.362549, 101.288307, 2362.53491, -0.0123058055, 0.00259522465, -0.999920964, 3.63797837e-12, 0.999996722, 0.00259542116, 0.999924302, 3.19387436e-05, -0.0123057645),
+			}
+		else
+			Args[#Args + 1] = {
+				["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),
+				["Distance"] = 0,
+				["Cframe"] = CFrame.new(),
+				["Hit"] = Hit,
+			}
+		end
+	end
+	return Args
 end
 
 local function GiveItem(Item)
