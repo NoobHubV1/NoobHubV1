@@ -294,6 +294,10 @@ local TigerAdmin = function()
         loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/RobloxScripts/main/Tiger%20Admin.lua'))()
 end
 
+local function ScriptAdmin()
+	loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/RobloxScripts/main/Prison%20Life%20Admin.lua'))()
+end
+
 local Window = Library:NewWindow("NoobHubV1 Hub")
 
 local PrisonLife = Window:NewSection("Main")
@@ -334,9 +338,12 @@ end)
 PrisonLife:CreateToggle("Auto Fast Fire", function(Value)AutoFastFire(Value)
 end)
 
-local PrisonLife = Window:NewSection("Tiger Admin By NoobHubV1")
+local PrisonLife = Window:NewSection("Others")
 
 PrisonLife:CreateButton("Tiger Admin", function()TigerAdmin()
+end)
+
+PrisonLife:CreateButton("Admin Gui", function()
 end)
 
 Notif("(Prison Life Script By NoobHubV1) Script Loaded!)")
