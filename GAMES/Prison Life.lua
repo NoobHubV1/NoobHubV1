@@ -294,7 +294,7 @@ local TigerAdmin = function()
         loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/RobloxScripts/main/Tiger%20Admin.lua'))()
 end
 
-local function ScriptAdmin()
+local function AdminGui()
 	loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/RobloxScripts/main/Prison%20Life%20Admin.lua'))()
 end
 
@@ -343,7 +343,7 @@ local PrisonLife = Window:NewSection("Others")
 PrisonLife:CreateButton("Tiger Admin", function()TigerAdmin()
 end)
 
-PrisonLife:CreateButton("Admin Gui", function()
+PrisonLife:CreateButton("Admin Gui", function()AdminGui()
 end)
 
 Notif("(Prison Life Script By NoobHubV1) Script Loaded!)")
