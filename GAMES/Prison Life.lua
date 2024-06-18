@@ -250,6 +250,17 @@ local function Respawn()
         ChangeTeam(plr.Team)
 end
 
+local AutoRespawn = function(State)
+	getgenv().Loop = State
+	while Loop do
+	if game.Players.LocalPlayer.Character.Humanoid.Health == 0 then
+		Respawn()
+	if not game.Players.LocalPlayer.Character.Humanoid.Health == 100 then
+		y
+	end
+	end
+end
+
 local function AutoInfAmmo(State)
         getgenv().Loop = State
         while Loop do
@@ -314,6 +325,9 @@ PrisonLife:CreateDropdown("Team", {"Inmate","Guard","Neutral","Criminal"}, 1, fu
 end)
 
 PrisonLife:CreateButton("Respawn", function()Respawn()
+end)
+
+PrisonLife:CreateButton("AutoRespawn", function(v)AutoRespawn(v)
 end)
 
 local PrisonLife = Window:NewSection("Item")
