@@ -255,7 +255,7 @@ local AutoRespawn = function(State)
 	while Loop do
 	if game.Players.LocalPlayer.Character.Humanoid.Health == 0 then
 		Respawn()
-	if not game.Players.LocalPlayer.Character.Humanoid.Health == 100 then
+	elseif not game.Players.LocalPlayer.Character.Humanoid.Health == 100 then
 		y
 	end
 	end
