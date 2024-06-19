@@ -675,7 +675,7 @@ function Kill(Player)
  
 		game:GetService("ReplicatedStorage").ShootEvent:FireServer(FireEvent, Gun)
 		Gun.Parent = game.Players.LocalPlayer.Character
-		game.Players.LocalPlayer.Character["Remington 870"]:Destroy()
+		game.Players.LocalPlayer.Character["Remington 870"]:Destriy()
 	end)
 end
  
