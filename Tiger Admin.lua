@@ -1987,43 +1987,29 @@ do
 	end,nil,"[PLAYER]")
 	API:CreateCmd("kill", "Kills a player", function(args)
 		if args[2] == "all" then
-			API:killall(game.Teams.Guards)
-			wait(1)
-			API:killall(game.Teams.Inmates)
-			wait(1)
-			API:ChangeTeam(game.Teams.Inmates)
-			wait(1)
-			API:killall(game.Teams.Criminals)
-		elseif args[2] == "everyone" then
-			API:killall(game.Teams.Guards)
-			wait(1)
-			API:killall(game.Teams.Inmates)
-			wait(1)
-			API:ChangeTeam(game.Teams.Inmates)
-			wait(1)
-			API:killall(game.Teams.Criminals)
-		elseif args[2] == "@" then
-			API:killall(game.Teams.Guards)
-			wait(1)
-			API:killall(game.Teams.Inmates)
-			wait(1)
-			API:ChangeTeam(game.Teams.Inmates)
-			wait(1)
-			API:killall(game.Teams.Criminals)
-		elseif args[2] == "others" then
-			API:killall(game.Teams.Guards)
-			wait(1)
-			API:killall(game.Teams.Inmates)
-			wait(1)
-			API:ChangeTeam(game.Teams.Inmates)
-			wait(1)
-			API:killall(game.Teams.Criminals)
+			for i,v in pairs(game.Players:GetPlayers()) do
+			        if v ~= game.Players.LocalPlayer or v ~= Player then
+				        API:KillPlayer(v)
+			        end
+			end
 		elseif args[2] == "guards" then
-			API:killall(game.Teams.Guards)
+			for i,v in pairs(game.Teams.Guards:GetPlayers()) do
+			        if v ~= game.Players.LocalPlayer or v ~= Player then
+				        API:KillPlayer(v)
+			        end
+			end
 		elseif args[2] == "inmates" then
-			API:killall(game.Teams.Inmates)
+			for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
+			        if v ~= game.Players.LocalPlayer or v ~= Player then
+				        API:KillPlayer(v)
+			        end
+			end
 		elseif args[2] == "criminals" then
-			API:killall(game.Teams.Criminals)
+			for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
+			        if v ~= game.Players.LocalPlayer or v ~= Player then
+				        API:KillPlayer(v)
+			        end
+			end
 		elseif args[2] == "random" then
 			local random = nil
 			while true do
