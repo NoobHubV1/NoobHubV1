@@ -2071,11 +2071,7 @@ do
 		States.loopkillcriminals = true
 	end)
 	API:CreateCmd("loopkillall", "Kills a all over and over until stopped", function(args)
-		getgenv().loop = true
-		while loop do
-		API:killall()
-		task.wait(3)
-		end
+		Temp.Loopkillall = true
 	end)
 	API:CreateCmd("unloopkill", "Stops loopkilling a player", function(args)
 		local Player = API:FindPlayer(args[2])
@@ -2096,11 +2092,7 @@ do
 		States.loopkillcriminals = false
 	end)
 	API:CreateCmd("unloopkillall", "Stops loopkilling a all", function(args)
-		getgenv().loop = false
-		while loop do
-		API:killall()
-		task.wait(3)
-		end
+		Temp.Loopkillall = false
 	end)
 	API:CreateCmd("tase", "Tases the target", function(args)
 		if args[2] == "all" then
