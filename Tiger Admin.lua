@@ -820,6 +820,7 @@ function API:KillPlayer(Target,Failed,DoChange)
 	API:GetGun("Remington 870")
 	repeat API:swait()Gun = Player.Backpack:FindFirstChild("Remington 870") or Player.Character:FindFirstChild("Remington 870") until Gun
 	task.spawn(function()
+		game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack:WaitForChild("Remington 870"))
 		game:GetService("ReplicatedStorage").ShootEvent:FireServer(Bullets, Gun)
 		game:GetService("ReplicatedStorage").ReloadEvent:FireServer(Gun)
 	end)
@@ -917,6 +918,7 @@ function API:killall(TeamToKill)
 		end
 		task.spawn(function()
 			game:GetService("ReplicatedStorage").ShootEvent:FireServer(BulletTable, Gun)
+			game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack("Remington 870"))
 		end)
 		API:ChangeTeam(game.Teams.Inmates,true)
 		API:GetGun("Remington 870")
@@ -960,12 +962,13 @@ function API:killall(TeamToKill)
 			end
 		end
 		wait(.4)
-		API:GetGun("M9")
-		local Gun = Player.Backpack:FindFirstChild("M9") or Player.Character:FindFirstChild("M9")
-		repeat task.wait() Gun = Player.Backpack:FindFirstChild("M9") or Player.Character:FindFirstChild("M9") until Gun
+		API:GetGun("Remington 870")
+		local Gun = Player.Backpack:FindFirstChild("Remington 870") or Player.Character:FindFirstChild("Remington 870")
+		repeat task.wait() Gun = Player.Backpack:FindFirstChild("Remington 870") or Player.Character:FindFirstChild("Remington 870") until Gun
 
 		task.spawn(function()
 			game:GetService("ReplicatedStorage").ShootEvent:FireServer(BulletTable, Gun)
+			game.Players.LocalPlayer.Character.Humanoid:EquipTool(game.Players.LocalPlayer.Backpack("Remington 870"))
 		end)
 	end
 end
@@ -1986,48 +1989,36 @@ do
 		API:Notif("Unloop teamed")
 	end,nil,"[PLAYER]")
 	API:CreateCmd("kill", "Kills a player", function(args)
-		if args[2] == "all" then
-			for i,v in pairs(game.Players:GetPlayers()) do
-			        if v ~= game.Players.LocalPlayer or v ~= Player then
-				        API:KillPlayer(v)
-			        end
-			end
-		elseif args[2] == "guards" then
-			for i,v in pairs(game.Teams.Guards:GetPlayers()) do
-			        if v ~= game.Players.LocalPlayer or v ~= Player then
-				        API:KillPlayer(v)
-			        end
-			end
-		elseif args[2] == "inmates" then
-			for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
-			        if v ~= game.Players.LocalPlayer or v ~= Player then
-				        API:KillPlayer(v)
-			        end
-			end
-		elseif args[2] == "criminals" then
-			for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
-			        if v ~= game.Players.LocalPlayer or v ~= Player then
-				        API:KillPlayer(v)
-			        end
-			end
-		elseif args[2] == "random" then
-			local random = nil
-			while true do
-				random = game:GetService("Players"):GetPlayers()[math.random(1, #game:GetService("Players"):GetPlayers())]
-				task.wait()
-				if random.Team ~= game.Teams.Criminals and random ~= game:GetService("Players").LocalPlayer then
+		local Player = API:FindPlayer(args[2])
+		if Player then
+			API:KillPlayer(Player)
+		end
+	end
+	end,nil,"[PLAYER]")
+        API:CreateCmd("killrandom", "Kills a random", function(args)
+		local random = nil
+		while true do
+			random = game:GetService("Players"):GetPlayers()[math.random(1, #game:GetService("Players"):GetPlayers())]
+			task.wait()
+			if random.Team ~= game.Teams.Criminals and random ~= game:GetService("Players").LocalPlayer then
 					break
-				end
-			end
-			API:KillPlayer(random)
-			API:Notif("Killed "..random.Name)
-		else
-			local Player = API:FindPlayer(args[2])
-			if Player then
-				API:KillPlayer(Player)
 			end
 		end
-	end,nil,"[PLAYER,ALL,TEAM]")
+		API:KillPlayer(random)
+		API:Notif("Killed "..random.Name)
+	end)
+	API:CreateCmd("killguards", "kill all guards", function(args)
+		API:killall(game.Teams.Guards)
+	end)
+	API:CreateCmd("killall", "kill all players", function(args)
+		API:killall()
+	end)
+	API:CreateCmd("killinmates", "kill all inmates", function(args)
+		API:killall(game.Teams.Inmates)
+	end)
+        API:CreateCmd("killcriminals", "kill all criminals", function(args)
+		API:killall(game.Teams.Criminals
+	end)
 	API:CreateCmd("arrest", "Arrests the targeted player", function(args)
 		if args[2] and args[2] == "all" then
 			local LastPosition = API:GetPosition()
@@ -2061,130 +2052,56 @@ do
 			API:MoveTo(LastPosition)
 		end
 	end,nil,"[PLAYER,ALL]")
-	local function IsTeamCommandCheck(String)
-		for i,v in pairs(game:GetService("Teams"):GetChildren()) do
-			if v and v.Name:lower() == String:lower() then
-				return v
-			end
-		end
-		return nil
-	end
 	API:CreateCmd("loopkill", "Kills a player over and over until stopped", function(args)
-		if args[2] and IsTeamCommandCheck(args[2]) then
-            local Team = IsTeamCommandCheck(args[2])
-            if Team == game.Teams.Criminals then
-                States.loopkillcriminals = true
-                API:Notif("Loopkilling criminals")
-                return
-            elseif Team == game.Teams.Inmates then
-                States.loopkillinmates = true
-                API:Notif("Loopkilling inmates")
-                return
-            elseif Team == game.Teams.Guards then
-                API:Notif("Loopkilling guards")
-                States.loopkillguards = true
-                return
-            end
-        elseif args[2] == "all" then
-            Temp.Loopkillall = true
-            API:Notif("Loopkilling all")
-        else
-            local Player = API:FindPlayer(args[2])
+		local Player = API:FindPlayer(args[2])
             if not table.find(Temp.Loopkilling,Player.Name) then
                 table.insert(Temp.Loopkilling,Player.Name)
                 API:Notif("Now loopkilling selected player.")
             else
                 API:Notif("Player is already getting loop killed!",false)
-            end
-        end
-	end,nil,"[PLAYER/ALL,TEAM]")
-	API:CreateCmd("lk", "Kills a player over and over until stopped", function(args)
-		if args[2] and IsTeamCommandCheck(args[2]) then
-			local Team = IsTeamCommandCheck(args[2])
-			if Team == game.Teams.Criminals then
-				States.loopkillcriminals = true
-				API:Notif("Loopkilling criminals")
-				return
-			elseif Team == game.Teams.Inmates then
-				States.loopkillinmates = true
-				API:Notif("Loopkilling inmates")
-				return
-			elseif Team == game.Teams.Guards then
-				API:Notif("Loopkilling guards")
-				States.loopkillguards = true
-				return
-			end
-		elseif args[2] == "all" then
-			Temp.Loopkillall = true
-			API:Notif("Loopkilling all")
-		else
-			local Player = API:FindPlayer(args[2])
-			if not table.find(Temp.Loopkilling,Player.Name) then
-				table.insert(Temp.Loopkilling, Player.Name)
-				API:Notif("Now loopkilling selected player.")
-			else
-				API:Notif("Player is already getting loop killed!",false)
-			end
+	    end
+	end,nil,"[PLAYER]")
+	API:CreateCmd("loopkillguards", "Kills a guards over and over until stopped", function(args)
+		States.loopkillguards = true
+	end)
+	API:CreateCmd("loopkillinmates", "Kills a inmates over and over until stopped", function(args)
+		States.loopkillinmates = true
+	end)
+	API:CreateCmd("loopkillcriminals", "Kills a criminals over and over until stopped", function(args)
+		States.loopkillcriminals = true
+	end)
+	API:CreateCmd("loopkillall", "Kills a all over and over until stopped", function(args)
+		getgenv().loop = true
+		while loop do
+		API:killall()
+		task.wait(3)
 		end
-	end,true,"[PLAYER/ALL,TEAM]")
+	end)
 	API:CreateCmd("unloopkill", "Stops loopkilling a player", function(args)
-		if args[2] and IsTeamCommandCheck(args[2]) then
-			local Team = IsTeamCommandCheck(args[2])
-			if Team == game.Teams.Criminals then
-				States.loopkillcriminals = false
-				API:Notif("unLoopkilling criminals")
-				return
-			elseif Team == game.Teams.Inmates then
-				States.loopkillinmates = false
-				API:Notif("unLoopkilling inmates")
-				return
-			elseif Team == game.Teams.Guards then
-				States.loopkillguards = false
-				API:Notif("unLoopkilling guards")
-				return
-			end
-		elseif args[2] == "all" then
-			Temp.Loopkillall = false
-			API:Notif("Unloopkilling all")
-		else
-			local Player = API:FindPlayer(args[2])
+		local Player = API:FindPlayer(args[2])
 			if table.find(Temp.Loopkilling,Player.Name) then
 				table.remove(Temp.Loopkilling,table.find(Temp.Loopkilling,Player.Name))
 				API:Notif("Player has been unlooped")
 			else
 				API:Notif("Player is not being loopkilled!",false)
 			end
+	end,nil,"[PLAYER]")
+	API:CreateCmd("unloopkillguards", "Stops loopkilling a guards", function(args)
+		States.loopkillguards = false
+        end)
+	API:CreateCmd("unloopkillinmates", "Stops loopkilling a inmates", function(args)
+		States.loopkillinmates = false
+	end)
+	API:CreateCmd("unloopkillcriminals", "Stops loopkilling a criminals", function(args)
+		States.loopkillcriminals = false
+	end)
+	API:CreateCmd("unloopkillall", "Stops loopkilling a all", function(args)
+		getgenv().loop = false
+		while loop do
+		API:killall()
+		task.wait(3)
 		end
-	end,nil,"[PLAYER,ALL,TEAM]")
-	API:CreateCmd("unlk", "Stops loopkilling a player", function(args)
-		if args[2] and IsTeamCommandCheck(args[2]) then
-			local Team = IsTeamCommandCheck(args[2])
-			if Team == game.Teams.Criminals then
-				States.loopkillcriminals = false
-				API:Notif("unLoopkilling criminals")
-				return
-			elseif Team == game.Teams.Inmates then
-				States.loopkillinmates = false
-				API:Notif("unLoopkilling inmates")
-				return
-			elseif Team == game.Teams.Guards then
-				States.loopkillguards = false
-				API:Notif("unLoopkilling guards")
-				return
-			end
-		elseif args[2] == "all" then
-			Temp.Loopkillall = false
-			API:Notif("Unloopkilling all")
-		else
-			local Player = API:FindPlayer(args[2])
-			if table.find(Temp.Loopkilling,Player.Name) then
-				table.remove(Temp.Loopkilling,table.find(Temp.Loopkilling,Player.Name))
-				API:Notif("Player has been unlooped")
-			else
-				API:Notif("Player is not being loopkilled!",false)
-			end
-		end
-	end,true,"[PLAYER,ALL,TEAM]")
+	end)
 	API:CreateCmd("tase", "Tases the target", function(args)
 		if args[2] == "all" then
 			local Oldt = Player.Team
