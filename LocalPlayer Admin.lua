@@ -1547,34 +1547,15 @@ function PlayerChatted(Message)
 		Notify("Turn anti shield users off", Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("kill") or Command("kills") then
-		local Player = GetPlayer(Arg2)
-		if Player ~= nil then
-			Kill(Player)
-			Notify("Killed "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
-		else
-			Notify("No player found", Color3.fromRGB(255, 0, 0), "Error")
-		end
-	end
-	if Command("killall") then
-		for i,v in pairs(game.Players:GetPlayers()) do
+                if Arg2 == "all" then
+		        for i,v in pairs(game.Players:GetPlayers()) do
 			if v ~= game.Players.LocalPlayer then
 				Kill(v)
 			end
 		end
 		Notify("Killed all players", Color3.fromRGB(0, 255, 0), "Success")
-	end
-	if Command("killinmate") or Command("killinmates") or Command("killsinmate") or Command("killsinmates") then
-		for i,v in pairs(game.Players:GetPlayers()) do
-			if v ~= game.Players.LocalPlayer then
-				if v.TeamColor.Name == "Bright orange" then
-					Kill(v)
-				end
-			end
-		end
-		Notify("Killed all inmates", Color3.fromRGB(0, 255, 0), "Success")
-	end
-	if Command("killguard") or Command("killsguard") or Command("killguards") or Command("killsguards") then
-		for i,v in pairs(game.Players:GetPlayers()) do
+		elseif Arg2 == "guards" then
+			for i,v in pairs(game.Players:GetPlayers()) do
 			if v ~= game.Players.LocalPlayer then
 				if v.TeamColor.Name == "Bright blue" then
 					Kill(v)
@@ -1582,9 +1563,17 @@ function PlayerChatted(Message)
 			end
 		end
 		Notify("Killed all guards", Color3.fromRGB(0, 255, 0), "Success")
-	end
-	if Command("killcriminal") or Command("killscriminal") or Command("killcriminals") or Command("killscriminals") then
-		for i,v in pairs(game.Players:GetPlayers()) do
+		elseif Arg2 == "inmates" then
+			for i,v in pairs(game.Players:GetPlayers()) do
+			if v ~= game.Players.LocalPlayer then
+				if v.TeamColor.Name == "Bright orange" then
+					Kill(v)
+				end
+			end
+		end
+		Notify("Killed all guards", Color3.fromRGB(0, 255, 0), "Success")
+		elseif Arg2 == "criminals" then
+			for i,v in pairs(game.Players:GetPlayers()) do
 			if v ~= game.Players.LocalPlayer then
 				if v.TeamColor.Name == "Really red" then
 					Kill(v)
@@ -1592,6 +1581,12 @@ function PlayerChatted(Message)
 			end
 		end
 		Notify("Killed all criminals", Color3.fromRGB(0, 255, 0), "Success")
+	        else
+		local Player = GetPlayer(Arg2)
+		if Player ~= nil then
+			Kill(Player)
+			Notify("Killed "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
+		end
 	end
 	if Command("loopkill") or Command("loopkills") then
 		local Player = GetPlayer(Arg2)
