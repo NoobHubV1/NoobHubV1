@@ -250,17 +250,6 @@ local function Respawn()
         ChangeTeam(plr.Team)
 end
 
-local AutoRespawn = function(State)
-	getgenv().Loop = State
-	while Loop do
-	if game.Players.LocalPlayer.Character.Humanoid.Health == 0 then
-		Respawn()
-	elseif not game.Players.LocalPlayer.Character.Humanoid.Health == 100 then
-		y
-	end
-	end
-end
-
 local function AutoInfAmmo(State)
         getgenv().Loop = State
         while Loop do
@@ -301,12 +290,8 @@ local function AutoFastFire(State)
         end
 end
 
-local TigerAdmin = function()
-        loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/RobloxScripts/main/Tiger%20Admin.lua'))()
-end
-
-local function AdminGui()
-	loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/RobloxScripts/main/Prison%20Life%20Admin.lua'))()
+local LoadstringHttps = function(Https)
+	loadstring(Game:HttpGet(Https))()
 end
 
 local Window = Library:NewWindow("NoobHubV1 Hub")
@@ -325,9 +310,6 @@ PrisonLife:CreateDropdown("Team", {"Inmate","Guard","Neutral","Criminal"}, 1, fu
 end)
 
 PrisonLife:CreateButton("Respawn", function()Respawn()
-end)
-
-PrisonLife:CreateButton("AutoRespawn", function(v)AutoRespawn(v)
 end)
 
 local PrisonLife = Window:NewSection("Item")
@@ -354,10 +336,10 @@ end)
 
 local PrisonLife = Window:NewSection("Others")
 
-PrisonLife:CreateButton("Tiger Admin", function()TigerAdmin()
+PrisonLife:CreateButton("Tiger Admin", function()LoadstringHttps("https://raw.githubusercontent.com/H17S32/Tiger_Admin/main/TigeradminREVAMP.txt")
 end)
 
-PrisonLife:CreateButton("Admin Gui", function()AdminGui()
+PrisonLife:CreateButton("Admin Gui", function()LoadstringHttps("https://raw.githubusercontent.com/NoobHubV1/RobloxScripts/main/Prison%20Life%20Admin.lua")
 end)
 
 Notif("(Prison Life Script By NoobHubV1) Script Loaded!)")
