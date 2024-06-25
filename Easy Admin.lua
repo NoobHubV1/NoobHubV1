@@ -507,9 +507,9 @@ function Chatted(Message)
 			Prefix.."res - respawn",
 			Prefix.."crim [plr] - crim player",
 			Prefix.."t/team [i,g,n,c,code] - changes team",
-			Prefix.."k/kill [plr,i,g,c,all] - kill",
-			Prefix.."lk [plr,i,g,c,all] - loop kills",
-			Prefix.."ulk [plr,i,g,c,all] - unloop kills",
+			Prefix.."k/kill [plr,team,all] - kill",
+			Prefix.."lk/loopkill [plr,team,all] - loop kills",
+			Prefix.."unlk/unloopkill [plr,team,all] - unloop kills",
 			Prefix.."to [plr] - go to player",
 			Prefix.."sa [plr] - spam arrest player",
 			Prefix.."beam [plr] [time] - beam player",
@@ -1229,21 +1229,21 @@ function Chatted(Message)
 		end
 	end
 	if Command("kill") or Command("k") then
-		if arg2 == "c" then
+		if arg2 == "criminals" then
 			for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
 				if v ~= game.Players.LocalPlayer then
 					Kill(v)
 				end
 			end
 			Notify("killed criminals")
-		elseif arg2 == "i" then
+		elseif arg2 == "inmates" then
 			for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
 				if v ~= game.Players.LocalPlayer then
 					Kill(v)
 				end
 			end
 			Notify("killed inmates")
-		elseif arg2 == "g" then
+		elseif arg2 == "guards" then
 			for i,v in pairs(game.Teams.Guards:GetPlayers()) do
 				if v ~= game.Players.LocalPlayer then
 					Kill(v)
