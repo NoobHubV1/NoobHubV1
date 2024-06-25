@@ -298,7 +298,7 @@ function Kill(Player)
 		local Head = Player.Character.Head
 		local Gun = game.Players.LocalPlayer.Character:FindFirstChild("Remington 870") or game.Players.LocalPlayer.Backpack:FindFirstChild("Remington 870")
 		if not Gun then
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
+			workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["Remington 870"]})
 		end
 		Gun = game.Players.LocalPlayer.Character:FindFirstChild("Remington 870") or game.Players.LocalPlayer.Backpack:FindFirstChild("Remington 870")
 		if Gun and Head then
@@ -315,7 +315,7 @@ function Kill(Player)
 		end
 
 		Gun.Parent = game.Players.LocalPlayer.Character
-		game.Players.LocalPlayer.Character:FindFirstChild("Remington 870"):Destroy()
+		game.Players.LocalPlayer.Character:FindFirstChild("Remington 870"):Destroy(]
 	end)
 end
 
@@ -877,7 +877,7 @@ function Chatted(Message)
 			end
 		end
 	end
-	if Command("lk") then
+	if Command("lk") or Command("loopkill") then
 		local player = GetPlayer(arg2)
 		if arg2 == "all" then
 			States.loopkill_criminals = true
@@ -885,13 +885,13 @@ function Chatted(Message)
 			States.loopkill_inmates = true
 			States.loopkill_other = true
 			Notify("loop kills all")
-		elseif arg2 == "i" then
+		elseif arg2 == "inmates" then
 			States.loopkill_inmates = true
 			Notify("loop kills inmates")
-		elseif arg2 == "g" then
+		elseif arg2 == "guards" then
 			States.loopkill_guards = true
 			Notify("loop kills guards")
-		elseif arg2 == "c" then
+		elseif arg2 == "criminals" then
 			States.loopkill_criminals = true
 			Notify("loop kills criminals")
 		else
@@ -901,7 +901,7 @@ function Chatted(Message)
 			end
 		end
 	end
-	if Command("ulk") then
+	if Command("unlk") or Command("unloopkill") then
 		local player = GetPlayer(arg2)
 		if arg2 == "all" then
 			States.loopkill_criminals = false
@@ -909,13 +909,13 @@ function Chatted(Message)
 			States.loopkill_inmates = false
 			States.loopkill_other = false
 			Notify("unloop kills all")
-		elseif arg2 == "i" then
+		elseif arg2 == "inmates" then
 			States.loopkill_inmates = false
 			Notify("unloop kills inmates")
-		elseif arg2 == "g" then
+		elseif arg2 == "guards" then
 			States.loopkill_guards = false
 			Notify("unloop kills guards")
-		elseif arg2 == "c" then
+		elseif arg2 == "criminals" then
 			States.loopkill_criminals = false
 			Notify("unloop kills criminals")
 		else
