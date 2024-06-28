@@ -258,7 +258,7 @@ Close.MouseButton1Click:Connect(function()
 	CmdGui.Visible = false
 end)
 
-local Prefix = "-"
+local Prefix = ":"
 local States = {}
 local Admin = {}
 local LoopKill = {}
@@ -298,7 +298,7 @@ function Kill(Player)
 		local Head = Player.Character.Head
 		local Gun = game.Players.LocalPlayer.Character:FindFirstChild("Remington 870") or game.Players.LocalPlayer.Backpack:FindFirstChild("Remington 870")
 		if not Gun then
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
+			workspace.Remote.ItemHandler:InvokeServer(Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["Remington 870"])
 		end
 		Gun = game.Players.LocalPlayer.Character:FindFirstChild("Remington 870") or game.Players.LocalPlayer.Backpack:FindFirstChild("Remington 870")
 		if Gun and Head then
@@ -326,7 +326,7 @@ function Beam(Player, Time)
 			local Head = Player.Character.Head
 			local Gun = game.Players.LocalPlayer.Character:FindFirstChild("Remington 870") or game.Players.LocalPlayer.Backpack:FindFirstChild("Remington 870")
 			if not Gun then
-				workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
+				workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["Remington 870"]})
 			end
 			Gun = game.Players.LocalPlayer.Character:FindFirstChild("Remington 870") or game.Players.LocalPlayer.Backpack:FindFirstChild("Remington 870")
 			if Gun and Head then
@@ -342,7 +342,7 @@ function Beam(Player, Time)
 				}, Gun)
 			end
 			Gun.Parent = game.Players.LocalPlayer.Character
-			game.Players.LocalPlayer.Character:FindFirstChild("Remington 870"):Destroy()
+			game.Players.LocalPlayer.Character:FindFirstChild("Remington 870"):Destriy()
 		end)
 	end
 end
@@ -352,7 +352,7 @@ function Teleport(Player, Position)
 	local savedcf = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
 	workspace.Remote.loadchar:InvokeServer()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = savedcf
-	workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["M9"].ITEMPICKUP)
+	workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["M9"]})
 	local CHAR = game.Players.LocalPlayer.Character
 	CHAR.Humanoid.Name = "1"
 	local c = CHAR["1"]:Clone()
@@ -375,16 +375,16 @@ function Teleport(Player, Position)
 		STOP_2 = STOP_2 + 1
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Position
 	until STOP_2 > 10
-	workspace.Remote.loadchar:InvokeServer()
+	game.Players.LocalPlayer.Character.Humanoid.Health = 0
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = savedcf
 end
 
 function TeleportV(Player, Player2)
 	if Player == nil or Player2 == nil then return end
 	local savedcf = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-	workspace.Remote.loadchar:InvokeServer()
+	game.Players.LocalPlayer.Character.Humanoid.Health = 0
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = savedcf
-	workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["M9"].ITEMPICKUP)
+	workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["M9"]})
 	local CHAR = game.Players.LocalPlayer.Character
 	CHAR.Humanoid.Name = "1"
 	local c = CHAR["1"]:Clone()
@@ -407,7 +407,7 @@ function TeleportV(Player, Player2)
 		STOP_2 = STOP_2 + 1
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Player2.Character.HumanoidRootPart.CFrame
 	until STOP_2 > 10
-	workspace.Remote.loadchar:InvokeServer()
+	game.Players.LocalPlayer.Character.Humanoid.Health = 0
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = savedcf
 end
 
@@ -440,13 +440,13 @@ function Arrest(Player, Time)
 end
 
 function Team(team)
-	if team == "i" then
+	if team == "inmates" then
 		workspace.Remote.TeamEvent:FireServer("Bright orange")
-	elseif team == "g" then
+	elseif team == "guards" then
 		workspace.Remote.TeamEvent:FireServer("Bright blue")
-	elseif team == "n" then
+	elseif team == "neutral" then
 		workspace.Remote.TeamEvent:FireServer("Medium stone grey")
-	elseif team == "c" then
+	elseif team == "criminals" then
 		local cpad = workspace["Criminals Spawn"].SpawnLocation
 		local cpcf = cpad.CFrame
 		local savedcf = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
@@ -506,10 +506,10 @@ function Chatted(Message)
 			Prefix.."re - re",
 			Prefix.."res - respawn",
 			Prefix.."crim [plr] - crim player",
-			Prefix.."t/team [i,g,n,c,code] - changes team",
-			Prefix.."k/kill [plr,i,g,c,all] - kill",
-			Prefix.."loopkill [plr,i,g,c,all] - loop kills",
-			Prefix.."unloopkill [plr,i,g,c,all] - unloop kills",
+			Prefix.."t/team [team,code] - changes team",
+			Prefix.."k/kill [plr,team,all] - kill",
+			Prefix.."loopkill [plr,team,all] - loop kills",
+			Prefix.."unloopkill [plr,team,all] - unloop kills",
 			Prefix.."to [plr] - go to player",
 			Prefix.."sa [plr] - spam arrest player",
 			Prefix.."beam [plr] [time] - beam player",
@@ -598,7 +598,7 @@ function Chatted(Message)
 		if player then
 			States.attach = true
 			repeat wait(.3)
-				workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["M9"].ITEMPICKUP)
+				workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["M9"]})
 				game.Players.LocalPlayer.Character.Humanoid.Name = 1
 				local l = game.Players.LocalPlayer.Character["1"]:Clone()
 				l.Parent = game.Players.LocalPlayer.Character
@@ -877,7 +877,7 @@ function Chatted(Message)
 			end
 		end
 	end
-	if Command("lk") then
+	if Command("loopkill") then
 		local player = GetPlayer(arg2)
 		if arg2 == "all" then
 			States.loopkill_criminals = true
@@ -1075,7 +1075,7 @@ function Chatted(Message)
 							if game.Players.LocalPlayer.Character:FindFirstChild(Name) and States.CAN then
 								if Req["CurrentAmmo"] < 1 then
 									Tool:Destroy()
-									workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver[Name].ITEMPICKUP)
+									workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver[Name]})
 									Tool = game.Players.LocalPlayer.Backpack:FindFirstChild(Name)
 									if Tool then
 										Name = Tool.Name
@@ -1103,7 +1103,7 @@ function Chatted(Message)
 		local savedcf = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
 		local savedcamcf = workspace.CurrentCamera.CFrame
 		if game.Players.LocalPlayer.TeamColor.Name ~= "Medium stone grey" then
-			workspace.Remote.loadchar:InvokeServer()
+			game.Players.LocalPlayer.Character.Humanoid.Health = 0
 			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = savedcf
 			workspace.CurrentCamera.CFrame = savedcamcf
 		else
@@ -1113,11 +1113,11 @@ function Chatted(Message)
 			workspace.Remote.TeamEvent:FireServer("Medium stone grey")
 		end
 	end
-	if Command("c") then
+	if Command("clip") then
 		States.noclip = false
 		Notify("clips")
 	end
-	if Command("nc") then
+	if Command("noclip") then
 		States.noclip = true
 		Notify("no clips")
 		game:GetService("RunService").Stepped:Connect(function()
@@ -1135,25 +1135,25 @@ function Chatted(Message)
 	if Command("rof") then
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(924.82531738281, 138.46385192871, 2458.8420410156)
 	end
-	if Command("tow") then
+	if Command("tower") then
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(822.69244384766, 130.03994750977, 2588.4006347656)
 	end
-	if Command("base") then
+	if Command("crimbase") then
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-942.98992919922, 94.128784179688, 2056.1499023438)
 	end
-	if Command("arm") then
+	if Command("armory") then
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(792.8857421875, 102.78999328613, 2250.7065429688)
 	end
-	if Command("yar") then
+	if Command("yard") then
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(793.51580810547, 98.18994140625, 2546.2531738281)
 	end
-	if Command("caf") then
+	if Command("cafe") then
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(874.12316894531, 99.989959716797, 2251.3356933594)
 	end
 	if Command("gr") then
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(504.37423706055, 102.03991699219, 2242.4948730469)
 	end
-	if Command("bac") then
+	if Command("backnexus") then
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(978.74920654297, 99.990005493164, 2341.8315429688)
 	end
 	if Command("cel") then
@@ -1163,6 +1163,7 @@ function Chatted(Message)
 		local savedcamcf = workspace.CurrentCamera.CFrame
 		local savedcf = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
 		workspace.Remote.loadchar:InvokeServer()
+                
 		workspace.CurrentCamera.CFrame = savedcamcf
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = savedcf
 		Notify("re player")
@@ -1179,16 +1180,16 @@ function Chatted(Message)
 		end
 	end
 	if Command("t") or Command("team") then
-		if arg2 == "i" then
+		if arg2 == "inmates" then
 			workspace.Remote.TeamEvent:FireServer("Bright orange")
 			Notify("inmate team")
-		elseif arg2 == "g" then
+		elseif arg2 == "guards" then
 			workspace.Remote.TeamEvent:FireServer("Bright blue")
 			Notify("guard team")
-		elseif arg2 == "n" then
+		elseif arg2 == "neutral" then
 			workspace.Remote.TeamEvent:FireServer("Medium stone grey")
 			Notify("neutral team")
-		elseif arg2 == "c" then
+		elseif arg2 == "criminals" then
 			if game.Players.LocalPlayer.TeamColor.Name ~= "Bright blue" then
 				local CrimPad = workspace["Criminals Spawn"].SpawnLocation
 				CrimPad.CanCollide = false
@@ -1279,7 +1280,7 @@ function Chatted(Message)
 					local Gun = game.Players.LocalPlayer.Character:FindFirstChild("Remington 870") or game.Players.LocalPlayer.Backpack:FindFirstChild("Remington 870")
 					Head = game.Players.LocalPlayer.Character.Head
 					if not Gun then
-						workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
+						workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["Remington 870"]})
 						Gun = game.Players.LocalPlayer.Character:FindFirstChild("Remington 870") or game.Players.LocalPlayer.Backpack:FindFirstChild("Remington 870")
 					end
 					if Gun and Head then
@@ -1324,7 +1325,7 @@ function Chatted(Message)
 		States.spamchat = false
 		Notify("unspammed chat")
 	end
-	if Command("lb") or Command("lbring") then
+	if Command("loopbring") or Command("lbring") then
 		local player = GetPlayer(arg2)
 		if player then
 			Notify("looping bring "..player.DisplayName)
@@ -1334,11 +1335,11 @@ function Chatted(Message)
 			until not States.loopbring or not game.Players[player.Name]
 		end
 	end
-	if Command("unlb") or Command("unlbring") then
+	if Command("unloopbring") or Command("unlbring") then
 		States.loopbring = false
 		Notify("unloop bring")
 	end
-	if Command("pf") then
+	if Command("prefix") then
 		if arg2 ~= nil then
 			Notify("changed prefix to "..arg2)
 			Prefix = arg2
@@ -1372,14 +1373,14 @@ function Chatted(Message)
 	end
 	if Command("g") or Command("gun") then
 		if bgp then
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["M4A1"].ITEMPICKUP)
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["AK-47"].ITEMPICKUP)
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["M9"].ITEMPICKUP)
+			workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["Remington 870"])
+			workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["M4A1"])
+			workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["AK-47"]})
+			workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["M9"]})
 		else
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["AK-47"].ITEMPICKUP)
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["M9"].ITEMPICKUP)
+			workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["Remington 870"]})
+			workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["AK-47"]})
+			workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["M9"]})
 		end
 		Notify("grabbed a gun")
 	end
@@ -1809,7 +1810,7 @@ function AdminChatted(message, player)
 			Kill(target)
 		end
 	end
-	if Command("lk") then
+	if Command("loopkill") then
 		local target = GetPlayer(arg2)
 		if target then
 			if not LoopKill[target.UserId] then
@@ -1817,7 +1818,7 @@ function AdminChatted(message, player)
 			end
 		end
 	end
-	if Command("ulk") then
+	if Command("unloopkill") then
 		local target = GetPlayer(arg2)
 		if target then
 			if LoopKill[target.UserId] then
