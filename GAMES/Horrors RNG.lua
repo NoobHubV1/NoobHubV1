@@ -1,6 +1,6 @@
 local Library = loadstring(Game:HttpGetAsync(("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard")))()
 
-local LuckAmount = function(Amount)
+local GetLuck = function(Amount)
         for i = 1, Amount do game:GetService("ReplicatedStorage").Events.InventoryEvent:FireServer("Equip","Super Luck Potion","Usable") end
 end
 
@@ -21,5 +21,5 @@ end)
 Section:CreateTextbox("Luck Amount", function(Value)LuckAmount = Value
 end)
 
-Section:CreateButton("Get Luck", function()LuckAmount(LuckAmount)
+Section:CreateButton("Get Luck", function()GetLuck(LuckAmount)
 end)
