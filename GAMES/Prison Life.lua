@@ -185,27 +185,6 @@ local ChangeTeam = function(TeamPath,NoForce,Pos)
 	end
 end
 
-local CreateBulletTable = function(Amount, Hit, IsTrue)
-	local Args = {}
-	for i = 1, tonumber(Amount) do
-		if IsTrue then
-			Args[#Args + 1] = {
-				["RayObject"] = Ray.new(Vector3.new(990.272583, 101.489975, 2362.74878), Vector3.new(-799.978333, 0.23157759, -5.88794518)),
-				["Distance"] = 198.9905242919922,
-				["Cframe"] = CFrame.new(894.362549, 101.288307, 2362.53491, -0.0123058055, 0.00259522465, -0.999920964, 3.63797837e-12, 0.999996722, 0.00259542116, 0.999924302, 3.19387436e-05, -0.0123057645),
-			}
-		else
-			Args[#Args + 1] = {
-				["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),
-				["Distance"] = 0,
-				["Cframe"] = CFrame.new(),
-				["Hit"] = Hit,
-			}
-		end
-	end
-	return Args
-end
-
 local function GiveItem(Item)
         if Item == "Shotgun" then
                 Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["Remington 870"]})
@@ -220,6 +199,10 @@ local function GiveItem(Item)
         elseif Item == "M4A1" then
                 Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["M4A1"]})
         end
+end
+
+local function UnequipTool()
+	game.Players.LocalPlayer.Character.Humanoid:UnequipTools()
 end
 
 local AllGuns = function()
@@ -294,6 +277,47 @@ local LoadstringHttps = function(Https)
 	loadstring(Game:HttpGet(Https))()
 end
 
+local function ServerCrash()
+	while wait() do
+local Gun = "Remington 870"
+
+local Player = game.Players.LocalPlayer.Name
+
+GiveItem(Gun)
+
+for i,v in pairs(game.Players[ Player ].Backpack:GetChildren()) do
+    if v.name == (Gun) then
+        v.Parent = game.Players.LocalPlayer.Character
+    end
+end
+
+Gun = game.Players[ Player ].Character[ Gun ]
+
+UnequipTool()
+
+function FireGun(target)
+coroutine.resume(coroutine.create(function()
+local bulletTable = {}
+table.insert(bulletTable, {
+Hit = target,
+Distance = 100,
+Cframe = CFrame.new(0,1,1),
+RayObject = Ray.new(Vector3.new(0.1,0.2), Vector3.new(0.3,0.4))
+})
+game.ReplicatedStorage.ShootEvent:FireServer(bulletTable, Gun)
+wait()
+end))
+end
+
+while game:GetService("RunService").Stepped:wait() do
+for count = 0, 10, 10 do
+FireGun()
+end
+end
+wait(5)
+	end
+end
+
 local Window = Library:NewWindow("NoobHubV1 Hub")
 
 local PrisonLife = Window:NewSection("Main")
@@ -318,6 +342,9 @@ PrisonLife:CreateDropdown("Item", {"Shotgun","AK-47","M9","Hammer","Knife","M4A1
 end)
 
 PrisonLife:CreateButton("Give Item", function()GiveItem(SelectedItem)
+end)
+
+PrisonLife:CreateButton("Server Crash", function()ServerCrash()
 end)
 
 local PrisonLife = Window:NewSection("Gun Mode")
