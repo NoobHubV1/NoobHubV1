@@ -646,13 +646,13 @@ end
 function Kill(Player)
 	pcall(function()
 		if Player.Character:FindFirstChild("ForceField") or not workspace:FindFirstChild(Player.Name) or not workspace:FindFirstChild(Player.Name):FindFirstChild("Head") or Player == nil or Player.Character.Parent ~= workspace then return end
-		workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
+		workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["Remington 870"]})
 
 		local MyTeam = GetTeam()
 		if Player.TeamColor.Name == game.Players.LocalPlayer.TeamColor.Name then
 			local savedcf = GetPos()
 			local savedcamcf = GetCamPos()
-			workspace.Remote.loadchar:InvokeServer(nil, BrickColor.random().Name)
+			workspace.Remote.TeamEvent:FireServer("Bright orange")
 			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = savedcf
 			workspace.CurrentCamera.CFrame = savedcamcf
 			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
@@ -705,7 +705,7 @@ function Kill(Player)
 		}
 
 		game:GetService("ReplicatedStorage").ShootEvent:FireServer(FireEvent, Gun)
-		Gun.Parent = game.Players.LocalPlayer.Character
+		Gun,Parent = game.Players.LocalPlayer.Character
 		game.Players.LocalPlayer.Character["Remington 870"]:Destroy()
 	end)
 end
@@ -721,7 +721,7 @@ function Tase(Player)
 		local changedteam = false
 		if game.Players.LocalPlayer.TeamColor.Name ~= "Bright blue" or not Gun then
 			savedteam = GetTeam()
-			workspace.Remote.loadchar:InvokeServer(nil, BrickColor.new("Bright blue").Name)
+			workspace.Remote.TeamEvent:FireServer("Bright blue")
 			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = savedcf
 			changedteam = true
 		end
@@ -1752,7 +1752,7 @@ function PlayerChatted(Message)
 			if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 				local savedcf = GetPos()
 				local savedcamcf = GetCamPos()
-				workspace.Remote.loadchar:InvokeServer()
+				workspace.Remote.TeamEvent:FireServer("Bright orange")
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = savedcf
 				workspace.CurrentCamera.CFrame = savedcamcf
 			end
@@ -1760,10 +1760,10 @@ function PlayerChatted(Message)
 			if game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
 				local savedcf = GetPos()
 				local savedcamcf = GetCamPos()
-				workspace.Remote.loadchar:InvokeServer(nil, BrickColor.new("Bright orange").Name)
+				workspace.Remote.TeamEvent:FireServer("Bright orange")
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = savedcf
 				workspace.CurrentCamera.CFrame = savedcamcf
-				workspace.Remote.TeamEvent:FireServer("Medium stone grey")
+				
 			end
 		end
 		Notify("Refreshed", Color3.fromRGB(0, 255, 0), "Success")
