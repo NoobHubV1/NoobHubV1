@@ -363,7 +363,7 @@ end)
 
 local PrisonLife = Window:NewSection("Others")
 
-PrisonLife:CreateButton("Tiger Admin", function()LoadstringHttps("https://raw.githubusercontent.com/H17S32/Tiger_Admin/main/TigeradminREVAMP.txt")
+PrisonLife:CreateButton("Tiger Admin 3.0", function()LoadstringHttps("https://raw.githubusercontent.com/H17S32/Tiger_Admin/main/Tiger%20Admin%203.0")
 end)
 
 PrisonLife:CreateButton("Admin Gui", function()LoadstringHttps("https://raw.githubusercontent.com/NoobHubV1/RobloxScripts/main/Prison%20Life%20Admin.lua")
