@@ -40,6 +40,7 @@ print([[
 	.refresh | you refresh
 	.sit (Plr) | Sit a player
 	.void (Plr) |teleports the player to the void
+	.destroy (Plr) | Player destroy (if player leave)
 \\
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -110,15 +111,17 @@ local Sit = Instance.new("TextButton")
 local UICorner_21 = Instance.new("UICorner")
 local Void = Instance.new("TextButton")
 local UICorner_22 = Instance.new("UICorner")
-local Refresh = Instance.new("TextButton")
+local Destroy = Instance.new("TextButton")
 local UICorner_23 = Instance.new("UICorner")
-local target = Instance.new("TextBox")
+local Refresh = Instance.new("TextButton")
 local UICorner_24 = Instance.new("UICorner")
+local target = Instance.new("TextBox")
+local UICorner_25 = Instance.new("UICorner")
 local UIGradient_2 = Instance.new("UIGradient")
 local Refresh = Instance.new("TextButton")
-local UICorner_25 = Instance.new("UICorner")
-local search = Instance.new("TextBox")
 local UICorner_26 = Instance.new("UICorner")
+local search = Instance.new("TextBox")
+local UICorner_27 = Instance.new("UICorner")
 
 --Properties:
 
@@ -556,6 +559,22 @@ Void.TextSize = 23.000
 UICorner_22.CornerRadius = UDim.new(0, 4)
 UICorner_22.Parent = Void
 
+Destroy.Name = "Destroy"
+Destroy.Parent = ScrollingFrame
+Destroy.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
+Destroy.BackgroundTransparency = 0.500
+Destroy.BorderSizePixel = 0
+Destroy.Position = UDim2.new(0.0351677425, 0, 0.190713778, 0)
+Destroy.Size = UDim2.new(0, 131, 0, 40)
+Destroy.ZIndex = 3
+Destroy.Font = Enum.Font.SourceSansLight
+Destroy.Text = "Destroy"
+Destroy.TextColor3 = Color3.fromRGB(255, 255, 255)
+Destroy.TextSize = 23.000
+
+UICorner_23.CornerRadius = UDim.new(0, 4)
+UICorner_23.Parent = Destroy
+
 Refresh.Name = "Refresh"
 Refresh.Parent = Main
 Refresh.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
@@ -568,8 +587,8 @@ Refresh.TextColor3 = Color3.fromRGB(255, 255, 255)
 Refresh.TextSize = 26.000
 Refresh.TextWrapped = true
 
-UICorner_23.CornerRadius = UDim.new(0, 4)
-UICorner_23.Parent = Refresh
+UICorner_24.CornerRadius = UDim.new(0, 4)
+UICorner_24.Parent = Refresh
 
 target.Name = "target"
 target.Parent = Main
@@ -583,8 +602,8 @@ target.Text = ""
 target.TextColor3 = Color3.fromRGB(255, 255, 255)
 target.TextSize = 23.000
 
-UICorner_24.CornerRadius = UDim.new(0, 4)
-UICorner_24.Parent = target
+UICorner_25.CornerRadius = UDim.new(0, 4)
+UICorner_25.Parent = target
 
 UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(122, 122, 122))}
 UIGradient_2.Rotation = 90
@@ -602,8 +621,8 @@ Refresh.TextColor3 = Color3.fromRGB(255, 255, 255)
 Refresh.TextSize = 26.000
 Refresh.TextWrapped = true
 
-UICorner_25.CornerRadius = UDim.new(0, 4)
-UICorner_25.Parent = Refresh
+UICorner_26.CornerRadius = UDim.new(0, 4)
+UICorner_26.Parent = Refresh
 
 search.Name = "search"
 search.Parent = Main
@@ -617,8 +636,8 @@ search.Text = ""
 search.TextColor3 = Color3.fromRGB(255, 255, 255)
 search.TextSize = 23.000
 
-UICorner_26.CornerRadius = UDim.new(0, 4)
-UICorner_26.Parent = search
+UICorner_27.CornerRadius = UDim.new(0, 4)
+UICorner_27.Parent = search
 
 local UserInputService = game:GetService("UserInputService")
 local dragging,dragInput,dragStart,startPos
@@ -906,6 +925,20 @@ local function DoCommand(Command)
 						end
 						player.Character:FindFirstChildOfClass('Humanoid').JumpHeight =(100)
 						player.Character:FindFirstChildOfClass('Humanoid').JumpPower =(100)
+					end
+				end
+			end)
+		elseif (string.sub(Command,1,#".destroy") == ".destroy") then
+			local player = getPlayer(string.sub(Command,#".jump" + 2))
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						player.Character:Destroy()
 					end
 				end
 			end)
