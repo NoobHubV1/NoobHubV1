@@ -1073,7 +1073,7 @@ local function DoCommand(Command)
 							if (Part:IsA("BasePart")) then
 								Remote:FireServer(Part,lp)
 								player.Character.Humanoid.Health = (1)
-								wait(1)
+								task.wait(1)
 								player.Character.Humanoid.Health = (0)
 							end
 						end
