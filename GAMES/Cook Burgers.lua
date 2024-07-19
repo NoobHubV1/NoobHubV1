@@ -888,8 +888,8 @@ local function DoCommand(Command)
 		elseif (string.sub(Command,1,#".cmds") == ".cmds") then
 			Notify("The commands are listed in the console! \n Press F9 to view",3)
 		elseif (string.sub(Command,1,#".refresh") == ".refresh") or (string.sub(Command,1,#".re") == ".re") then
-			game.ReplicatedStorage.Events.Player.SpawnRequestEvent:FireServer()
 			WaitForRespawn(Pos or GetPosition(),NoForce)
+			game.ReplicatedStorage.Events.Player.SpawnRequestEvent:FireServer()
 		elseif (string.sub(Command,1,#".netclaim") == ".netclaim") then
 			for i = 1,3 do
 				pcall(function()
@@ -1072,9 +1072,10 @@ local function DoCommand(Command)
 						for _, Part in pairs(player.Character:GetDescendants()) do
 							if (Part:IsA("BasePart")) then
 								Remote:FireServer(Part,lp)
+								player.Character.Humanoid.MaxHealth = (0)
+								player.Character.Humanoid.Health = (1)
 							end
 						end
-						player.Character.HumanoidRootPart.CFrame = CFrame.new(3^5,workspace.FallenPartsDestroyHeight+5,23453225)
 					end
 				end
 			end)
