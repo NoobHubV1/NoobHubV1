@@ -1072,8 +1072,9 @@ local function DoCommand(Command)
 						for _, Part in pairs(player.Character:GetDescendants()) do
 							if (Part:IsA("BasePart")) then
 								Remote:FireServer(Part,lp)
-								player.Character.Humanoid.MaxHealth = (0)
 								player.Character.Humanoid.Health = (1)
+								wait(1)
+								player.Character.Humanoid.Health = (0)
 							end
 						end
 					end
