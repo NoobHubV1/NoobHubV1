@@ -1081,8 +1081,7 @@ local function DoCommand(Command)
 					if (Part:IsA("BasePart") and Part.Name == "Money") then
 						pcall(function()
 							Remote:FireServer(Part,lp)
-							Part.CFrame = workspace.Gameplay.CashRegister.RegisterPart.CFrame
-							Part.Anchored = true
+							game.ReplicatedStorage.Events.Player.KC:FireServer()
 						end)
 					end
 				end
