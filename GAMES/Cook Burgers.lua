@@ -1,11 +1,10 @@
 --[[
 
 // Made for this game: https://www.roblox.com/games/5409315202
-// This uses chat commands e.g ".control noob"
+// This uses chat commands e.g ".control NoobHubV1"
 // Most things I couldn't be asked to do 
 
-// Made fully by NoobHubV1#2751
-// Review Script NoobHubV2#2680
+// Made fully by NoobHubV1
 
 // Chat commands still work
 
@@ -37,10 +36,8 @@ print([[
 	.fix | Refresh the server
 	.slave (Plr) | Make a player follow you until they get to you
 	.jail (Plr) | Lock a player until they reset
-	.sit (Plr) | Sit a player
-	.destroy (Plr) | Player Destroy (if Player Leave)
-	.loopkill (Plr) | Player Get Kill Loop (if Player ChangeServer Or Leave)
-	.unloopkill (Plr) | Player Unloopkill
+	.loopkill (Plr) | Player Get Loopkill (if Player ChangeServer or Leave Map)
+	.unloopkill (Plr) | Player unloopkill
 \\
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -107,21 +104,17 @@ local Orbit = Instance.new("TextButton")
 local UICorner_19 = Instance.new("UICorner")
 local Goto = Instance.new("TextButton")
 local UICorner_20 = Instance.new("UICorner")
-local Sit = Instance.new("TextButton")
-local UICorner_21 = Instance.new("UICorner")
-local Destroy = Instance.new("TextButton")
-local UICorner_22 = Instance.new("UICorner")
 local Loopkill = Instance.new("TextButton")
-local UICorner_23 = Instance.new("UICorner")
+local UICorner_21 = Instance.new("UICorner")
 local Unloopkill = Instance.new("TextButton")
-local UICorner_24 = Instance.new("UICorner")
+local UICorner_22 = Instance.new("UICorner")
 local target = Instance.new("TextBox")
-local UICorner_25 = Instance.new("UICorner")
-local UIGdient_2 = Instance.new("UIGradient")
+local UICorner_23 = Instance.new("UICorner")
+local UIGradient_2 = Instance.new("UIGradient")
 local Refresh = Instance.new("TextButton")
-local UICorner_26 = Instance.new("UICorner")
+local UICorner_24 = Instance.new("UICorner")
 local search = Instance.new("TextBox")
-local UICorner_27 = Instance.new("UICorner")
+local UICorner_25 = Instance.new("UICorner")
 
 --Properties:
 
@@ -527,66 +520,37 @@ Goto.TextSize = 23.000
 UICorner_20.CornerRadius = UDim.new(0, 4)
 UICorner_20.Parent = Goto
 
-Sit.Name = "Sit"
-Sit.Parent = ScrollingFrame
-Sit.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
-Sit.BackgroundTransparency = 0.500
-Sit.BorderSizePixel = 0
-Sit.Position = UDim2.new(0.0351677425, 0, 0.190713778, 0)
-Sit.Size = UDim2.new(0, 131, 0, 40)
-Sit.ZIndex = 3
-Sit.Font = Enum.Font.SourceSansLight
-Sit.Text = "Sit"
-Sit.TextColor3 = Color3.fromRGB(255, 255, 255)
-Sit.TextSize = 23.000
-
-UICorner_21.CornerRadius = UDim.new(0, 4)
-UICorner_21.Parent = Sit
-
-Destroy.Name = "Destroy"
-Destroy.Parent = Main
-Destroy.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
-Destroy.BackgroundTransparency = 0.500
-Destroy.Position = UDim2.new(0.0255350601, 0, 0.899736166, 0)
-Destroy.Size = UDim2.new(0, 127, 0, 30)
-Destroy.Font = Enum.Font.SourceSansLight
-Destroy.Text = "Destroy"
-Destroy.TextColor3 = Color3.fromRGB(255, 255, 255)
-Destroy.TextSize = 26.000
-Destroy.TextWrapped = true
-
-UICorner_22.CornerRadius = UDim.new(0, 4)
-UICorner_22.Parent = Destroy
-
 Loopkill.Name = "Loopkill"
-Loopkill.Parent = Main
+Loopkill.Parent = ScrollingFrame
 Loopkill.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
 Loopkill.BackgroundTransparency = 0.500
-Loopkill.Position = UDim2.new(0.0255350601, 0, 0.899736166, 0)
-Loopkill.Size = UDim2.new(0, 127, 0, 30)
+Loopkill.BorderSizePixel = 0
+Loopkill.Position = UDim2.new(0.0351677425, 0, 0.190713778, 0)
+Loopkill.Size = UDim2.new(0, 131, 0, 40)
+Loopkill.ZIndex = 3
 Loopkill.Font = Enum.Font.SourceSansLight
 Loopkill.Text = "Loopkill"
 Loopkill.TextColor3 = Color3.fromRGB(255, 255, 255)
-Loopkill.TextSize = 26.000
-Loopkill.TextWrapped = true
+Loopkill.TextSize = 23.000
 
-UICorner_23.CornerRadius = UDim.new(0, 4)
-UICorner_23.Parent = Loopkill
+UICorner_21.CornerRadius = UDim.new(0, 4)
+UICorner_21.Parent = Loopkill
 
 Unloopkill.Name = "Unloopkill"
-Unloopkill.Parent = Main
+Unloopkill.Parent = ScrollingFrame
 Unloopkill.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
 Unloopkill.BackgroundTransparency = 0.500
-Unloopkill.Position = UDim2.new(0.0255350601, 0, 0.899736166, 0)
-Unloopkill.Size = UDim2.new(0, 127, 0, 30)
+Unloopkill.BorderSizePixel = 0
+Unloopkill.Position = UDim2.new(0.0351677425, 0, 0.190713778, 0)
+Unloopkill.Size = UDim2.new(0, 131, 0, 40)
+Unloopkill.ZIndex = 3
 Unloopkill.Font = Enum.Font.SourceSansLight
 Unloopkill.Text = "Unloopkill"
 Unloopkill.TextColor3 = Color3.fromRGB(255, 255, 255)
-Unloopkill.TextSize = 26.000
-Unloopkill.TextWrapped = true
+Unloopkill.TextSize = 23.000
 
-UICorner_24.CornerRadius = UDim.new(0, 4)
-UICorner_24.Parent = Unloopkill
+UICorner_22.CornerRadius = UDim.new(0, 4)
+UICorner_22.Parent = Unloopkill
 
 target.Name = "target"
 target.Parent = Main
@@ -600,8 +564,8 @@ target.Text = ""
 target.TextColor3 = Color3.fromRGB(255, 255, 255)
 target.TextSize = 23.000
 
-UICorner_25.CornerRadius = UDim.new(0, 4)
-UICorner_25.Parent = target
+UICorner_23.CornerRadius = UDim.new(0, 4)
+UICorner_23.Parent = target
 
 UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(122, 122, 122))}
 UIGradient_2.Rotation = 90
@@ -619,8 +583,8 @@ Refresh.TextColor3 = Color3.fromRGB(255, 255, 255)
 Refresh.TextSize = 26.000
 Refresh.TextWrapped = true
 
-UICorner_26.CornerRadius = UDim.new(0, 4)
-UICorner_26.Parent = Refresh
+UICorner_24.CornerRadius = UDim.new(0, 4)
+UICorner_24.Parent = Refresh
 
 search.Name = "search"
 search.Parent = Main
@@ -634,8 +598,8 @@ search.Text = ""
 search.TextColor3 = Color3.fromRGB(255, 255, 255)
 search.TextSize = 23.000
 
-UICorner_27.CornerRadius = UDim.new(0, 4)
-UICorner_27.Parent = search
+UICorner_25.CornerRadius = UDim.new(0, 4)
+UICorner_25.Parent = search
 
 local UserInputService = game:GetService("UserInputService")
 local dragging,dragInput,dragStart,startPos
@@ -697,7 +661,7 @@ function getPlayer(Player)
 end
 
 function Tween(Obj, Prop, New, Time)
-        if not Time then
+	if not Time then
 		Time = .5
 	end
 	local TweenService = game:GetService("TweenService")
@@ -752,79 +716,6 @@ function Notify(Text,Dur)
 	return
 end
 
-function GetPart(Target)
-	game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
-
-	return Target.Character:FindFirstChild("HumanoidRootPart") or Target.Character:FindFirstChild("Head")
-end
-
-function ConvertPosition(Position)
-	if typeof(Position):lower() == "position" then
-		return CFrame.new(Position)
-	else
-		return Position
-	end
-end
-
-function MoveTo(Cframe)
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Cframe
-end
-
-function GetCameraPosition(Player)
-	return workspace["CurrentCamera"].CFrame
-end
-
-function GetPosition(Player)
-	game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
-
-	if Player then
-		return GetPart(Player).CFrame
-	elseif not Player then
-		return GetPart(LocalPlayer).CFrame
-	end
-end
-
-function Loop(Times, calling)
-	for i = 1, tonumber(Times) do
-		calling()
-	end
-end
-
-function WaitForRespawn(Cframe,NoForce)
-	game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
-
-	local Cframe = ConvertPosition(Cframe)
-	local CameraCframe = GetCameraPosition()
-	coroutine.wrap(function()
-		local a
-		a = Player.CharacterAdded:Connect(function(NewCharacter)
-			pcall(function()
-				coroutine.wrap(function()
-					workspace.CurrentCamera:GetPropertyChangedSignal("CFrame"):Wait()
-					Loop(5, function()
-						workspace["CurrentCamera"].CFrame = CameraCframe
-					end)
-				end)()
-				NewCharacter:WaitForChild("HumanoidRootPart")
-				MoveTo(Cframe)
-				if NoForce then
-					task.spawn(function()
-						NewCharacter:WaitForChild("ForceField"):Destroy()
-					end)
-				end
-			end)
-			a:Disconnect()
-			Cframe = nil
-		end)
-		task.spawn(function()
-			wait(2)
-			if a then
-				a:Disconnect()
-			end
-		end)
-	end)()
-end
-
 local function DoCommand(Command)
 	spawn(function()
 		RemoteQueue = (RemoteQueue+1)
@@ -865,10 +756,7 @@ local function DoCommand(Command)
 		elseif (string.sub(Command,1,#(".fix")) == (".fix") or string.sub(Command,1,#(".uncontrol")) == (".uncontrol")) then
 			game:GetService('TeleportService'):TeleportToPlaceInstance(game.PlaceId, game.JobId, lp)
 		elseif (string.sub(Command,1,#".cmds") == ".cmds") then
-			Notify("The commands are listed in the console! \n Press F9 to view",3)
-		elseif (string.sub(Command,1,#".refresh") == ".refresh") or (string.sub(Command,1,#".re") == ".re") then
-			WaitForRespawn(Pos or GetPosition(),NoForce)
-			game.ReplicatedStorage.Events.Player.SpawnRequestEvent:FireServer()
+			Notify("(Cook burgers admin) The commands are listed in the console! \n Press F9 to view", 5)
 		elseif (string.sub(Command,1,#".netclaim") == ".netclaim") then
 			for i = 1,3 do
 				pcall(function()
@@ -1015,40 +903,7 @@ local function DoCommand(Command)
 					end
 				end
 			end)
-		elseif (string.sub(Command,1,#".destroy") == ".destroy") then
-			local player = getPlayer(string.sub(Command,#".destroy" + 2))
-			pcall(function()
-				if (player ~= nil and player.Character ~= nil) then
-					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
-						for _, Part in pairs(player.Character:GetDescendants()) do
-							if (Part:IsA("BasePart")) then
-								Remote:FireServer(Part,lp)
-								player.Character:Destroy()
-							end
-						end
-					end
-				end
-			end)
 		elseif (string.sub(Command,1,#".kill") == ".kill") then
-			local player = getPlayer(string.sub(Command,#".kill" + 2))
-			pcall(function()
-				if (player ~= nil and player.Character ~= nil) then
-					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
-						for _, Part in pairs(player.Character:GetDescendants()) do
-							if (Part:IsA("BasePart")) then
-								Remote:FireServer(Part,lp)
-								player.Character.Humanoid.Health = (1)
-								task.wait(.1)
-								player.Character.Humanoid.Health = (0)
-							end
-						end
-					end
-				end
-			end)
-		elseif (string.sub(Command,1,#".loopkill") == ".loopkill") then
-			_G.Loop = true
-			while _G.Loop do
-			wait(0.1)
 			local player = getPlayer(string.sub(Command,#".loopkill" + 2))
 			pcall(function()
 				if (player ~= nil and player.Character ~= nil) then
@@ -1056,17 +911,18 @@ local function DoCommand(Command)
 						for _, Part in pairs(player.Character:GetDescendants()) do
 							if (Part:IsA("BasePart")) then
 								Remote:FireServer(Part,lp)
-								player.Character.Humanoid.Health = (1)
-								task.wait(.1)
-								player.Character.Humanoid.Health = (0)
 							end
 						end
+						player.Character.Humanoid.Health = (1)
+						task.wait(.1)
+						player.Character.Humanoid.Health = (0)
 					end
 				end
 			end)
-			end
-		elseif (string.sub(Command,1,#".sit") == ".sit") then
-			local player = getPlayer(string.sub(Command,#".sit" + 2))
+		elseif (string.sub(Command,1,#".loopkill") == ".loopkill") then
+			getgenv().Loop = true
+			while Loop do
+			local player = getPlayer(string.sub(Command,#".loopkill" + 2))
 			pcall(function()
 				if (player ~= nil and player.Character ~= nil) then
 					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
@@ -1075,14 +931,17 @@ local function DoCommand(Command)
 								Remote:FireServer(Part,lp)
 							end
 						end
-						player.Character.Humanoid.Sit = (true)
+						player.Character.Humanoid.Health = (1)
+						task.wait(.1)
+						player.Character.Humanoid.Health = (0)
 					end
 				end
+			task.wait(1)
 			end)
+			end
 		elseif (string.sub(Command,1,#".unloopkill") == ".unloopkill") then
-			_G.Loop = false
-			while _G.Loop do
-			wait(0.1)
+			getgenv().Loop = false
+			while Loop do
 			local player = getPlayer(string.sub(Command,#".unloopkill" + 2))
 			pcall(function()
 				if (player ~= nil and player.Character ~= nil) then
@@ -1090,36 +949,24 @@ local function DoCommand(Command)
 						for _, Part in pairs(player.Character:GetDescendants()) do
 							if (Part:IsA("BasePart")) then
 								Remote:FireServer(Part,lp)
-								player.Character.Humanoid.Health = (1)
-								task.wait(.1)
-								player.Character.Humanoid.Health = (0)
 							end
 						end
+						player.Character.Humanoid.Health = (1)
+						task.wait(.1)
+						player.Character.Humanoid.Health = (0)
 					end
 				end
+			task.wait(1)
 			end)
 			end
-		elseif (string.sub(Command,1,#".void") == ".void") then
-			local player = getPlayer(string.sub(Command,#".kill" + 2))
-			pcall(function()
-				if (player ~= nil and player.Character ~= nil) then
-					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
-						for _, Part in pairs(player.Character:GetDescendants()) do
-							if (Part:IsA("BasePart")) then
-								Remote:FireServer(Part,lp)
-							end
-						end
-						player.Character.HumanoidRootPart.CFrame = CFrame.new(2^7,5^34,4^7)
-					end
-				end
-			end)
 		elseif (string.sub(Command,1,#".money") == ".money") then
 			pcall(function()
 				for _, Part in pairs(workspace:GetDescendants()) do
 					if (Part:IsA("BasePart") and Part.Name == "Money") then
 						pcall(function()
 							Remote:FireServer(Part,lp)
-							game.ReplicatedStorage.Events.Player.KC:FireServer()
+							Part.CFrame = workspace.Gameplay.CashRegister.RegisterPart.CFrame
+							Part.Anchored = true
 						end)
 					end
 				end
@@ -1219,7 +1066,7 @@ local function DoCommand(Command)
 									if (Msg == (string.sub(Msg,1,#(".unspin")))== (".unspin")) then
 										bambam:Destroy()
 									end
-                                                         	end)
+								end)
 							end
 						end
 					end
@@ -1356,7 +1203,7 @@ spawn(function()
 	for _,button in pairs(ScrollingFrame:GetChildren()) do
 		if button:IsA("UIGridLayout") == false then
 			button.Activated:connect(function()
-				if target.Text:lower() == "all" or target.Text:lower() == "everyone" or target.Text:lower() == "@" then
+				if target.Text:lower() == "all" or target.Text:lower() == "everyone" then
 					for _,v in pairs(game.Players:GetPlayers()) do
 						pcall(function()
 							if v ~= nil and v.Character ~= nil then
@@ -1364,7 +1211,7 @@ spawn(function()
 							end
 						end)
 					end
-				elseif target.Text:lower() == "others" or target.Text:lower() == "@a" then
+				elseif target.Text:lower() == "others" then
 					for _,v in pairs(game.Players:GetPlayers()) do
 						pcall(function()
 							if v ~= nil and v.Character ~= nil and v.Name ~= lp.Name then
@@ -1372,7 +1219,7 @@ spawn(function()
 							end
 						end)
 					end
-				elseif target.Text:lower() ~= "all" and target.Text:lower() ~= "everyone" and target.Text:lower() ~= "@" and target.Text:lower() ~= "others" and target.Text:lower() ~= "@a" then
+				elseif target.Text:lower() ~= "all" and target.Text:lower() ~= "everyone" and target.Text:lower() ~= "others" then
 					DoCommand('.'..button.Name:lower()..' '..target.Text)
 				end
 			end)
