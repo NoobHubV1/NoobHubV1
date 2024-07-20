@@ -596,7 +596,7 @@ Refresh.TextWrapped = true
 UICorner_24.CornerRadius = UDim.new(0, 4)
 UICorner_24.Parent = Refresh
 
-Loopkill = "Loopkill"
+Loopkill.Name = "Loopkill"
 Loopkill.Parent = Main
 Loopkill.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
 Loopkill.BackgroundTransparency = 0.500
