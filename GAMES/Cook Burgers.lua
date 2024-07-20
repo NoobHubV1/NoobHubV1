@@ -600,8 +600,8 @@ target.Text = ""
 target.TextColor3 = Color3.fromRGB(255, 255, 255)
 target.TextSize = 23.000
 
-UICorner_24.CornerRadius = UDim.new(0, 4)
-UICorner_24.Parent = target
+UICorner_25.CornerRadius = UDim.new(0, 4)
+UICorner_25.Parent = target
 
 UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(122, 122, 122))}
 UIGradient_2.Rotation = 90
@@ -619,8 +619,8 @@ Refresh.TextColor3 = Color3.fromRGB(255, 255, 255)
 Refresh.TextSize = 26.000
 Refresh.TextWrapped = true
 
-UICorner_25.CornerRadius = UDim.new(0, 4)
-UICorner_25.Parent = Refresh
+UICorner_26.CornerRadius = UDim.new(0, 4)
+UICorner_26.Parent = Refresh
 
 search.Name = "search"
 search.Parent = Main
@@ -634,8 +634,8 @@ search.Text = ""
 search.TextColor3 = Color3.fromRGB(255, 255, 255)
 search.TextSize = 23.000
 
-UICorner_26.CornerRadius = UDim.new(0, 4)
-UICorner_26.Parent = search
+UICorner_27.CornerRadius = UDim.new(0, 4)
+UICorner_27.Parent = search
 
 local UserInputService = game:GetService("UserInputService")
 local dragging,dragInput,dragStart,startPos
