@@ -109,11 +109,11 @@ local Goto = Instance.new("TextButton")
 local UICorner_20 = Instance.new("UICorner")
 local Sit = Instance.new("TextButton")
 local UICorner_21 = Instance.new("UICorner")
-local Loopkill = Instance.new("TextButton")
-local UICorner_22 = Instance.new("UICorner")
-local Unloopkill = Instance.new("TextButton")
-local UICorner_23 = Instance.new("UICorner")
 local Destroy = Instance.new("TextButton")
+local UICorner_22 = Instance.new("UICorner")
+local Loopkill = Instance.new("TextButton")
+local UICorner_23 = Instance.new("UICorner")
+local Unloopkill = Instance.new("TextButton")
 local UICorner_24 = Instance.new("UICorner")
 local target = Instance.new("TextBox")
 local UICorner_25 = Instance.new("UICorner")
@@ -543,6 +543,21 @@ Sit.TextSize = 23.000
 UICorner_21.CornerRadius = UDim.new(0, 4)
 UICorner_21.Parent = Sit
 
+Destroy = "Destroy"
+Destroy.Parent = Main
+Destroy.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
+Destroy.BackgroundTransparency = 0.500
+Destroy.Position = UDim2.new(0.0255350601, 0, 0.899736166, 0)
+Destroy.Size = UDim2.new(0, 127, 0, 30)
+Destroy.Font = Enum.Font.SourceSansLight
+Destroy.Text = "Loopkill"
+Destroy.TextColor3 = Color3.fromRGB(255, 255, 255)
+Destroy.TextSize = 26.000
+Destroy.TextWrapped = true
+
+UICorner_22.CornerRadius = UDim.new(0, 4)
+UICorner_22.Parent = Destroy
+
 Loopkill.Name = "Loopkill"
 Loopkill.Parent = Main
 Loopkill.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
@@ -555,8 +570,8 @@ Loopkill.TextColor3 = Color3.fromRGB(255, 255, 255)
 Loopkill.TextSize = 26.000
 Loopkill.TextWrapped = true
 
-UICorner_22.CornerRadius = UDim.new(0, 4)
-UICorner_22.Parent = Loopkill
+UICorner_23.CornerRadius = UDim.new(0, 4)
+UICorner_23.Parent = Loopkill
 
 Unloopkill.Name = "Unloopkill"
 Unloopkill.Parent = Main
@@ -570,23 +585,8 @@ Unloopkill.TextColor3 = Color3.fromRGB(255, 255, 255)
 Unloopkill.TextSize = 26.000
 Unloopkill.TextWrapped = true
 
-UICorner_23.CornerRadius = UDim.new(0, 4)
-UICorner_23.Parent = Unloopkill
-
-Destroy.Name = "Destroy"
-Destroy.Parent = Main
-Destroy.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
-Destroy.BackgroundTransparency = 0.500
-Destroy.Position = UDim2.new(0.0255350601, 0, 0.899736166, 0)
-Destroy.Size = UDim2.new(0, 127, 0, 30)
-Destroy.Font = Enum.Font.SourceSansLight
-Destroy.Text = "Destroy"
-Destroy.TextColor3 = Color3.fromRGB(255, 255, 255)
-Destroy.TextSize = 26.000
-Destroy.TextWrapped = true
-
 UICorner_24.CornerRadius = UDim.new(0, 4)
-UICorner_24.Parent = Destroy
+UICorner_24.Parent = Unloopkill
 
 target.Name = "target"
 target.Parent = Main
