@@ -38,6 +38,7 @@ print([[
 	.slave (Plr) | Make a player follow you until they get to you
 	.jail (Plr) | Lock a player until they reset
 	.sit (Plr) | Sit a player
+	.destroy (Plr) | Player Destroy (if Player Leave)
 	.loopkill (Plr) | Player Get Kill Loop (if Player ChangeServer Or Leave)
 	.unloopkill (Plr) | Player Unloopkill
 \\
@@ -112,13 +113,15 @@ local Loopkill = Instance.new("TextButton")
 local UICorner_22 = Instance.new("UICorner")
 local Unloopkill = Instance.new("TextButton")
 local UICorner_23 = Instance.new("UICorner")
-local target = Instance.new("TextBox")
+local Destroy = Instance.new("TextButton")
 local UICorner_24 = Instance.new("UICorner")
-local UIGradient_2 = Instance.new("UIGradient")
-local Refresh = Instance.new("TextButton")
+local target = Instance.new("TextBox")
 local UICorner_25 = Instance.new("UICorner")
-local search = Instance.new("TextBox")
+local UIGdient_2 = Instance.new("UIGradient")
+local Refresh = Instance.new("TextButton")
 local UICorner_26 = Instance.new("UICorner")
+local search = Instance.new("TextBox")
+local UICorner_27 = Instance.new("UICorner")
 
 --Properties:
 
@@ -570,6 +573,21 @@ Unloopkill.TextWrapped = true
 UICorner_23.CornerRadius = UDim.new(0, 4)
 UICorner_23.Parent = Unloopkill
 
+Destroy.Name = "Destroy"
+Destroy.Parent = Main
+Destroy.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
+Destroy.BackgroundTransparency = 0.500
+Destroy.Position = UDim2.new(0.0255350601, 0, 0.899736166, 0)
+Destroy.Size = UDim2.new(0, 127, 0, 30)
+Destroy.Font = Enum.Font.SourceSansLight
+Destroy.Text = "Destroy"
+Destroy.TextColor3 = Color3.fromRGB(255, 255, 255)
+Destroy.TextSize = 26.000
+Destroy.TextWrapped = true
+
+UICorner_24.CornerRadius = UDim.new(0, 4)
+UICorner_24.Parent = Destroy
+
 target.Name = "target"
 target.Parent = Main
 target.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
@@ -994,6 +1012,20 @@ local function DoCommand(Command)
 						player.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
 						local BodyForce = Instance.new("BodyForce",  player.Character.HumanoidRootPart) 
 						BodyForce.force = Vector3.new(xran*4,9999*5,xran*4) 
+					end
+				end
+			end)
+		elseif (string.sub(Command,1,#".destroy") == ".destroy") then
+			local player = getPlayer(string.sub(Command,#".destroy" + 2))
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+								player.Character:Destroy()
+							end
+						end
 					end
 				end
 			end)
