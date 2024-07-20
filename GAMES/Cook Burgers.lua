@@ -1065,8 +1065,8 @@ local function DoCommand(Command)
 						end
 					end
 				end
-			end
 			end)
+			end
 		elseif (string.sub(Command,1,#".sit") == ".sit") then
 			local player = getPlayer(string.sub(Command,#".sit" + 2))
 			pcall(function()
