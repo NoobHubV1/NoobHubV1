@@ -1040,12 +1040,32 @@ local function DoCommand(Command)
 							if (Part:IsA("BasePart")) then
 								Remote:FireServer(Part,lp)
 								player.Character.Humanoid.Health = (1)
-								task.wait(.2)
+								task.wait(.1)
 								player.Character.Humanoid.Health = (0)
 							end
 						end
 					end
 				end
+			end)
+		elseif (string.sub(Command,1,#".loopkill") == ".loopkill") then
+			_G.Loop = true
+			while _G.Loop do
+			wait(0.1)
+			local player = getPlayer(string.sub(Command,#".kill" + 2))
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+								player.Character.Humanoid.Health = (1)
+								task.wait(.1)
+								player.Character.Humanoid.Health = (0)
+							end
+						end
+					end
+				end
+			end
 			end)
 		elseif (string.sub(Command,1,#".sit") == ".sit") then
 			local player = getPlayer(string.sub(Command,#".sit" + 2))
