@@ -1040,7 +1040,7 @@ local function DoCommand(Command)
 							if (Part:IsA("BasePart")) then
 								Remote:FireServer(Part,lp)
 								player.Character.Humanoid.Health = (1)
-								task.wait(.2)
+								task.wait(1)
 								player.Character.Humanoid.Health = (0)
 							end
 						end
@@ -1352,4 +1352,4 @@ end)
 
 -- hi, im NoobHubV1 if you see me in a game
 
-Notify("(Cook Burgers Admin V1) Script Loaded!",10)
+Notify("(Cook Burgers Admin V1.5) Script Loaded!",10)
