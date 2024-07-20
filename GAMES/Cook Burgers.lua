@@ -543,7 +543,7 @@ Sit.TextSize = 23.000
 UICorner_21.CornerRadius = UDim.new(0, 4)
 UICorner_21.Parent = Sit
 
-Destroy = "Destroy"
+Destroy.Name = "Destroy"
 Destroy.Parent = Main
 Destroy.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
 Destroy.BackgroundTransparency = 0.500
