@@ -114,14 +114,14 @@ local UICorner_22 = Instance.new("UICorner")
 local Destroy = Instance.new("TextButton")
 local UICorner_23 = Instance.new("UICorner")
 local Refresh = Instance.new("TextButton")
-local UICorner_26 = Instance.new("UICorner")
+local UICorner_24 = Instance.new("UICorner")
 local target = Instance.new("TextBox")
-local UICorner_27 = Instance.new("UICorner")
+local UICorner_25 = Instance.new("UICorner")
 local UIGradient_2 = Instance.new("UIGradient")
 local Refresh = Instance.new("TextButton")
-local UICorner_28 = Instance.new("UICorner")
+local UICorner_26 = Instance.new("UICorner")
 local search = Instance.new("TextBox")
-local UICorner_29 = Instance.new("UICorner")
+local UICorner_27 = Instance.new("UICorner")
 
 --Properties:
 
@@ -1040,7 +1040,7 @@ local function DoCommand(Command)
 							if (Part:IsA("BasePart")) then
 								Remote:FireServer(Part,lp)
 								player.Character.Humanoid.Health = (1)
-								task.wait(1)
+								task.wait(.2)
 								player.Character.Humanoid.Health = (0)
 							end
 						end
@@ -1352,4 +1352,4 @@ end)
 
 -- hi, im NoobHubV1 if you see me in a game
 
-Notify("(Cook Burgers Admin V1) Script Loaded!",5)
+Notify("(Cook Burgers Admin V2) Script Loaded!",10)
