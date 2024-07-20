@@ -1352,4 +1352,4 @@ end)
 
 -- hi, im NoobHubV1 if you see me in a game
 
-Notify("(Cook Burgers Admin V1.5) Script Loaded!",10)
+Notify("(Cook Burgers Admin V1) Script Loaded!",5)
