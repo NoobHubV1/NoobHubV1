@@ -117,12 +117,12 @@ local UICorner_24 = Instance.new("UICorner")
 local Unloopkill = Instance.new("TextButton")
 local UICorner_25 = Instance.new("UICorner")
 local target = Instance.new("TextBox")
-local UICorner_27 = Instance.new("UICorner")
+local UICorner_26 = Instance.new("UICorner")
 local UIGradient_2 = Instance.new("UIGradient")
 local Refresh = Instance.new("TextButton")
-local UICorner_28 = Instance.new("UICorner")
+local UICorner_27 = Instance.new("UICorner")
 local search = Instance.new("TextBox")
-local UICorner_29 = Instance.new("UICorner")
+local UICorner_28 = Instance.new("UICorner")
 
 --Properties:
 
