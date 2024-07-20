@@ -41,6 +41,8 @@ print([[
 	.sit (Plr) | Sit a player
 	.void (Plr) |teleports the player to the void
 	.destroy (Plr) | Player destroy (if player leave)
+	.loopkill (Plr) | Player Get Kill Loop (if Player ChangeServer Or Leave)
+	.unloopkill (Plr) | Player Unloopkill
 \\
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -113,15 +115,19 @@ local Void = Instance.new("TextButton")
 local UICorner_22 = Instance.new("UICorner")
 local Destroy = Instance.new("TextButton")
 local UICorner_23 = Instance.new("UICorner")
-local Refresh = Instance.new("TextButton")
+local Loopkill = Instance.new("TextButton")
 local UICorner_24 = Instance.new("UICorner")
-local target = Instance.new("TextBox")
+local Unloopkill = Instance.new("TextButton")
 local UICorner_25 = Instance.new("UICorner")
-local UIGradient_2 = Instance.new("UIGradient")
 local Refresh = Instance.new("TextButton")
 local UICorner_26 = Instance.new("UICorner")
-local search = Instance.new("TextBox")
+local target = Instance.new("TextBox")
 local UICorner_27 = Instance.new("UICorner")
+local UIGradient_2 = Instance.new("UIGradient")
+local Refresh = Instance.new("TextButton")
+local UICorner_28 = Instance.new("UICorner")
+local search = Instance.new("TextBox")
+local UICorner_29 = Instance.new("UICorner")
 
 --Properties:
 
@@ -590,6 +596,36 @@ Refresh.TextWrapped = true
 UICorner_24.CornerRadius = UDim.new(0, 4)
 UICorner_24.Parent = Refresh
 
+Loopkill = "Loopkill"
+Loopkill.Parent = Main
+Loopkill.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
+Loopkill.BackgroundTransparency = 0.500
+Loopkill.Position = UDim2.new(0.0255350601, 0, 0.899736166, 0)
+Loopkill.Size = UDim2.new(0, 127, 0, 30)
+Loopkill.Font = Enum.Font.SourceSansLight
+Loopkill.Text = "Loopkill"
+Loopkill.TextColor3 = Color3.fromRGB(255, 255, 255)
+Loopkill.TextSize = 26.000
+Loopkill.TextWrapped = true
+
+UICorner_24.CornerRadius = UDim.new(0, 4)
+UICorner_24.Parent = Loopkill
+
+Unloopkill.Name = "Unloopkill"
+Unloopkill.Parent = Main
+Unloopkill.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
+Unloopkill.BackgroundTransparency = 0.500
+Unloopkill.Position = UDim2.new(0.0255350601, 0, 0.899736166, 0)
+Unloopkill.Size = UDim2.new(0, 127, 0, 30)
+Unloopkill.Font = Enum.Font.SourceSansLight
+Unloopkill.Text = "Unloopkill"
+Unloopkill.TextColor3 = Color3.fromRGB(255, 255, 255)
+Unloopkill.TextSize = 26.000
+Unloopkill.TextWrapped = true
+
+UICorner_24.CornerRadius = UDim.new(0, 4)
+UICorner_24.Parent = Unloopkill
+
 target.Name = "target"
 target.Parent = Main
 target.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
@@ -1051,7 +1087,27 @@ local function DoCommand(Command)
 			_G.Loop = true
 			while _G.Loop do
 			wait(0.1)
-			local player = getPlayer(string.sub(Command,#".kill" + 2))
+			local player = getPlayer(string.sub(Command,#".loopkill" + 2))
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+								player.Character.Humanoid.Health = (1)
+								task.wait(.1)
+								player.Character.Humanoid.Health = (0)
+							end
+						end
+					end
+				end
+			end)
+			end
+		elseif (string.sub(Command,1,#".unloopkill") == ".unloopkill") then
+			_G.Loop = false
+			while _G.Loop do
+			wait(0.1)
+			local player = getPlayer(string.sub(Command,#".unloopkill" + 2))
 			pcall(function()
 				if (player ~= nil and player.Character ~= nil) then
 					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
