@@ -108,21 +108,17 @@ local Goto = Instance.new("TextButton")
 local UICorner_20 = Instance.new("UICorner")
 local Sit = Instance.new("TextButton")
 local UICorner_21 = Instance.new("UICorner")
-local Void = Instance.new("TextButton")
-local UICorner_22 = Instance.new("UICorner")
-local Destroy = Instance.new("TextButton")
-local UICorner_23 = Instance.new("UICorner")
 local Loopkill = Instance.new("TextButton")
-local UICorner_24 = Instance.new("UICorner")
+local UICorner_22 = Instance.new("UICorner")
 local Unloopkill = Instance.new("TextButton")
-local UICorner_25 = Instance.new("UICorner")
+local UICorner_23 = Instance.new("UICorner")
 local target = Instance.new("TextBox")
-local UICorner_26 = Instance.new("UICorner")
+local UICorner_24 = Instance.new("UICorner")
 local UIGradient_2 = Instance.new("UIGradient")
 local Refresh = Instance.new("TextButton")
-local UICorner_27 = Instance.new("UICorner")
+local UICorner_25 = Instance.new("UICorner")
 local search = Instance.new("TextBox")
-local UICorner_28 = Instance.new("UICorner")
+local UICorner_26 = Instance.new("UICorner")
 
 --Properties:
 
@@ -556,8 +552,8 @@ Loopkill.TextColor3 = Color3.fromRGB(255, 255, 255)
 Loopkill.TextSize = 26.000
 Loopkill.TextWrapped = true
 
-UICorner_23.CornerRadius = UDim.new(0, 4)
-UICorner_23.Parent = Loopkill
+UICorner_22.CornerRadius = UDim.new(0, 4)
+UICorner_22.Parent = Loopkill
 
 Unloopkill.Name = "Unloopkill"
 Unloopkill.Parent = Main
@@ -571,8 +567,8 @@ Unloopkill.TextColor3 = Color3.fromRGB(255, 255, 255)
 Unloopkill.TextSize = 26.000
 Unloopkill.TextWrapped = true
 
-UICorner_24.CornerRadius = UDim.new(0, 4)
-UICorner_24.Parent = Unloopkill
+UICorner_23.CornerRadius = UDim.new(0, 4)
+UICorner_23.Parent = Unloopkill
 
 target.Name = "target"
 target.Parent = Main
@@ -586,8 +582,8 @@ target.Text = ""
 target.TextColor3 = Color3.fromRGB(255, 255, 255)
 target.TextSize = 23.000
 
-UICorner_25.CornerRadius = UDim.new(0, 4)
-UICorner_25.Parent = target
+UICorner_24.CornerRadius = UDim.new(0, 4)
+UICorner_24.Parent = target
 
 UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(122, 122, 122))}
 UIGradient_2.Rotation = 90
@@ -605,8 +601,8 @@ Refresh.TextColor3 = Color3.fromRGB(255, 255, 255)
 Refresh.TextSize = 26.000
 Refresh.TextWrapped = true
 
-UICorner_26.CornerRadius = UDim.new(0, 4)
-UICorner_26.Parent = Refresh
+UICorner_25.CornerRadius = UDim.new(0, 4)
+UICorner_25.Parent = Refresh
 
 search.Name = "search"
 search.Parent = Main
@@ -620,8 +616,8 @@ search.Text = ""
 search.TextColor3 = Color3.fromRGB(255, 255, 255)
 search.TextSize = 23.000
 
-UICorner_27.CornerRadius = UDim.new(0, 4)
-UICorner_27.Parent = search
+UICorner_26.CornerRadius = UDim.new(0, 4)
+UICorner_26.Parent = search
 
 local UserInputService = game:GetService("UserInputService")
 local dragging,dragInput,dragStart,startPos
