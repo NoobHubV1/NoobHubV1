@@ -41,7 +41,8 @@ print([[
 	.sit (Plr) | Sit a player
 	.void (Plr) |teleports the player to the void
 	.destroy (Plr) | Player destroy (if player leave)
-	.loopkill (Plr) | Player Get Loopkill (if Player Change Server)
+	.loopkill (Plr) | Player Get Loopkill (if Player ChangeServer)
+	.unloopkill (Plr) | Player Unloopkill
 \\
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
