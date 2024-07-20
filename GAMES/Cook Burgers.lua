@@ -904,7 +904,7 @@ local function DoCommand(Command)
 				end
 			end)
 		elseif (string.sub(Command,1,#".kill") == ".kill") then
-			local player = getPlayer(string.sub(Command,#".loopkill" + 2))
+			local player = getPlayer(string.sub(Command,#".kill" + 2))
 			pcall(function()
 				if (player ~= nil and player.Character ~= nil) then
 					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
