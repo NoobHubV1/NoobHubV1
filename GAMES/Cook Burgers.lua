@@ -37,7 +37,6 @@ print([[
 	.fix | Refresh the server
 	.slave (Plr) | Make a player follow you until they get to you
 	.jail (Plr) | Lock a player until they reset
-	.refresh | you refresh
 	.sit (Plr) | Sit a player
 	.loopkill (Plr) | Player Get Kill Loop (if Player ChangeServer Or Leave)
 	.unloopkill (Plr) | Player Unloopkill
@@ -117,8 +116,6 @@ local Loopkill = Instance.new("TextButton")
 local UICorner_24 = Instance.new("UICorner")
 local Unloopkill = Instance.new("TextButton")
 local UICorner_25 = Instance.new("UICorner")
-local Refresh = Instance.new("TextButton")
-local UICorner_26 = Instance.new("UICorner")
 local target = Instance.new("TextBox")
 local UICorner_27 = Instance.new("UICorner")
 local UIGradient_2 = Instance.new("UIGradient")
@@ -546,21 +543,6 @@ Sit.TextSize = 23.000
 
 UICorner_21.CornerRadius = UDim.new(0, 4)
 UICorner_21.Parent = Sit
-
-Refresh.Name = "Refresh"
-Refresh.Parent = Main
-Refresh.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
-Refresh.BackgroundTransparency = 0.500
-Refresh.Position = UDim2.new(0.0255350601, 0, 0.899736166, 0)
-Refresh.Size = UDim2.new(0, 127, 0, 30)
-Refresh.Font = Enum.Font.SourceSansLight
-Refresh.Text = "Respawn"
-Refresh.TextColor3 = Color3.fromRGB(255, 255, 255)
-Refresh.TextSize = 26.000
-Refresh.TextWrapped = true
-
-UICorner_22.CornerRadius = UDim.new(0, 4)
-UICorner_22.Parent = Refresh
 
 Loopkill.Name = "Loopkill"
 Loopkill.Parent = Main
