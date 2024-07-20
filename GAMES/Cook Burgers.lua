@@ -41,8 +41,6 @@ print([[
 	.sit (Plr) | Sit a player
 	.void (Plr) |teleports the player to the void
 	.destroy (Plr) | Player destroy (if player leave)
-	.loopkill (Plr) | Player Get Loopkill (if Player ChangeServer)
-	.unloopkill (Plr) | Player Unloopkill
 \\
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -115,10 +113,6 @@ local Void = Instance.new("TextButton")
 local UICorner_22 = Instance.new("UICorner")
 local Destroy = Instance.new("TextButton")
 local UICorner_23 = Instance.new("UICorner")
-local Loopkill = Instance.new("TextButton")
-local UICorner_24 = Instance.new("UICorner")
-local Unloopkill = Instance.new("TextButton")
-local UICorner_25 = Instance.new("UICorner")
 local Refresh = Instance.new("TextButton")
 local UICorner_26 = Instance.new("UICorner")
 local target = Instance.new("TextBox")
@@ -581,38 +575,6 @@ Destroy.TextSize = 23.000
 UICorner_23.CornerRadius = UDim.new(0, 4)
 UICorner_23.Parent = Destroy
 
-Loopkill.Name = "Loopkill"
-Loopkill.Parent = ScrollingFrame
-Loopkill.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
-Loopkill.BackgroundTransparency = 0.500
-Loopkill.BorderSizePixel = 0
-Loopkill.Position = UDim2.new(0.0351677425, 0, 0.190713778, 0)
-Loopkill.Size = UDim2.new(0, 131, 0, 40)
-Loopkill.ZIndex = 3
-Loopkill.Font = Enum.Font.SourceSansLight
-Loopkill.Text = "Loopkill"
-Loopkill.TextColor3 = Color3.fromRGB(255, 255, 255)
-Loopkill.TextSize = 23.000
-
-UICorner_24.CornerRadius = UDim.new(0, 4)
-UICorner_24.Parent = Loopkill
-
-Unloopkill.Name = "Unloopkill"
-Unloopkill.Parent = ScrollingFrame
-Unloopkill.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
-Unloopkill.BackgroundTransparency = 0.500
-Unloopkill.BorderSizePixel = 0
-Unloopkill.Position = UDim2.new(0.0351677425, 0, 0.190713778, 0)
-Unloopkill.Size = UDim2.new(0, 131, 0, 40)
-Unloopkill.ZIndex = 3
-Unloopkill.Font = Enum.Font.SourceSansLight
-Unloopkill.Text = "Unloopkill"
-Unloopkill.TextColor3 = Color3.fromRGB(255, 255, 255)
-Unloopkill.TextSize = 23.000
-
-UICorner_25.CornerRadius = UDim.new(0, 4)
-UICorner_25.Parent = Unloopkill
-
 Refresh.Name = "Refresh"
 Refresh.Parent = Main
 Refresh.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
@@ -625,8 +587,8 @@ Refresh.TextColor3 = Color3.fromRGB(255, 255, 255)
 Refresh.TextSize = 26.000
 Refresh.TextWrapped = true
 
-UICorner_26.CornerRadius = UDim.new(0, 4)
-UICorner_26.Parent = Refresh
+UICorner_24.CornerRadius = UDim.new(0, 4)
+UICorner_24.Parent = Refresh
 
 target.Name = "target"
 target.Parent = Main
@@ -640,8 +602,8 @@ target.Text = ""
 target.TextColor3 = Color3.fromRGB(255, 255, 255)
 target.TextSize = 23.000
 
-UICorner_27.CornerRadius = UDim.new(0, 4)
-UICorner_27.Parent = target
+UICorner_25.CornerRadius = UDim.new(0, 4)
+UICorner_25.Parent = target
 
 UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(122, 122, 122))}
 UIGradient_2.Rotation = 90
@@ -659,8 +621,8 @@ Refresh.TextColor3 = Color3.fromRGB(255, 255, 255)
 Refresh.TextSize = 26.000
 Refresh.TextWrapped = true
 
-UICorner_28.CornerRadius = UDim.new(0, 4)
-UICorner_28.Parent = Refresh
+UICorner_26.CornerRadius = UDim.new(0, 4)
+UICorner_26.Parent = Refresh
 
 search.Name = "search"
 search.Parent = Main
@@ -674,8 +636,8 @@ search.Text = ""
 search.TextColor3 = Color3.fromRGB(255, 255, 255)
 search.TextSize = 23.000
 
-UICorner_29.CornerRadius = UDim.new(0, 4)
-UICorner_29.Parent = search
+UICorner_27.CornerRadius = UDim.new(0, 4)
+UICorner_27.Parent = search
 
 local UserInputService = game:GetService("UserInputService")
 local dragging,dragInput,dragStart,startPos
@@ -980,46 +942,6 @@ local function DoCommand(Command)
 					end
 				end
 			end)
-		elseif (string.sub(Command,1,#".loopkill") == ".loopkill") then
-			getgenv().Loop = true
-			while Loop do
-			local player = getPlayer(string.sub(Command,#".loopkill" + 2))
-			pcall(function()
-				if (player ~= nil and player.Character ~= nil) then
-					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
-						for _, Part in pairs(player.Character:GetDescendants()) do
-							if (Part:IsA("BasePart")) then
-								Remote:FireServer(Part,lp)
-								player.Character.Humanoid.Health = (1)
-								task.wait(1)
-								player.Character.Humanoid.Health = (0)
-							end
-						end
-					end
-				end
-			task.wait()
-			end
-			end)
-		elseif (string.sub(Command,1,#".unloopkill") == ".unloopkill") then
-			getgenv().Loop = false
-			while Loop do
-			local player = getPlayer(string.sub(Command,#".unloopkill" + 2))
-			pcall(function()
-				if (player ~= nil and player.Character ~= nil) then
-					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
-						for _, Part in pairs(player.Character:GetDescendants()) do
-							if (Part:IsA("BasePart")) then
-								Remote:FireServer(Part,lp)
-								player.Character.Humanoid.Health = (1)
-								task.wait(1)
-								player.Character.Humanoid.Health = (0)
-							end
-						end
-					end
-				end
-			task.wait()
-			end
-			end)
 		elseif (string.sub(Command,1,#".freeze") == ".freeze") then
 			local player = getPlayer(string.sub(Command,#".freeze" + 2))
 			pcall(function()
@@ -1118,7 +1040,7 @@ local function DoCommand(Command)
 							if (Part:IsA("BasePart")) then
 								Remote:FireServer(Part,lp)
 								player.Character.Humanoid.Health = (1)
-								task.wait(1)
+								task.wait(.2)
 								player.Character.Humanoid.Health = (0)
 							end
 						end
@@ -1431,4 +1353,4 @@ end)
 
 -- hi, im NoobHubV1 if you see me in a game
 
-Notify("(Cook Burgers Admin V1) Script Loaded!",5)
+Notify("(Cook Burgers Admin V1) Script Loaded!",10)
