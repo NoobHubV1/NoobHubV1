@@ -705,23 +705,7 @@ local UserInputService = game:GetService("UserInputService")
 
 function getPlayer(Player)
 	local function findPlayer(stringg)
-		if (stringg == "all")) then
-		        for _,v in pairs(game.Players:GetPlayers()) do
-						pcall(function()
-							if v ~= nil and v.Character ~= nil then
-								DoCommand('.'..string.sub:lower()..' '..v.Name)
-							end
-						end)
-		        end
-	        elseif (stringg == ("others")) then
-		            for _,v in pairs(game.Players:GetPlayers()) do
-						pcall(function()
-							if v ~= nil and v.Character ~= nil and v.Name ~= lp.Name then
-								DoCommand('.'..string.sub:lower()..' '..v.Name)
-							end
-						end)
-		            end
-	        elseif (stringg == ("me")) then
+	        if (stringg == ("me")) then
 			return lp
 		else
 			for _, v in pairs(game.Players:GetPlayers()) do
