@@ -38,6 +38,8 @@ print([[
 	.jail (Plr) | Lock a player until they reset
 	.loopkill (Plr) | Player Get Loopkill (if Player ChangeServer or Leave Map)
 	.unloopkill (Plr) | Player unloopkill
+	.void (Plr) | Player Tp The Void
+	.destroy (Plr) | Player Destroy (if Player Rejoin)
 \\
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -108,13 +110,17 @@ local Loopkill = Instance.new("TextButton")
 local UICorner_21 = Instance.new("UICorner")
 local Unloopkill = Instance.new("TextButton")
 local UICorner_22 = Instance.new("UICorner")
-local target = Instance.new("TextBox")
+local Void = Instance.new("TextButton")
 local UICorner_23 = Instance.new("UICorner")
+local Destroy = Instance.new("TextButton")
+local UICorner_24 = Instance.new("UICorner")
+local target = Instance.new("TextBox")
+local UICorner_25 = Instance.new("UICorner")
 local UIGradient_2 = Instance.new("UIGradient")
 local Refresh = Instance.new("TextButton")
-local UICorner_24 = Instance.new("UICorner")
+local UICorner_26 = Instance.new("UICorner")
 local search = Instance.new("TextBox")
-local UICorner_25 = Instance.new("UICorner")
+local UICorner_27 = Instance.new("UICorner")
 
 --Properties:
 
@@ -552,6 +558,38 @@ Unloopkill.TextSize = 23.000
 UICorner_22.CornerRadius = UDim.new(0, 4)
 UICorner_22.Parent = Unloopkill
 
+Void.Name = "Void"
+Void.Parent = ScrollingFrame
+Void.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
+Void.BackgroundTransparency = 0.500
+Void.BorderSizePixel = 0
+Void.Position = UDim2.new(0.0351677425, 0, 0.190713778, 0)
+Void.Size = UDim2.new(0, 131, 0, 40)
+Void.ZIndex = 3
+Void.Font = Enum.Font.SourceSansLight
+Void.Text = "Void"
+Void.TextColor3 = Color3.fromRGB(255, 255, 255)
+Void.TextSize = 23.000
+
+UICorner_23.CornerRadius = UDim.new(0, 4)
+UICorner_23.Parent = Void
+
+Destroy.Name = "Destroy"
+Destroy.Parent = ScrollingFrame
+Destroy.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
+Destroy.BackgroundTransparency = 0.500
+Destroy.BorderSizePixel = 0
+Destroy.Position = UDim2.new(0.0351677425, 0, 0.190713778, 0)
+Destroy.Size = UDim2.new(0, 131, 0, 40)
+Destroy.ZIndex = 3
+Destroy.Font = Enum.Font.SourceSansLight
+Destroy.Text = "Destroy"
+Destroy.TextColor3 = Color3.fromRGB(255, 255, 255)
+Destroy.TextSize = 23.000
+
+UICorner_24.CornerRadius = UDim.new(0, 4)
+UICorner_24.Parent = Destroy
+
 target.Name = "target"
 target.Parent = Main
 target.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
@@ -564,8 +602,8 @@ target.Text = ""
 target.TextColor3 = Color3.fromRGB(255, 255, 255)
 target.TextSize = 23.000
 
-UICorner_23.CornerRadius = UDim.new(0, 4)
-UICorner_23.Parent = target
+UICorner_25.CornerRadius = UDim.new(0, 4)
+UICorner_25.Parent = target
 
 UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(122, 122, 122))}
 UIGradient_2.Rotation = 90
@@ -583,8 +621,8 @@ Refresh.TextColor3 = Color3.fromRGB(255, 255, 255)
 Refresh.TextSize = 26.000
 Refresh.TextWrapped = true
 
-UICorner_24.CornerRadius = UDim.new(0, 4)
-UICorner_24.Parent = Refresh
+UICorner_26.CornerRadius = UDim.new(0, 4)
+UICorner_26.Parent = Refresh
 
 search.Name = "search"
 search.Parent = Main
@@ -598,8 +636,8 @@ search.Text = ""
 search.TextColor3 = Color3.fromRGB(255, 255, 255)
 search.TextSize = 23.000
 
-UICorner_25.CornerRadius = UDim.new(0, 4)
-UICorner_25.Parent = search
+UICorner_27.CornerRadius = UDim.new(0, 4)
+UICorner_27.Parent = search
 
 local UserInputService = game:GetService("UserInputService")
 local dragging,dragInput,dragStart,startPos
@@ -756,7 +794,7 @@ local function DoCommand(Command)
 		elseif (string.sub(Command,1,#(".fix")) == (".fix") or string.sub(Command,1,#(".uncontrol")) == (".uncontrol")) then
 			game:GetService('TeleportService'):TeleportToPlaceInstance(game.PlaceId, game.JobId, lp)
 		elseif (string.sub(Command,1,#".cmds") == ".cmds") then
-			Notify("(Cook burgers admin) The commands are listed in the console! \n Press F9 to view", 5)
+			Notify("(Cook burgers admin) The commands are listed in the console! \n Press F9 to view or chat /console", 5)
 		elseif (string.sub(Command,1,#".netclaim") == ".netclaim") then
 			for i = 1,3 do
 				pcall(function()
@@ -936,8 +974,8 @@ local function DoCommand(Command)
 						player.Character.Humanoid.Health = (0)
 					end
 				end
-			task.wait(1)
 			end)
+			task.wait(.2)
 			end
 		elseif (string.sub(Command,1,#".unloopkill") == ".unloopkill") then
 			getgenv().Loop = false
@@ -956,9 +994,37 @@ local function DoCommand(Command)
 						player.Character.Humanoid.Health = (0)
 					end
 				end
-			task.wait(1)
 			end)
+			task.wait(.2)
 			end
+		elseif (string.sub(Command,1,#".void") == ".void") then
+			local player = getPlayer(string.sub(Command,#".void" + 2))
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						player.Character.HumanoidRootPart.CFrame = CFrame.new(9999, 9999, 9999)
+					end
+				end
+			end)
+		elseif (string.sub(Command,1,#".destroy") == ".destroy") then
+			local player = getPlayer(string.sub(Command,#".destroy" + 2))
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						player.Character:Destroy()
+					end
+				end
+			end)
 		elseif (string.sub(Command,1,#".money") == ".money") then
 			pcall(function()
 				for _, Part in pairs(workspace:GetDescendants()) do
