@@ -598,7 +598,7 @@ for i,v in pairs(GetPlayer(player.Text)) do
             work(game:GetService("Players")[v].Character.Head.Neck)
             end
 end)
-task.wait()
+task.wait(.10)
 end
 end
 end)
@@ -614,7 +614,7 @@ for i,v in pairs(GetPlayer(player.Text)) do
             work(game:GetService("Players")[v].Character.Head.Neck)
             end
 end)
-task.wait()
+task.wait(.10)
 end
 end
 end)
