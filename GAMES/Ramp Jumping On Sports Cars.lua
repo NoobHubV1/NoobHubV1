@@ -115,6 +115,8 @@ local ImageLabel = Instance.new("ImageLabel")
 local scripts = Instance.new("ScrollingFrame")
 local UIGridLayout = Instance.new("UIGridLayout")
 local kill = Instance.new("TextButton")
+local loopkill = Instance.new("TextButton")
+local unloopkill = Instance.new("TextButton")
 local kick = Instance.new("TextButton")
 local ban = Instance.new("TextButton")
 local unban = Instance.new("TextButton")
@@ -243,6 +245,26 @@ kill.Font = Enum.Font.Roboto
 kill.Text = "Kill"
 kill.TextColor3 = Color3.fromRGB(255, 255, 255)
 kill.TextSize = 14.000
+
+loopkill.Name = "loopkill"
+loopkill.Parent = scripts
+loopkill.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+loopkill.BorderSizePixel = 0
+loopkill.Size = UDim2.new(0, 200, 0, 50)
+loopkill.Font = Enum.Font.Roboto
+loopkill.Text = "Loopkill"
+loopkill.TextColor3 = Color3.fromRGB(255, 255, 255)
+loopkill.TextSize = 14.000
+
+unloopkill.Name = "unloopkill"
+unloopkill.Parent = scripts
+unloopkill.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+unloopkill.BorderSizePixel = 0
+unloopkill.Size = UDim2.new(0, 200, 0, 50)
+unloopkill.Font = Enum.Font.Roboto
+unloopkill.Text = "Unloopkill"
+unloopkill.TextColor3 = Color3.fromRGB(255, 255, 255)
+unloopkill.TextSize = 14.000
 
 kick.Name = "kick"
 kick.Parent = scripts
@@ -562,6 +584,38 @@ for i,v in pairs(GetPlayer(player.Text)) do
             work(game:GetService("Players")[v].Character.Head.Neck)
             end
 end)
+end
+end)
+
+loopkill.MouseButton1Click:Connect(function()
+getgenv().Loop = true
+while Loop do
+for i,v in pairs(GetPlayer(player.Text)) do
+            spawn(function()
+            if game:GetService("Players")[v].Character.Humanoid.RigType == Enum.HumanoidRigType.R6 then
+            work(game:GetService("Players")[v].Character.Torso.Neck)
+            else
+            work(game:GetService("Players")[v].Character.Head.Neck)
+            end
+end)
+task.wait()
+end
+end
+end)
+
+unloopkill.MouseButton1Click:Connect(function()
+getgenv().Loop = false
+while Loop do
+for i,v in pairs(GetPlayer(player.Text)) do
+            spawn(function()
+            if game:GetService("Players")[v].Character.Humanoid.RigType == Enum.HumanoidRigType.R6 then
+            work(game:GetService("Players")[v].Character.Torso.Neck)
+            else
+            work(game:GetService("Players")[v].Character.Head.Neck)
+            end
+end)
+task.wait()
+end
 end
 end)
 
