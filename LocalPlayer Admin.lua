@@ -615,7 +615,7 @@ end
 function Kill(Player)
 	pcall(function()
 		if Player.Character:FindFirstChild("ForceField") or not workspace:FindFirstChild(Player.Name) or not workspace:FindFirstChild(Player.Name):FindFirstChild("Head") or Player == nil or Player.Character.Parent ~= workspace then return end
-		workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
+		workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["Remington 870"]})
  
 		local MyTeam = GetTeam()
 		if Player.TeamColor.Name == game.Players.LocalPlayer.TeamColor.Name then
@@ -674,8 +674,7 @@ function Kill(Player)
 		}
  
 		game:GetService("ReplicatedStorage").ShootEvent:FireServer(FireEvent, Gun)
-		Gun.Parent = game.Players.LocalPlayer.Character
-		game.Players.LocalPlayer.Character["Remington 870"]:Destroy()
+		Gun.Parent = game.Players.LocalPlayer.Backpack
 	end)
 end
  
