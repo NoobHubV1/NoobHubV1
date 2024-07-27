@@ -616,15 +616,15 @@ function Kill(Player)
 	pcall(function()
 		if Player.Character:FindFirstChild("ForceField") or not workspace:FindFirstChild(Player.Name) or not workspace:FindFirstChild(Player.Name):FindFirstChild("Head") or Player == nil or Player.Character.Parent ~= workspace then return end
 		workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["Remington 870"]})
- 
 		local MyTeam = GetTeam()
 		if Player.TeamColor.Name == game.Players.LocalPlayer.TeamColor.Name then
 			local savedcf = GetPos()
 			local savedcamcf = GetCamPos()
-			workspace.Remote.loadchar:InvokeServer(nil, BrickColor.random().Name)
+			local LP = game.Players.LocalPlayer
+			LP.Character.HumanoidRootPart.CFrame = CFrame.new(-919.958, 95.327, 2138.189)
 			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = savedcf
 			workspace.CurrentCamera.CFrame = savedcamcf
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
+			workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["Remington 870"]})
 		end
  
 		local Gun = game.Players.LocalPlayer.Character:FindFirstChild("Remington 870") or game.Players.LocalPlayer.Backpack:FindFirstChild("Remington 870")
@@ -674,7 +674,9 @@ function Kill(Player)
 		}
  
 		game:GetService("ReplicatedStorage").ShootEvent:FireServer(FireEvent, Gun)
-		Gun.Parent = game.Players.LocalPlayer.Backpack
+		Gun.Handle:Destroy()
+		Gun.Parent = game.Players.LocalPlayer.Character
+		Gun:Destroy()
 	end)
 end
  
