@@ -438,7 +438,7 @@ spawn(function()
 getgenv().Loop = state
 while Loop do
 game.ReplicatedStorage.RemoteEvent:FireServer("SetPlayerMinigameResult",true)
-task.wait()
+task.wait(0.01)
 end
 end)
 end,
