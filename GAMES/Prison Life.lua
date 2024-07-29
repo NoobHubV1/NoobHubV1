@@ -225,6 +225,17 @@ wait(5)
 	end
 end
 
+local AutoRefresh = function(State)
+	getgenv().Loop = State
+while Loop do
+local plr = game.Players.LocalPlayer
+if plr.Character.Humanoid.Health == 0 then
+Refresh()
+end
+task.wait(0.2)
+	end
+end
+
 local Window = Library:NewWindow("NoobHubV1 Hub")
 
 local PrisonLife = Window:NewSection("Main")
@@ -241,6 +252,9 @@ PrisonLife:CreateDropdown("Team", {"Inmate","Guard","Neutral","Criminal"}, 1, fu
 end)
 
 PrisonLife:CreateButton("Refresh", function()Refresh()
+end)
+
+PrisonLife:CreateToggle("Auto Refresh", function(Value)AutoRefresh(Value)
 end)
 
 local PrisonLife = Window:NewSection("Item")
