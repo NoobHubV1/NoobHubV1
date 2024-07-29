@@ -634,7 +634,7 @@ Refresh.BackgroundTransparency = 0.500
 Refresh.Position = UDim2.new(0.0255350601, 0, 0.899736166, 0)
 Refresh.Size = UDim2.new(0, 127, 0, 30)
 Refresh.Font = Enum.Font.SourceSansLight
-Refresh.Text = "Respawn"
+Refresh.Text = "Refresh"
 Refresh.TextColor3 = Color3.fromRGB(255, 255, 255)
 Refresh.TextSize = 26.000
 Refresh.TextWrapped = true
@@ -1268,7 +1268,11 @@ lp.Chatted:connect(function(Msg) -- haha chat go brrrrr
 end)
 
 Refresh.Activated:connect(function()
-	game.ReplicatedStorage.Events.Player.SpawnRequestEvent:FireServer()
+	local LP = game.Players.LocalPlayer
+    local RE = LP.Character.HumanoidRootPart.Position
+    game.ReplicatedStorage.Events.Player.SpawnRequestEvent:FireServer()
+    task.wait(0.50)
+    LP.Character.HumanoidRootPart.CFrame = CFrame.new(RE)
 end)
 
 search:GetPropertyChangedSignal("Text"):connect(function()
