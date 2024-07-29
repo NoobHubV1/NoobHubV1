@@ -64,7 +64,7 @@ local function ChangeTeam(Team)
 		local LP = game.Players.LocalPlayer
     local RE = LP.Character.HumanoidRootPart.Position
     workspace.Remote.TeamEvent:FireServer("Bright orange")
-    task.wait(0.15)
+    task.wait(0.5)
     LP.Character.HumanoidRootPart.CFrame = CFrame.new(RE)
 		LCS = game.Workspace["Criminals Spawn"].SpawnLocation
     LCS.CanCollide = false
