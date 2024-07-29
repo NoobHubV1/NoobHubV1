@@ -23,22 +23,6 @@ local function Tween(Obj, Prop, New, Time)
 	TweenService:Create(Obj, info, propertyTable):Play()
 end
 
-local ConvertPosition = function(Position)
-	if typeof(Position):lower() == "position" then
-		return CFrame.new(Position)
-	else
-		return Position
-	end
-end
-
-local function UnSit()
-	plr.Character.Humanoid.Sit = false
-end
-
-local swait = function()
-	game:GetService("RunService").Stepped:Wait()
-end
-
 local function Notif(Text,Dur)
 	task.spawn(function()
 		if not Dur then
@@ -75,118 +59,41 @@ local function Notif(Text,Dur)
 	return
 end
 
-local function MoveTo(Cframe)
-	Cframe = ConvertPosition(Cframe)
-	local Amount = 5
-	if Player.PlayerGui['Home']['hud']['Topbar']['titleBar'].Title.Text:lower() == "lights out" or Player.PlayerGui.Home.hud.Topbar.titleBar.Title.Text:lower() == "lightsout" then
-		Amount = 11
-	end
-	for i = 1, Amount do
-		UnSit()
-		Player.Character:WaitForChild("HumanoidRootPart").CFrame = Cframe
-		swait()
-	end
-end
-
-local GetCameraPosition = function(Player)
-	return workspace["CurrentCamera"].CFrame
-end
-
-local function Loop(Times, calling)
-	for i = 1, tonumber(Times) do
-		calling()
-	end
-end
-
-local function GetPosition(Player)
-	game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
-
-	if Player then
-		return API:GetPart(Player).CFrame
-	elseif not Player then
-		return API:GetPart(plr).CFrame
-	end
-end
-
-local GetPart = function(Target)
-	game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
-
-	return Target.Character:FindFirstChild("HumanoidRootPart") or Target.Character:FindFirstChild("Head")
-end
-
-local function WaitForRespawn(Cframe,NoForce)
-	game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
-
-	local Cframe = ConvertPosition(Cframe)
-	local CameraCframe = GetCameraPosition()
-	coroutine.wrap(function()
-		local a
-		a = Player.CharacterAdded:Connect(function(NewCharacter)
-			pcall(function()
-				coroutine.wrap(function()
-					workspace.CurrentCamera:GetPropertyChangedSignal("CFrame"):Wait()
-					Loop(5, function()
-						workspace["CurrentCamera"].CFrame = CameraCframe
-					end)
-				end)()
-				NewCharacter:WaitForChild("HumanoidRootPart")
-				MoveTo(Cframe)
-				if NoForce then
-					task.spawn(function()
-						NewCharacter:WaitForChild("ForceField"):Destroy()
-					end)
-				end
-			end)
-			a:Disconnect()
-			Cframe = nil
-		end)
-		task.spawn(function()
-			wait(2)
-			if a then
-				a:Disconnect()
-			end
-		end)
-	end)()
-end
-
-local ChangeTeam = function(TeamPath,NoForce,Pos)
-        pcall(function()
-		repeat task.wait() until game:GetService("Players").LocalPlayer.Character
-		game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
-
-		WaitForRespawn(Pos or GetPosition(),NoForce)
-	end)
-	if TeamPath == game.Teams.Criminals then
-		task.spawn(function()
-			Workspace.Remote.TeamEvent:FireServer("Bright orange")
-		end)
-		repeat swait() until Player.Team == game.Teams.Inmates and Player.Character:FindFirstChild("HumanoidRootPart")
-		repeat
-			swait()
-			if firetouchinterest then
-				firetouchinterest(plr.Character:FindFirstChildOfClass("Part"), game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1], 0)
-				firetouchinterest(plr.Character:FindFirstChildOfClass("Part"), game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1], 1)
-			end
-			game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1].Transparency = 1
-			game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1].CanCollide = false
-			game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1].CFrame = GetPosition()
-		until plr.Team == game:GetService("Teams").Criminals
-		game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1].CFrame = CFrame.new(0, 3125, 0)
-	else
-		if TeamPath == game.Teams.Neutral then
-			workspace['Remote']['TeamEvent']:FireServer("Medium stone grey")
-		else
-			if not TeamPath or not TeamPath.TeamColor then
-				workspace['Remote']['TeamEvent']:FireServer("Bright orange")
-			else
-				workspace['Remote']['TeamEvent']:FireServer(TeamPath.TeamColor.Name)
-			end
-		end
+local function ChangeTeam(Team)
+	if Team == game.Teams.Criminals then
+		local LP = game.Players.LocalPlayer
+    local RE = LP.Character.HumanoidRootPart.Position
+    workspace.Remote.TeamEvent:FireServer("Bright orange")
+    task.wait(0.50)
+    LP.Character.HumanoidRootPart.CFrame = CFrame.new(RE)
+		LCS = game.Workspace["Criminals Spawn"].SpawnLocation
+    LCS.CanCollide = false
+    LCS.Size = Vector3.new(51.05, 24.12, 54.76)
+    LCS.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+    LCS.Transparency = 1
+    task.wait(0.5)
+    LCS.CFrame = CFrame.new(-920.510803, 92.2271957, 2138.27002, 0, 0, -1, 0, 1, 0, 1, 0, 0)
+    LCS.Size = Vector3.new(6, 0.2, 6)
+    LCS.Transparency = 0
+	elseif Team == game.Teams.Inmates then
+		local LP = game.Players.LocalPlayer
+    local RE = LP.Character.HumanoidRootPart.Position
+    workspace.Remote.TeamEvent:FireServer("Bright orange")
+    task.wait(0.50)
+    LP.Character.HumanoidRootPart.CFrame = CFrame.new(RE)
+	elseif Team == game.Teams.Guards then
+		local LP = game.Players.LocalPlayer
+    local RE = LP.Character.HumanoidRootPart.Position
+    workspace.Remote.TeamEvent:FireServer("Bright blue")
+    task.wait(0.50)
+    LP.Character.HumanoidRootPart.CFrame = CFrame.new(RE)
+	elseif Team == game.Teams.Neutral then
+		workspace.Remote.TeamEvent:FireServer("Medium stone grey")
 	end
 end
 
 local function GiveItem(Item)
-        if Item == "Shotgun" then
+        if Item == "Shotgun" or Item == "Remington 870" then
                 Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["Remington 870"]})
         elseif Item == "Hammer" then
                 Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.single["Hammer"]})
@@ -229,7 +136,7 @@ local function AllItems()
         GiveItem("Knife")
 end
 
-local function Respawn()
+local function Refresh()
         ChangeTeam(plr.Team)
 end
 
@@ -333,7 +240,7 @@ PrisonLife:CreateDropdown("Team", {"Inmate","Guard","Neutral","Criminal"}, 1, fu
                                                                                              end
 end)
 
-PrisonLife:CreateButton("Respawn", function()Respawn()
+PrisonLife:CreateButton("Refresh", function()Refresh()
 end)
 
 local PrisonLife = Window:NewSection("Item")
