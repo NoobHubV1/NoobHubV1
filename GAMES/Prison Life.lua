@@ -2,6 +2,7 @@ local Library = loadstring(Game:HttpGetAsync(("https://raw.githubusercontent.com
 local Players = game.Players
 local plr = Players.LocalPlayer
 local Player = Players.LocalPlayer
+local BuyGamepass = game:GetService("MarketplaceService"):UserOwnsGamePassAsync(tonumber((game:GetService("Players").LocalPlayer.CharacterAppearance):split('=')[#((game:GetService("Players").LocalPlayer.CharacterAppearance):split('='))]), 96651)
 
 local function Tween(Obj, Prop, New, Time)
 	if not Time then
@@ -64,7 +65,7 @@ local function ChangeTeam(Team)
 		local LP = game.Players.LocalPlayer
     local RE = LP.Character.HumanoidRootPart.Position
     workspace.Remote.TeamEvent:FireServer("Bright orange")
-    task.wait(0.7)
+    task.wait(0.8)
     LP.Character.HumanoidRootPart.CFrame = CFrame.new(RE)
 		LCS = game.Workspace["Criminals Spawn"].SpawnLocation
     LCS.CanCollide = false
@@ -79,13 +80,13 @@ local function ChangeTeam(Team)
 		local LP = game.Players.LocalPlayer
     local RE = LP.Character.HumanoidRootPart.Position
     workspace.Remote.TeamEvent:FireServer("Bright orange")
-    task.wait(0.7)
+    task.wait(0.8)
     LP.Character.HumanoidRootPart.CFrame = CFrame.new(RE)
 	elseif Team == game.Teams.Guards then
 		local LP = game.Players.LocalPlayer
     local RE = LP.Character.HumanoidRootPart.Position
     workspace.Remote.TeamEvent:FireServer("Bright blue")
-    task.wait(0.7)
+    task.wait(0.8)
     LP.Character.HumanoidRootPart.CFrame = CFrame.new(RE)
 	elseif Team == game.Teams.Neutral then
 		workspace.Remote.TeamEvent:FireServer("Medium stone grey")
@@ -113,23 +114,24 @@ local function UnequipTool()
 end
 
 local AllGuns = function()
-        GiveItem("Remington 870")
-        GiveItem("AK-47")
-        GiveItem("M9")
-        GiveItem("M4A1")
+	if BuyGamepass then
+             GiveItem("Remington 870")
+             GiveItem("AK-47")
+             GiveItem("M9")
+	     GiveItem("M4A1")
+	else
+	     GiveItem("Remington 870")
+             GiveItem("AK-47")
+             GiveItem("M9")
+	end
 end
 
 local function AllItems()
         GiveItem("Shotgun")
-        wait(.3)
         GiveItem("AK-47")
-        wait(.3)
         GiveItem("M9")
-        wait(.3)
         GiveItem("M4A1")
-        wait(.3)
         GiveItem("Hammer")
-        wait(.3)
         GiveItem("Knife")
 end
 
@@ -231,6 +233,9 @@ PrisonLife:CreateButton("Give Item", function()GiveItem(SelectedItem)
 end)
 
 PrisonLife:CreateToggle("Auto All Guns", function(Value)AutoGuns(Value)
+end)
+
+PrisonLife:CreateButton("All Guns", function()AllGuns()
 end)
 
 PrisonLife:CreateButton("Server Crash", function()ServerCrash()
