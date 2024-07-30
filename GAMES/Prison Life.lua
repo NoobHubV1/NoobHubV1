@@ -64,14 +64,14 @@ local function ChangeTeam(Team)
 		local LP = game.Players.LocalPlayer
     local RE = LP.Character.HumanoidRootPart.Position
     workspace.Remote.TeamEvent:FireServer("Bright orange")
-    task.wait(0.5)
+    task.wait(0.9)
     LP.Character.HumanoidRootPart.CFrame = CFrame.new(RE)
 		LCS = game.Workspace["Criminals Spawn"].SpawnLocation
     LCS.CanCollide = false
     LCS.Size = Vector3.new(51.05, 24.12, 54.76)
     LCS.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
     LCS.Transparency = 1
-    task.wait(0.5)
+    task.wait()
     LCS.CFrame = CFrame.new(-920.510803, 92.2271957, 2138.27002, 0, 0, -1, 0, 1, 0, 1, 0, 0)
     LCS.Size = Vector3.new(6, 0.2, 6)
     LCS.Transparency = 0
@@ -79,13 +79,13 @@ local function ChangeTeam(Team)
 		local LP = game.Players.LocalPlayer
     local RE = LP.Character.HumanoidRootPart.Position
     workspace.Remote.TeamEvent:FireServer("Bright orange")
-    task.wait(0.5)
+    task.wait(0.9)
     LP.Character.HumanoidRootPart.CFrame = CFrame.new(RE)
 	elseif Team == game.Teams.Guards then
 		local LP = game.Players.LocalPlayer
     local RE = LP.Character.HumanoidRootPart.Position
     workspace.Remote.TeamEvent:FireServer("Bright blue")
-    task.wait(0.5)
+    task.wait(0.9)
     LP.Character.HumanoidRootPart.CFrame = CFrame.new(RE)
 	elseif Team == game.Teams.Neutral then
 		workspace.Remote.TeamEvent:FireServer("Medium stone grey")
@@ -93,7 +93,7 @@ local function ChangeTeam(Team)
 end
 
 local function GiveItem(Item)
-        if Item == "Shotgun" or Item == "Remington 870" then
+        if Item == "Remington 870" then
                 Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["Remington 870"]})
         elseif Item == "Hammer" then
                 Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.single["Hammer"]})
@@ -113,12 +113,9 @@ local function UnequipTool()
 end
 
 local AllGuns = function()
-        GiveItem("Shotgun")
-        wait(.3)
+        GiveItem("Remington 870")
         GiveItem("AK-47")
-        wait(.3)
         GiveItem("M9")
-        wait(.3)
         GiveItem("M4A1")
 end
 
@@ -134,6 +131,14 @@ local function AllItems()
         GiveItem("Hammer")
         wait(.3)
         GiveItem("Knife")
+end
+
+local AutoGuns = function(State)
+	getgenv().Loop = State
+	while Loop do
+	AllGuns()
+	task.wait()
+	end
 end
 
 local function Refresh()
@@ -192,7 +197,7 @@ local plr = game.Players.LocalPlayer
 if plr.Character.Humanoid.Health == 0 then
 Refresh()
 end
-task.wait(0.2)
+task.wait(0.1)
 	end
 end
 
@@ -223,6 +228,9 @@ PrisonLife:CreateDropdown("Item", {"Shotgun","AK-47","M9","Hammer","Knife","M4A1
 end)
 
 PrisonLife:CreateButton("Give Item", function()GiveItem(SelectedItem)
+end)
+
+PrisonLife:CreateToggle("Auto All Guns", function(Value)AutoGuns(Value)
 end)
 
 PrisonLife:CreateButton("Server Crash", function()ServerCrash()
