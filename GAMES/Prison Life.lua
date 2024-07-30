@@ -140,46 +140,6 @@ local function Refresh()
         ChangeTeam(plr.Team)
 end
 
-local function AutoInfAmmo(State)
-        getgenv().Loop = State
-        while Loop do
-        local gun = require(game.Players.LocalPlayer.Character:FindFirstChildOf("Tool").GunStates)
-        gun["MaxAmmo"] = 999999999999
-	gun["StoredAmmo"] = 999999999999
-	gun["AmmoPerClip"] = 999999999999
-	gun["CurrentAmmo"] = 999999999999
-        task.wait(.5)
-        end
-end
-
-local function InfAmmo()
-        local gun = require(game.Players.LocalPlayer.Character:FindFirstChildOf("Tool").GunStates)
-        gun["MaxAmmo"] = 999999999999
-	gun["StoredAmmo"] = 999999999999
-	gun["AmmoPerClip"] = 999999999999
-	gun["CurrentAmmo"] = 999999999999
-end
-
-local FastFire = function()
-        local gun = require(game.Players.LocalPlayer.Character:FindFirstChildOf("Tool").GunStates)
-        gun.FireRate = 0
-        gun.Range = math.huge
-        gun.Spread = 5
-        gun.ReloadTime = 0
-end
-
-local function AutoFastFire(State)
-        getgenv().Loop = State
-        while Loop do
-        local gun = require(game.Players.LocalPlayer.Character:FindFirstChildOf("Tool").GunStates)
-        gun.FireRate = 0
-        gun.Range = math.huge
-        gun.Spread = 5
-        gun.ReloadTime = 0
-        task.wait(.5)
-        end
-end
-
 local LoadstringHttps = function(Https)
 	loadstring(Game:HttpGet(Https))()
 end
@@ -266,20 +226,6 @@ PrisonLife:CreateButton("Give Item", function()GiveItem(SelectedItem)
 end)
 
 PrisonLife:CreateButton("Server Crash", function()ServerCrash()
-end)
-
-local PrisonLife = Window:NewSection("Gun Mode")
-
-PrisonLife:CreateButton("Inf Ammo", function()InfAmmo()
-end)
-
-PrisonLife:CreateToggle("Auto Inf Ammo", function(Value)AutoInfAmmo(Value)
-end)
-
-PrisonLife:CreateButton("Fast Fire", function()FastFire()
-end)
-
-PrisonLife:CreateToggle("Auto Fast Fire", function(Value)AutoFastFire(Value)
 end)
 
 local PrisonLife = Window:NewSection("Others")
