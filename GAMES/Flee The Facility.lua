@@ -744,6 +744,74 @@ local character = game.Players.LocalPlayer.Character
 end,
 })
 
+local Slider = Tab:CreateSlider({
+   Name = "Walkspeed",
+   Range = {0, 100},
+   Increment = 1,
+   Suffix = "Walkspeed",
+   CurrentValue = 16,
+   Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+SpeedAmount = (Value)
+   end,
+})
+
+local Button = NBeast:CreateToggle({
+   Name = "Enabled WalkSpeed",
+   CurrentValue = false,
+   Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(State)
+getgenv().Speed = State
+if Speed == true then
+spawn(function()
+while Speed == true do
+local plr = game.Players.LocalPlayer
+plr.Character.Humanoid.WalkSpeed = SpeedAmount
+task.wait()
+end
+end)
+end
+if Speed == false then
+local plr = game.Players.LocalPlayer
+plr.Character.Humanoid.WalkSpeed = 16
+end
+end,
+})
+
+local Slider = Tab:CreateSlider({
+   Name = "JumpPower",
+   Range = {0, 500},
+   Increment = 1,
+   Suffix = "JumpPower",
+   CurrentValue = 50,
+   Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+JPowerAmount = (Value)
+   end,
+})
+
+local Button = NBeast:CreateToggle({
+   Name = "Enabled JumpPower",
+   CurrentValue = false,
+   Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(State)
+getgenv().JPower = State
+if JPower == true then
+spawn(function()
+while JPower == true do
+local plr = game.Players.LocalPlayer
+plr.Character.Humanoid.JumpPower = JPowerAmount
+task.wait()
+end
+end)
+end
+if JPower == false then
+local plr = game.Players.LocalPlayer
+plr.Character.Humanoid.JumpPower = 50
+end
+end,
+})
+
 local Label = Home:CreateLabel("This was made by NoobHubV1")
 local Label = Home:CreateLabel("https://github.com/NoobHubV1")
 local Label = Home:CreateLabel("https://www.youtube.com/@PhoBo2014")
