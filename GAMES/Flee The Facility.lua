@@ -744,7 +744,7 @@ local character = game.Players.LocalPlayer.Character
 end,
 })
 
-local Button = Tab:CreateSlider({
+local Button = Player:CreateSlider({
    Name = "Walkspeed",
    Range = {0, 100},
    Increment = 1,
@@ -756,7 +756,7 @@ SpeedAmount = (Value)
    end,
 })
 
-local Button = NBeast:CreateToggle({
+local Button = Player:CreateToggle({
    Name = "Enabled WalkSpeed",
    CurrentValue = false,
    Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
@@ -778,7 +778,7 @@ end
 end,
 })
 
-local Button = Tab:CreateSlider({
+local Button = Player:CreateSlider({
    Name = "JumpPower",
    Range = {0, 500},
    Increment = 1,
@@ -790,7 +790,7 @@ JPowerAmount = (Value)
    end,
 })
 
-local Button = NBeast:CreateToggle({
+local Button = Player:CreateToggle({
    Name = "Enabled JumpPower",
    CurrentValue = false,
    Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
