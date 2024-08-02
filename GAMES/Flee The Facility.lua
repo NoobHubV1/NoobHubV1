@@ -744,7 +744,7 @@ local character = game.Players.LocalPlayer.Character
 end,
 })
 
-local Slider = Tab:CreateSlider({
+local Button = Tab:CreateSlider({
    Name = "Walkspeed",
    Range = {0, 100},
    Increment = 1,
@@ -778,7 +778,7 @@ end
 end,
 })
 
-local Slider = Tab:CreateSlider({
+local Button = Tab:CreateSlider({
    Name = "JumpPower",
    Range = {0, 500},
    Increment = 1,
