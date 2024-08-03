@@ -60,14 +60,8 @@ local function Notif(Text,Dur)
 	return
 end
 
-local function ChangeTeam(Team)
-	if Team == game.Teams.Criminals then
-		local LP = game.Players.LocalPlayer
-    local RE = LP.Character.HumanoidRootPart.Position
-    workspace.Remote.TeamEvent:FireServer("Bright orange")
-    task.wait(0.8)
-    LP.Character.HumanoidRootPart.CFrame = CFrame.new(RE)
-		LCS = game.Workspace["Criminals Spawn"].SpawnLocation
+local function Criminal()
+	LCS = game.Workspace["Criminals Spawn"].SpawnLocation
     LCS.CanCollide = false
     LCS.Size = Vector3.new(51.05, 24.12, 54.76)
     LCS.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
@@ -76,6 +70,16 @@ local function ChangeTeam(Team)
     LCS.CFrame = CFrame.new(-920.510803, 92.2271957, 2138.27002, 0, 0, -1, 0, 1, 0, 1, 0, 0)
     LCS.Size = Vector3.new(6, 0.2, 6)
     LCS.Transparency = 0
+end
+
+local function ChangeTeam(Team)
+	if Team == game.Teams.Criminals then
+		local plr = game.Players.LocalPlayer
+local savedcf = plr.Character.Torso.Position
+workspace.Remote.TeamEvent:FireServer("Bright blue") task.wait(0.5)
+Criminal()
+task.wait(0.9)
+plr.Character.HumanoidRootPart.CFrame = CFrame.new(savedcf)
 	elseif Team == game.Teams.Inmates then
 		local LP = game.Players.LocalPlayer
     local RE = LP.Character.HumanoidRootPart.Position
@@ -138,8 +142,8 @@ end
 local AutoGuns = function(State)
 	getgenv().Loop = State
 	while Loop do
+	task.wait(0.3)
 	AllGuns()
-	task.wait()
 	end
 end
 
@@ -194,12 +198,11 @@ end
 
 local AutoRefresh = function(State)
 	getgenv().Loop = State
-while Loop do
-local plr = game.Players.LocalPlayer
-if plr.Character.Humanoid.Health == 0 then
-Refresh()
-end
-task.wait(0.1)
+	while Loop do
+	wait()
+	local plr = game.Players.LocalPlayer
+	if plr.Character.Humanoid.Health <= 10 then
+	Refresh()
 	end
 end
 
@@ -208,7 +211,7 @@ local Window = Library:NewWindow("NoobHubV1 Hub")
 local PrisonLife = Window:NewSection("Main")
 
 PrisonLife:CreateDropdown("Team", {"Inmate","Guard","Neutral","Criminal"}, 1, function(Value)if Value == "Criminal" then
-                                                                                                     ChangeTeam(game.Teams.Criminals)
+                                                                                                     Criminal()
                                                                                              elseif Value == "Inmate" then
                                                                                                      ChangeTeam(game.Teams.Inmates)
                                                                                              elseif Value == "Guard" then
