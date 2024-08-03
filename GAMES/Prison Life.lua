@@ -204,6 +204,7 @@ local AutoRefresh = function(State)
 	if plr.Character.Humanoid.Health <= 10 then
 	Refresh()
 	end
+	end
 end
 
 local Window = Library:NewWindow("NoobHubV1 Hub")
