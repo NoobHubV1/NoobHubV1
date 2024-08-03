@@ -60,6 +60,14 @@ local function Notif(Text,Dur)
 	return
 end
 
+local function GetChar()
+	return plr.Character
+end
+
+local GetPos = function()
+        return GetChar().Torso.Position
+end
+
 local function Criminal()
 	LCS = game.Workspace["Criminals Spawn"].SpawnLocation
     LCS.CanCollide = false
@@ -74,24 +82,21 @@ end
 
 local function ChangeTeam(Team)
 	if Team == game.Teams.Criminals then
-		local plr = game.Players.LocalPlayer
-local savedcf = plr.Character.Torso.Position
-workspace.Remote.TeamEvent:FireServer("Bright blue") task.wait(0.5)
+local savedcf = GetPos()
+workspace.Remote.TeamEvent:FireServer("Bright blue") task.wait(0.6)
 Criminal()
-task.wait(0.9)
+task.wait(1)
 plr.Character.HumanoidRootPart.CFrame = CFrame.new(savedcf)
 	elseif Team == game.Teams.Inmates then
-		local LP = game.Players.LocalPlayer
-    local RE = LP.Character.HumanoidRootPart.Position
-    workspace.Remote.TeamEvent:FireServer("Bright orange")
-    task.wait(0.8)
-    LP.Character.HumanoidRootPart.CFrame = CFrame.new(RE)
+		local savedcf = GetPos()
+		workspace.Remote.TeamEvent:FireServer("Bright orange")
+		task.wait(1)
+		GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
 	elseif Team == game.Teams.Guards then
-		local LP = game.Players.LocalPlayer
-    local RE = LP.Character.HumanoidRootPart.Position
-    workspace.Remote.TeamEvent:FireServer("Bright blue")
-    task.wait(0.8)
-    LP.Character.HumanoidRootPart.CFrame = CFrame.new(RE)
+		local savedcf = GetPos()
+		workspace.Remote.TeamEvent:FireServer("Bright blue")
+		task.wait(1)
+		GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
 	elseif Team == game.Teams.Neutral then
 		workspace.Remote.TeamEvent:FireServer("Medium stone grey")
 	end
