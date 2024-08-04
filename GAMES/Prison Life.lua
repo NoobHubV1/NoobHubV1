@@ -69,6 +69,7 @@ local GetPos = function()
 end
 
 local function Criminal()
+	local savedcf = GetPos()
 	LCS = game.Workspace["Criminals Spawn"].SpawnLocation
     LCS.CanCollide = false
     LCS.Size = Vector3.new(51.05, 24.12, 54.76)
@@ -78,13 +79,23 @@ local function Criminal()
     LCS.CFrame = CFrame.new(-920.510803, 92.2271957, 2138.27002, 0, 0, -1, 0, 1, 0, 1, 0, 0)
     LCS.Size = Vector3.new(6, 0.2, 6)
     LCS.Transparency = 0
+	task.wait(0.8)
+	GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
 end
 
 local function ChangeTeam(Team)
 	if Team == game.Teams.Criminals then
 local savedcf = GetPos()
 workspace.Remote.TeamEvent:FireServer("Bright blue") task.wait(0.6)
-Criminal()
+LCS = game.Workspace["Criminals Spawn"].SpawnLocation
+    LCS.CanCollide = false
+    LCS.Size = Vector3.new(51.05, 24.12, 54.76)
+    LCS.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+    LCS.Transparency = 1
+    task.wait()
+    LCS.CFrame = CFrame.new(-920.510803, 92.2271957, 2138.27002, 0, 0, -1, 0, 1, 0, 1, 0, 0)
+    LCS.Size = Vector3.new(6, 0.2, 6)
+    LCS.Transparency = 0
 task.wait(1)
 plr.Character.HumanoidRootPart.CFrame = CFrame.new(savedcf)
 	elseif Team == game.Teams.Inmates then
@@ -182,12 +193,19 @@ local AllGuns = function()
 end
 
 local function AllItems()
-        GiveItem("Shotgun")
-        GiveItem("AK-47")
-        GiveItem("M9")
-        GiveItem("M4A1")
-        GiveItem("Hammer")
-        GiveItem("Knife")
+	if BuyGamepass then
+	     GiveItem("Remington 870")
+             GiveItem("AK-47")
+             GiveItem("M9")
+             GiveItem("M4A1")
+             GiveItem("Hammer")
+             GiveItem("Knife")
+	else
+             GiveItem("Remington 870")
+             GiveItem("AK-47")
+             GiveItem("M9")
+             GiveItem("Hammer")
+             GiveItem("Knife")
 end
 
 local AutoGuns = function(State)
@@ -244,7 +262,7 @@ for count = 0, 10, 10 do
 FireGun()
 end
 end
-wait(5)
+task.wait()
 	task.wait()
 	end
 end
