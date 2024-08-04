@@ -206,6 +206,7 @@ local function AllItems()
              GiveItem("M9")
              GiveItem("Hammer")
              GiveItem("Knife")
+        end
 end
 
 local AutoGuns = function(State)
@@ -213,6 +214,14 @@ local AutoGuns = function(State)
 	while Loop do
 	task.wait(0.3)
 	AllGuns()
+	end
+end
+
+local AutoItems = function(State)
+	getgenv().Loop = State
+	while Loop do
+	task.wait(0.3)
+	AllItems()
 	end
 end
 
@@ -271,8 +280,7 @@ local AutoRefresh = function(State)
 	getgenv().Loop = State
 	while Loop do
 	wait()
-	local plr = game.Players.LocalPlayer
-	if plr.Character.Humanoid.Health <= 10 then
+	if GetChar().Humanoid.Health == 0 then
 	Refresh()
 	end
 	end
@@ -310,7 +318,13 @@ end)
 PrisonLife:CreateToggle("Auto All Guns", function(Value)AutoGuns(Value)
 end)
 
+PrisonLife:CreateToggle("Auto All Items", function(Value)AutoItems(Value)
+end)
+
 PrisonLife:CreateButton("All Guns", function()AllGuns()
+end)
+
+PrisonLife:CreateButton("All Items", function()AllItems()
 end)
 
 PrisonLife:CreateButton("Silent Aim", function()SilentAim()
