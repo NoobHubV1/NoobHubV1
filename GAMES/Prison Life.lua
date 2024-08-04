@@ -420,12 +420,8 @@ PrisonLife:CreateButton("Kill Guards", function()Criminal()
 		                                  KillTeam(BrickColor.new("Bright blue").Name)
 end)
 
-PrisonLife:CreateButton("Kill Criminals", function()if plr.Team == game.Teams.Criminals or plr.Team = game.Teams.Guards then
+PrisonLife:CreateButton("Kill Criminals", function()if plr.Team == game.Teams.Criminals then
 			                          ChangeTeam(game.Teams.Inmates)
-		                                  task.wait(0.5)
-		                                  for i = 1, 15 do GiveItem("Remington 870") task.wait() end
-		                                  task.wait(0.5)
-		                                  KillTeam(BrickColor.new("Really red").Name)
 		                                    elseif plr.Team == game.Teams.Inmates then
 			                               for i = 1, 15 do GiveItem("Remington 870") task.wait() end
 		                                  task.wait(0.5)
