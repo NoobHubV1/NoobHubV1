@@ -147,6 +147,20 @@ local function UnequipTool()
 	game.Players.LocalPlayer.Character.Humanoid:UnequipTools()
 end
 
+local KillAura = function(State)
+	getgenv().Loop = State
+	while Loop do
+			for i, e in pairs(game.Players:GetChildren()) do
+				if e ~= game.Players.LocalPlayer then
+					local meleeEvent = game:GetService("ReplicatedStorage").meleeEvent
+					meleeEvent:FireServer(e)
+	
+				end
+		        end
+	task.wait()
+	end
+end
+
 local function SilentAim()
 	local Players = game.Players
 local LocalPlayer = Players.LocalPlayer
@@ -319,6 +333,9 @@ PrisonLife:CreateButton("Refresh", function()Refresh()
 end)
 
 PrisonLife:CreateToggle("Auto Refresh", function(Value)AutoRefresh(Value)
+end)
+
+PrisonLife:CreateToggle("Kill Aura", function(Value)KillAura(Value)
 end)
 
 local PrisonLife = Window:NewSection("Item")
