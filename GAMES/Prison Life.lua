@@ -94,6 +94,7 @@ local function Criminal()
     LCS.Transparency = 0
 	task.wait(0.8)
 	GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
+	end
 end
 
 local function ChangeTeam(Team)
