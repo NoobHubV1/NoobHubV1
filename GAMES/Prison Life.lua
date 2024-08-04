@@ -143,6 +143,46 @@ local function GiveItem(Item)
         end
 end
 
+local function KillTeam(Team)
+	local events = {}
+	local gun = nil
+	for i,v in pairs(game.Players:GetPlayers()) do
+		if v ~= game.Players.LocalPlayer and v.TeamColor.Name == Team then
+			if v.TeamColor.Name == game.Players.LocalPlayer.TeamColor.Name then
+	                      workspace.Remote.loadchar:InvokeServer()
+			end
+			for i = 1,10 do
+				events[#events + 1] = {
+					Hit = v.Character:FindFirstChild("Head") or v.Character:FindFirstChildOfClass("Part"),
+					Cframe = CFrame.new(),
+					RayObject = Ray.new(Vector3.new(), Vector3.new()),
+					Distance = 0
+				}
+			end
+		end
+	end
+	GiveItem("Remington 870")
+	for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+		if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
+			gun = v
+		end
+	end
+	if gun == nil then
+		for i,v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+			if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
+				gun = v
+			end
+		end
+	end
+	coroutine.wrap(function()
+		for i = 1,30 do
+			game.ReplicatedStorage.ReloadEvent:FireServer(gun)
+			wait(.5)
+		end
+	end)()
+	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
+end
+
 local function UnequipTool()
 	game.Players.LocalPlayer.Character.Humanoid:UnequipTools()
 end
@@ -362,6 +402,35 @@ PrisonLife:CreateButton("Silent Aim", function()SilentAim()
 end)
 
 PrisonLife:CreateToggle("Server Crash", function(Value)ServerCrash(Value)
+end)
+
+local PrisonLife = Window:NewSection("Kill")
+
+PrisonLife:CreateButton("Kill Inmates", function()Criminal()
+		                                  task.wait(0.5)
+		                                  for i = 1, 15 do GiveItem("Remington 870") task.wait() end
+		                                  task.wait(0.5)
+		                                  KillTeam(BrickColor.new("Bright orange").Name)
+end)
+
+PrisonLife:CreateButton("Kill Guards", function()Criminal()
+		                                  task.wait(0.5)
+		                                  for i = 1, 15 do GiveItem("Remington 870") task.wait() end
+		                                  task.wait(0.5)
+		                                  KillTeam(BrickColor.new("Bright blue").Name)
+end)
+
+PrisonLife:CreateButton("Kill Criminals", function()if plr.Team == game.Teams.Criminals or plr.Team = game.Teams.Guards then
+			                          ChangeTeam(game.Teams.Inmates)
+		                                  task.wait(0.5)
+		                                  for i = 1, 15 do GiveItem("Remington 870") task.wait() end
+		                                  task.wait(0.5)
+		                                  KillTeam(BrickColor.new("Really red").Name)
+		                                    elseif plr.Team == game.Teams.Inmates then
+			                               for i = 1, 15 do GiveItem("Remington 870") task.wait() end
+		                                  task.wait(0.5)
+		                                  KillTeam(BrickColor.new("Really red").Name)
+		                                    end
 end)
 
 local PrisonLife = Window:NewSection("Others")
