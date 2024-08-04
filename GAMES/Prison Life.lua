@@ -206,8 +206,9 @@ local LoadstringHttps = function(Https)
 	loadstring(Game:HttpGet(Https))()
 end
 
-local function ServerCrash()
-	while wait() do
+local function ServerCrash(State)
+	getgenv().Loop = State
+	while Loop do
 local Gun = "Remington 870"
 
 local Player = game.Players.LocalPlayer.Name
@@ -244,6 +245,7 @@ FireGun()
 end
 end
 wait(5)
+	task.wait()
 	end
 end
 
@@ -296,7 +298,7 @@ end)
 PrisonLife:CreateButton("Silent Aim", function()SilentAim()
 end)
 
-PrisonLife:CreateButton("Server Crash", function()ServerCrash()
+PrisonLife:CreateToggle("Server Crash", function(Value)ServerCrash(Value)
 end)
 
 local PrisonLife = Window:NewSection("Others")
