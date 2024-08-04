@@ -69,8 +69,21 @@ local GetPos = function()
 end
 
 local function Criminal()
-	local savedcf = GetPos()
+	if plr.Team == game.Teams.Guards then
+	     local savedcf = GetPos()
 	LCS = game.Workspace["Criminals Spawn"].SpawnLocation
+    LCS.CanCollide = false
+    LCS.Size = Vector3.new(51.05, 24.12, 54.76)
+    LCS.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+    LCS.Transparency = 1
+    task.wait()
+    LCS.CFrame = CFrame.new(-920.510803, 92.2271957, 2138.27002, 0, 0, -1, 0, 1, 0, 1, 0, 0)
+    LCS.Size = Vector3.new(6, 0.2, 6)
+    LCS.Transparency = 0
+	task.wait(0.8)
+	GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
+	elseif plr.Team == game.Teams.Inmates then
+		LCS = game.Workspace["Criminals Spawn"].SpawnLocation
     LCS.CanCollide = false
     LCS.Size = Vector3.new(51.05, 24.12, 54.76)
     LCS.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
