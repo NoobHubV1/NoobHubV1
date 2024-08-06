@@ -40,6 +40,7 @@ print([[
 	.void (Plr) | Player Tp The Void
 	.destroy (Plr) | Player Destroy (if Player Rejoin)
 	.sit (Plr) | Sit a Player
+	.infjump (Plr) | Give Player Inf Jump
 \\
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -116,13 +117,15 @@ local Destroy = Instance.new("TextButton")
 local UICorner_24 = Instance.new("UICorner")
 local Sit = Instance.new("TextButton")
 local UICorner_25 = Instance.new("UICorner")
-local target = Instance.new("TextBox")
+local Infjump = Instance.new("TextButton")
 local UICorner_26 = Instance.new("UICorner")
+local target = Instance.new("TextBox")
+local UICorner_27 = Instance.new("UICorner")
 local UIGradient_2 = Instance.new("UIGradient")
 local Refresh = Instance.new("TextButton")
-local UICorner_27 = Instance.new("UICorner")
-local search = Instance.new("TextBox")
 local UICorner_28 = Instance.new("UICorner")
+local search = Instance.new("TextBox")
+local UICorner_29 = Instance.new("UICorner")
 
 --Properties:
 
@@ -608,6 +611,22 @@ Sit.TextSize = 23.000
 UICorner_25.CornerRadius = UDim.new(0, 4)
 UICorner_25.Parent = Sit
 
+Infjump.Name = "Infjump"
+Infjump.Parent = ScrollingFrame
+Infjump.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
+Infjump.BackgroundTransparency = 0.500
+Infjump.BorderSizePixel = 0
+Infjump.Position = UDim2.new(0.0351677425, 0, 0.190713778, 0)
+Infjump.Size = UDim2.new(0, 131, 0, 40)
+Infjump.ZIndex = 3
+Infjump.Font = Enum.Font.SourceSansLight
+Infjump.Text = "Infjump"
+Infjump.TextColor3 = Color3.fromRGB(255, 255, 255)
+Infjump.TextSize = 23.000
+
+UICorner_26.CornerRadius = UDim.new(0, 4)
+UICorner_26.Parent = Infjump
+
 target.Name = "target"
 target.Parent = Main
 target.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
@@ -620,8 +639,8 @@ target.Text = ""
 target.TextColor3 = Color3.fromRGB(255, 255, 255)
 target.TextSize = 23.000
 
-UICorner_26.CornerRadius = UDim.new(0, 4)
-UICorner_26.Parent = target
+UICorner_27.CornerRadius = UDim.new(0, 4)
+UICorner_27.Parent = target
 
 UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(122, 122, 122))}
 UIGradient_2.Rotation = 90
@@ -639,8 +658,8 @@ Refresh.TextColor3 = Color3.fromRGB(255, 255, 255)
 Refresh.TextSize = 26.000
 Refresh.TextWrapped = true
 
-UICorner_27.CornerRadius = UDim.new(0, 4)
-UICorner_27.Parent = Refresh
+UICorner_28.CornerRadius = UDim.new(0, 4)
+UICorner_28.Parent = Refresh
 
 search.Name = "search"
 search.Parent = Main
@@ -654,8 +673,8 @@ search.Text = ""
 search.TextColor3 = Color3.fromRGB(255, 255, 255)
 search.TextSize = 23.000
 
-UICorner_28.CornerRadius = UDim.new(0, 4)
-UICorner_28.Parent = search
+UICorner_29.CornerRadius = UDim.new(0, 4)
+UICorner_29.Parent = search
 
 local UserInputService = game:GetService("UserInputService")
 local dragging,dragInput,dragStart,startPos
@@ -870,6 +889,25 @@ local function DoCommand(Command)
 					end
 				end
 			end)
+		elseif (string.sub(Command,1,#".infjump") == ".infjump") then
+			local player = getPlayer(string.sub(Command,#".infjump" + 2))
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						local InfiniteJumpEnabled = true
+game:GetService("UserInputService").JumpRequest:connect(function()
+	if InfiniteJumpEnabled then
+		player.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")
+	end
+end)
+					end
+				end
+			end)
 		elseif (string.sub(Command,1,#".sit") == ".sit") then
 			local player = getPlayer(string.sub(Command,#".sit" + 2))
 			pcall(function()
@@ -984,7 +1022,7 @@ local function DoCommand(Command)
 							end
 						end
 						player.Character.Humanoid.Health = (1)
-						task.wait(.1)
+						task.wait()
 						player.Character.Humanoid.Health = (0)
 					end
 				end
@@ -1002,7 +1040,7 @@ local function DoCommand(Command)
 							end
 						end
 						player.Character.Humanoid.Health = (1)
-						task.wait(.1)
+						task.wait()
 						player.Character.Humanoid.Health = (0)
 					end
 				end
@@ -1022,7 +1060,7 @@ local function DoCommand(Command)
 							end
 						end
 						player.Character.Humanoid.Health = (1)
-						task.wait(.1)
+						task.wait()
 						player.Character.Humanoid.Health = (0)
 					end
 				end
