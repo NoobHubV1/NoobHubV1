@@ -1022,7 +1022,6 @@ end)
 							end
 						end
 						player.Character.Humanoid.Health = (1)
-						task.wait()
 						player.Character.Humanoid.Health = (0)
 					end
 				end
@@ -1040,12 +1039,11 @@ end)
 							end
 						end
 						player.Character.Humanoid.Health = (1)
-						task.wait()
 						player.Character.Humanoid.Health = (0)
 					end
 				end
 			end)
-			task.wait(.2)
+			task.wait(.1)
 			end
 		elseif (string.sub(Command,1,#".unloopkill") == ".unloopkill") then
 			getgenv().Loop = false
@@ -1060,12 +1058,11 @@ end)
 							end
 						end
 						player.Character.Humanoid.Health = (1)
-						task.wait()
 						player.Character.Humanoid.Health = (0)
 					end
 				end
 			end)
-			task.wait(.2)
+			task.wait(.1)
 			end
 		elseif (string.sub(Command,1,#".void") == ".void") then
 			local player = getPlayer(string.sub(Command,#".void" + 2))
@@ -1298,10 +1295,10 @@ function Notify(Text,Dur)
 	return
 end
 
-lp.Chatted:connect(function(Msg) -- haha chat go brrrrr
-	DoCommand(Msg:lower())
+lp.Chatted:connect(function(chat) -- haha chat go brrrrr
+	DoCommand(chat:lower())
 	wait(.1)
-	DoCommand(Msg:lower()) -- Idk
+	DoCommand(chat:lower()) -- Idk
 	wait()
 end)
 
@@ -1309,7 +1306,7 @@ Refresh.Activated:connect(function()
 	local LP = game.Players.LocalPlayer
     local RE = LP.Character.HumanoidRootPart.Position
     game.ReplicatedStorage.Events.Player.SpawnRequestEvent:FireServer()
-    task.wait(0.50)
+    task.wait(1)
     LP.Character.HumanoidRootPart.CFrame = CFrame.new(RE)
 end)
 
