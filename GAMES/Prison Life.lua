@@ -100,7 +100,7 @@ end
 local function ChangeTeam(Team)
 	if Team == game.Teams.Criminals then
 local savedcf = GetPos()
-workspace.Remote.TeamEvent:FireServer("Bright blue") task.wait(0.6)
+workspace.Remote.TeamEvent:FireServer("Bright blue") task.wait(0.4)
 LCS = game.Workspace["Criminals Spawn"].SpawnLocation
     LCS.CanCollide = false
     LCS.Size = Vector3.new(51.05, 24.12, 54.76)
@@ -110,17 +110,17 @@ LCS = game.Workspace["Criminals Spawn"].SpawnLocation
     LCS.CFrame = CFrame.new(-920.510803, 92.2271957, 2138.27002, 0, 0, -1, 0, 1, 0, 1, 0, 0)
     LCS.Size = Vector3.new(6, 0.2, 6)
     LCS.Transparency = 0
-task.wait(1)
+task.wait(0.8)
 plr.Character.HumanoidRootPart.CFrame = CFrame.new(savedcf)
 	elseif Team == game.Teams.Inmates then
 		local savedcf = GetPos()
 		workspace.Remote.TeamEvent:FireServer("Bright orange")
-		task.wait(1)
+		task.wait(0.8)
 		GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
 	elseif Team == game.Teams.Guards then
 		local savedcf = GetPos()
 		workspace.Remote.TeamEvent:FireServer("Bright blue")
-		task.wait(1)
+		task.wait(0.8)
 		GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
 	elseif Team == game.Teams.Neutral then
 		workspace.Remote.TeamEvent:FireServer("Medium stone grey")
@@ -141,46 +141,6 @@ local function GiveItem(Item)
         elseif Item == "M4A1" then
                 Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["M4A1"]})
         end
-end
-
-local function KillTeam(Team)
-	local events = {}
-	local gun = nil
-	for i,v in pairs(game.Players:GetPlayers()) do
-		if v ~= game.Players.LocalPlayer and v.TeamColor.Name == Team then
-			if v.TeamColor.Name == game.Players.LocalPlayer.TeamColor.Name then
-	                      workspace.Remote.loadchar:InvokeServer()
-			end
-			for i = 1,10 do
-				events[#events + 1] = {
-					Hit = v.Character:FindFirstChild("Head") or v.Character:FindFirstChildOfClass("Part"),
-					Cframe = CFrame.new(),
-					RayObject = Ray.new(Vector3.new(), Vector3.new()),
-					Distance = 0
-				}
-			end
-		end
-	end
-	GiveItem("Remington 870")
-	for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-		if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
-			gun = v
-		end
-	end
-	if gun == nil then
-		for i,v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
-			if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
-				gun = v
-			end
-		end
-	end
-	coroutine.wrap(function()
-		for i = 1,30 do
-			game.ReplicatedStorage.ReloadEvent:FireServer(gun)
-			wait(.5)
-		end
-	end)()
-	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
 end
 
 local function UnequipTool()
@@ -301,8 +261,8 @@ local LoadstringHttps = function(Https)
 	loadstring(Game:HttpGet(Https))()
 end
 
-local function ServerCrash(State)
-	getgenv().Loop = State
+local function ServerCrash()
+	getgenv().Loop = true
 	while Loop do
 local Gun = "Remington 870"
 
@@ -354,6 +314,78 @@ local AutoRefresh = function(State)
 	end
 end
 
+local function AntiFling()
+	local function isPartRotatingTooFast(part)
+		if part and part:IsA("BasePart") then
+			local lastRotation = part.Rotation
+			wait(0.1) -- Wait a short time to get a second rotation value for comparison
+			local currentRotation = part.Rotation
+			local rotationChange = (currentRotation - lastRotation).Magnitude
+			return rotationChange > rotationThreshold
+		end
+		return false
+	end
+
+	local function isPartInLocalPlayerCharacter(part)
+		local localPlayer = game.Players.LocalPlayer
+		if localPlayer and localPlayer.Character then
+			return part:IsDescendantOf(localPlayer.Character)
+		end
+		return false
+	end
+
+	local function createSelectionBox(target)
+		local outline = Instance.new("SelectionBox")
+		outline.Name = "RedOutline"
+		outline.Color3 = outlineColor.Color
+		outline.Adornee = target
+		outline.Parent = target
+		return outline
+	end
+
+local G = {}
+local C = nil
+	local function Collide(plr)
+	if plr and plr.Character and plr ~= game.Players.LocalPlayer then
+	for i,v in pairs (plr.Character:GetDescendants()) do
+	if v:IsA"BasePart" and v.CanCollide == true then
+	v.CanCollide = false
+     v.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
+    v.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+    v.CustomPhysicalProperties = PhysicalProperties.new(0, 0, 0)
+	end
+	end
+	end
+	end
+	
+	local function Enable()
+	for i,v in pairs (Players:GetPlayers()) do
+	Collide(v)
+	end
+	end
+	
+	Notif("Executed",8)
+
+function G:Enable()
+	C = game:GetService"RunService".RenderStepped: Connect (Enable)
+        end
+function G:Disable()
+   C: Disconnect ()
+for i,v in pairs(game.Players:GetPlayers()) do
+if v ~= plr then
+for h,b in pairs(v.Character:GetDescendants()) do
+if b:IsA"BasePart" and b.CanCollide == false then
+b.CanCollide = true
+end
+end
+end
+end
+end
+
+G:Enable()
+return G
+end
+
 local Window = Library:NewWindow("NoobHubV1 Hub")
 
 local PrisonLife = Window:NewSection("Main")
@@ -376,6 +408,9 @@ PrisonLife:CreateToggle("Auto Refresh", function(Value)AutoRefresh(Value)
 end)
 
 PrisonLife:CreateToggle("Kill Aura", function(Value)KillAura(Value)
+end)
+
+PrisonLife:CreateButton("Anti Fling", function()AntiFling()
 end)
 
 local PrisonLife = Window:NewSection("Item")
@@ -401,32 +436,7 @@ end)
 PrisonLife:CreateButton("Silent Aim", function()SilentAim()
 end)
 
-PrisonLife:CreateToggle("Server Crash", function(Value)ServerCrash(Value)
-end)
-
-local PrisonLife = Window:NewSection("Kill")
-
-PrisonLife:CreateButton("Kill Inmates", function()Criminal()
-		                                  task.wait(0.5)
-		                                  for i = 1, 15 do GiveItem("Remington 870") task.wait() end
-		                                  task.wait(0.5)
-		                                  KillTeam(BrickColor.new("Bright orange").Name)
-end)
-
-PrisonLife:CreateButton("Kill Guards", function()Criminal()
-		                                  task.wait(0.5)
-		                                  for i = 1, 15 do GiveItem("Remington 870") task.wait() end
-		                                  task.wait(0.5)
-		                                  KillTeam(BrickColor.new("Bright blue").Name)
-end)
-
-PrisonLife:CreateButton("Kill Criminals", function()if plr.Team == game.Teams.Criminals then
-			                          ChangeTeam(game.Teams.Inmates)
-		                                    elseif plr.Team == game.Teams.Inmates then
-			                               for i = 1, 15 do GiveItem("Remington 870") task.wait() end
-		                                  task.wait(0.5)
-		                                  KillTeam(BrickColor.new("Really red").Name)
-		                                    end
+PrisonLife:CreateButton("Server Crash", function()ServerCrash()
 end)
 
 local PrisonLife = Window:NewSection("Others")
