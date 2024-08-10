@@ -110,17 +110,17 @@ LCS = game.Workspace["Criminals Spawn"].SpawnLocation
     LCS.CFrame = CFrame.new(-920.510803, 92.2271957, 2138.27002, 0, 0, -1, 0, 1, 0, 1, 0, 0)
     LCS.Size = Vector3.new(6, 0.2, 6)
     LCS.Transparency = 0
-task.wait(0.8)
+task.wait(0.75)
 plr.Character.HumanoidRootPart.CFrame = CFrame.new(savedcf)
 	elseif Team == game.Teams.Inmates then
 		local savedcf = GetPos()
 		workspace.Remote.TeamEvent:FireServer("Bright orange")
-		task.wait(0.8)
+		task.wait(0.75)
 		GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
 	elseif Team == game.Teams.Guards then
 		local savedcf = GetPos()
 		workspace.Remote.TeamEvent:FireServer("Bright blue")
-		task.wait(0.8)
+		task.wait(0.75)
 		GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
 	elseif Team == game.Teams.Neutral then
 		workspace.Remote.TeamEvent:FireServer("Medium stone grey")
@@ -364,7 +364,7 @@ local C = nil
 	end
 	end
 	
-	Notif("Executed",8)
+	Notif("Anti Fling Executed",8)
 
 function G:Enable()
 	C = game:GetService"RunService".RenderStepped: Connect (Enable)
