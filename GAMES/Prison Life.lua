@@ -447,7 +447,7 @@ end)
 PrisonLife:CreateButton("Admin Gui", function()LoadstringHttps("https://raw.githubusercontent.com/NoobHubV1/RobloxScripts/main/Prison%20Life%20Admin.lua")
 end)
 
-PrisonLife:CreateButton("Auto Respawn Gui (Made by iTsSaalty)", function()LoadstringHttps("https://raw.githubusercontent.com/NoobHubV1/RobloxScripts/main/Prison%20Life%20Admin.lua")
+PrisonLife:CreateButton("Auto Respawn Gui (Made by iTsSaalty)", function()LoadstringHttps("https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/GAMES/Auto%20Respawn.lua")
 end)
 
 Notif("(Prison Life Script By NoobHubV1) Script Loaded!)")
