@@ -559,59 +559,6 @@ end)
 PrisonLife:CreateButton("Anti Fling", function()AntiFling()
 end)
 
-local PrisonLife = Window:NewSection("Item")
-
-PrisonLife:CreateDropdown("Item", {"Remington 870","AK-47","M9","Hammer","Knife","M4A1"}, 1, function(Value)SelectedItem = Value
-end)
-
-PrisonLife:CreateButton("Give Item", function()GiveItem(SelectedItem)
-end)
-
-PrisonLife:CreateToggle("Auto All Guns", function(Value)AutoGuns(Value)
-end)
-
-PrisonLife:CreateToggle("Auto All Items", function(Value)AutoItems(Value)
-end)
-
-PrisonLife:CreateButton("All Guns", function()AllGuns()
-end)
-
-PrisonLife:CreateButton("All Items", function()AllItems()
-end)
-
-PrisonLife:CreateButton("Silent Aim", function()SilentAim()
-end)
-
-PrisonLife:CreateButton("Server Crash", function()ServerCrash()
-end)
-
-local PrisonLife = Window:NewSection("Player")
-
-PrisonLife:CreateTextbox("WalkSpeed", function(Value)plr.Character.Humanoid.WalkSpeed = Value
-end)
-
-PrisonLife:CreateTextbox("JumpPower", function(Value)plr.Character.Humanoid.JumpPower = Value
-end)
-
-PrisonLife:CreateToggle("Noclip", function(Value)getgenv().Noclipping = Value
-			if Noclipping == true then
-				spawn(function()
-					while Noclipping == true do
-						Noclip(false)
-						task.wait(.05)
-					end
-				end)
-			end
-			if Noclipping == false then
-				Noclip(true)
-			task.wait(0.3)
-			GetChar().Humanoid:ChangeState("Jumping")
-		        end
-end)
-
-PrisonLife:CreateToggle("AntiBring/AntiSit", function(Value)AntiBring(Value)
-end)
-
 local PrisonLife = Window:NewSection("Kill")
 
 PrisonLife:CreateButton("Kill Inmates", function()Criminal()
@@ -650,6 +597,59 @@ PrisonLife:CreateToggle("Loop kill Criminals", function(Value)LoopkillCriminals(
 end)
 
 PrisonLife:CreateToggle("Loop kill All", function(Value)LoopkillAll(Value)
+end)
+
+local PrisonLife = Window:NewSection("Player")
+
+PrisonLife:CreateTextbox("WalkSpeed", function(Value)plr.Character.Humanoid.WalkSpeed = Value
+end)
+
+PrisonLife:CreateTextbox("JumpPower", function(Value)plr.Character.Humanoid.JumpPower = Value
+end)
+
+PrisonLife:CreateToggle("Noclip", function(Value)getgenv().Noclipping = Value
+			if Noclipping == true then
+				spawn(function()
+					while Noclipping == true do
+						Noclip(false)
+						task.wait(.05)
+					end
+				end)
+			end
+			if Noclipping == false then
+				Noclip(true)
+			task.wait(0.3)
+			GetChar().Humanoid:ChangeState("Jumping")
+		        end
+end)
+
+PrisonLife:CreateToggle("AntiBring/AntiSit", function(Value)AntiBring(Value)
+end)
+
+local PrisonLife = Window:NewSection("Item")
+
+PrisonLife:CreateDropdown("Item", {"Remington 870","AK-47","M9","Hammer","Knife","M4A1"}, 1, function(Value)SelectedItem = Value
+end)
+
+PrisonLife:CreateButton("Give Item", function()GiveItem(SelectedItem)
+end)
+
+PrisonLife:CreateToggle("Auto All Guns", function(Value)AutoGuns(Value)
+end)
+
+PrisonLife:CreateToggle("Auto All Items", function(Value)AutoItems(Value)
+end)
+
+PrisonLife:CreateButton("All Guns", function()AllGuns()
+end)
+
+PrisonLife:CreateButton("All Items", function()AllItems()
+end)
+
+PrisonLife:CreateButton("Silent Aim", function()SilentAim()
+end)
+
+PrisonLife:CreateButton("Server Crash", function()ServerCrash()
 end)
 
 local PrisonLife = Window:NewSection("Others")
