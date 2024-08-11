@@ -461,14 +461,74 @@ end
 
 local function KillAll()
 	Criminal()
-	task.wait(0.5)
-        KillTeam(BrickColor.new("Bright orange").Name)
 	task.wait(0.3)
+        KillTeam(BrickColor.new("Bright orange").Name)
+	task.wait(0.15)
 	KillTeam(BrickColor.new("Bright blue").Name)
 	if plr.Team == game.Teams.Criminals then
 	ChangeTeam(game.Teams.Inmates)
-	task.wait(0.5)
+	task.wait(0.15)
 	KillTeam(BrickColor.new("Really red").Name)
+	end
+end
+
+local LoopkillInmates = function(State)
+	getgenv().lkinmates = State
+	while lkinmates do
+	wait()
+	if plr.Team == game.Teams.Inmates then
+	Criminal()
+	task.wait(0.15)
+	KillTeam(BrickColor.new("Bright orange").Name)
+	elseif plr.Team == game.Teams.Guards then
+	Criminal()
+	task.wait(0.15)
+	KillTeam(BrickColor.new("Bright orange").Name)
+	elseif plr.Team == game.Teams.Criminals then
+	KillTeam(BrickColor.new("Bright orange").Name)
+	end
+	end
+end
+
+local LoopkillGuards = function(State)
+	getgenv().lkguards = State
+	while lkguards do
+	wait()
+	if plr.Team == game.Teams.Guards then
+	ChangeTeam(game.Teams.Inmates)
+	task.wait(0.15)
+	KillTeam(BrickColor.new("Bright blue").Name)
+	elseif plr.Team == game.Teams.Inmates then
+	KillTeam(BrickColor.new("Bright blue").Name)
+	elseif plr.Team == game.Teams.Criminals then
+	KillTeam(BrickColor.new("Bright blue").Name)
+	end
+	end
+end
+
+local function LoopkillCriminals(State)
+	getgenv().lkcriminals = State
+	while lkcriminals do
+	wait()
+	if plr.Team == game.Teams.Criminals then
+        ChangeTeam(game.Teams.Inmates)
+	task.wait(0.15)
+        KillTeam(BrickColor.new("Really red").Name)
+	elseif plr.Team == game.Teams.Guards then
+	ChangeTeam(game.Teams.Inmates)
+	task.wait(0.15)
+	KillTeam(BrickColor.new("Really red").Name)
+	elseif plr.Team == game.Teams.Inmates then
+	KillTeam(BrickColor.new("Really red").Name)
+	end
+	end
+end
+
+local function LoopkillAll(State)
+	getgenv().lkall = State
+	while lkall do
+	KillAll()
+	task.wait(1)
 	end
 end
 
@@ -555,22 +615,22 @@ end)
 local PrisonLife = Window:NewSection("Kill")
 
 PrisonLife:CreateButton("Kill Inmates", function()Criminal()
-		                                  task.wait(0.5)
+		                                  task.wait(0.15)
 		                                  KillTeam(BrickColor.new("Bright orange").Name)
 end)
 
 PrisonLife:CreateButton("Kill Guards", function()Criminal()
-		                                  task.wait(0.5)
+		                                  task.wait(0.15)
 		                                  KillTeam(BrickColor.new("Bright blue").Name)
 end)
 
 PrisonLife:CreateButton("Kill Criminals", function()if plr.Team == game.Teams.Criminals then
 		                                   ChangeTeam(game.Teams.Inmates)
-		                                  task.wait(0.5)
+		                                  task.wait(0.15)
 		                                  KillTeam(BrickColor.new("Really red").Name)
 		                                    elseif plr.Team == game.Teams.Guards then
 			                            ChangeTeam(game.Teams.Inmates)
-		                                  task.wait(0.5)
+		                                  task.wait(0.15)
 		                                  KillTeam(BrickColor.new("Really red").Name)
 		                                    elseif plr.Team == game.Teams.Inmates then
 			                            KillTeam(BrickColor.new("Really red").Name)
@@ -578,6 +638,18 @@ PrisonLife:CreateButton("Kill Criminals", function()if plr.Team == game.Teams.Cr
 end)
 
 PrisonLife:CreateButton("Kill All", function()KillAll()
+end)
+
+PrisonLife:CreateToggle("Loop kill Inmates", function(Value)LoopkillInmates(Value)
+end)
+
+PrisonLife:CreateToggle("Loop kill Guards", function(Value)LoopkillGuards(Value)
+end)
+
+PrisonLife:CreateToggle("Loop kill Criminals", function(Value)LoopkillCriminals(Value)
+end)
+
+PrisonLife:CreateToggle("Loop kill All", function(Value)LoopkillAll(Value)
 end)
 
 local PrisonLife = Window:NewSection("Others")
