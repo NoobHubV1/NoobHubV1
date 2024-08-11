@@ -68,31 +68,16 @@ local GetPos = function()
 end
 
 local function Criminal()
+	local savedcf = GetPos()
 	if plr.Team == game.Teams.Guards then
-	     local savedcf = GetPos()
-	LCS = game.Workspace["Criminals Spawn"].SpawnLocation
-    LCS.CanCollide = false
-    LCS.Size = Vector3.new(51.05, 24.12, 54.76)
-    LCS.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-    LCS.Transparency = 1
-    task.wait()
-    LCS.CFrame = CFrame.new(-920.510803, 92.2271957, 2138.27002, 0, 0, -1, 0, 1, 0, 1, 0, 0)
-    LCS.Size = Vector3.new(6, 0.2, 6)
-    LCS.Transparency = 0
-	task.wait(0.8)
+	     task.wait()
+	GetChar().HumanoidRootPart.CFrame = CFrame.new(-919.958, 95.327, 2138.189)
+	task.wait(0.75)
 	GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
 	elseif plr.Team == game.Teams.Inmates then
-		LCS = game.Workspace["Criminals Spawn"].SpawnLocation
-    LCS.CanCollide = false
-    LCS.Size = Vector3.new(51.05, 24.12, 54.76)
-    LCS.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-    LCS.Transparency = 1
-    task.wait()
-    LCS.CFrame = CFrame.new(-920.510803, 92.2271957, 2138.27002, 0, 0, -1, 0, 1, 0, 1, 0, 0)
-    LCS.Size = Vector3.new(6, 0.2, 6)
-    LCS.Transparency = 0
-	task.wait(0.8)
-	GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
+	GetChar().HumanoidRootPart.CFrame = CFrame.new(-919.958, 95.327, 2138.189)
+	task.wait()
+        GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
 	end
 end
 
@@ -100,15 +85,7 @@ local function ChangeTeam(Team)
 	local savedcf = GetPos()
 	if Team == game.Teams.Criminals then
 workspace.Remote.TeamEvent:FireServer("Bright blue") task.wait(0.4)
-LCS = game.Workspace["Criminals Spawn"].SpawnLocation
-    LCS.CanCollide = false
-    LCS.Size = Vector3.new(51.05, 24.12, 54.76)
-    LCS.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-    LCS.Transparency = 1
-    task.wait()
-    LCS.CFrame = CFrame.new(-920.510803, 92.2271957, 2138.27002, 0, 0, -1, 0, 1, 0, 1, 0, 0)
-    LCS.Size = Vector3.new(6, 0.2, 6)
-    LCS.Transparency = 0
+plr.Character.HumanoidRootPart.CFrame = CFrame.new(-919.958, 95.327, 2138.189)
 task.wait(0.75)
 plr.Character.HumanoidRootPart.CFrame = CFrame.new(savedcf)
 	elseif Team == game.Teams.Inmates then
@@ -409,6 +386,92 @@ local AntiBring = function(State)
 	end
 end
 
+local function gplr(String)
+		local Found = {}
+		local strl = String:lower()
+		if strl == "all" then
+			for i,v in pairs(game:FindService("Players"):GetPlayers()) do
+				table.insert(Found,v)
+			end
+		elseif strl == "others" then
+			for i,v in pairs(game:FindService("Players"):GetPlayers()) do
+				if v.Name ~= lp.Name then
+					table.insert(Found,v)
+				end
+			end 
+		elseif strl == "me" then
+			for i,v in pairs(game:FindService("Players"):GetPlayers()) do
+				if v.Name == lp.Name then
+					table.insert(Found,v)
+				end
+			end 
+		else
+			for i,v in pairs(game:FindService("Players"):GetPlayers()) do
+				if v.Name:lower():sub(1, #String) == String:lower() then
+					table.insert(Found,v)
+				end
+			end 
+		end
+		return Found 
+end
+
+local KillTeam = function(Team)
+	local events = {}
+	local gun = nil
+	GiveItem("Remington 870")
+	for i,v in pairs(game.Players:GetPlayers()) do
+		if v ~= game.Players.LocalPlayer and v.TeamColor.Name == Team then
+			if v.TeamColor.Name == game.Players.LocalPlayer.TeamColor.Name then
+				local savedcf = GetOrientation()
+				local camcf = workspace.CurrentCamera.CFrame
+				workspace.Remote.loadchar:InvokeServer(nil, BrickColor.random().Name)
+				workspace.CurrentCamera.CFrame = camcf
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = savedcf
+			end
+			for i = 1,10 do
+				events[#events + 1] = {
+					Hit = v.Character:FindFirstChild("Head") or v.Character:FindFirstChildOfClass("Part"),
+					Cframe = CFrame.new(),
+					RayObject = Ray.new(Vector3.new(), Vector3.new()),
+					Distance = 0
+				}
+			end
+		end
+	end
+	for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+		if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
+			gun = v
+		end
+	end
+	if gun == nil then
+		for i,v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+			if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
+				gun = v
+			end
+		end
+	end
+	coroutine.wrap(function()
+		for i = 1,30 do
+			game.ReplicatedStorage.ReloadEvent:FireServer(gun)
+			wait(.5)
+		end
+	end)()
+	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
+end
+
+local function KillAll()
+	Criminal()
+	task.wait(0.5)
+        KillTeam(BrickColor.new("Bright orange").Name)
+	task.wait(0.3)
+	KillTeam(BrickColor.new("Bright blue").Name)
+	if plr.Team == game.Teams.Criminals then
+	ChangeTeam(game.Teams.Inmates)
+	task.wait(0.5)
+	KillTeam(BrickColor.new("Really red").Name)
+	end
+end
+
 local Window = Library:NewWindow("NoobHubV1 Hub")
 
 local PrisonLife = Window:NewSection("Main")
@@ -487,6 +550,34 @@ PrisonLife:CreateToggle("Noclip", function(Value)getgenv().Noclipping = Value
 end)
 
 PrisonLife:CreateToggle("AntiBring/AntiSit", function(Value)AntiBring(Value)
+end)
+
+local PrisonLife = Window:NewSection("Kill")
+
+PrisonLife:CreateButton("Kill Inmates", function()Criminal()
+		                                  task.wait(0.5)
+		                                  KillTeam(BrickColor.new("Bright orange").Name)
+end)
+
+PrisonLife:CreateButton("Kill Guards", function()Criminal()
+		                                  task.wait(0.5)
+		                                  KillTeam(BrickColor.new("Bright blue").Name)
+end)
+
+PrisonLife:CreateButton("Kill Criminals", function()if plr.Team == game.Teams.Criminals then
+		                                   ChangeTeam(game.Teams.Inmates)
+		                                  task.wait(0.5)
+		                                  KillTeam(BrickColor.new("Really red").Name)
+		                                    elseif plr.Team == game.Teams.Guards then
+			                            ChangeTeam(game.Teams.Inmates)
+		                                  task.wait(0.5)
+		                                  KillTeam(BrickColor.new("Really red").Name)
+		                                    elseif plr.Team == game.Teams.Inmates then
+			                            KillTeam(BrickColor.new("Really red").Name)
+		                                    end
+end)
+
+PrisonLife:CreateButton("Kill All", function()KillAll()
 end)
 
 local PrisonLife = Window:NewSection("Others")
