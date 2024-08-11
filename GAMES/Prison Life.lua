@@ -254,6 +254,21 @@ local function Refresh()
         ChangeTeam(plr.Team)
 end
 
+local function Noclip(State)
+    player = game.Players.LocalPlayer
+    character = player.Character
+
+        for _, v in pairs(character:GetDescendants()) do
+            pcall(function()
+                if v:IsA("BasePart") then
+                    v.CanCollide = State
+                end
+            end)
+	end
+
+    game:GetService("RunService").Stepped:wait()
+end
+
 local LoadstringHttps = function(Https)
 	loadstring(Game:HttpGet(Https))()
 end
@@ -368,7 +383,7 @@ function G:Enable()
         end
 function G:Disable()
    C: Disconnect ()
-for i,v in pairs(game.Players:GetPlayers()) do
+for i,v in pairs(Players:GetPlayers()) do
 if v ~= plr then
 for h,b in pairs(v.Character:GetDescendants()) do
 if b:IsA"BasePart" and b.CanCollide == false then
@@ -381,6 +396,16 @@ end
 
 G:Enable()
 return G
+end
+
+local AntiBring = function(State)
+	getgenv().Loop = State
+	while Loop do
+	if GetChar().Humanoid.Sit == true then
+	GetChar().Humanoid:ChangeState("Jumping")
+	end
+	task.wait()
+	end
 end
 
 local Window = Library:NewWindow("NoobHubV1 Hub")
@@ -434,6 +459,33 @@ PrisonLife:CreateButton("Silent Aim", function()SilentAim()
 end)
 
 PrisonLife:CreateButton("Server Crash", function()ServerCrash()
+end)
+
+local PrisonLife = Window:NewSection("Player")
+
+PrisonLife:CreateTextbox("WalkSpeed", function(Value)plr.Character.Humanoid.WalkSpeed = Value
+end)
+
+PrisonLife:CreateTextbox("JumpPower", function(Value)plr.Character.Humanoid.JumpPower = Value
+end)
+
+PrisonLife:CreateToggle("Noclip", function(Value)getgenv().Noclipping = Value
+			if Noclipping == true then
+				spawn(function()
+					while Noclipping == true do
+						Noclip(false)
+						task.wait(.05)
+					end
+				end)
+			end
+			if Noclipping == false then
+				Noclip(true)
+			task.wait(0.3)
+			GetChar().Humanoid:ChangeState("Jumping")
+		        end
+end)
+
+PrisonLife:CreateToggle("AntiBring/AntiSit", function(Value)AntiBring(Value)
 end)
 
 local PrisonLife = Window:NewSection("Others")
