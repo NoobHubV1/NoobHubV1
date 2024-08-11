@@ -1,7 +1,6 @@
 local Library = loadstring(Game:HttpGetAsync(("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard")))()
 local Players = game.Players
 local plr = Players.LocalPlayer
-local Player = Players.LocalPlayer
 local BuyGamepass = game:GetService("MarketplaceService"):UserOwnsGamePassAsync(tonumber((game:GetService("Players").LocalPlayer.CharacterAppearance):split('=')[#((game:GetService("Players").LocalPlayer.CharacterAppearance):split('='))]), 96651)
 
 local function Tween(Obj, Prop, New, Time)
@@ -98,8 +97,8 @@ local function Criminal()
 end
 
 local function ChangeTeam(Team)
+	local savedcf = GetPos()
 	if Team == game.Teams.Criminals then
-local savedcf = GetPos()
 workspace.Remote.TeamEvent:FireServer("Bright blue") task.wait(0.4)
 LCS = game.Workspace["Criminals Spawn"].SpawnLocation
     LCS.CanCollide = false
@@ -113,12 +112,10 @@ LCS = game.Workspace["Criminals Spawn"].SpawnLocation
 task.wait(0.75)
 plr.Character.HumanoidRootPart.CFrame = CFrame.new(savedcf)
 	elseif Team == game.Teams.Inmates then
-		local savedcf = GetPos()
 		workspace.Remote.TeamEvent:FireServer("Bright orange")
 		task.wait(0.75)
 		GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
 	elseif Team == game.Teams.Guards then
-		local savedcf = GetPos()
 		workspace.Remote.TeamEvent:FireServer("Bright blue")
 		task.wait(0.75)
 		GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
@@ -447,7 +444,7 @@ end)
 PrisonLife:CreateButton("Admin Gui", function()LoadstringHttps("https://raw.githubusercontent.com/NoobHubV1/RobloxScripts/main/Prison%20Life%20Admin.lua")
 end)
 
-PrisonLife:CreateButton("Auto Respawn Gui (Made by iTsSaalty)", function()LoadstringHttps("https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/GAMES/Auto%20Respawn.lua")
+PrisonLife:CreateButton("Auto Respawn Gui (Made by iTsSaalty)", function()LoadstringHttps("https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/Auto%20Respawn.lua")
 end)
 
 Notif("(Prison Life Script By NoobHubV1) Script Loaded!)")
