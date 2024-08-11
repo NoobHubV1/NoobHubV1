@@ -252,6 +252,7 @@ end
 
 local function Refresh()
         ChangeTeam(plr.Team)
+	Notif("Refresh Success")
 end
 
 local function Noclip(State)
@@ -322,6 +323,7 @@ local AutoRefresh = function(State)
 	wait()
 	if GetChar().Humanoid.Health == 0 then
 	Refresh()
+	Notif("Refresh Success")
 	end
 	end
 end
