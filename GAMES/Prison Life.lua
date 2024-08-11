@@ -299,7 +299,7 @@ local AutoRespawn = function(State)
 	while Loop do
 	wait()
 	if GetChar().Humanoid.Health == 0 then
-	Refresh()
+	Respawn()
 	end
 	end
 end
@@ -461,7 +461,7 @@ end
 
 local function KillAll()
 	Criminal()
-	task.wait(0.3)
+	task.wait(0.15)
         KillTeam(BrickColor.new("Bright orange").Name)
 	task.wait(0.15)
 	KillTeam(BrickColor.new("Bright blue").Name)
@@ -528,7 +528,7 @@ local function LoopkillAll(State)
 	getgenv().lkall = State
 	while lkall do
 	KillAll()
-	task.wait(1)
+	task.wait(0.8)
 	end
 end
 
@@ -561,14 +561,28 @@ end)
 
 local PrisonLife = Window:NewSection("Kill")
 
-PrisonLife:CreateButton("Kill Inmates", function()Criminal()
-		                                  task.wait(0.15)
-		                                  KillTeam(BrickColor.new("Bright orange").Name)
+PrisonLife:CreateButton("Kill Inmates", function()if plr.Team == game.Teams.Criminals then
+			                          KillTeam(BrickColor.new("Bright orange").Name)
+		                                  elseif plr.Team == game.Teams.Guards then
+			                          Criminal()
+			                          task.wait(0.45)
+			                          KillTeam(BrickColor.new("Bright orange").Name)
+		                                  elseif plr.Team == game.Teams.Inmates then
+			                          Criminal()
+			                          task.wait(0.15)
+			                          KillTeam(BrickColor.new("Bright orange").Name)
+		                                  end
 end)
 
-PrisonLife:CreateButton("Kill Guards", function()Criminal()
-		                                  task.wait(0.15)
-		                                  KillTeam(BrickColor.new("Bright blue").Name)
+PrisonLife:CreateButton("Kill Guards", function()if plr.Team == game.Teams.Guards then
+	                                         ChangeTeam(game.Teams.Inmates)
+	                                         task.wait(0.15)
+	                                         KillTeam(BrickColor.new("Bright blue").Name)
+	                                         elseif plr.Team == game.Teams.Inmates then
+	                                         KillTeam(BrickColor.new("Bright blue").Name)
+	                                         elseif plr.Team == game.Teams.Criminals then
+	                                         KillTeam(BrickColor.new("Bright blue").Name)
+	  end
 end)
 
 PrisonLife:CreateButton("Kill Criminals", function()if plr.Team == game.Teams.Criminals then
