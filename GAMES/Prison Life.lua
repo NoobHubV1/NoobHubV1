@@ -250,9 +250,9 @@ local AutoItems = function(State)
 	end
 end
 
-local function Refresh()
+local function Respawn()
         ChangeTeam(plr.Team)
-	Notif("Refresh Success")
+	Notif("Respawn Success")
 end
 
 local function Noclip(State)
@@ -317,13 +317,12 @@ task.wait()
 	end
 end
 
-local AutoRefresh = function(State)
+local AutoRespawn = function(State)
 	getgenv().Loop = State
 	while Loop do
 	wait()
 	if GetChar().Humanoid.Health == 0 then
 	Refresh()
-	Notif("Refresh Success")
 	end
 	end
 end
@@ -425,10 +424,10 @@ PrisonLife:CreateDropdown("Team", {"Inmate","Guard","Neutral","Criminal"}, 1, fu
                                                                                              end
 end)
 
-PrisonLife:CreateButton("Refresh", function()Refresh()
+PrisonLife:CreateButton("Refresh", function()Respawn()
 end)
 
-PrisonLife:CreateToggle("Auto Refresh", function(Value)AutoRefresh(Value)
+PrisonLife:CreateToggle("Auto Respawn", function(Value)AutoRespawn(Value)
 end)
 
 PrisonLife:CreateToggle("Kill Aura", function(Value)KillAura(Value)
@@ -498,7 +497,8 @@ end)
 PrisonLife:CreateButton("Admin Gui", function()LoadstringHttps("https://raw.githubusercontent.com/NoobHubV1/RobloxScripts/main/Prison%20Life%20Admin.lua")
 end)
 
-PrisonLife:CreateButton("Auto Respawn Button (Made by iTsSaalty)", function()LoadstringHttps("https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/Auto%20Respawn.lua")
+PrisonLife:CreateButton("Auto Respawn Button", function()Notif("Script Made by iTsSaalty") task.wait(1)
+LoadstringHttps("https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/Auto%20Respawn.lua")
 end)
 
 Notif("(Prison Life Script By NoobHubV1) Script Loaded!)")
