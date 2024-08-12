@@ -123,6 +123,10 @@ re1.TextWrapped = true
 
 -- Scripts:
 
+local function Parry()
+        game:GetService("ReplicatedStorage").RemoteEvent:FireServer({["name"] = "defense",["origin"] = "balltargets"},{})
+end
+
 local function Tween(Obj, Prop, New, Time)
 	if not Time then
 		Time = .5
@@ -260,14 +264,14 @@ local Window = Library:NewWindow("NoobHubV1 Hub")
 
 local GunBall = Window:NewSection("Main")
 
-GunBall:CreateButton("Spam Parry On", function()SpamParry(true)
-Notif("Spam Parry Enabled",7)
+GunBall:CreateButton("Spam Parry On", function()SpamParry(true) task.wait(0.1)
+Notif("Spam Parry Enabled")
 end)
 
 GunBall:CreateButton("Spam Parry Off", function()SpamParry(false)
-Notif("Spam Parry Disabled",7)
+Notif("Spam Parry Disabled")
 end)
 
 GunBall:CreateButton("Spam Parry Button", function()SpamParryButton()
-Notif("Spam Parry Button Loaded!",7)
+Notif("Spam Parry Button Loaded!",5)
 end)
