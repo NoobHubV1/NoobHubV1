@@ -254,6 +254,7 @@ local function VYXMZ_fake_script() -- Main.drag
 	end)
 end
 coroutine.wrap(VYXMZ_fake_script)()
+end
 
 local Window = Library:NewWindow("NoobHubV1 Hub")
 
