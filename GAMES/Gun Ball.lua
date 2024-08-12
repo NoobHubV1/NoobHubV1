@@ -121,7 +121,6 @@ local function MKANE_fake_script() -- re2.LocalScript
 		while _G.Loop == true do
 			Parry()
                         task.wait()
-			Notif("Spam Parry Enabled")
 		end
 	end)
 end
