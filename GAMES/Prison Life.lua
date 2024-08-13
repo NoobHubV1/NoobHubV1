@@ -72,7 +72,7 @@ local function Criminal()
 	if plr.Team == game.Teams.Guards then
 	     task.wait()
 	GetChar().HumanoidRootPart.CFrame = CFrame.new(-919.958, 95.327, 2138.189)
-	task.wait(0.75)
+	task.wait(0.5)
 	GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
 	elseif plr.Team == game.Teams.Inmates then
 	GetChar().HumanoidRootPart.CFrame = CFrame.new(-919.958, 95.327, 2138.189)
@@ -86,18 +86,30 @@ local function ChangeTeam(Team)
 	if Team == game.Teams.Criminals then
 workspace.Remote.TeamEvent:FireServer("Bright blue") task.wait(0.4)
 plr.Character.HumanoidRootPart.CFrame = CFrame.new(-919.958, 95.327, 2138.189)
-task.wait(0.75)
+task.wait(0.5)
 plr.Character.HumanoidRootPart.CFrame = CFrame.new(savedcf)
 	elseif Team == game.Teams.Inmates then
 		workspace.Remote.TeamEvent:FireServer("Bright orange")
-		task.wait(0.75)
+		task.wait(0.5)
 		GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
 	elseif Team == game.Teams.Guards then
 		workspace.Remote.TeamEvent:FireServer("Bright blue")
-		task.wait(0.75)
+		task.wait(0.5)
 		GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
 	elseif Team == game.Teams.Neutral then
 		workspace.Remote.TeamEvent:FireServer("Medium stone grey")
+	end
+end
+
+local SelectedTeam = function(TeamPath)
+	if TeamPath == "Criminal" then
+        Criminal()
+        elseif TeamPath == "Inmate" then
+        ChangeTeam(game.Teams.Inmates)
+        elseif TeamPath == "Guard" then
+        ChangeTeam(game.Teams.Guards)
+        elseif TeamPath == "Neutral" then
+        ChangeTeam(game.Teams.Neutral)
 	end
 end
 
@@ -459,6 +471,46 @@ local KillTeam = function(Team)
 	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
 end
 
+local KillInmates = function()
+	if plr.Team == game.Teams.Criminals then
+	KillTeam(BrickColor.new("Bright orange").Name)
+	elseif plr.Team == game.Teams.Guards then
+	Criminal()
+	task.wait(0.45)
+	KillTeam(BrickColor.new("Bright orange").Name)
+	elseif plr.Team == game.Teams.Inmates then
+	Criminal()
+	task.wait(0.15)
+	KillTeam(BrickColor.new("Bright orange").Name)
+	end
+end
+
+local function KillGuards()
+	if plr.Team == game.Teams.Guards then
+	ChangeTeam(game.Teams.Inmates)
+	task.wait(0.15)
+	KillTeam(BrickColor.new("Bright blue").Name)
+	elseif plr.Team == game.Teams.Inmates then
+	KillTeam(BrickColor.new("Bright blue").Name)
+	elseif plr.Team == game.Teams.Criminals then
+	KillTeam(BrickColor.new("Bright blue").Name)
+	end
+end
+
+local KillCriminals = function()
+	if plr.Team == game.Teams.Criminals then
+        ChangeTeam(game.Teams.Inmates)
+	task.wait(0.15)
+        KillTeam(BrickColor.new("Really red").Name)
+	elseif plr.Team == game.Teams.Guards then
+	ChangeTeam(game.Teams.Inmates)
+	task.wait(0.15)
+	KillTeam(BrickColor.new("Really red").Name)
+	elseif plr.Team == game.Teams.Inmates then
+	KillTeam(BrickColor.new("Really red").Name)
+	end
+end
+
 local function KillAll()
 	Criminal()
 	task.wait(0.15)
@@ -475,52 +527,23 @@ end
 local LoopkillInmates = function(State)
 	getgenv().lkinmates = State
 	while lkinmates do
-	wait()
-	if plr.Team == game.Teams.Inmates then
-	Criminal()
-	task.wait(0.15)
-	KillTeam(BrickColor.new("Bright orange").Name)
-	elseif plr.Team == game.Teams.Guards then
-	Criminal()
-	task.wait(0.15)
-	KillTeam(BrickColor.new("Bright orange").Name)
-	elseif plr.Team == game.Teams.Criminals then
-	KillTeam(BrickColor.new("Bright orange").Name)
-	end
+	KillInmates()
+	task.wait()
 	end
 end
 
 local LoopkillGuards = function(State)
 	getgenv().lkguards = State
 	while lkguards do
-	wait()
-	if plr.Team == game.Teams.Guards then
-	ChangeTeam(game.Teams.Inmates)
-	task.wait(0.15)
-	KillTeam(BrickColor.new("Bright blue").Name)
-	elseif plr.Team == game.Teams.Inmates then
-	KillTeam(BrickColor.new("Bright blue").Name)
-	elseif plr.Team == game.Teams.Criminals then
-	KillTeam(BrickColor.new("Bright blue").Name)
-	end
+	KillGuards()
+	task.wait()
 	end
 end
 
 local function LoopkillCriminals(State)
 	getgenv().lkcriminals = State
 	while lkcriminals do
-	wait()
-	if plr.Team == game.Teams.Criminals then
-        ChangeTeam(game.Teams.Inmates)
-	task.wait(0.15)
-        KillTeam(BrickColor.new("Really red").Name)
-	elseif plr.Team == game.Teams.Guards then
-	ChangeTeam(game.Teams.Inmates)
-	task.wait(0.15)
-	KillTeam(BrickColor.new("Really red").Name)
-	elseif plr.Team == game.Teams.Inmates then
-	KillTeam(BrickColor.new("Really red").Name)
-	end
+	KillCriminals()
 	end
 end
 
@@ -528,23 +551,61 @@ local function LoopkillAll(State)
 	getgenv().lkall = State
 	while lkall do
 	KillAll()
-	task.wait(0.8)
+	task.wait(0.75)
 	end
+end
+
+local Chat = function(message, func, functi)
+	task.spawn(function()
+		if not functi then
+			functi = true
+		end
+	        plr.Chatted:connect(function(msg)
+	                if msg == message then
+		        func(functi)
+	                end
+	        end)
+	end)	
+end
+
+local function ChatCommands()
+	Chat(".killall", KillAll)
+	Chat(".killinmates", KillInmates)
+	Chat(".killguards", KillGuards)
+	Chat(".killcriminals", KillCriminals)
+	Chat(".loopkillall", LoopkillAll, true)
+	Chat(".unloopkillall", LoopkillAll, false)
+	Chat(".loopkillinmates", LoopkillInmates, true)
+	Chat(".unloopkillinmates", LoopkillInmates, false)
+	Chat(".loopkillguards", LoopkillGuards, true)
+	Chat(".unloopkillguards", LoopkillGuards, false)
+	Chat(".loopkillcriminals", LoopkillCriminals, true)
+	Chat(".unloopkillcriminals", LoopkillCriminals, false)
+	Chat(".inmate", ChangeTeam, game.Teams.Inmates)
+	Chat(".guard", ChangeTeam, game.Teams.Guards)
+	Chat(".criminal", Criminal)
+	Chat(".refresh", Respawn)
+	Chat(".re", Respawn)
+	Chat(".autorespawn", AutoRespawn, true)
+	Chat(".autore", AutoRespawn, true)
+	Chat(".unautorespawn", AutoRespawn, false)
+	Chat(".unautore", AutoRespawn, false)
+	Chat(".guns", AllGuns)
+	Chat(".autoguns", AutoGuns)
+	Chat(".silentaim", SilentAim)
+	Chat(".servercrash", ServerCrash)
+	Chat(".svcrash", ServerCrash)
+	Chat(".killaura", KillAura, true)
+	Chat(".unkillaura", KillAura, false)
+	
+	Notif("Loaded Admin Gui")
 end
 
 local Window = Library:NewWindow("NoobHubV1 Hub")
 
 local PrisonLife = Window:NewSection("Main")
 
-PrisonLife:CreateDropdown("Team", {"Inmate","Guard","Neutral","Criminal"}, 1, function(Value)if Value == "Criminal" then
-                                                                                                     Criminal()
-                                                                                             elseif Value == "Inmate" then
-                                                                                                     ChangeTeam(game.Teams.Inmates)
-                                                                                             elseif Value == "Guard" then
-                                                                                                     ChangeTeam(game.Teams.Guards)
-                                                                                             elseif Value == "Neutral" then
-                                                                                                     ChangeTeam(game.Teams.Neutral)
-                                                                                             end
+PrisonLife:CreateDropdown("Team", {"Inmate","Guard","Neutral","Criminal"}, 1, function(Value)SelectedTeam(Value)
 end)
 
 PrisonLife:CreateButton("Refresh", function()Respawn()
@@ -559,43 +620,18 @@ end)
 PrisonLife:CreateButton("Anti Fling", function()AntiFling()
 end)
 
+PrisonLife:CreateButton("Chat Commands", function()ChatCommands()
+end)
+
 local PrisonLife = Window:NewSection("Kill")
 
-PrisonLife:CreateButton("Kill Inmates", function()if plr.Team == game.Teams.Criminals then
-			                          KillTeam(BrickColor.new("Bright orange").Name)
-		                                  elseif plr.Team == game.Teams.Guards then
-			                          Criminal()
-			                          task.wait(0.45)
-			                          KillTeam(BrickColor.new("Bright orange").Name)
-		                                  elseif plr.Team == game.Teams.Inmates then
-			                          Criminal()
-			                          task.wait(0.15)
-			                          KillTeam(BrickColor.new("Bright orange").Name)
-		                                  end
+PrisonLife:CreateButton("Kill Inmates", function()KillInmates()
 end)
 
-PrisonLife:CreateButton("Kill Guards", function()if plr.Team == game.Teams.Guards then
-	                                         ChangeTeam(game.Teams.Inmates)
-	                                         task.wait(0.15)
-	                                         KillTeam(BrickColor.new("Bright blue").Name)
-	                                         elseif plr.Team == game.Teams.Inmates then
-	                                         KillTeam(BrickColor.new("Bright blue").Name)
-	                                         elseif plr.Team == game.Teams.Criminals then
-	                                         KillTeam(BrickColor.new("Bright blue").Name)
-	  end
+PrisonLife:CreateButton("Kill Guards", function()KillGuards()
 end)
 
-PrisonLife:CreateButton("Kill Criminals", function()if plr.Team == game.Teams.Criminals then
-		                                   ChangeTeam(game.Teams.Inmates)
-		                                  task.wait(0.15)
-		                                  KillTeam(BrickColor.new("Really red").Name)
-		                                    elseif plr.Team == game.Teams.Guards then
-			                            ChangeTeam(game.Teams.Inmates)
-		                                  task.wait(0.15)
-		                                  KillTeam(BrickColor.new("Really red").Name)
-		                                    elseif plr.Team == game.Teams.Inmates then
-			                            KillTeam(BrickColor.new("Really red").Name)
-		                                    end
+PrisonLife:CreateButton("Kill Criminals", function()KillCriminals()
 end)
 
 PrisonLife:CreateButton("Kill All", function()KillAll()
