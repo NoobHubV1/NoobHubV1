@@ -13,7 +13,7 @@ GunBall.Name = "GunBall"
 GunBall.Parent = game.CoreGui
 
 BG.Name = "BG"
-BG.Parent = Noclip
+BG.Parent = GunBall
 BG.BackgroundColor3 = Color3.new(0.0980392, 0.0980392, 0.0980392)
 BG.BorderColor3 = Color3.new(0.0588235, 0.0588235, 0.0588235)
 BG.BorderSizePixel = 2
