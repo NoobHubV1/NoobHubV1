@@ -1,18 +1,16 @@
 local Workspace = game:GetService("Workspace")
 local CoreGui = game:GetService("CoreGui")
 local Players = game:GetService("Players")
-local Noclip = Instance.new("ScreenGui")
+local GunBall = Instance.new("ScreenGui")
 local BG = Instance.new("Frame")
 local Title = Instance.new("TextLabel")
 local Toggle = Instance.new("TextButton")
 local StatusPF = Instance.new("TextLabel")
 local Status = Instance.new("TextLabel")
 local Credit = Instance.new("TextLabel")
-local Plr = Players.LocalPlayer
-local Clipon = false
 
-Noclip.Name = "Noclip"
-Noclip.Parent = game.CoreGui
+GunBall.Name = "GunBall"
+GunBall.Parent = game.CoreGui
 
 BG.Name = "BG"
 BG.Parent = Noclip
