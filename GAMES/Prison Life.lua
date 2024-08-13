@@ -241,7 +241,6 @@ end
 
 local function Respawn()
         ChangeTeam(plr.Team)
-	Notif("Respawn Success")
 end
 
 local function Noclip(State)
@@ -266,6 +265,7 @@ end
 local function ServerCrash()
 	getgenv().Loop = true
 	while Loop do
+	for i = 1, 10 do
 local Gun = "Remington 870"
 
 local Player = game.Players.LocalPlayer.Name
@@ -302,6 +302,7 @@ FireGun()
 end
 end
 task.wait()
+	end
 	task.wait()
 	end
 end
@@ -310,7 +311,7 @@ local AutoRespawn = function(State)
 	getgenv().Loop = State
 	while Loop do
 	wait()
-	if GetChar().Humanoid.Health == 0 then
+	if GetChar().Humanoid.Health <= 30 then
 	Respawn()
 	end
 	end
@@ -396,35 +397,6 @@ local AntiBring = function(State)
 	end
 	task.wait()
 	end
-end
-
-local function gplr(String)
-		local Found = {}
-		local strl = String:lower()
-		if strl == "all" then
-			for i,v in pairs(game:FindService("Players"):GetPlayers()) do
-				table.insert(Found,v)
-			end
-		elseif strl == "others" then
-			for i,v in pairs(game:FindService("Players"):GetPlayers()) do
-				if v.Name ~= lp.Name then
-					table.insert(Found,v)
-				end
-			end 
-		elseif strl == "me" then
-			for i,v in pairs(game:FindService("Players"):GetPlayers()) do
-				if v.Name == lp.Name then
-					table.insert(Found,v)
-				end
-			end 
-		else
-			for i,v in pairs(game:FindService("Players"):GetPlayers()) do
-				if v.Name:lower():sub(1, #String) == String:lower() then
-					table.insert(Found,v)
-				end
-			end 
-		end
-		return Found 
 end
 
 local KillTeam = function(Team)
@@ -544,6 +516,7 @@ local function LoopkillCriminals(State)
 	getgenv().lkcriminals = State
 	while lkcriminals do
 	KillCriminals()
+	task.wait()
 	end
 end
 
@@ -551,54 +524,8 @@ local function LoopkillAll(State)
 	getgenv().lkall = State
 	while lkall do
 	KillAll()
-	task.wait(0.75)
+	task.wait(0.7)
 	end
-end
-
-local Chat = function(message, func, functi)
-	task.spawn(function()
-		if not functi then
-			functi = true
-		end
-	        plr.Chatted:connect(function(msg)
-	                if msg == message then
-		        func(functi)
-	                end
-	        end)
-	end)	
-end
-
-local function ChatCommands()
-	Chat(".kill all", KillAll)
-	Chat(".kill inmates", KillInmates)
-	Chat(".kill guards", KillGuards)
-	Chat(".kill criminals", KillCriminals)
-	Chat(".loopkill all", LoopkillAll, true)
-	Chat(".unloopkill all", LoopkillAll, false)
-	Chat(".loopkill inmates", LoopkillInmates, true)
-	Chat(".unloopkill inmates", LoopkillInmates, false)
-	Chat(".loopkill guards", LoopkillGuards, true)
-	Chat(".unloopkill guards", LoopkillGuards, false)
-	Chat(".loopkill criminals", LoopkillCriminals, true)
-	Chat(".unloopkill criminals", LoopkillCriminals, false)
-	Chat(".inmate", ChangeTeam, game.Teams.Inmates)
-	Chat(".guard", ChangeTeam, game.Teams.Guards)
-	Chat(".criminal", Criminal)
-	Chat(".refresh", Respawn)
-	Chat(".re", Respawn)
-	Chat(".autorespawn on", AutoRespawn, true)
-	Chat(".autore on", AutoRespawn, true)
-	Chat(".autorespawn off", AutoRespawn, false)
-	Chat(".autore off", AutoRespawn, false)
-	Chat(".guns", AllGuns)
-	Chat(".autoguns", AutoGuns)
-	Chat(".silentaim", SilentAim)
-	Chat(".servercrash", ServerCrash)
-	Chat(".svcrash", ServerCrash)
-	Chat(".killaura", KillAura, true)
-	Chat(".unkillaura", KillAura, false)
-	
-	Notif("Loaded Admin Gui")
 end
 
 local Window = Library:NewWindow("NoobHubV1 Hub")
@@ -618,9 +545,6 @@ PrisonLife:CreateToggle("Kill Aura", function(Value)KillAura(Value)
 end)
 
 PrisonLife:CreateButton("Anti Fling", function()AntiFling()
-end)
-
-PrisonLife:CreateButton("Chat Commands", function()ChatCommands()
 end)
 
 local PrisonLife = Window:NewSection("Kill")
