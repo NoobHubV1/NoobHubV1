@@ -119,7 +119,9 @@ local function MKANE_fake_script() -- re2.LocalScript
 		_G.Loop = false
 	
 		while _G.Loop == true do
+			for i = 1, 50 do
 			Parry()
+			end
                         task.wait()
 		end
 	end)
@@ -135,7 +137,9 @@ local function ARECQSO_fake_script() -- re1.LocalScript
 		_G.Loop = true
 	
 		while _G.Loop == true do
+			for i = 1, 50 do
 			Parry()
+			end
                         task.wait()
 		end
 	end)
