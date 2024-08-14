@@ -49,6 +49,8 @@ re1.TextSize = 14.000
 re1.TextStrokeTransparency = 0.000
 re1.TextWrapped = true
 
+local plr = game.Players.LocalPlayer
+
 -- Scripts:
 
 local function Tween(Obj, Prop, New, Time)
@@ -107,6 +109,26 @@ local function Notif(Text,Dur)
 	return
 end
 
+local ChangeTeam = function(Team)
+                        local location = plr.Character.HumanoidRootPart.Position
+                        if plr.Team == game.Teams.Criminals then
+                        workspace.Remote.TeamEvent:FireServer("Bright blue") task.wait(0.2)
+                        GetChar().HumanoidRootPart.CFrame = CFrame.new(-919.958, 95.327, 2138.189)
+	                task.wait(0.4)
+	                GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
+                        task.wait(0.18)
+                        plr.Character.HumanoidRootPart.CFrame = CFrame.new(location)
+                        elseif plr.Team == game.Teams.Guards then
+                        workspace.Remote.TeamEvent:FireServer("Bright blue")
+                        task.wait(0.18)
+                        plr.Character.HumanoidRootPart.CFrame = CFrame.new(location)
+                        elseif plr.Team == game.Teams.Inmates then
+                        workspace.Remote.TeamEvent:FireServer("Bright orange")
+                        task.wait(0.18)
+                        plr.Character.HumanoidRootPart.CFrame = CFrame.new(location)
+                        end
+end
+
 local function MKANE_fake_script() -- re2.LocalScript 
 	local script = Instance.new('LocalScript', re2)
 
@@ -118,33 +140,7 @@ local function MKANE_fake_script() -- re2.LocalScript
 		while _G.Loop == true do
 			wait()
 			if game.Players.LocalPlayer.Character.Humanoid.Health <= 15 then
-			local plr = game.Players.LocalPlayer
-                        local location = plr.Character.HumanoidRootPart.Position
-                        if plr.Team == game.Teams.Criminals then
-                        workspace.Remote.TeamEvent:FireServer("Bright blue") task.wait(0.4)
-LCS = game.Workspace["Criminals Spawn"].SpawnLocation
-    LCS.CanCollide = false
-    LCS.Size = Vector3.new(51.05, 24.12, 54.76)
-    LCS.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-    LCS.Transparency = 1
-    task.wait()
-    LCS.CFrame = CFrame.new(-920.510803, 92.2271957, 2138.27002, 0, 0, -1, 0, 1, 0, 1, 0, 0)
-    LCS.Size = Vector3.new(6, 0.2, 6)
-    LCS.Transparency = 0
-                        task.wait(0.75)
-                        plr.Character.HumanoidRootPart.CFrame = CFrame.new(location)
-			Notif("Refresh Success")
-                        elseif plr.Team == game.Teams.Guards then
-                        workspace.Remote.TeamEvent:FireServer("Bright blue")
-                        task.wait(0.75)
-                        plr.Character.HumanoidRootPart.CFrame = CFrame.new(location)
-			Notif("Refresh Success")
-                        elseif plr.Team == game.Teams.Inmates then
-                        workspace.Remote.TeamEvent:FireServer("Bright orange")
-                        task.wait(0.75)
-                        plr.Character.HumanoidRootPart.CFrame = CFrame.new(location)
-			Notif("Refresh Success")
-                        end
+			ChangeTeam(plr.Team)
 			end
 		end
 	end)
@@ -162,33 +158,7 @@ local function ARECQSO_fake_script() -- re1.LocalScript
 		while _G.Loop == true do
 			wait()
 			if game.Players.LocalPlayer.Character.Humanoid.Health <= 15 then
-                        local plr = game.Players.LocalPlayer
-                        local location = plr.Character.HumanoidRootPart.Position
-                        if plr.Team == game.Teams.Criminals then
-                        workspace.Remote.TeamEvent:FireServer("Bright blue") task.wait(0.4)
-LCS = game.Workspace["Criminals Spawn"].SpawnLocation
-    LCS.CanCollide = false
-    LCS.Size = Vector3.new(51.05, 24.12, 54.76)
-    LCS.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-    LCS.Transparency = 1
-    task.wait()
-    LCS.CFrame = CFrame.new(-920.510803, 92.2271957, 2138.27002, 0, 0, -1, 0, 1, 0, 1, 0, 0)
-    LCS.Size = Vector3.new(6, 0.2, 6)
-    LCS.Transparency = 0
-                        task.wait(0.75)
-                        plr.Character.HumanoidRootPart.CFrame = CFrame.new(location)
-			Notif("Refresh Success")
-                        elseif plr.Team == game.Teams.Guards then
-                        workspace.Remote.TeamEvent:FireServer("Bright blue")
-                        task.wait(0.75)
-                        plr.Character.HumanoidRootPart.CFrame = CFrame.new(location)
-			Notif("Refresh Success")
-                        elseif plr.Team == game.Teams.Inmates then
-                        workspace.Remote.TeamEvent:FireServer("Bright orange")
-                        task.wait(0.75)
-                        plr.Character.HumanoidRootPart.CFrame = CFrame.new(location)
-			Notif("Refresh Success")
-                        end
+                        ChangeTeam(plr.Team)
 			end
 		end
 	end)
