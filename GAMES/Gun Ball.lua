@@ -158,26 +158,32 @@ end
 
 Toggle.MouseButton1Click:connect(function()
  if Status.Text == "on" then
+  spamparry = false
   Status.Text = "off"
   Status.TextColor3 = Color3.new(170,0,0)
   task.spawn(function()
   getgenv().loop = false
   while loop do
   for i = 1, 10 do
+  if spamparry then
   ParryAttempt()
+  end
   end
   task.wait()
   end
   end)
   Notif("Spam Parry No Cooldown Disabled",3)
  elseif Status.Text == "off" then
+  spamparry = true
   Status.Text = "on"
   Status.TextColor3 = Color3.new(0,185,0)
   task.spawn(function()
   getgenv().loop = true
   while loop do
   for i = 1, 10 do
+  if spamparry then
   ParryAttempt()
+  end
   end
   task.wait()
   end
@@ -186,4 +192,4 @@ Toggle.MouseButton1Click:connect(function()
  end
 end)
 
-Notif("(Gun Ball) Script Loaded!",3)
+Notif("(Gun Ball) Script Loaded!",5)
