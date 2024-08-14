@@ -70,9 +70,10 @@ end
 local function Criminal()
 	local savedcf = GetPos()
 	if plr.Team == game.Teams.Guards then
-	     task.wait()
 	GetChar().HumanoidRootPart.CFrame = CFrame.new(-919.958, 95.327, 2138.189)
 	task.wait(0.4)
+	GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
+	task.wait(0.75)
 	GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
 	elseif plr.Team == game.Teams.Inmates then
 	GetChar().HumanoidRootPart.CFrame = CFrame.new(-919.958, 95.327, 2138.189)
@@ -88,14 +89,20 @@ workspace.Remote.TeamEvent:FireServer("Bright blue") task.wait(0.2)
 plr.Character.HumanoidRootPart.CFrame = CFrame.new(-919.958, 95.327, 2138.189)
 task.wait(0.4)
 plr.Character.HumanoidRootPart.CFrame = CFrame.new(savedcf)
+	task.wait(0.75)
+	GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
 	elseif Team == game.Teams.Inmates then
 		workspace.Remote.TeamEvent:FireServer("Bright orange")
 		task.wait(0.19)
 		GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
+		task.wait(0.75)
+	GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
 	elseif Team == game.Teams.Guards then
 		workspace.Remote.TeamEvent:FireServer("Bright blue")
 		task.wait(0.19)
 		GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
+		task.wait(0.75)
+	GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
 	elseif Team == game.Teams.Neutral then
 		workspace.Remote.TeamEvent:FireServer("Medium stone grey")
 	end
@@ -491,7 +498,7 @@ local function KillAll()
 	KillTeam(BrickColor.new("Bright blue").Name)
 	if plr.Team == game.Teams.Criminals then
 	ChangeTeam(game.Teams.Inmates)
-	task.wait(0.15)
+	task.wait(0.2)
 	KillTeam(BrickColor.new("Really red").Name)
 	end
 end
@@ -524,7 +531,7 @@ local function LoopkillAll(State)
 	getgenv().lkall = State
 	while lkall do
 	KillAll()
-	task.wait(0.7)
+	task.wait(0.3)
 	end
 end
 
