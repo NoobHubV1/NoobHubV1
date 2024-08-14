@@ -269,6 +269,10 @@ local LoadstringHttps = function(Https)
 	loadstring(Game:HttpGet(Https))()
 end
 
+local function Chat(msg)
+	game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(msg, "ALL")
+end
+
 local function ServerCrash()
 	getgenv().Loop = true
 	while Loop do
@@ -318,7 +322,7 @@ local AutoRespawn = function(State)
 	getgenv().Loop = State
 	while Loop do
 	wait()
-	if GetChar().Humanoid.Health <= 30 then
+	if GetChar().Humanoid.Health <= 15 then
 	Respawn()
 	end
 	end
@@ -535,6 +539,24 @@ local function LoopkillAll(State)
 	end
 end
 
+local Deathnuke = function(State)
+	getgenv().Loop = State
+	while Loop do
+	wait()
+	if GetChar().Humanoid.Health == 0 then
+	Respawn()
+	task.wait(0.1)
+	Chat("LAUNCHING IN 3")
+	task.wait(1)
+	Chat("LAUNCHING IN 2")
+	task.wait(1)
+	Chat("LAUNCHING IN 1")
+	task.wait(1)
+	KillAll()
+	end
+	end
+end
+
 local Window = Library:NewWindow("NoobHubV1 Hub")
 
 local PrisonLife = Window:NewSection("Main")
@@ -578,6 +600,9 @@ PrisonLife:CreateToggle("Loop kill Criminals", function(Value)LoopkillCriminals(
 end)
 
 PrisonLife:CreateToggle("Loop kill All", function(Value)LoopkillAll(Value)
+end)
+
+PrisonLife:CreateToggle("Death Nuke", function(Value)Deathnuke(Value)
 end)
 
 local PrisonLife = Window:NewSection("Player")
