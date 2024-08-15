@@ -555,6 +555,193 @@ local Deathnuke = function(State)
 	end
 end
 
+local function KillPlr()
+	-- Gui to Lua
+-- Version: 3.2
+
+-- Instances:
+
+local ScreenGui = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local TextLabel = Instance.new("TextLabel")
+local TextBox = Instance.new("TextBox")
+local TextButton = Instance.new("TextButton")
+
+--Properties:
+
+ScreenGui.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+Frame.Parent = ScreenGui
+Frame.BackgroundColor3 = Color3.fromRGB(0, 85, 255)
+Frame.Position = UDim2.new(0.0799492374, 0, 0.483815432, 0)
+Frame.Size = UDim2.new(0, 292, 0, 171)
+Frame.Active = true
+Frame.Archivable = true
+Frame.Draggable = true
+
+TextLabel.Parent = Frame
+TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.BackgroundTransparency = 1.000
+TextLabel.Position = UDim2.new(0.157534242, 0, 0, 0)
+TextLabel.Size = UDim2.new(0, 200, 0, 50)
+TextLabel.Font = Enum.Font.SourceSans
+TextLabel.Text = "Kill Plr Script"
+TextLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
+TextLabel.TextScaled = true
+TextLabel.TextSize = 14.000
+TextLabel.TextStrokeTransparency = 0.000
+TextLabel.TextWrapped = true
+
+TextBox.Parent = Frame
+TextBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextBox.Position = UDim2.new(0.157534242, 0, 0.350877196, 0)
+TextBox.Size = UDim2.new(0, 200, 0, 50)
+TextBox.Font = Enum.Font.SourceSans
+TextBox.Text = ""
+TextBox.TextColor3 = Color3.fromRGB(0, 0, 0)
+TextBox.TextScaled = true
+TextBox.TextSize = 14.000
+TextBox.TextWrapped = true
+
+TextButton.Parent = Frame
+TextButton.BackgroundColor3 = Color3.fromRGB(170, 0, 255)
+TextButton.Position = UDim2.new(0.311643839, 0, 0.713450253, 0)
+TextButton.Size = UDim2.new(0, 109, 0, 39)
+TextButton.Font = Enum.Font.SourceSans
+TextButton.Text = "Kill"
+TextButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+TextButton.TextScaled = true
+TextButton.TextSize = 14.000
+TextButton.TextWrapped = true
+
+local plr = game.Players.LocalPlayer
+
+local function GetChar()
+	return plr.Character
+end
+
+local GetPos = function()
+        return GetChar().Torso.Position
+end
+
+local function Criminal()
+	local savedcf = GetPos()
+	if plr.Team == game.Teams.Guards then
+	GetChar().HumanoidRootPart.CFrame = CFrame.new(-919.958, 95.327, 2138.189)
+	task.wait(0.4)
+	GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
+	task.wait(0.75)
+	GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
+	elseif plr.Team == game.Teams.Inmates then
+	GetChar().HumanoidRootPart.CFrame = CFrame.new(-919.958, 95.327, 2138.189)
+	task.wait()
+        GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
+	end
+end
+
+local function ChangeTeam(Team)
+	local savedcf = GetPos()
+	if Team == game.Teams.Criminals then
+workspace.Remote.TeamEvent:FireServer("Bright blue") task.wait(0.2)
+plr.Character.HumanoidRootPart.CFrame = CFrame.new(-919.958, 95.327, 2138.189)
+task.wait(0.4)
+plr.Character.HumanoidRootPart.CFrame = CFrame.new(savedcf)
+	task.wait(0.75)
+	GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
+	elseif Team == game.Teams.Inmates then
+		workspace.Remote.TeamEvent:FireServer("Bright orange")
+		task.wait(0.19)
+		GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
+		task.wait(0.75)
+	GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
+	elseif Team == game.Teams.Guards then
+		workspace.Remote.TeamEvent:FireServer("Bright blue")
+		task.wait(0.19)
+		GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
+		task.wait(0.75)
+	GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
+	elseif Team == game.Teams.Neutral then
+		workspace.Remote.TeamEvent:FireServer("Medium stone grey")
+	end
+end
+
+local function GetPlayer(String)
+        if not String then return end
+	local Yes = {}
+	for _, Player in ipairs(game.Players:GetPlayers()) do
+		if string.lower(Player.Name):match(string.lower(String)) or string.lower(Player.DisplayName):match(string.lower(String)) then
+			table.insert(Yes, Player)
+		end
+	end
+	if #Yes > 0 then
+		return Yes[1]
+	elseif #Yes < 1 then
+		return nil
+	end
+end
+
+local function Kill(Player)
+        local events = {}
+	local gun = nil
+	workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["Remington 870"]})
+	for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+		if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
+			gun = v
+		end
+	end
+	if gun == nil then
+		for i,v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+			if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
+				gun = v
+			end
+		end
+	end
+	coroutine.wrap(function()
+		for i = 1,30 do
+			game.ReplicatedStorage.ReloadEvent:FireServer(gun)
+			wait(.5)
+		end
+	end)()
+	for i = 1,5 do
+		events[#events + 1] = {
+			Hit = Player.Character:FindFirstChild("Head") or Player.Character:FindFirstChildOfClass("Part"),
+			Cframe = CFrame.new(),
+			RayObject = Ray.new(Vector3.new(), Vector3.new()),
+			Distance = 0
+		}
+	end
+	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
+end
+
+local function CheckTeamKillPlayer(Player)
+        local Player = GetPlayer(Player)
+        if Player.Team == game.Teams.Inmates then
+        Criminal()
+        task.wait(0.1)
+        Kill(Player)
+        elseif Player.Team == game.Teams.Guards then
+        if plr.Team == game.Teams.Guards then
+        Criminal()
+        task.wait(0.4)
+        Kill(Player)
+        elseif plr.Team == game.Teams.Criminals then
+        Kill(Player)
+        elseif plr.Team == game.Teams.Inmates then
+        Kill(Player)
+        end
+        elseif Player.Team == game.Teams.Criminals then
+        ChangeTeam(game.Teams.Inmates)
+        task.wait(0.35)
+        Kill(Player)
+        end
+end
+
+TextButton.MouseButton1Click:Connect(function()
+CheckTeamKillPlayer(TextBox.Text)
+end)
+end
+
 local Window = Library:NewWindow("NoobHubV1 Hub")
 
 local PrisonLife = Window:NewSection("Main")
@@ -666,6 +853,9 @@ end)
 
 PrisonLife:CreateButton("Auto Respawn Button", function()Notif("Script Made by iTsSaalty") task.wait(1)
 LoadstringHttps("https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/Auto%20Respawn.lua")
+end)
+
+PrisonLife:CreateButton("Kill Plr", function()KillPlr()
 end)
 
 Notif("(Prison Life Script By NoobHubV1) Script Loaded!)")
