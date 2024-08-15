@@ -990,6 +990,10 @@ end
 end)
 end
 
+local CFrame = function(X, Y, Z)
+	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(X, Y, Z)
+end
+
 local Window = Library:NewWindow("NoobHubV1 Hub")
 
 local PrisonLife = Window:NewSection("Main")
@@ -1036,6 +1040,41 @@ PrisonLife:CreateToggle("Loop kill All", function(Value)LoopkillAll(Value)
 end)
 
 PrisonLife:CreateToggle("Death Nuke", function(Value)Deathnuke(Value)
+end)
+
+local PrisonLife = Window:NewSection("Teleport")
+
+PrisonLife:CreateButton("Nexus", function()CFrame(888, 100, 2388)
+end)
+
+PrisonLife:CreateButton("Cafe", function()CFrame(877, 100, 2256)
+end)
+
+PrisonLife:CreateButton("BackNexus", function()CFrame(982, 100, 2334)
+end)
+
+PrisonLife:CreateButton("Yard", function()CFrame(791, 98, 2498)
+end)
+
+PrisonLife:CreateButton("Crimbase", function()CFrame(-943, 95, 2055)
+end)
+
+PrisonLife:CreateButton("Armory", function()CFrame(789, 100, 2260)
+end)
+
+PrisonLife:CreateButton("Lunchroom", function()CFrame(905, 100, 2226)
+end)
+
+PrisonLife:CreateButton("Gate", function()CFrame(505, 103, 2250)
+end)
+
+PrisonLife:CreateButton("Tower", function()CFrame(822, 131, 2588)
+end)
+
+PrisonLife:CreateButton("Gatetower", function()CFrame(502, 126, 2306)
+end)
+
+PrisonLife:CreateButton("Sewer", function()CFrame(916, 79, 2311)
 end)
 
 local PrisonLife = Window:NewSection("Player")
