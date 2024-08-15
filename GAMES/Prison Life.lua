@@ -714,12 +714,20 @@ local function Kill(Player)
 	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
 end
 
-local function CheckTeamKillPlayer(Player)
+local function CheckTeamKill(Player)
         local Player = GetPlayer(Player)
         if Player.Team == game.Teams.Inmates then
-        Criminal()
-        task.wait(0.1)
-        Kill(Player)
+	if plr.Team == game.Teams.Inmates then
+	Criminal()
+	task.wait(0.15)
+	Kill(Player)
+	elseif plr.Team == game.Teams.Guards then
+	Criminal()
+	task.wait(0.25)
+	Kill(Player)
+	elseif plr.Team == game.Teams.Criminals then
+	Kill(Player)
+	end
         elseif Player.Team == game.Teams.Guards then
         if plr.Team == game.Teams.Guards then
         Criminal()
@@ -731,14 +739,22 @@ local function CheckTeamKillPlayer(Player)
         Kill(Player)
         end
         elseif Player.Team == game.Teams.Criminals then
+        if plr.Team == game.Teams.Guards then
         ChangeTeam(game.Teams.Inmates)
-        task.wait(0.35)
+        task.wait(0.3)
         Kill(Player)
+        elseif plr.Team == game.Teams.Criminals then
+        ChangeTeam(game.Teams.Inmates)
+        task.wait(0.3)
+        Kill(Player)
+        elseif plr.Team == game.Teams.Inmates then
+        Kill(Player)
+	end
         end
 end
 
 TextButton.MouseButton1Click:Connect(function()
-CheckTeamKillPlayer(TextBox.Text)
+CheckTeamKill(TextBox.Text)
 end)
 end
 
