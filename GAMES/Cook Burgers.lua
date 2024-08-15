@@ -796,38 +796,33 @@ local function DoCommand(Command)
 		RemoteQueue = (RemoteQueue+1)
 		queue.Text = (("Remote Queue: ")..(RemoteQueue))
 		if (string.sub((Command),(1),#(".bring")) == (".bring")) then
-			for i = 1,3 do
-				pcall(function()
-					local player = getPlayer(string.sub((Command),#".bring" + 2))
-					if (((player) ~= nil) and ((player.Character)~= nil)) then
-						if ((player.Character:FindFirstChildOfClass("Part")) ~= nil) then
-							for i = 1,20 do
-								for _, Part in pairs(player.Character:GetDescendants()) do
-									if (Part:IsA("BasePart")) then
-										Remote:FireServer((Part),(lp))
-										Part.CFrame = lp.Character.HumanoidRootPart.CFrame
-									end
-								end
+			local player = getPlayer(string.sub(Command,#".bring" + 2))
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
 							end
 						end
+						player.Character.HumanoidRootPart.CFrame = lp.Character.HumanoidRootPart.CFrame + Vector3.new(0, 0, -1)
 					end
-				end)
-			end
+				end
+			end)
 		elseif (string.sub((Command),(1),#(".goto")) == (".goto")) then
-			for i = 1,3 do
-				pcall(function()
-					local player = getPlayer(string.sub((Command),#".goto" + 2))
-					if (((player) ~= nil) and ((player.Character)~= nil)) then
-						if ((player.Character:FindFirstChildOfClass("Part")) ~= nil) then
-							for _, Part in pairs(lp.Character:GetDescendants()) do
-								if (Part:IsA("BasePart")) then
-									Part.CFrame = player.Character.HumanoidRootPart.CFrame
-								end
+			local player = getPlayer(string.sub(Command,#".goto" + 2))
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
 							end
 						end
+						lp.Character.HumanoidRootPart.CFrame = player.Character.HumanoidRootPart.CFrame + Vector3.new(0, 0, -1)
 					end
-				end)
-			end
+				end
+			end)
 		elseif (string.sub(Command,1,#(".fix")) == (".fix") or string.sub(Command,1,#(".uncontrol")) == (".uncontrol")) then
 			game:GetService('TeleportService'):TeleportToPlaceInstance(game.PlaceId, game.JobId, lp)
 		elseif (string.sub(Command,1,#".cmds") == ".cmds") then
@@ -884,8 +879,7 @@ local function DoCommand(Command)
 								Remote:FireServer(Part,lp)
 							end
 						end
-						player.Character:FindFirstChildOfClass('Humanoid').JumpHeight =(100)
-						player.Character:FindFirstChildOfClass('Humanoid').JumpPower =(100)
+						player.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
 					end
 				end
 			end)
