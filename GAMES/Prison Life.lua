@@ -495,23 +495,6 @@ local KillCriminals = function()
 end
 
 local function KillAll()
-	if plr.Team == game.Teams.Criminals then
-	ChangeTeam(game.Teams.Inmates)
-	task.wait(0.15)
-	KillTeam(BrickColor.new("Really red").Name)
-	KillTeam(BrickColor.new("Bright blue").Name)
-	task.wait(0.15)
-	Criminal()
-	task.wait(0.1)
-	KillTeam(BrickColor.new("Bright orange").Name)
-	elseif plr.Team == game.Teams.Inmates then
-	KillTeam(BrickColor.new("Really red").Name)
-	KillTeam(BrickColor.new("Bright blue").Name)
-	task.wait(0.15)
-	Criminal()
-	task.wait(0.1)
-	KillTeam(BrickColor.new("Bright orange").Name)
-	elseif plr.Team == game.Teams.Guards then
 	Criminal()
 	task.wait(0.2)
 	KillTeam(BrickColor.new("Bright orange").Name)
@@ -520,7 +503,6 @@ local function KillAll()
 	ChangeTeam(game.Teams.Inmates)
 	task.wait(0.2)
 	KillTeam(BrickColor.new("Really red").Name)
-	end
 end
 
 local LoopkillInmates = function(State)
