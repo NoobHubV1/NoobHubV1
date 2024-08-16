@@ -533,7 +533,7 @@ local function LoopkillAll(State)
 	getgenv().lkall = State
 	while lkall do
 	KillAll()
-	task.wait(0.3)
+	task.wait(0.4)
 	end
 end
 
@@ -556,7 +556,33 @@ local Deathnuke = function(State)
 end
 
 local function KillPlr()
-	-- Gui to Lua
+	print([[
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+///////////////////////////////////////////////////Gerbils////////////////////////////////////////////////////////////
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+// Commands: -- (Chat commands still work!)
+	.killinmates | kill team inmates
+	.killguards | kill team guards
+	.killcriminals | kill team criminals
+	.killall or .killothers | kill all players (kill others)
+\\
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+]])
+
+-- Gui to Lua
 -- Version: 3.2
 
 -- Instances:
@@ -681,10 +707,82 @@ local function GetPlayer(String)
 	end
 end
 
+local function GiveItem(Item)
+        if Item == "Remington 870" then
+                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["Remington 870"]})
+        elseif Item == "Hammer" then
+                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.single["Hammer"]})
+        elseif Item == "Knife" then
+                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.single["Crude Knife"]})
+        elseif Item == "AK-47" then
+                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["AK-47"]})
+        elseif Item == "M9" then
+                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["M9"]})
+        elseif Item == "M4A1" then
+                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["M4A1"]})
+        end
+end
+
+local function Tween(Obj, Prop, New, Time)
+	if not Time then
+		Time = .5
+	end
+	local TweenService = game:GetService("TweenService")
+	local info = TweenInfo.new(
+		Time, 
+		Enum.EasingStyle.Quart, 
+		Enum.EasingDirection.Out, 
+		0, 
+		false,
+		0
+	)
+	local propertyTable = {
+		[Prop] = New,
+	}
+
+	TweenService:Create(Obj, info, propertyTable):Play()
+end
+
+local function Notify(Text,Dur)
+	task.spawn(function()
+		if not Dur then
+			Dur = 1.5
+		end
+		local Notif = Instance.new("ScreenGui")
+		local Frame_1 = Instance.new("Frame")
+		local TextLabel = Instance.new("TextLabel")
+		Notif.Parent = (game:GetService("CoreGui") or gethui())
+		Notif.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+		Frame_1.Parent = Notif
+		Frame_1.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+		Frame_1.BackgroundTransparency=1
+		Frame_1.BorderSizePixel = 0
+		Frame_1.Position = UDim2.new(0, 0, 0.0500000007, 0)
+		Frame_1.Size = UDim2.new(1, 0, 0.100000001, 0)
+		TextLabel.Parent = Frame_1
+		TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		TextLabel.BackgroundTransparency = 1.000
+		TextLabel.TextTransparency =1
+		TextLabel.Size = UDim2.new(1, 0, 1, 0)
+		TextLabel.Font = Enum.Font.Highway
+		TextLabel.Text = Text or "Text not found"
+		TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+		TextLabel.TextSize = 21.000
+		Tween(Frame_1,"BackgroundTransparency",0.350,.5)
+		Tween(TextLabel,"TextTransparency",0,.5)
+		wait(Dur+.7)
+		Tween(Frame_1,"BackgroundTransparency",1,.5)
+		Tween(TextLabel,"TextTransparency",1,.5)
+		wait(.7)
+		Notif:Destroy()
+	end)
+	return
+end
+
 local function Kill(Player)
         local events = {}
 	local gun = nil
-	workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["Remington 870"]})
+	GiveItem("Remington 870")
 	for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
 		if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
 			gun = v
@@ -711,6 +809,50 @@ local function Kill(Player)
 			Distance = 0
 		}
 	end
+	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
+end
+
+local KillTeam = function(Team)
+	local events = {}
+	local gun = nil
+	GiveItem("Remington 870")
+	for i,v in pairs(game.Players:GetPlayers()) do
+		if v ~= game.Players.LocalPlayer and v.TeamColor.Name == Team then
+			if v.TeamColor.Name == game.Players.LocalPlayer.TeamColor.Name then
+				local savedcf = GetOrientation()
+				local camcf = workspace.CurrentCamera.CFrame
+				workspace.Remote.loadchar:InvokeServer(nil, BrickColor.random().Name)
+				workspace.CurrentCamera.CFrame = camcf
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = savedcf
+			end
+			for i = 1,10 do
+				events[#events + 1] = {
+					Hit = v.Character:FindFirstChild("Head") or v.Character:FindFirstChildOfClass("Part"),
+					Cframe = CFrame.new(),
+					RayObject = Ray.new(Vector3.new(), Vector3.new()),
+					Distance = 0
+				}
+			end
+		end
+	end
+	for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+		if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
+			gun = v
+		end
+	end
+	if gun == nil then
+		for i,v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+			if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
+				gun = v
+			end
+		end
+	end
+	coroutine.wrap(function()
+		for i = 1,30 do
+			game.ReplicatedStorage.ReloadEvent:FireServer(gun)
+			wait(.5)
+		end
+	end)()
 	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
 end
 
@@ -753,14 +895,134 @@ local function CheckTeamKill(Player)
         end
 end
 
+local KillInmates = function()
+	if plr.Team == game.Teams.Criminals then
+	KillTeam(BrickColor.new("Bright orange").Name)
+	elseif plr.Team == game.Teams.Guards then
+	Criminal()
+	task.wait(0.45)
+	KillTeam(BrickColor.new("Bright orange").Name)
+	elseif plr.Team == game.Teams.Inmates then
+	Criminal()
+	task.wait(0.15)
+	KillTeam(BrickColor.new("Bright orange").Name)
+	end
+end
+
+local function KillGuards()
+	if plr.Team == game.Teams.Guards then
+	ChangeTeam(game.Teams.Inmates)
+	task.wait(0.15)
+	KillTeam(BrickColor.new("Bright blue").Name)
+	elseif plr.Team == game.Teams.Inmates then
+	KillTeam(BrickColor.new("Bright blue").Name)
+	elseif plr.Team == game.Teams.Criminals then
+	KillTeam(BrickColor.new("Bright blue").Name)
+	end
+end
+
+local KillCriminals = function()
+	if plr.Team == game.Teams.Criminals then
+        ChangeTeam(game.Teams.Inmates)
+	task.wait(0.15)
+        KillTeam(BrickColor.new("Really red").Name)
+	elseif plr.Team == game.Teams.Guards then
+	ChangeTeam(game.Teams.Inmates)
+	task.wait(0.15)
+	KillTeam(BrickColor.new("Really red").Name)
+	elseif plr.Team == game.Teams.Inmates then
+	KillTeam(BrickColor.new("Really red").Name)
+	end
+end
+
+local function KillAll()
+	KillInmates()
+	task.wait(0.1)
+	KillGuards()
+	task.wait(0.2)
+	KillCriminals()
+end
+
 TextButton.MouseButton1Click:Connect(function()
-local Player = TextBox.Text
-CheckTeamKill(Player)
+local Target = TextBox.Text
+if Target == "all" then
+KillAll()
+elseif Target == "others" then
+KillAll()
+elseif Target == "inmates" then
+KillInmates()
+elseif Target == "guards" then
+KillGuards()
+elseif Target == "criminals" then
+KillCriminals()
+else
+CheckTeamKill(Target)
+end
+end)
+	
+plr.Chatted:connect(function(msg)
+	if msg == ".killall" or msg == ".killothers" then
+	       KillAll()
+	end
+end)
+
+plr.Chatted:connect(function(msg)
+	if msg == ".killinmates" then
+	       KillInmates()
+	end
+end)
+
+plr.Chatted:connect(function(msg)
+	if msg == ".killguards" then
+	       KillGuards()
+	end
+end)
+
+plr.Chatted:connect(function(msg)
+	if msg == ".killcriminals" then
+	       KillCriminals()
+	end
+end)
+
+plr.Chatted:connect(function(msg)
+	if msg == ".cmds" then
+	       Notif("The commands are listed in the console! \n Press F9 to view or chat /console",5)
+	end
 end)
 end
 
 local function LoopkillPlr()
-	-- Gui to Lua
+        print([[
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+///////////////////////////////////////////////////Gerbils////////////////////////////////////////////////////////////
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+// Commands: -- (Chat commands still work!)
+	.loopkillinmates | loopkill team inmates
+	.unloopkillinmates | unloopkill team inmates
+	.loopkillguards | loopkill team guards
+	.unloopkillguards | unloopkill team guards
+	.loopkillcriminals | loopkill team criminals
+	.unloopkillcriminals | unloopkill team criminals
+	.loopkillall or .loopkillothers | loopkill all players (loopkill others)
+	.unloopkillall or .unloopkillothers | unloopkill all players (unloopkill others)
+\\
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+
+]])
+	
+-- Gui to Lua
 -- Version: 3.2
 
 -- Instances:
@@ -897,10 +1159,26 @@ local function GetPlayer(String)
 	end
 end
 
+local function GiveItem(Item)
+        if Item == "Remington 870" then
+                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["Remington 870"]})
+        elseif Item == "Hammer" then
+                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.single["Hammer"]})
+        elseif Item == "Knife" then
+                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.single["Crude Knife"]})
+        elseif Item == "AK-47" then
+                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["AK-47"]})
+        elseif Item == "M9" then
+                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["M9"]})
+        elseif Item == "M4A1" then
+                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["M4A1"]})
+        end
+end
+
 local function Kill(Player)
         local events = {}
 	local gun = nil
-	workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["Remington 870"]})
+	GiveItem("Remington 870")
 	for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
 		if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
 			gun = v
@@ -969,24 +1247,324 @@ local function CheckTeamKill(Player)
         end
 end
 
+local KillTeam = function(Team)
+	local events = {}
+	local gun = nil
+	GiveItem("Remington 870")
+	for i,v in pairs(game.Players:GetPlayers()) do
+		if v ~= game.Players.LocalPlayer and v.TeamColor.Name == Team then
+			if v.TeamColor.Name == game.Players.LocalPlayer.TeamColor.Name then
+				local savedcf = GetOrientation()
+				local camcf = workspace.CurrentCamera.CFrame
+				workspace.Remote.loadchar:InvokeServer(nil, BrickColor.random().Name)
+				workspace.CurrentCamera.CFrame = camcf
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = savedcf
+			end
+			for i = 1,10 do
+				events[#events + 1] = {
+					Hit = v.Character:FindFirstChild("Head") or v.Character:FindFirstChildOfClass("Part"),
+					Cframe = CFrame.new(),
+					RayObject = Ray.new(Vector3.new(), Vector3.new()),
+					Distance = 0
+				}
+			end
+		end
+	end
+	for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+		if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
+			gun = v
+		end
+	end
+	if gun == nil then
+		for i,v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+			if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
+				gun = v
+			end
+		end
+	end
+	coroutine.wrap(function()
+		for i = 1,30 do
+			game.ReplicatedStorage.ReloadEvent:FireServer(gun)
+			wait(.5)
+		end
+	end)()
+	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
+end
+
+local function Tween(Obj, Prop, New, Time)
+	if not Time then
+		Time = .5
+	end
+	local TweenService = game:GetService("TweenService")
+	local info = TweenInfo.new(
+		Time, 
+		Enum.EasingStyle.Quart, 
+		Enum.EasingDirection.Out, 
+		0, 
+		false,
+		0
+	)
+	local propertyTable = {
+		[Prop] = New,
+	}
+
+	TweenService:Create(Obj, info, propertyTable):Play()
+end
+
+local function Notify(Text,Dur)
+	task.spawn(function()
+		if not Dur then
+			Dur = 1.5
+		end
+		local Notif = Instance.new("ScreenGui")
+		local Frame_1 = Instance.new("Frame")
+		local TextLabel = Instance.new("TextLabel")
+		Notif.Parent = (game:GetService("CoreGui") or gethui())
+		Notif.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+		Frame_1.Parent = Notif
+		Frame_1.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+		Frame_1.BackgroundTransparency=1
+		Frame_1.BorderSizePixel = 0
+		Frame_1.Position = UDim2.new(0, 0, 0.0500000007, 0)
+		Frame_1.Size = UDim2.new(1, 0, 0.100000001, 0)
+		TextLabel.Parent = Frame_1
+		TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		TextLabel.BackgroundTransparency = 1.000
+		TextLabel.TextTransparency =1
+		TextLabel.Size = UDim2.new(1, 0, 1, 0)
+		TextLabel.Font = Enum.Font.Highway
+		TextLabel.Text = Text or "Text not found"
+		TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+		TextLabel.TextSize = 21.000
+		Tween(Frame_1,"BackgroundTransparency",0.350,.5)
+		Tween(TextLabel,"TextTransparency",0,.5)
+		wait(Dur+.7)
+		Tween(Frame_1,"BackgroundTransparency",1,.5)
+		Tween(TextLabel,"TextTransparency",1,.5)
+		wait(.7)
+		Notif:Destroy()
+	end)
+	return
+end
+
+local KillInmates = function()
+	if plr.Team == game.Teams.Criminals then
+	KillTeam(BrickColor.new("Bright orange").Name)
+	elseif plr.Team == game.Teams.Guards then
+	Criminal()
+	task.wait(0.45)
+	KillTeam(BrickColor.new("Bright orange").Name)
+	elseif plr.Team == game.Teams.Inmates then
+	Criminal()
+	task.wait(0.15)
+	KillTeam(BrickColor.new("Bright orange").Name)
+	end
+end
+
+local function KillGuards()
+	if plr.Team == game.Teams.Guards then
+	ChangeTeam(game.Teams.Inmates)
+	task.wait(0.15)
+	KillTeam(BrickColor.new("Bright blue").Name)
+	elseif plr.Team == game.Teams.Inmates then
+	KillTeam(BrickColor.new("Bright blue").Name)
+	elseif plr.Team == game.Teams.Criminals then
+	KillTeam(BrickColor.new("Bright blue").Name)
+	end
+end
+
+local KillCriminals = function()
+	if plr.Team == game.Teams.Criminals then
+        ChangeTeam(game.Teams.Inmates)
+	task.wait(0.15)
+        KillTeam(BrickColor.new("Really red").Name)
+	elseif plr.Team == game.Teams.Guards then
+	ChangeTeam(game.Teams.Inmates)
+	task.wait(0.15)
+	KillTeam(BrickColor.new("Really red").Name)
+	elseif plr.Team == game.Teams.Inmates then
+	KillTeam(BrickColor.new("Really red").Name)
+	end
+end
+
+local function KillAll()
+	KillInmates()
+	task.wait(0.1)
+	KillGuards()
+	task.wait(0.2)
+	KillCriminals()
+end
+
 TextButton.MouseButton1Click:Connect(function()
 TextButton.Visible = false
 Button.Visible = true
+local Target = TextBox.Text
+if Target == "all" then
 getgenv().Loop = true
 while Loop do
-CheckTeamKill(TextBox.Text)
+KillAll()
+task.wait(0.6)
+end
+elseif Target == "others" then
+getgenv().Loop = true
+while Loop do
+KillAll()
+task.wait(0.6)
+end
+elseif Target == "inmates" then
+getgenv().Loop = true
+while Loop do
+KillInmates()
 task.wait(0.5)
+end
+elseif Target == "guards" then
+getgenv().Loop = true
+while Loop do
+KillGuards()
+task.wait(0.5)
+end
+elseif Target == "criminals" then
+getgenv().Loop = true
+while Loop do
+KillCriminals()
+task.wait(0.5)
+end
+else
+getgenv().Loop = true
+while Loop do
+CheckTeamKill(Target)
+task.wait(0.5)
+end
 end
 end)
 
 Button.MouseButton1Click:Connect(function()
 TextButton.Visible = true
 Button.Visible = false
+local Target = TextBox.Text
+if Target == "all" then
 getgenv().Loop = false
 while Loop do
-CheckTeamKill(TextBox.Text)
+KillAll()
 task.wait(0.5)
 end
+elseif Target == "others" then
+getgenv().Loop = false
+while Loop do
+KillAll()
+task.wait(0.5)
+end
+elseif Target == "inmates" then
+getgenv().Loop = false
+while Loop do
+KillInmates()
+task.wait(0.5)
+end
+elseif Target == "guards" then
+getgenv().Loop = false
+while Loop do
+KillGuards()
+task.wait(0.5)
+end
+elseif Target == "criminals" then
+getgenv().Loop = false
+while Loop do
+KillCriminals()
+task.wait(0.5)
+end
+else
+getgenv().Loop = false
+while Loop do
+CheckTeamKill(Target)
+task.wait(0.5)
+end
+end
+end)
+
+plr.Chatted:connect(function(msg)
+	if msg == ".loopkillall" or msg == ".loopkillothers" then
+	       getgenv().Loop = true
+	       while Loop do
+	       KillAll()
+	       task.wait(0.6)
+	       end
+	end
+end)
+
+plr.Chatted:connect(function(msg)
+	if msg == ".unloopkillall" or msg == ".unloopkillothers" then
+	       getgenv().Loop = false
+	       while Loop do
+	       KillAll()
+	       task.wait(0.6)
+	       end
+	end
+end)
+
+plr.Chatted:connect(function(msg)
+	if msg == ".loopkillinmates" then
+	       getgenv().Loop = true
+	       while Loop do
+	       KillInmates()
+	       task.wait(0.5)
+	       end
+	end
+end)
+
+plr.Chatted:connect(function(msg)
+	if msg == ".unloopkillinmates" then
+	       getgenv().Loop = false
+	       while Loop do
+	       KillInmates()
+	       task.wait(0.5)
+	       end
+	end
+end)
+
+plr.Chatted:connect(function(msg)
+	if msg == ".loopkillguards" then
+	       getgenv().Loop = true
+	       while Loop do
+	       KillGuards()
+	       task.wait(0.5)
+	       end
+	end
+end)
+
+plr.Chatted:connect(function(msg)
+	if msg == ".unloopkillguards" then
+	       getgenv().Loop = false
+	       while Loop do
+	       KillGuards()
+	       task.wait(0.5)
+	       end
+	end
+end)
+
+plr.Chatted:connect(function(msg)
+	if msg == ".loopkillcriminals" then
+	       getgenv().Loop = true
+	       while Loop do
+	       KillCriminals()
+	       task.wait(0.5)
+	       end
+	end
+end)
+
+plr.Chatted:connect(function(msg)
+	if msg == ".unloopkillcriminals" then
+	       getgenv().Loop = false
+	       while Loop do
+	       KillCriminals()
+	       task.wait(0.5)
+	       end
+	end
+end)
+
+plr.Chatted:connect(function(msg)
+	if msg == ".cmds" then
+	       Notif("The commands are listed in the console! \n Press F9 to view or chat /console",5)
+	end
 end)
 end
 
