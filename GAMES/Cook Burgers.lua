@@ -728,7 +728,7 @@ function getPlayer(Player)
 			return lp
 		else
 			for _, v in pairs(game.Players:GetPlayers()) do
-				if (stringg:lower() == (v.Name:lower()):sub(1, #stringg)) then return v end
+				if (stringg:lower() == (v.Name:lower()):sub(1, #stringg)) or (stringg:lower() == (v.DisplayName:lower()):sub(1, #stringg)) then return v end
 			end
 		end
 	end
