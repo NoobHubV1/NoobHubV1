@@ -945,18 +945,25 @@ end
 
 TextButton.MouseButton1Click:Connect(function()
 local Target = TextBox.Text
-if Target == "all" then
-KillAll()
-elseif Target == "others" then
+if Target == "all" or Target == "others" or Target == "everyone" then
+Notif("(Success) Killed all")
 KillAll()
 elseif Target == "inmates" then
+Notif("(Success) Killed inmates")
 KillInmates()
 elseif Target == "guards" then
+Notif("(Success) Killed guards")
 KillGuards()
 elseif Target == "criminals" then
+Notif("(Success) Killed criminals")
 KillCriminals()
 else
+if GetPlayer(Target) ~= nil then
+Notif("(Success) Killed "..GetPlayer(Target).DisplayName)
 CheckTeamKill(Target)
+else
+Notif("(Error) No Player Found",3)
+end
 end
 end)
 	
@@ -1209,7 +1216,6 @@ local function Kill(Player)
 end
 
 local function CheckTeamKill(Player)
-        local Player = GetPlayer(Player)
         if Player.Team == game.Teams.Inmates then
 	if plr.Team == game.Teams.Inmates then
 	Criminal()
@@ -1311,7 +1317,7 @@ local function Tween(Obj, Prop, New, Time)
 	TweenService:Create(Obj, info, propertyTable):Play()
 end
 
-local function Notify(Text,Dur)
+local function Notif(Text,Dur)
 	task.spawn(function()
 		if not Dur then
 			Dur = 1.5
@@ -1399,41 +1405,44 @@ TextButton.MouseButton1Click:Connect(function()
 TextButton.Visible = false
 Button.Visible = true
 local Target = TextBox.Text
-if Target == "all" then
-getgenv().Loop = true
-while Loop do
-KillAll()
-task.wait(0.6)
-end
-elseif Target == "others" then
+if Target == "all" or Target == "others" or Target == "everyone" then
+Notif("(Success) Loopkilled all")
 getgenv().Loop = true
 while Loop do
 KillAll()
 task.wait(0.6)
 end
 elseif Target == "inmates" then
+Notif("(Success) Loopkilled inmates")
 getgenv().Loop = true
 while Loop do
 KillInmates()
 task.wait(0.5)
 end
 elseif Target == "guards" then
+Notif("(Success) Loopkilled guards")
 getgenv().Loop = true
 while Loop do
 KillGuards()
 task.wait(0.5)
 end
 elseif Target == "criminals" then
+Notif("(Success) Loopkilled criminals")
 getgenv().Loop = true
 while Loop do
 KillCriminals()
 task.wait(0.5)
 end
 else
+if GetPlayer(Target) ~= nil then
+Notif("(Success) Loopkilled "..GetPlayer(Target).DisplayName)
 getgenv().Loop = true
 while Loop do
-CheckTeamKill(Target)
+CheckTeamKill(GetPlayer(Target))
 task.wait(0.5)
+end
+else
+Notif("(Error) No Player Found",3)
 end
 end
 end)
@@ -1442,41 +1451,44 @@ Button.MouseButton1Click:Connect(function()
 TextButton.Visible = true
 Button.Visible = false
 local Target = TextBox.Text
-if Target == "all" then
-getgenv().Loop = false
-while Loop do
-KillAll()
-task.wait(0.5)
-end
-elseif Target == "others" then
+if Target == "all" or Target == "others" or Target == "everyone" then
+Notif("(Success) Unloopkilled all")
 getgenv().Loop = false
 while Loop do
 KillAll()
 task.wait(0.5)
 end
 elseif Target == "inmates" then
+Notif("(Success) Unloopkilled inmates")
 getgenv().Loop = false
 while Loop do
 KillInmates()
 task.wait(0.5)
 end
 elseif Target == "guards" then
+Notif("(Success) Unloopkilled guards")
 getgenv().Loop = false
 while Loop do
 KillGuards()
 task.wait(0.5)
 end
 elseif Target == "criminals" then
+Notif("(Success) Unloopkilled criminals")
 getgenv().Loop = false
 while Loop do
 KillCriminals()
 task.wait(0.5)
 end
 else
+if GetPlayer(Target) ~= nil then
+Notif("(Success) Unloopkilled "..GetPlayer(Target).DisplayName)
 getgenv().Loop = false
 while Loop do
-CheckTeamKill(Target)
+CheckTeamKill(GetPlayer(Target))
 task.wait(0.5)
+end
+else
+Notif("(Error) No Player Found",3)
 end
 end
 end)
