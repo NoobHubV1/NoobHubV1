@@ -156,38 +156,25 @@ local function Notif(Text,Dur)
 	return
 end
 
+function U() spawn(function() while getgenv().SpamParry do for i = 1, 10 do ParryAttempt()
+end
+task.wait()
+end
+end)
+end
+
 Toggle.MouseButton1Click:connect(function()
  if Status.Text == "on" then
-  spamparry = false
   Status.Text = "off"
   Status.TextColor3 = Color3.new(170,0,0)
-  task.spawn(function()
-  getgenv().loop = false
-  while loop do
-  for i = 1, 10 do
-  if spamparry then
-  ParryAttempt()
-  end
-  end
-  task.wait()
-  end
-  end)
+  getgenv().SpamParry = false 
+  U()
   Notif("Spam Parry No Cooldown Disabled",3)
  elseif Status.Text == "off" then
-  spamparry = true
   Status.Text = "on"
   Status.TextColor3 = Color3.new(0,185,0)
-  task.spawn(function()
-  getgenv().loop = true
-  while loop do
-  for i = 1, 10 do
-  if spamparry then
-  ParryAttempt()
-  end
-  end
-  task.wait()
-  end
-  end)
+  getgenv().SpamParry = true
+  U()
   Notif("Spam Parry No Cooldown Enabled",3)
  end
 end)
