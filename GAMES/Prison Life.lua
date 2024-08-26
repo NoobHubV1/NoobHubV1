@@ -1401,46 +1401,61 @@ local function KillAll()
 	KillCriminals()
 end
 
+function U() spawn(function() while getgenv().loopkillall do KillAll()
+task.wait(0.6)
+end
+end)
+end
+
+function C() spawn(function() while getgenv().loopkillinmates do KillInmates()
+task.wait(0.3)
+end
+end)
+end
+
+function G() spawn(function() while getgenv().loopkillguards do KillGuards()
+task.wait(0.3)
+end
+end)
+end
+
+function D() spawn(function() while getgenv().loopkillcriminals do KillCriminals()
+task.wait(0.3)
+end
+end)
+end
+
+function H(Player) spawn(function() while getgenv().loopkillplayer do CheckTeamKill(Player)
+task.wait(0.3)
+end
+end)
+end
+
 TextButton.MouseButton1Click:Connect(function()
 TextButton.Visible = false
 Button.Visible = true
 local Target = TextBox.Text
 if Target == "all" or Target == "others" or Target == "everyone" then
+getgenv().loopkillall = true
+U()
 Notif("(Success) Loopkilled all")
-getgenv().Loop = true
-while Loop do
-KillAll()
-task.wait(0.6)
-end
 elseif Target == "inmates" then
+getgenv().loopkillinmates = true
+C()
 Notif("(Success) Loopkilled inmates")
-getgenv().Loop = true
-while Loop do
-KillInmates()
-task.wait(0.5)
-end
 elseif Target == "guards" then
+getgenv().loopkillguards = true
+G()
 Notif("(Success) Loopkilled guards")
-getgenv().Loop = true
-while Loop do
-KillGuards()
-task.wait(0.5)
-end
 elseif Target == "criminals" then
+getgenv().loopkillcriminals = true
+D()
 Notif("(Success) Loopkilled criminals")
-getgenv().Loop = true
-while Loop do
-KillCriminals()
-task.wait(0.5)
-end
 else
 if GetPlayer(Target) ~= nil then
+getgenv().loopkillplayer = true
+H(GetPlayer(Target))
 Notif("(Success) Loopkilled "..GetPlayer(Target).DisplayName)
-getgenv().Loop = true
-while Loop do
-CheckTeamKill(GetPlayer(Target))
-task.wait(0.5)
-end
 else
 Notif("(Error) No Player Found",3)
 end
@@ -1452,41 +1467,26 @@ TextButton.Visible = true
 Button.Visible = false
 local Target = TextBox.Text
 if Target == "all" or Target == "others" or Target == "everyone" then
+getgenv().loopkillall = false
+U()
 Notif("(Success) Unloopkilled all")
-getgenv().Loop = false
-while Loop do
-KillAll()
-task.wait(0.5)
-end
 elseif Target == "inmates" then
+getgenv().loopkillinmates = false
+C()
 Notif("(Success) Unloopkilled inmates")
-getgenv().Loop = false
-while Loop do
-KillInmates()
-task.wait(0.5)
-end
 elseif Target == "guards" then
+getgenv().loopkillguards = false
+G()
 Notif("(Success) Unloopkilled guards")
-getgenv().Loop = false
-while Loop do
-KillGuards()
-task.wait(0.5)
-end
 elseif Target == "criminals" then
+getgenv().loopkillcriminals = false
+D()
 Notif("(Success) Unloopkilled criminals")
-getgenv().Loop = false
-while Loop do
-KillCriminals()
-task.wait(0.5)
-end
 else
 if GetPlayer(Target) ~= nil then
+getgenv().loopkillplayer = false
+H(GetPlayer(Target))
 Notif("(Success) Unloopkilled "..GetPlayer(Target).DisplayName)
-getgenv().Loop = false
-while Loop do
-CheckTeamKill(GetPlayer(Target))
-task.wait(0.5)
-end
 else
 Notif("(Error) No Player Found",3)
 end
@@ -1495,85 +1495,37 @@ end)
 
 plr.Chatted:connect(function(msg)
 	if msg == ".loopkillall" or msg == ".loopkillothers" then
-	       getgenv().Loop = true
-	       while Loop do
-	       KillAll()
-	       task.wait(0.6)
-	       end
+	       getgenv().loopkillall = true
+	       U()
 	end
-end)
-
-plr.Chatted:connect(function(msg)
-	if msg == ".unloopkillall" or msg == ".unloopkillothers" then
-	       getgenv().Loop = false
-	       while Loop do
-	       KillAll()
-	       task.wait(0.6)
-	       end
+	if msg == ".unloopkillall" or msg == "loopkillothers" then
+	       getgenv().loopkillall = false
+	       U()
 	end
-end)
-
-plr.Chatted:connect(function(msg)
 	if msg == ".loopkillinmates" then
-	       getgenv().Loop = true
-	       while Loop do
-	       KillInmates()
-	       task.wait(0.5)
-	       end
+	       getgenv().loopkillinmates = true
+	       C()
 	end
-end)
-
-plr.Chatted:connect(function(msg)
 	if msg == ".unloopkillinmates" then
-	       getgenv().Loop = false
-	       while Loop do
-	       KillInmates()
-	       task.wait(0.5)
-	       end
+	       getgenv().loopkillinmates = false
+	       C()
 	end
-end)
-
-plr.Chatted:connect(function(msg)
 	if msg == ".loopkillguards" then
-	       getgenv().Loop = true
-	       while Loop do
-	       KillGuards()
-	       task.wait(0.5)
-	       end
+	       getgenv().loopkillguards = true
+	       G()
 	end
-end)
-
-plr.Chatted:connect(function(msg)
 	if msg == ".unloopkillguards" then
-	       getgenv().Loop = false
-	       while Loop do
-	       KillGuards()
-	       task.wait(0.5)
-	       end
+	       getgenv().loopkillguards = false
+	       G()
 	end
-end)
-
-plr.Chatted:connect(function(msg)
 	if msg == ".loopkillcriminals" then
-	       getgenv().Loop = true
-	       while Loop do
-	       KillCriminals()
-	       task.wait(0.5)
-	       end
+	       getgenv().loopkillcriminals = true
+	       D()
 	end
-end)
-
-plr.Chatted:connect(function(msg)
 	if msg == ".unloopkillcriminals" then
-	       getgenv().Loop = false
-	       while Loop do
-	       KillCriminals()
-	       task.wait(0.5)
-	       end
+	       getgenv().loopkillcriminals = false
+	       D()
 	end
-end)
-
-plr.Chatted:connect(function(msg)
 	if msg == ".cmds" then
 	       Notif("The commands are listed in the console! \n Press F9 to view or chat /console",5)
 	end
