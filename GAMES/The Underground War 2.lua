@@ -90,12 +90,10 @@ local function Win()
         end
 end
 
-local function AutoWin(State)
-        getgenv().Loop = State
-        while Loop do
-        Win()
-        task.wait(0.8)
-        end
+function U() spawn(function() while getgenv().autowin do Win()
+task.wait(0.7)
+end
+end)
 end
 
 local Window = Library:NewWindow("NoobHubV1 Hub")
@@ -119,5 +117,5 @@ local Section = Window:NewSection("Others")
 Section:CreateButton("Win", function()Win()
 end)
 
-Section:CreateToggle("Auto Win", function(Value)AutoWin(Value)
+Section:CreateToggle("Auto Win", function(Value)getgenv().autowin = Value U()
 end)
