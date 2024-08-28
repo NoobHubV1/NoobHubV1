@@ -108,6 +108,8 @@ if enable == true then
 blurefct(0)
 Notify("Destructed Hex", "Made by Luq and Luca", 10)
 local destruct = Instance.new("ScreenGui")
+local open = Instance.new("TextButton")
+local close = Instance.new("TextButton")
 local main = Instance.new("Frame")
 local TextLabel = Instance.new("TextLabel")
 local line = Instance.new("Frame")
@@ -146,6 +148,36 @@ destruct.Name = "destruct"
 destruct.Parent = game.CoreGui
 destruct.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
+open.Name = "open"
+open.Parent = destruct
+open.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+open.BorderSizePixel = 0
+open.Size = UDim2.new(0, 200, 0, 50)
+open.Font = Enum.Font.Roboto
+open.Text = "Open"
+open.TextColor3 = Color3.fromRGB(255, 255, 255)
+open.TextSize = 14.000
+open.MouseButton1Click:Connect(function()
+open.Visible = false
+close.Visible = true
+main.Visible = true
+end)
+
+close.Name = "close"
+close.Parent = destruct
+close.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+close.BorderSizePixel = 0
+close.Size = UDim2.new(0, 200, 0, 50)
+close.Font = Enum.Font.Roboto
+close.Text = "Close"
+close.TextColor3 = Color3.fromRGB(255, 255, 255)
+close.TextSize = 14.000
+close.MouseButton1Click:Connect(function()
+open.Visible = true
+close.Visible = false
+main.Visible = false
+end)
+
 main.Name = "main"
 main.Parent = destruct
 main.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
@@ -153,6 +185,7 @@ main.BackgroundTransparency = 0.3
 main.BorderSizePixel = 0
 main.Position = UDim2.new(0.268847764, 0, 0.372854918, 0)
 main.Size = UDim2.new(0, 325, 0, 239)
+main.Visible = false
 main.Active = true
 
 local UserInputService = game:GetService("UserInputService")
