@@ -8,7 +8,7 @@ local function getChar()
 end
 
 local function getPos()
-        return getChar().HumanoidRootPart.Position
+        return getChar().HumanoidRootPart.CFrame
 end
 
 local function TPCFrame(Arg2)
@@ -20,11 +20,11 @@ local function getFlag(Color)
         if Color == "Blue" then
         TPCFrame(CFrame.new(125.64448547363281, 69.0615463256836, -152.87889099121094))
         task.wait()
-        TPCFrame(CFrame.new(old))
+        TPCFrame(old)
         elseif Color == "Red" then
         TPCFrame(CFrame.new(125.98065948486328, 69.06210327148438, 315.33819580078125))
         task.wait()
-        TPCFrame(CFrame.new(old))
+        TPCFrame(old)
         end
 end
 
