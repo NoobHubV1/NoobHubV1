@@ -42,7 +42,7 @@ local function Win()
 end
 
 function C() spawn(function() while getgenv().autowin do Win()
-task.wait(0.4)
+task.wait(0.3)
 end
 end)
 end
