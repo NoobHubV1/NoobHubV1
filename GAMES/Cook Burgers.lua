@@ -59,6 +59,8 @@ print([[
 -- Instances:
 
 local main = Instance.new("ScreenGui")
+local Open = Instance.new("TextButton")
+local Close = Instance.new("TextButton")
 local Main = Instance.new("Frame")
 local credits = Instance.new("TextLabel")
 local queue = Instance.new("TextLabel")
@@ -133,6 +135,42 @@ main.Name = "main"
 main.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
 main.ResetOnSpawn = false
 
+Open.Name = "Open"
+Open.Parent = main
+Open.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
+Open.BackgroundTransparency = 0.500
+Open.BorderSizePixel = 0
+Open.Position = UDim2.new(0.0351677425, 0, 0.00577557739, 0)
+Open.Size = UDim2.new(0, 131, 0, 40)
+Open.ZIndex = 3
+Open.Font = Enum.Font.SourceSansLight
+Open.Text = "Open"
+Open.TextColor3 = Color3.fromRGB(255, 255, 255)
+Open.TextSize = 23.000
+Open.MouseButton1Click:Connect(function()
+Open.Visible = false
+Close.Visible = true
+Main.Visible = true
+end)
+
+Close.Name = "Close"
+Close.Parent = main
+Close.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
+Close.BackgroundTransparency = 0.500
+Close.BorderSizePixel = 0
+Close.Position = UDim2.new(0.0351677425, 0, 0.00577557739, 0)
+Close.Size = UDim2.new(0, 131, 0, 40)
+Close.ZIndex = 3
+Close.Font = Enum.Font.SourceSansLight
+Close.Text = "Close"
+Close.TextColor3 = Color3.fromRGB(255, 255, 255)
+Close.TextSize = 23.000
+Close.MouseButton1Click:Connect(function()
+Open.Visible = true
+Close.Visible = false
+Main.Visible = false
+end)
+
 Main.Name = "Main"
 Main.Parent = main
 Main.BackgroundColor3 = Color3.fromRGB(47, 46, 25)
@@ -142,6 +180,7 @@ Main.BorderSizePixel = 6
 Main.Position = UDim2.new(0.662217021, 0, 0.189768493, 0)
 Main.Size = UDim2.new(0, 292, 0, 432)
 Main.ZIndex = 0
+Main.Visible = false
 
 credits.Name = "credits"
 credits.Parent = Main
