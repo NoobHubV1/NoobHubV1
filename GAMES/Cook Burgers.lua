@@ -1429,7 +1429,7 @@ local function DoCommand(Command)
 				end
 			end)
 			end
-		elseif (string.sub(Command,1,#".loopkill") == ".loopkill") or (string.sub(Command,1,#".lk") == ".lk") then
+		elseif (string.sub(Command,1,#".loopkill") == ".loopkill") then
 			local args = string.sub(Command,#".loopkill" + 2)
 			if args == "all" or args == "everyone" then
 			getgenv().loop = true
@@ -1493,8 +1493,136 @@ local function DoCommand(Command)
 			task.wait(0.1)
 			end
 			end
-		elseif (string.sub(Command,1,#".unloopkill") == ".unloopkill") or (string.sub(Command,1,#".unlk") == ".unlk") then
+		elseif (string.sub(Command,1,#".lk") == ".lk") then
+			local args = string.sub(Command,#".lk" + 2)
+			if args == "all" or args == "everyone" then
+			getgenv().loop = true
+			while loop do
+			for _,player in pairs(game.Players:GetPlayers()) do
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						player.Character.Humanoid.Health = (1)
+						player.Character.Humanoid.Health = (0)
+					end
+				end
+			end)
+			end
+			task.wait(0.1)
+			end
+			elseif args == "others" then
+			getgenv().loop = true
+			while loop do
+			for _,player in pairs(game.Players:GetPlayers()) do
+			if player ~= lp then
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						player.Character.Humanoid.Health = (1)
+						player.Character.Humanoid.Health = (0)
+					end
+				end
+			end)
+			end
+			end
+			task.wait(0.1)
+			end
+			else
+			local player = getPlayer(args)
+			getgenv().loop = true
+			while loop do
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						player.Character.Humanoid.Health = (1)
+						player.Character.Humanoid.Health = (0)
+					end
+				end
+			end)
+			task.wait(0.1)
+			end
+			end
+		elseif (string.sub(Command,1,#".unloopkill") == ".unloopkill") then
 			local args = string.sub(Command,#".unloopkill" + 2)
+			if args == "all" or args == "everyone" then
+			getgenv().loop = false
+			while loop do
+			for _,player in pairs(game.Players:GetPlayers()) do
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						player.Character.Humanoid.Health = (1)
+						player.Character.Humanoid.Health = (0)
+					end
+				end
+			end)
+			end
+			task.wait(0.1)
+			end
+			elseif args == "others" then
+			getgenv().loop = false
+			while loop do
+			for _,player in pairs(game.Players:GetPlayers()) do
+			if player ~= lp then
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						player.Character.Humanoid.Health = (1)
+						player.Character.Humanoid.Health = (0)
+					end
+				end
+			end)
+			end
+			end
+			task.wait(0.1)
+			end
+			else
+			local player = getPlayer(args)
+			getgenv().loop = false
+			while loop do
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						player.Character.Humanoid.Health = (1)
+						player.Character.Humanoid.Health = (0)
+					end
+				end
+			end)
+			task.wait(0.1)
+			end
+			end
+		elseif (string.sub(Command,1,#".unlk") == ".unlk") then
+			local args = string.sub(Command,#".unlk" + 2)
 			if args == "all" or args == "everyone" then
 			getgenv().loop = false
 			while loop do
