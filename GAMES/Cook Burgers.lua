@@ -21,26 +21,26 @@ print([[
 
 // Commands: -- (Chat commands still work!)
 	.clear | Clears every item
-	.fling (Plr) | Fling a player
-	.rocket (Plr) | Make a player goto the moon
-	.bring (Plr) | Bring a player
-	.kill (Plr) | Kill a player
-	.spin (Plr) | Make a player spin (Can do ".unspin")
+	.fling (Plr,All,Others) | Fling a player
+	.rocket (Plr,All,Others) | Make a player goto the moon
+	.bring (Plr,All,Others) | Bring a player
+	.kill (Plr,All,Others) | Kill a player
+	.spin (Plr,All,Others) | Make a player spin (Cannot undo if player dead)
 	.control (Plr) | Control a player (May have to rejoin to stop)
 	.money | Pickup all the droped cash
-	.speed (Plr) | Make a player speedy
-	.jump (Plr) | Change a player's jump hight
-	.freeze (Plr) | Freeze a player (Can do ".unfreeze")
+	.speed (Plr,All,Others) | Make a player speedy
+	.jump (Plr,All,Others) | Change a player's jump hight
+	.freeze (Plr,All,Others) | Freeze a player (Can do ".unfreeze")
 	.tpvan | Bring the delivery truck to you
 	.netclaim | Claim the net back if there is a abuser
 	.fix | Refresh the server
-	.slave (Plr) | Make a player follow you until they get to you
-	.jail (Plr) | Lock a player until they reset
-	.loopkill (Plr) | Player Get Loopkill (if Player ChangeServer or Leave Map) (Can do ".unloopkill")
-	.void (Plr) | Player Tp The Void
-	.destroy (Plr) | Player Destroy (if Player Rejoin)
-	.sit (Plr) | Sit a Player
-	.infjump (Plr) | Give Player Inf Jump
+	.jail (Plr,All,Others) | Lock a player until they reset
+	.loopkill (Plr,All,Others) | Player Get Loopkill (if Player ChangeServer or Leave Map) (Can do ".unloopkill")
+	.void (Plr,All,Others) | Player Tp The Void
+	.destroy (Plr,All,Others) | Player Destroy (if Player Rejoin)
+	.sit (Plr,All,Others) | Sit a Player
+	.noclip (Plr,All,Others) | Noclip a Player
+	.clip (Plr,All,Others) | Unnoclip a Player
 \\
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -88,20 +88,20 @@ local Speed = Instance.new("TextButton")
 local UICorner_9 = Instance.new("UICorner")
 local Jump = Instance.new("TextButton")
 local UICorner_10 = Instance.new("UICorner")
-local Slave = Instance.new("TextButton")
-local UICorner_11 = Instance.new("UICorner")
 local Jail = Instance.new("TextButton")
-local UICorner_12 = Instance.new("UICorner")
+local UICorner_11 = Instance.new("UICorner")
 local UIGridLayout = Instance.new("UIGridLayout")
 local Fix = Instance.new("TextButton")
-local UICorner_13 = Instance.new("UICorner")
+local UICorner_12 = Instance.new("UICorner")
 local NetClaim = Instance.new("TextButton")
-local UICorner_14 = Instance.new("UICorner")
+local UICorner_13 = Instance.new("UICorner")
 local Tpvan = Instance.new("TextButton")
-local UICorner_15 = Instance.new("UICorner")
+local UICorner_14 = Instance.new("UICorner")
 local Money = Instance.new("TextButton")
-local UICorner_16 = Instance.new("UICorner")
+local UICorner_15 = Instance.new("UICorner")
 local NoCLip = Instance.new("TextButton")
+local UICorner_16 = Instance.new("UICorner")
+local CLip = Instance.new("TextButton")
 local UICorner_17 = Instance.new("UICorner")
 local Clear = Instance.new("TextButton")
 local UICorner_18 = Instance.new("UICorner")
@@ -402,22 +402,6 @@ Jump.TextSize = 23.000
 UICorner_10.CornerRadius = UDim.new(0, 4)
 UICorner_10.Parent = Jump
 
-Slave.Name = "Slave"
-Slave.Parent = ScrollingFrame
-Slave.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
-Slave.BackgroundTransparency = 0.500
-Slave.BorderSizePixel = 0
-Slave.Position = UDim2.new(0.0340922885, 0, 0.313126415, 0)
-Slave.Size = UDim2.new(0, 131, 0, 40)
-Slave.ZIndex = 3
-Slave.Font = Enum.Font.SourceSansLight
-Slave.Text = "Slave"
-Slave.TextColor3 = Color3.fromRGB(255, 255, 255)
-Slave.TextSize = 23.000
-
-UICorner_11.CornerRadius = UDim.new(0, 4)
-UICorner_11.Parent = Slave
-
 Jail.Name = "Jail"
 Jail.Parent = ScrollingFrame
 Jail.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
@@ -431,8 +415,8 @@ Jail.Text = "Jail"
 Jail.TextColor3 = Color3.fromRGB(255, 255, 255)
 Jail.TextSize = 23.000
 
-UICorner_12.CornerRadius = UDim.new(0, 4)
-UICorner_12.Parent = Jail
+UICorner_11.CornerRadius = UDim.new(0, 4)
+UICorner_11.Parent = Jail
 
 UIGridLayout.Parent = ScrollingFrame
 UIGridLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
@@ -453,8 +437,8 @@ Fix.Text = "Fix"
 Fix.TextColor3 = Color3.fromRGB(255, 255, 255)
 Fix.TextSize = 23.000
 
-UICorner_13.CornerRadius = UDim.new(0, 4)
-UICorner_13.Parent = Fix
+UICorner_12.CornerRadius = UDim.new(0, 4)
+UICorner_12.Parent = Fix
 
 NetClaim.Name = "NetClaim"
 NetClaim.Parent = ScrollingFrame
@@ -469,8 +453,8 @@ NetClaim.Text = "NetClaim"
 NetClaim.TextColor3 = Color3.fromRGB(255, 255, 255)
 NetClaim.TextSize = 23.000
 
-UICorner_14.CornerRadius = UDim.new(0, 4)
-UICorner_14.Parent = NetClaim
+UICorner_13.CornerRadius = UDim.new(0, 4)
+UICorner_13.Parent = NetClaim
 
 Tpvan.Name = "Tpvan"
 Tpvan.Parent = ScrollingFrame
@@ -485,8 +469,8 @@ Tpvan.Text = "TPVan"
 Tpvan.TextColor3 = Color3.fromRGB(255, 255, 255)
 Tpvan.TextSize = 23.000
 
-UICorner_15.CornerRadius = UDim.new(0, 4)
-UICorner_15.Parent = Tpvan
+UICorner_14.CornerRadius = UDim.new(0, 4)
+UICorner_14.Parent = Tpvan
 
 Money.Name = "Money"
 Money.Parent = ScrollingFrame
@@ -501,8 +485,8 @@ Money.Text = "Money"
 Money.TextColor3 = Color3.fromRGB(255, 255, 255)
 Money.TextSize = 23.000
 
-UICorner_16.CornerRadius = UDim.new(0, 4)
-UICorner_16.Parent = Money
+UICorner_15.CornerRadius = UDim.new(0, 4)
+UICorner_15.Parent = Money
 
 NoCLip.Name = "NoCLip"
 NoCLip.Parent = ScrollingFrame
@@ -517,8 +501,24 @@ NoCLip.Text = "NoClip"
 NoCLip.TextColor3 = Color3.fromRGB(255, 255, 255)
 NoCLip.TextSize = 23.000
 
+UICorner_16.CornerRadius = UDim.new(0, 4)
+UICorner_16.Parent = NoCLip
+
+CLip.Name = "CLip"
+CLip.Parent = ScrollingFrame
+CLip.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
+CLip.BackgroundTransparency = 0.500
+CLip.BorderSizePixel = 0
+CLip.Position = UDim2.new(0, 0, 0.352697104, 0)
+CLip.Size = UDim2.new(0, 287, 0, 50)
+CLip.ZIndex = 3
+CLip.Font = Enum.Font.SourceSansLight
+CLip.Text = "Clip"
+CLip.TextColor3 = Color3.fromRGB(255, 255, 255)
+CLip.TextSize = 23.000
+
 UICorner_17.CornerRadius = UDim.new(0, 4)
-UICorner_17.Parent = NoCLip
+UICorner_17.Parent = CLip
 
 Clear.Name = "Clear"
 Clear.Parent = ScrollingFrame
@@ -1272,7 +1272,9 @@ local function DoCommand(Command)
 			end)
 			end
 		elseif (string.sub(Command,1,#".fling") == ".fling") then -- ayo skid watcha lookin for?
-			local player = getPlayer(string.sub(Command,#".fling" + 2))
+			local args = string.sub(Command,#".fling" + 2)
+			if args == "all" or args == "everyone" then
+			for _,player in pairs(game.Players:GetPlayers()) do
 			pcall(function()
 				if (player ~= nil and player.Character ~= nil) then
 					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
@@ -1302,8 +1304,77 @@ local function DoCommand(Command)
 					end
 				end
 			end)
+			end
+			elseif args == "others" then
+			for _,player in pairs(game.Players:GetPlayers()) do
+			if player ~= lp then
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						local xran local zran
+						repeat xran = math.random(-9999,9999) until math.abs(xran) >= 5555
+						repeat zran = math.random(-9999,9999) until math.abs(zran) >= 5555
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						game:GetService("RunService").Stepped:Connect(function()
+							if ((player ~= nil) and (player.Character ~= nil)) then
+								for _, child in pairs(player.Character:GetDescendants()) do
+									if (child:IsA("BasePart") and child.CanCollide == true) then 
+										child.CanCollide = false
+									end
+								end
+							else
+								return
+							end
+						end)
+						player.Character.Humanoid.Sit = true
+						player.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
+						local BodyForce = Instance.new("BodyForce",  player.Character.HumanoidRootPart) 
+						BodyForce.force = Vector3.new(xran*4,9999*5,xran*4) 
+					end
+				end
+			end)
+			end
+			end
+			else
+			local player = getPlayer(args)
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						local xran local zran
+						repeat xran = math.random(-9999,9999) until math.abs(xran) >= 5555
+						repeat zran = math.random(-9999,9999) until math.abs(zran) >= 5555
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						game:GetService("RunService").Stepped:Connect(function()
+							if ((player ~= nil) and (player.Character ~= nil)) then
+								for _, child in pairs(player.Character:GetDescendants()) do
+									if (child:IsA("BasePart") and child.CanCollide == true) then 
+										child.CanCollide = false
+									end
+								end
+							else
+								return
+							end
+						end)
+						player.Character.Humanoid.Sit = true
+						player.Character.HumanoidRootPart.Velocity = Vector3.new(0,0,0)
+						local BodyForce = Instance.new("BodyForce",  player.Character.HumanoidRootPart) 
+						BodyForce.force = Vector3.new(xran*4,9999*5,xran*4) 
+					end
+				end
+			end)
+			end
 		elseif (string.sub(Command,1,#".kill") == ".kill") then
-			local player = getPlayer(string.sub(Command,#".kill" + 2))
+			local args = string.sub(Command,#".kill" + 2)
+			if args == "all" or args == "everyone" then
+			for _,player in pairs(game.Players:GetPlayers()) do
 			pcall(function()
 				if (player ~= nil and player.Character ~= nil) then
 					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
@@ -1317,10 +1388,47 @@ local function DoCommand(Command)
 					end
 				end
 			end)
+			end
+			elseif args == "others" then
+			for _,player in pairs(game.Players:GetPlayers()) do
+			if player ~= lp then
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						player.Character.Humanoid.Health = (1)
+						player.Character.Humanoid.Health = (0)
+					end
+				end
+			end)
+			end
+			end
+			else
+			local player = getPlayer(args)
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						player.Character.Humanoid.Health = (1)
+						player.Character.Humanoid.Health = (0)
+					end
+				end
+			end)
+			end
 		elseif (string.sub(Command,1,#".loopkill") == ".loopkill") then
 			getgenv().Loop = true
 			while Loop do
-			local player = getPlayer(string.sub(Command,#".loopkill" + 2))
+			local args = string.sub(Command,#".loopkill" + 2)
+			if args == "all" or args == "everyone" then
+			for _,player in pairs(game.Players:GetPlayers()) do
 			pcall(function()
 				if (player ~= nil and player.Character ~= nil) then
 					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
@@ -1334,12 +1442,49 @@ local function DoCommand(Command)
 					end
 				end
 			end)
+			end
+			elseif args == "others" then
+			for _,player in pairs(game.Players:GetPlayers()) do
+			if player ~= lp then
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						player.Character.Humanoid.Health = (1)
+						player.Character.Humanoid.Health = (0)
+					end
+				end
+			end)
+			end
+			end
+			else
+			local player = getPlayer(args)
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						player.Character.Humanoid.Health = (1)
+						player.Character.Humanoid.Health = (0)
+					end
+				end
+			end)
+			end
 			task.wait(.1)
 			end
 		elseif (string.sub(Command,1,#".unloopkill") == ".unloopkill") then
 			getgenv().Loop = false
 			while Loop do
-			local player = getPlayer(string.sub(Command,#".unloopkill" + 2))
+			local args = string.sub(Command,#".unloopkill" + 2)
+			if args == "all" or args == "everyone" then
+			for _,player in pairs(game.Players:GetPlayers()) do
 			pcall(function()
 				if (player ~= nil and player.Character ~= nil) then
 					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
@@ -1353,10 +1498,47 @@ local function DoCommand(Command)
 					end
 				end
 			end)
+			end
+			elseif args == "others" then
+			for _,player in pairs(game.Players:GetPlayers()) do
+			if player ~= lp then
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						player.Character.Humanoid.Health = (1)
+						player.Character.Humanoid.Health = (0)
+					end
+				end
+			end)
+			end
+			end
+			else
+			local player = getPlayer(args)
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						player.Character.Humanoid.Health = (1)
+						player.Character.Humanoid.Health = (0)
+					end
+				end
+			end)
+			end
 			task.wait(.1)
 			end
 		elseif (string.sub(Command,1,#".void") == ".void") then
-			local player = getPlayer(string.sub(Command,#".void" + 2))
+			local args = string.sub(Command,#".void" + 2)
+			if args == "all" or args == "everyone" then
+			for _,player in pairs(game.Players:GetPlayers()) do
 			pcall(function()
 				if (player ~= nil and player.Character ~= nil) then
 					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
@@ -1369,8 +1551,43 @@ local function DoCommand(Command)
 					end
 				end
 			end)
+			end
+			elseif args == "others" then
+			for _,player in pairs(game.Players:GetPlayers()) do
+			if player ~= lp then
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						player.Character.HumanoidRootPart.CFrame = CFrame.new(9999, 9999, 9999)
+					end
+				end
+			end)
+			end
+			end
+			else
+			local player = getPlayer(args)
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						player.Character.HumanoidRootPart.CFrame = CFrame.new(9999, 9999, 9999)
+					end
+				end
+			end)
+			end
 		elseif (string.sub(Command,1,#".destroy") == ".destroy") then
-			local player = getPlayer(string.sub(Command,#".destroy" + 2))
+			local args = string.sub(Command,#".destroy" + 2)
+			if args == "all" or args == "everyone" then
+			for _,player in pairs(game.Players:GetPlayers()) do
 			pcall(function()
 				if (player ~= nil and player.Character ~= nil) then
 					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
@@ -1383,6 +1600,39 @@ local function DoCommand(Command)
 					end
 				end
 			end)
+			end
+			elseif args == "others" then
+			for _,player in pairs(game.Players:GetPlayers()) do
+			if player ~= lp then
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						player.Character:Destroy()
+					end
+				end
+			end)
+			end
+			end
+			else
+			local player = getPlayer(args)
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						player.Character:Destroy()
+					end
+				end
+			end)
+			end
 		elseif (string.sub(Command,1,#".money") == ".money") then
 			pcall(function()
 				for _, Part in pairs(workspace:GetDescendants()) do
@@ -1396,7 +1646,9 @@ local function DoCommand(Command)
 				end
 			end)
 		elseif (string.sub(Command,1,#".noclip") == ".noclip") then -- say hi to the gerbils
-			local player = getPlayer(string.sub(Command,#".noclip" + 2))
+			local args = string.sub(Command,#".noclip" + 2)
+			if args == "all" or args == "everyone" then
+			for _,player in pairs(game.Players:GetPlayers()) do
 			pcall(function()
 				if ((player ~= nil) and (player.Character ~= nil) and (player.Name ~= lp.Name)) then
 					spawn(function()
@@ -1417,10 +1669,12 @@ local function DoCommand(Command)
 					end)
 				end
 			end)
-		elseif (string.sub(Command,1,#".slave") == ".slave") then -- stop bein a skid lmfao
-			local player = getPlayer(string.sub(Command,#".slave" + 2))
+			end
+			elseif args == "others" then
+			for _,player in pairs(game.Players:GetPlayers()) do
+			if player ~= lp then
 			pcall(function()
-				if ((player ~= nil) and (player.Character ~= nil) and (player.Name ~= (lp.Name))) then
+				if ((player ~= nil) and (player.Character ~= nil) and (player.Name ~= lp.Name)) then
 					spawn(function()
 						if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
 							for _, Part in pairs(player.Character:GetDescendants()) do
@@ -1430,21 +1684,117 @@ local function DoCommand(Command)
 							end
 							game:GetService("RunService").Stepped:Connect(function()
 								for _, child in pairs(player.Character:GetDescendants()) do
-									if (child:IsA("BasePart") and child.CanCollide == true) then 
+									if (child:IsA("BasePart") and (child.CanCollide == true)) then 
 										child.CanCollide = false
 									end
 								end
 							end)
-							repeat
-								player.Character:FindFirstChildOfClass('Humanoid').WalkToPoint = (lp.Character.HumanoidRootPart.Position)
-								wait(.1) wait()
-							until ((player.Character.HumanoidRootPart.Position - lp.Character.HumanoidRootPart.Position).Magnitude < 5)
 						end
 					end)
 				end
 			end)
+			end
+			end
+			else
+			local player = getPlayer(args)
+			pcall(function()
+				if ((player ~= nil) and (player.Character ~= nil) and (player.Name ~= lp.Name)) then
+					spawn(function()
+						if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+							for _, Part in pairs(player.Character:GetDescendants()) do
+								if (Part:IsA("BasePart")) then
+									Remote:FireServer(Part,lp)
+								end
+							end
+							game:GetService("RunService").Stepped:Connect(function()
+								for _, child in pairs(player.Character:GetDescendants()) do
+									if (child:IsA("BasePart") and (child.CanCollide == true)) then 
+										child.CanCollide = false
+									end
+								end
+							end)
+						end
+					end)
+				end
+			end)
+			end
+		elseif (string.sub(Command,1,#".clip") == ".clip") then -- say hi to the gerbils
+			local args = string.sub(Command,#".clip" + 2)
+			if args == "all" or args == "everyone" then
+			for _,player in pairs(game.Players:GetPlayers()) do
+			pcall(function()
+				if ((player ~= nil) and (player.Character ~= nil) and (player.Name ~= lp.Name)) then
+					spawn(function()
+						if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+							for _, Part in pairs(player.Character:GetDescendants()) do
+								if (Part:IsA("BasePart")) then
+									Remote:FireServer(Part,lp)
+								end
+							end
+							game:GetService("RunService").Stepped:Connect(function()
+								for _, child in pairs(player.Character:GetDescendants()) do
+									if (child:IsA("BasePart") and (child.CanCollide == false)) then 
+										child.CanCollide = true
+									end
+								end
+							end)
+						end
+					end)
+				end
+			end)
+			end
+			elseif args == "others" then
+			for _,player in pairs(game.Players:GetPlayers()) do
+			if player ~= lp then
+			pcall(function()
+				if ((player ~= nil) and (player.Character ~= nil) and (player.Name ~= lp.Name)) then
+					spawn(function()
+						if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+							for _, Part in pairs(player.Character:GetDescendants()) do
+								if (Part:IsA("BasePart")) then
+									Remote:FireServer(Part,lp)
+								end
+							end
+							game:GetService("RunService").Stepped:Connect(function()
+								for _, child in pairs(player.Character:GetDescendants()) do
+									if (child:IsA("BasePart") and (child.CanCollide == false)) then 
+										child.CanCollide = true
+									end
+								end
+							end)
+						end
+					end)
+				end
+			end)
+			end
+			end
+			else
+			local player = getPlayer(args)
+			pcall(function()
+				if ((player ~= nil) and (player.Character ~= nil) and (player.Name ~= lp.Name)) then
+					spawn(function()
+						if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+							for _, Part in pairs(player.Character:GetDescendants()) do
+								if (Part:IsA("BasePart")) then
+									Remote:FireServer(Part,lp)
+								end
+							end
+							game:GetService("RunService").Stepped:Connect(function()
+								for _, child in pairs(player.Character:GetDescendants()) do
+									if (child:IsA("BasePart") and (child.CanCollide == false)) then 
+										child.CanCollide = true
+									end
+								end
+							end)
+						end
+					end)
+				end
+			end)
+			end
 		elseif (string.sub(Command,1,#".jail") == ".jail") then -- stop bein a skid lmfao
-			local player = getPlayer(string.sub(Command,#".jail" + 2))
+			local args = string.sub(Command,#".jail" + 2)
+			if args == "all" or args == "everyone" then
+			for _,player in pairs(game.Players:GetPlayers()) do
 			pcall(function()
 				if (player ~= nil and player.Character ~= nil) then
 					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
@@ -1461,8 +1811,51 @@ local function DoCommand(Command)
 					end
 				end
 			end)
+			end
+			elseif args == "others" then
+			for _,player in pairs(game.Players:GetPlayers()) do
+			if player ~= lp then
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+								Instance.new("BodyVelocity",Part).Velocity = Vector3.new(0,0,0)  
+								Instance.new("BodyVelocity",Part).Velocity = Vector3.new(0,0,0)  
+								Instance.new("BodyVelocity",Part).Velocity = Vector3.new(0,0,0)  
+								Part.Velocity = Vector3.new(0,0,0)
+							end
+						end
+						player.Character:FindFirstChildOfClass("Humanoid").Jump = true
+					end
+				end
+			end)
+			end
+			end
+			else
+			local player = getPlayer(args)
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+								Instance.new("BodyVelocity",Part).Velocity = Vector3.new(0,0,0)  
+								Instance.new("BodyVelocity",Part).Velocity = Vector3.new(0,0,0)  
+								Instance.new("BodyVelocity",Part).Velocity = Vector3.new(0,0,0)  
+								Part.Velocity = Vector3.new(0,0,0)
+							end
+						end
+						player.Character:FindFirstChildOfClass("Humanoid").Jump = true
+					end
+				end
+			end)
+			end
 		elseif (string.sub(Command,1,#".orbit") == ".orbit") then -- stop bein a skid lmfao
-			local player = getPlayer(string.sub(Command,#".orbit" + 2))
+			local args = string.sub(Command,#".orbit" + 2)
+			if args == "all" or args == "everyone" then
+			for _,player in pairs(game.Players:GetPlayers()) do
 			pcall(function()
 				if (player ~= nil and player.Character ~= nil) then
 					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
@@ -1475,8 +1868,43 @@ local function DoCommand(Command)
 					end
 				end
 			end)
+			end
+			elseif args == "others" then
+			for _,player in pairs(game.Players:GetPlayers()) do
+			if player ~= lp then
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						table.insert(Orbs, player.Character.HumanoidRootPart)
+					end
+				end
+			end)
+			end
+			end
+			else
+			local player = getPlayer(args)
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						table.insert(Orbs, player.Character.HumanoidRootPart)
+					end
+				end
+			end)
+			end
 		elseif (string.sub(Command,1,#(".spin")) == (".spin")) then -- stop bein a skid lmfao
-			local player = getPlayer(string.sub(Command,#".spin" + 2))
+			local args = string.sub(Command,#".spin" + 2)
+			if args == "all" or args == "everyone" then
+			for _,player in pairs(game.Players:GetPlayers()) do
 			pcall(function()
 				if (player ~= nil and player.Character ~= nil) then
 					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
@@ -1484,18 +1912,50 @@ local function DoCommand(Command)
 							if (Part:IsA("BasePart")) then
 								Remote:FireServer(Part,lp)
 								local bambam = Instance.new("BodyThrust",Part)
-								bambam.Force = Vector3.new(101,0,101)
-								bambam.Location = Part.Position
-								lp.Chatted:connect(function(Msg)
-									if (Msg == (string.sub(Msg,1,#(".unspin")))== (".unspin")) then
-										bambam:Destroy()
-									end
-								end)
+                                                                bambam.Force = Vector3.new(101,0,101)
+                                                                bambam.Location = Part.Position
 							end
 						end
 					end
 				end
 			end)
+			end
+			elseif args == "others" then
+			for _,player in pairs(game.Players:GetPlayers()) do
+			if player ~= lp then
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+								local bambam = Instance.new("BodyThrust",Part)
+                                                                bambam.Force = Vector3.new(101,0,101)
+                                                                bambam.Location = Part.Position
+							end
+						end
+					end
+				end
+			end)
+			end
+			end
+			else
+			local player = getPlayer(args)
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+								local bambam = Instance.new("BodyThrust",Part)
+                                                                bambam.Force = Vector3.new(101,0,101)
+                                                                bambam.Location = Part.Position
+							end
+						end
+					end
+				end
+			end)
+			end
 		elseif (string.sub(Command,1,#(".control")) == (".control")) then
 			local Player2 = getPlayer(string.sub(Command,#".control" + 2))
 			for _, Part in pairs(Player2.Character:GetDescendants()) do
