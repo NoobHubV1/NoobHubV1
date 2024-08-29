@@ -21,26 +21,26 @@ print([[
 
 // Commands: -- (Chat commands still work!)
 	.clear | Clears every item
-	.fling (Plr,All,Others) | Fling a player
-	.rocket (Plr,All,Others) | Make a player goto the moon
-	.bring (Plr,All,Others) | Bring a player
-	.kill (Plr,All,Others) | Kill a player
-	.spin (Plr,All,Others) | Make a player spin (Cannot undo if player dead)
-	.control (Plr) | Control a player (May have to rejoin to stop)
+	.fling (plr,all,others,random) | Fling a player
+	.rocket (plr,all,others,random) | Make a player goto the moon
+	.bring (plr,all,others,random) | Bring a player
+	.kill (plr,all,others,random) | Kill a player
+	.spin (plr,all,others,random) | Make a player spin (Cannot undo if player dead)
+	.control (plr,all,others,random) | Control a player (May have to rejoin to stop)
 	.money | Pickup all the droped cash
-	.speed (Plr,All,Others) | Make a player speedy
-	.jump (Plr,All,Others) | Change a player's jump hight
-	.freeze (Plr,All,Others) | Freeze a player (Can do ".unfreeze")
+	.speed (plr,all,others,random) | Make a player speedy
+	.jump (plr,all,others,random) | Change a player's jump hight
+	.freeze (plr,all,others,random) | Freeze a player (Can do ".unfreeze")
 	.tpvan | Bring the delivery truck to you
 	.netclaim | Claim the net back if there is a abuser
 	.fix | Refresh the server
-	.jail (Plr,All,Others) | Lock a player until they reset
-	.loopkill (Plr,All,Others) | Player Get Loopkill (if Player ChangeServer or Leave Map) (Can do ".unloopkill")
-	.void (Plr,All,Others) | Player Tp The Void
-	.destroy (Plr,All,Others) | Player Destroy (if Player Rejoin)
-	.sit (Plr,All,Others) | Sit a Player
-	.noclip (Plr,All,Others) | Noclip a Player
-	.clip (Plr,All,Others) | Unnoclip a Player
+	.jail (plr,all,others,random) | Lock a player until they reset
+	.loopkill (plr,all,others,random) | Player Get Loopkill (if Player ChangeServer or Leave Map) (Can do ".unloopkill")
+	.void (plr,all,others,random) | Player Tp The Void
+	.destroy (plr,all,others,random) | Player Destroy (if Player Rejoin)
+	.sit (plr,all,others,random) | Sit a Player
+	.noclip (plr,all,others,random) | Noclip a Player
+	.clip (plr,all,others,random) | Unnoclip a Player
 \\
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -753,7 +753,9 @@ function getPlayer(Player)
 			return GetPlayers[math.random(#GetPlayers)]
 		else
 			for _, v in pairs(game.Players:GetPlayers()) do
-				if (stringg:lower() == (v.Name:lower()):sub(1, #stringg)) or (stringg:lower() == (v.DisplayName:lower()):sub(1, #stringg)) then return v end
+				if (stringg:lower() == (v.Name:lower()):sub(1, #stringg)) or (stringg:lower() == (v.DisplayName:lower()):sub(1, #stringg)) then 
+					return v 
+				end
 			end
 		end
 	end
@@ -1428,10 +1430,10 @@ local function DoCommand(Command)
 			end)
 			end
 		elseif (string.sub(Command,1,#".loopkill") == ".loopkill") then
-			getgenv().Loop = true
-			while Loop do
 			local args = string.sub(Command,#".loopkill" + 2)
 			if args == "all" or args == "everyone" then
+			getgenv().loop = true
+			while loop do
 			for _,player in pairs(game.Players:GetPlayers()) do
 			pcall(function()
 				if (player ~= nil and player.Character ~= nil) then
@@ -1447,7 +1449,11 @@ local function DoCommand(Command)
 				end
 			end)
 			end
+			task.wait(0.1)
+			end
 			elseif args == "others" then
+			getgenv().loop = true
+			while loop do
 			for _,player in pairs(game.Players:GetPlayers()) do
 			if player ~= lp then
 			pcall(function()
@@ -1465,8 +1471,12 @@ local function DoCommand(Command)
 			end)
 			end
 			end
+			task.wait(0.1)
+			end
 			else
 			local player = getPlayer(args)
+			getgenv().loop = true
+			while loop do
 			pcall(function()
 				if (player ~= nil and player.Character ~= nil) then
 					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
@@ -1480,14 +1490,14 @@ local function DoCommand(Command)
 					end
 				end
 			end)
+			task.wait(0.1)
 			end
-			task.wait(.1)
 			end
 		elseif (string.sub(Command,1,#".unloopkill") == ".unloopkill") then
-			getgenv().Loop = false
-			while Loop do
 			local args = string.sub(Command,#".unloopkill" + 2)
 			if args == "all" or args == "everyone" then
+			getgenv().loop = false
+			while loop do
 			for _,player in pairs(game.Players:GetPlayers()) do
 			pcall(function()
 				if (player ~= nil and player.Character ~= nil) then
@@ -1503,7 +1513,11 @@ local function DoCommand(Command)
 				end
 			end)
 			end
+			task.wait(0.1)
+			end
 			elseif args == "others" then
+			getgenv().loop = false
+			while loop do
 			for _,player in pairs(game.Players:GetPlayers()) do
 			if player ~= lp then
 			pcall(function()
@@ -1521,8 +1535,12 @@ local function DoCommand(Command)
 			end)
 			end
 			end
+			task.wait(0.1)
+			end
 			else
 			local player = getPlayer(args)
+			getgenv().loop = false
+			while loop do
 			pcall(function()
 				if (player ~= nil and player.Character ~= nil) then
 					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
@@ -1536,8 +1554,8 @@ local function DoCommand(Command)
 					end
 				end
 			end)
+			task.wait(0.1)
 			end
-			task.wait(.1)
 			end
 		elseif (string.sub(Command,1,#".void") == ".void") then
 			local args = string.sub(Command,#".void" + 2)
@@ -1742,6 +1760,7 @@ local function DoCommand(Command)
 									end
 								end
 							end)
+							player.Character.Humanoid:ChangeState("Jumping")
 						end
 					end)
 				end
@@ -1766,6 +1785,7 @@ local function DoCommand(Command)
 									end
 								end
 							end)
+							player.Character.Humanoid:ChangeState("Jumping")
 						end
 					end)
 				end
@@ -1790,6 +1810,7 @@ local function DoCommand(Command)
 									end
 								end
 							end)
+							player.Character.Humanoid:ChangeState("Jumping")
 						end
 					end)
 				end
@@ -1961,7 +1982,10 @@ local function DoCommand(Command)
 			end)
 			end
 		elseif (string.sub(Command,1,#(".control")) == (".control")) then
-			local Player2 = getPlayer(string.sub(Command,#".control" + 2))
+			local args = string.sub(Command,#".control" + 2)
+			if args == "all" or args == "everyone" or args == "others" then
+			for _,Player2 in pairs(game.Players:GetPlayers()) do
+			if Player2 ~= lp then
 			for _, Part in pairs(Player2.Character:GetDescendants()) do
 				for i = 1,20 do
 					if (Part:IsA("BasePart")) then
@@ -1974,6 +1998,23 @@ local function DoCommand(Command)
 			Player2.Character.Animate.Disabled = true
 			wait(0.1)
 			Player2.Character.Animate.Disabled = false
+			end
+			end
+			else
+			local Player2 = getPlayer(args)
+			for _, Part in pairs(Player2.Character:GetDescendants()) do
+				for i = 1,20 do
+					if (Part:IsA("BasePart")) then
+						Remote:FireServer(Part,lp)
+					end
+				end
+			end
+			lp.Character = Player2.Character
+			workspace.CurrentCamera.CameraSubject = Player2.Character
+			Player2.Character.Animate.Disabled = true
+			wait(0.1)
+			Player2.Character.Animate.Disabled = false
+			end
 		elseif (string.sub(Command,(1),#(".clear")) == (".clear")) then
 			for i = 1,10 do
 				pcall(function()
@@ -2133,4 +2174,4 @@ end)
 
 -- hi, im NoobHubV1 if you see me in a game
 
-Notify("(Cook Burgers Admin V3.1) Script Loaded!",10)
+Notify("(Cook Burgers Admin V3.5) Script Loaded!",10)
