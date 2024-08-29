@@ -1429,7 +1429,7 @@ local function DoCommand(Command)
 				end
 			end)
 			end
-		elseif (string.sub(Command,1,#".loopkill") == ".loopkill") then
+		elseif (string.sub(Command,1,#".loopkill") == ".loopkill") or (string.sub(Command,1,#".lk") == ".lk") then
 			local args = string.sub(Command,#".loopkill" + 2)
 			if args == "all" or args == "everyone" then
 			getgenv().loop = true
@@ -1493,7 +1493,7 @@ local function DoCommand(Command)
 			task.wait(0.1)
 			end
 			end
-		elseif (string.sub(Command,1,#".unloopkill") == ".unloopkill") then
+		elseif (string.sub(Command,1,#".unloopkill") == ".unloopkill") or (string.sub(Command,1,#".unlk") == ".unlk") then
 			local args = string.sub(Command,#".unloopkill" + 2)
 			if args == "all" or args == "everyone" then
 			getgenv().loop = false
