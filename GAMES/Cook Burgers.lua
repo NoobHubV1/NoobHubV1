@@ -747,6 +747,10 @@ function getPlayer(Player)
 	local function findPlayer(stringg)
 	        if (stringg == ("me")) then
 			return lp
+		elseif (stringg == ("random")) then
+			local GetPlayers = game.Players:GetPlayers()
+			if table.find(GetPlayers,Player) then table.remove(GetPlayers,table.find(GetPlayers,Player)) end
+			return GetPlayers[math.random(#GetPlayers)]
 		else
 			for _, v in pairs(game.Players:GetPlayers()) do
 				if (stringg:lower() == (v.Name:lower()):sub(1, #stringg)) or (stringg:lower() == (v.DisplayName:lower()):sub(1, #stringg)) then return v end
@@ -2046,11 +2050,11 @@ function Notify(Text,Dur)
 	return
 end
 
-lp.Chatted:connect(function(chat) -- haha chat go brrrrr
-	DoCommand(chat:lower())
-	wait(.1)
-	DoCommand(chat:lower()) -- Idk
-	wait()
+lp.Chatted:connect(function(message) -- haha chat go brrrrr
+	local args = message:lower()
+	DoCommand(args)
+	task.wait(0.05)
+	DoCommand(args)
 end)
 
 Refresh.Activated:connect(function()
@@ -2107,7 +2111,11 @@ spawn(function()
 							end
 						end)
 					end
-				elseif target.Text:lower() ~= "all" and target.Text:lower() ~= "everyone" and target.Text:lower() ~= "others" then
+				elseif target.Text:lower() == "random" then
+					local GetPlayers = game.Players:GetPlayers()
+			                if table.find(GetPlayers,Player) then table.remove(GetPlayers,table.find(GetPlayers,Player)) end
+			                DoCommand('.'..button.Name:lower()..' '..GetPlayers[math.random(#GetPlayers)].Name)
+				elseif target.Text:lower() ~= "all" and target.Text:lower() ~= "everyone" and target.Text:lower() ~= "others" and target.Text:lower() ~= "random" then
 					DoCommand('.'..button.Name:lower()..' '..target.Text)
 				end
 			end)
@@ -2125,4 +2133,4 @@ end)
 
 -- hi, im NoobHubV1 if you see me in a game
 
-Notify("(Cook Burgers Admin V3) Script Loaded!",10)
+Notify("(Cook Burgers Admin V3.1) Script Loaded!",10)
