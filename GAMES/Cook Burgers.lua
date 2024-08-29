@@ -119,15 +119,13 @@ local Destroy = Instance.new("TextButton")
 local UICorner_24 = Instance.new("UICorner")
 local Sit = Instance.new("TextButton")
 local UICorner_25 = Instance.new("UICorner")
-local Infjump = Instance.new("TextButton")
-local UICorner_26 = Instance.new("UICorner")
 local target = Instance.new("TextBox")
-local UICorner_27 = Instance.new("UICorner")
+local UICorner_26 = Instance.new("UICorner")
 local UIGradient_2 = Instance.new("UIGradient")
 local Refresh = Instance.new("TextButton")
-local UICorner_28 = Instance.new("UICorner")
+local UICorner_27 = Instance.new("UICorner")
 local search = Instance.new("TextBox")
-local UICorner_29 = Instance.new("UICorner")
+local UICorner_28 = Instance.new("UICorner")
 
 --Properties:
 
@@ -650,22 +648,6 @@ Sit.TextSize = 23.000
 UICorner_25.CornerRadius = UDim.new(0, 4)
 UICorner_25.Parent = Sit
 
-Infjump.Name = "Infjump"
-Infjump.Parent = ScrollingFrame
-Infjump.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
-Infjump.BackgroundTransparency = 0.500
-Infjump.BorderSizePixel = 0
-Infjump.Position = UDim2.new(0.0351677425, 0, 0.190713778, 0)
-Infjump.Size = UDim2.new(0, 131, 0, 40)
-Infjump.ZIndex = 3
-Infjump.Font = Enum.Font.SourceSansLight
-Infjump.Text = "Infjump"
-Infjump.TextColor3 = Color3.fromRGB(255, 255, 255)
-Infjump.TextSize = 23.000
-
-UICorner_26.CornerRadius = UDim.new(0, 4)
-UICorner_26.Parent = Infjump
-
 target.Name = "target"
 target.Parent = Main
 target.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
@@ -678,8 +660,8 @@ target.Text = ""
 target.TextColor3 = Color3.fromRGB(255, 255, 255)
 target.TextSize = 23.000
 
-UICorner_27.CornerRadius = UDim.new(0, 4)
-UICorner_27.Parent = target
+UICorner_26.CornerRadius = UDim.new(0, 4)
+UICorner_26.Parent = target
 
 UIGradient_2.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(122, 122, 122))}
 UIGradient_2.Rotation = 90
@@ -697,8 +679,8 @@ Refresh.TextColor3 = Color3.fromRGB(255, 255, 255)
 Refresh.TextSize = 26.000
 Refresh.TextWrapped = true
 
-UICorner_28.CornerRadius = UDim.new(0, 4)
-UICorner_28.Parent = Refresh
+UICorner_27.CornerRadius = UDim.new(0, 4)
+UICorner_27.Parent = Refresh
 
 search.Name = "search"
 search.Parent = Main
@@ -712,8 +694,8 @@ search.Text = ""
 search.TextColor3 = Color3.fromRGB(255, 255, 255)
 search.TextSize = 23.000
 
-UICorner_29.CornerRadius = UDim.new(0, 4)
-UICorner_29.Parent = search
+UICorner_28.CornerRadius = UDim.new(0, 4)
+UICorner_28.Parent = search
 
 local UserInputService = game:GetService("UserInputService")
 local dragging,dragInput,dragStart,startPos
@@ -835,7 +817,9 @@ local function DoCommand(Command)
 		RemoteQueue = (RemoteQueue+1)
 		queue.Text = (("Remote Queue: ")..(RemoteQueue))
 		if (string.sub((Command),(1),#(".bring")) == (".bring")) then
-			local player = getPlayer(string.sub(Command,#".bring" + 2))
+			local args = string.sub(Command,#".bring" + 2)
+			if args == "all" or args == "everyone" then
+			for _,player in pairs(game.Players:GetPlayers()) do
 			pcall(function()
 				if (player ~= nil and player.Character ~= nil) then
 					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
@@ -848,8 +832,43 @@ local function DoCommand(Command)
 					end
 				end
 			end)
+			end
+			elseif args == "others" then
+			for _,player in pairs(game.Players:GetPlayers()) do
+			if player ~= lp then
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						player.Character.HumanoidRootPart.CFrame = lp.Character.HumanoidRootPart.CFrame + Vector3.new(0, 0, -1)
+					end
+				end
+			end)
+			end
+			end
+			else
+			local player = getPlayer(args)
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						player.Character.HumanoidRootPart.CFrame = lp.Character.HumanoidRootPart.CFrame + Vector3.new(0, 0, -1)
+					end
+				end
+			end)
+			end
 		elseif (string.sub((Command),(1),#(".goto")) == (".goto")) then
-			local player = getPlayer(string.sub(Command,#".goto" + 2))
+			local args = string.sub(Command,#".goto" + 2)
+			if args == "all" or args == "others" or args == "everyone" then
+			for _,player in pairs(game.Players:GetPlayers()) do
 			pcall(function()
 				if (player ~= nil and player.Character ~= nil) then
 					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
@@ -862,6 +881,22 @@ local function DoCommand(Command)
 					end
 				end
 			end)
+			end
+			else
+			local player = getPlayer(args)
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						lp.Character.HumanoidRootPart.CFrame = player.Character.HumanoidRootPart.CFrame + Vector3.new(0, 0, -1)
+					end
+				end
+			end)
+			end
 		elseif (string.sub(Command,1,#(".fix")) == (".fix") or string.sub(Command,1,#(".uncontrol")) == (".uncontrol")) then
 			game:GetService('TeleportService'):TeleportToPlaceInstance(game.PlaceId, game.JobId, lp)
 		elseif (string.sub(Command,1,#".cmds") == ".cmds") then
@@ -895,7 +930,9 @@ local function DoCommand(Command)
 				end
 			end)
 		elseif (string.sub(Command,1,#".speed") == ".speed") then
-			local player = getPlayer(string.sub(Command,#".speed" + 2))
+			local args = string.sub(Command,#".speed" + 2)
+			if args == "all" or args == "everyone" then
+			for _,player in pairs(game.Players:GetPlayers()) do
 			pcall(function()
 				if (player ~= nil and player.Character ~= nil) then
 					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
@@ -908,8 +945,43 @@ local function DoCommand(Command)
 					end
 				end
 			end)
+			end
+			elseif args == "others" then
+			for _,player in pairs(game.Players:GetPlayers()) do
+			if player ~= lp then
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						player.Character:FindFirstChildOfClass('Humanoid').WalkSpeed = (100)
+					end
+				end
+			end)
+			end
+			end
+			else
+			local player = getPlayer(args)
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						player.Character:FindFirstChildOfClass('Humanoid').WalkSpeed = (100)
+					end
+				end
+			end)
+			end
 		elseif (string.sub(Command,1,#".jump") == ".jump") then
-			local player = getPlayer(string.sub(Command,#".jump" + 2))
+			local args = string.sub(Command,#".jump" + 2)
+			if args == "all" or args == "everyone" then
+			for _,player in pairs(game.Players:GetPlayers()) do
 			pcall(function()
 				if (player ~= nil and player.Character ~= nil) then
 					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
@@ -922,8 +994,10 @@ local function DoCommand(Command)
 					end
 				end
 			end)
-		elseif (string.sub(Command,1,#".infjump") == ".infjump") then
-			local player = getPlayer(string.sub(Command,#".infjump" + 2))
+			end
+			elseif args == "others" then
+			for _,player in pairs(game.Players:GetPlayers()) do
+			if player ~= lp then
 			pcall(function()
 				if (player ~= nil and player.Character ~= nil) then
 					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
@@ -932,17 +1006,31 @@ local function DoCommand(Command)
 								Remote:FireServer(Part,lp)
 							end
 						end
-						local InfiniteJumpEnabled = true
-game:GetService("UserInputService").JumpRequest:connect(function()
-	if InfiniteJumpEnabled then
-		player.Character:FindFirstChildOfClass'Humanoid':ChangeState("Jumping")
-	end
-end)
+						player.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
 					end
 				end
 			end)
+			end
+			end
+			else
+			local player = getPlayer(args)
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						player.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+					end
+				end
+			end)
+			end
 		elseif (string.sub(Command,1,#".sit") == ".sit") then
-			local player = getPlayer(string.sub(Command,#".sit" + 2))
+			local args = string.sub(Command,#".sit" + 2)
+			if args == "all" or args == "everyone" then
+			for _,player in pairs(game.Players:GetPlayers()) do
 			pcall(function()
 				if (player ~= nil and player.Character ~= nil) then
 					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
@@ -955,8 +1043,43 @@ end)
 					end
 				end
 			end)
+			end
+			elseif args == "others" then
+			for _,player in pairs(game.Players:GetPlayers()) do
+			if player ~= lp then
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						player.Character.Humanoid.Sit = true
+					end
+				end
+			end)
+			end
+			end
+			else
+			local player = getPlayer(args)
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for _, Part in pairs(player.Character:GetDescendants()) do
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+							end
+						end
+						player.Character.Humanoid.Sit = true
+					end
+				end
+			end)
+			end
 		elseif (string.sub(Command,1,#".freeze") == ".freeze") then
-			local player = getPlayer(string.sub(Command,#".freeze" + 2))
+			local args = string.sub(Command,#".freeze" + 2)
+			if args == "all" or args == "everyone" then
+			for _,player in pairs(game.Players:GetPlayers()) do
 			pcall(function()
 				if (player ~= nil and player.Character ~= nil) then
 					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
@@ -971,8 +1094,47 @@ end)
 					end
 				end
 			end)
+			end
+			elseif args == "others" then
+			for _,player in pairs(game.Players:GetPlayers()) do
+			if player ~= lp then
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for i = 1,20 do
+							for _, Part in pairs(player.Character:GetDescendants()) do
+								if (Part:IsA("BasePart")) then
+									Remote:FireServer(Part,lp)
+								end
+							end
+							player.Character.HumanoidRootPart.Anchored = (true)
+						end
+					end
+				end
+			end)
+			end
+			end
+			else
+			local player = getPlayer(args)
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for i = 1,20 do
+							for _, Part in pairs(player.Character:GetDescendants()) do
+								if (Part:IsA("BasePart")) then
+									Remote:FireServer(Part,lp)
+								end
+							end
+							player.Character.HumanoidRootPart.Anchored = (true)
+						end
+					end
+				end
+			end)
+			end
 		elseif (string.sub(Command,1,#".unfreeze") == ".unfreeze") then
-			local player = getPlayer(string.sub(Command,#".unfreeze" + 2))
+			local args = string.sub(Command,#".unfreeze" + 2)
+			if args == "all" or args == "everyone" then
+			for _,player in pairs(game.Players:GetPlayers()) do
 			pcall(function()
 				if (player ~= nil and player.Character ~= nil) then
 					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
@@ -987,8 +1149,47 @@ end)
 					end
 				end
 			end)
+			end
+			elseif args == "others" then
+			for _,player in pairs(game.Players:GetPlayers()) do
+			if player ~= lp then
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for i = 1,20 do
+							for _, Part in pairs(player.Character:GetDescendants()) do
+								if (Part:IsA("BasePart")) then
+									Remote:FireServer(Part,lp)
+								end
+							end
+							player.Character.HumanoidRootPart.Anchored = (false)
+						end
+					end
+				end
+			end)
+			end
+			end
+			else
+			local player = getPlayer(args)
+			pcall(function()
+				if (player ~= nil and player.Character ~= nil) then
+					if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+						for i = 1,20 do
+							for _, Part in pairs(player.Character:GetDescendants()) do
+								if (Part:IsA("BasePart")) then
+									Remote:FireServer(Part,lp)
+								end
+							end
+							player.Character.HumanoidRootPart.Anchored = (false)
+						end
+					end
+				end
+			end)
+			end
 		elseif (string.sub(Command,1,#".rocket") == ".rocket") then
-			local player = getPlayer(string.sub(Command,#".rocket" + 2))
+			local args = string.sub(Command,#".rocket" + 2)
+			if args == "all" or args == "everyone" then
+			for _,player in pairs(game.Players:GetPlayers()) do
 			pcall(function()
 				if ((player ~= nil) and (player.Character ~= nil)) then
 					for _, Part in pairs(player.Character:GetDescendants()) do
@@ -1013,6 +1214,63 @@ end)
 					end)
 				end
 			end)
+			end
+			elseif args == "others" then
+			for _,player in pairs(game.Players:GetPlayers()) do
+			if player ~= lp then
+			pcall(function()
+				if ((player ~= nil) and (player.Character ~= nil)) then
+					for _, Part in pairs(player.Character:GetDescendants()) do
+						if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+								Instance.new("BodyVelocity",Part).Velocity = Vector3.new(0,1000,0)  
+								Part.Velocity = Vector3.new(0,1000,0)
+							end
+						end
+					end
+					game:GetService("RunService").Stepped:Connect(function()
+						if ((player ~= (nil)) and (player.Character ~= (nil))) then
+							for _, child in pairs(player.Character:GetDescendants()) do
+								if (child:IsA("BasePart") and child.CanCollide == true) then 
+									child.CanCollide = false
+								end
+							end
+						else
+							return
+						end
+					end)
+				end
+			end)
+			end
+			end
+			else
+			local player = getPlayer(args)
+			pcall(function()
+				if ((player ~= nil) and (player.Character ~= nil)) then
+					for _, Part in pairs(player.Character:GetDescendants()) do
+						if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+							if (Part:IsA("BasePart")) then
+								Remote:FireServer(Part,lp)
+								Instance.new("BodyVelocity",Part).Velocity = Vector3.new(0,1000,0)  
+								Part.Velocity = Vector3.new(0,1000,0)
+							end
+						end
+					end
+					game:GetService("RunService").Stepped:Connect(function()
+						if ((player ~= (nil)) and (player.Character ~= (nil))) then
+							for _, child in pairs(player.Character:GetDescendants()) do
+								if (child:IsA("BasePart") and child.CanCollide == true) then 
+									child.CanCollide = false
+								end
+							end
+						else
+							return
+						end
+					end)
+				end
+			end)
+			end
 		elseif (string.sub(Command,1,#".fling") == ".fling") then -- ayo skid watcha lookin for?
 			local player = getPlayer(string.sub(Command,#".fling" + 2))
 			pcall(function()
@@ -1407,4 +1665,4 @@ end)
 
 -- hi, im NoobHubV1 if you see me in a game
 
-Notify("(Cook Burgers Admin V2) Script Loaded!",10)
+Notify("(Cook Burgers Admin V3) Script Loaded!",10)
