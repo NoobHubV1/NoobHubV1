@@ -169,21 +169,21 @@ local ChangeTeam = function(Team)
                         if Team == game.Teams.Criminals then
                         workspace.Remote.TeamEvent:FireServer("Bright blue") task.wait(0.3)
                         plr.Character.HumanoidRootPart.CFrame = CFrame.new(-919.958, 95.327, 2138.189)
-                        plr.CharacterAdded:Wait() wait(0.05)
+                        plr.CharacterAdded:Wait() task.wait(0.1)
                         plr.Character.HumanoidRootPart.CFrame = location
-		        task.wait(0.7)
+		        task.wait(0.65)
 		        plr.Character.HumanoidRootPart.CFrame = location
                         elseif Team == game.Teams.Guards then
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
-                        plr.CharacterAdded:Wait() wait(0.05)
+                        plr.CharacterAdded:Wait() task.wait(0.1)
                         plr.Character.HumanoidRootPart.CFrame = location
-		        task.wait(0.7)
+		        task.wait(0.65)
 		        plr.Character.HumanoidRootPart.CFrame = location
                         elseif Team == game.Teams.Inmates then
                         workspace.Remote.TeamEvent:FireServer("Bright orange")
-                        plr.CharacterAdded:Wait() wait(0.05)
+                        plr.CharacterAdded:Wait() task.wait(0.1)
                         plr.Character.HumanoidRootPart.CFrame = location
-		        task.wait(0.7)
+		        task.wait(0.65)
 		        plr.Character.HumanoidRootPart.CFrame = location
 	                elseif Team == game.Teams.Neutral then
 		        workspace.Remote.TeamEvent:FireServer("Medium stone grey")
