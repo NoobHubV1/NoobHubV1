@@ -110,26 +110,26 @@ local function Notif(Text,Dur)
 end
 
 local ChangeTeam = function(Team)
-                        local location = plr.Character.HumanoidRootPart.Position
+                        local location = plr.Character.HumanoidRootPart.CFrame
                         if Team == game.Teams.Criminals then
                         workspace.Remote.TeamEvent:FireServer("Bright blue") task.wait(0.3)
                         plr.Character.HumanoidRootPart.CFrame = CFrame.new(-919.958, 95.327, 2138.189)
-                        task.wait(0.5)
-                        plr.Character.HumanoidRootPart.CFrame = CFrame.new(location)
-		        task.wait(0.75)
-		        plr.Character.HumanoidRootPart.CFrame = CFrame.new(location)
+                        plr.CharacterAdded:Wait() wait(0.1)
+                        plr.Character.HumanoidRootPart.CFrame = location
+		        task.wait(0.7)
+		        plr.Character.HumanoidRootPart.CFrame = location
                         elseif Team == game.Teams.Guards then
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
-                        task.wait(0.19)
-                        plr.Character.HumanoidRootPart.CFrame = CFrame.new(location)
-		        task.wait(0.75)
-		        plr.Character.HumanoidRootPart.CFrame = CFrame.new(location)
+                        plr.CharacterAdded:Wait() wait(0.1)
+                        plr.Character.HumanoidRootPart.CFrame = location
+		        task.wait(0.7]
+		        plr.Character.HumanoidRootPart.CFrame = location
                         elseif Team == game.Teams.Inmates then
                         workspace.Remote.TeamEvent:FireServer("Bright orange")
-                        task.wait(0.19)
-                        plr.Character.HumanoidRootPart.CFrame = CFrame.new(location)
-		        task.wait(0.75)
-		        plr.Character.HumanoidRootPart.CFrame = CFrame.new(location)
+                        plr.CharacterAdded:Wait() wait(0.1)
+                        plr.Character.HumanoidRootPart.CFrame = location
+		        task.wait(0.7)
+		        plr.Character.HumanoidRootPart.CFrame = location
 	                elseif Team == game.Teams.Neutral then
 		        workspace.Remote.TeamEvent:FireServer("Medium stone grey")
                         end
