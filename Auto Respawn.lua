@@ -167,7 +167,8 @@ end
 local ChangeTeam = function(Team)
                         local location = plr.Character.HumanoidRootPart.CFrame
                         if Team == game.Teams.Criminals then
-                        workspace.Remote.TeamEvent:FireServer("Bright blue") task.wait(0.3)
+                        workspace.Remote.TeamEvent:FireServer("Bright blue")
+		        plr.CharacterAdded:Wait() task.wait(0.1)
                         plr.Character.HumanoidRootPart.CFrame = CFrame.new(-919.958, 95.327, 2138.189)
                         plr.CharacterAdded:Wait() task.wait(0.1)
                         plr.Character.HumanoidRootPart.CFrame = location
