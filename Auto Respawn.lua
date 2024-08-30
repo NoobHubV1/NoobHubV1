@@ -4,6 +4,9 @@
  setclipboard("https://www.youtube.com/c/iTsSaalty?sub_confirmation=1")
 
 local ScreenGui = Instance.new("ScreenGui")
+local Destroy = Instance.new("TextButton")
+local Open = Instance.new("TextButton")
+local Close = Instance.new("TextButton")
 local Main = Instance.new("Frame")
 local re2 = Instance.new("TextButton")
 local re1 = Instance.new("TextButton")
@@ -14,6 +17,57 @@ ScreenGui.Parent = game.CoreGui
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ScreenGui.ResetOnSpawn = false
 
+Destroy.Name = "Destroy"
+Destroy.Parent = ScreenGui
+Destroy.BackgroundColor3 = Color3.fromRGB(170, 0, 255)
+Destroy.Position = UDim2.new(0, 0, 0.533834577, 0)
+Destroy.Size = UDim2.new(0, 109, 0, 39)
+Destroy.Font = Enum.Font.SourceSans
+Destroy.Text = "Destroy"
+Destroy.TextColor3 = Color3.fromRGB(0, 0, 0)
+Destroy.TextScaled = true
+Destroy.TextSize = 1.000
+Destroy.TextWrapped = true
+Destroy.MouseButton1Click:Connect(function()
+ScreenGui:Destroy()
+end)
+
+Open.Name = "Open"
+Open.Parent = ScreenGui
+Open.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
+Open.BackgroundTransparency = 0.500
+Open.BorderSizePixel = 0
+Open.Position = UDim2.new(0.0351677425, 0, 0.00577557739, 0)
+Open.Size = UDim2.new(0, 131, 0, 40)
+Open.ZIndex = 3
+Open.Font = Enum.Font.SourceSansLight
+Open.Text = "Open"
+Open.TextColor3 = Color3.fromRGB(255, 255, 255)
+Open.TextSize = 23.000
+Open.MouseButton1Click:Connect(function()
+Open.Visible = false
+Close.Visible = true
+Main.Visible = true
+end)
+
+Close.Name = "Close"
+Close.Parent = ScreenGui
+Close.BackgroundColor3 = Color3.fromRGB(172, 172, 172)
+Close.BackgroundTransparency = 0.500
+Close.BorderSizePixel = 0
+Close.Position = UDim2.new(0.0351677425, 0, 0.00577557739, 0)
+Close.Size = UDim2.new(0, 131, 0, 40)
+Close.ZIndex = 3
+Close.Font = Enum.Font.SourceSansLight
+Close.Text = "Close"
+Close.TextColor3 = Color3.fromRGB(255, 255, 255)
+Close.TextSize = 23.000
+Close.MouseButton1Click:Connect(function()
+Open.Visible = true
+Close.Visible = false
+Main.Visible = false
+end)
+
 Main.Name = "Main"
 Main.Parent = ScreenGui
 Main.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
@@ -21,6 +75,7 @@ Main.BorderColor3 = Color3.fromRGB(255, 0, 0)
 Main.BorderSizePixel = 2
 Main.Position = UDim2.new(0.00485906005, 0, 0.609179854, 0)
 Main.Size = UDim2.new(0.17087847, 0, 0.381620556, 0)
+Main.Visible = false
 
 re2.Name = "re2"
 re2.Parent = Main
