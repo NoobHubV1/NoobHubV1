@@ -184,8 +184,6 @@ local ChangeTeam = function(Team)
                         workspace.Remote.TeamEvent:FireServer("Bright orange")
                         plr.CharacterAdded:Wait() task.wait(0.1)
                         plr.Character.HumanoidRootPart.CFrame = location
-		        task.wait(0.65)
-		        plr.Character.HumanoidRootPart.CFrame = location
 	                elseif Team == game.Teams.Neutral then
 		        workspace.Remote.TeamEvent:FireServer("Medium stone grey")
                         end
