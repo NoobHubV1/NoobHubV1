@@ -115,7 +115,7 @@ local scripts = Instance.new("ScrollingFrame")
 local UIGridLayout = Instance.new("UIGridLayout")
 local AutoRespawn = Instance.new("TextButton")
 local UnautoRespawn = Instance.new("TextButton")
-local Cure = Instance.new("TextButton")
+local Kill = Instance.new("TextButton")
 local player = Instance.new("TextBox")
 
 --Properties:
@@ -250,6 +250,7 @@ AutoRespawn.Parent = scripts
 AutoRespawn.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
 AutoRespawn.BorderSizePixel = 0
 AutoRespawn.Size = UDim2.new(0, 200, 0, 50)
+AutoRespawn.Visible = false
 AutoRespawn.Font = Enum.Font.Roboto
 AutoRespawn.Text = "Auto Respawn: On"
 AutoRespawn.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -261,7 +262,7 @@ UnautoRespawn.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
 UnautoRespawn.BorderSizePixel = 0
 UnautoRespawn.Size = UDim2.new(0, 200, 0, 50)
 UnautoRespawn.Font = Enum.Font.Roboto
-UnautoRespawn.Text = "Auto Respawn: Off"
+UnautoRespawn.Text = "Auto Respawn"
 UnautoRespawn.TextColor3 = Color3.fromRGB(255, 255, 255)
 UnautoRespawn.TextSize = 14.000
 
@@ -295,11 +296,12 @@ player.TextSize = 14.000
 AutoRespawn.MouseButton1Down:Connect(function()
 AutoRespawn.Visible = false
 UnautoRespawn.Visible = true
-getgenv().autore = true U()
+getgenv().autore = false U()
 end)
 
 UnautoRespawn.MouseButton1Down:Connect(function()
-AutoRespawn.Visible = true
+UnautoRespawn.Text = "Auto Respawn: Off"
 UnautoRespawn.Visible = false
-getgenv().autore = false U()
+AutoRespawn.Visible = true
+getgenv().autore = true U()
 end)
