@@ -1,4 +1,5 @@
 local plr = game.Players.LocalPlayer
+local char = plr.CharacterAdded
 
 function Tween(Obj, Prop, New, Time)
 	if not Time then
@@ -65,6 +66,10 @@ function GetPlayer(Player)
 	return findPlayer(Player)
 end
 
+function TPCFrame(Arg2)
+	plr.Character.HumanoidRootPart.CFrame = Arg2
+end
+
 local function savePos()
 	return plr.Character.HumanoidRootPart.CFrame
 end
@@ -73,33 +78,258 @@ local function savecamPos()
 	return workspace["CurrentCamera"].CFrame
 end
 
+local function Criminal()
+	local savedcf = savePos()
+	local savedcamcf = savecamPos()
+	if plr.Team == game.Teams.Guards then
+	TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
+	char:Wait() wait(0.065)
+	TPCFrame(savedcf)
+	workspace["CurrentCamera"].CFrame = savedcamcf
+	elseif plr.Team == game.Teams.Inmates then
+	TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
+	task.wait()
+        TPCFrame(savedcf)
+	end
+end
+
 local ChangeTeam = function(Team)
-                        local location = savePos()
-	                local savecam = savecamPos()
+                        local savedcf = savePos()
+	                local savedcamcf = savecamPos()
                         if Team == game.Teams.Criminals then
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
-		        plr.CharacterAdded:Wait() wait(0.065)
+		        char:Wait() wait(0.065)
                         plr.Character.HumanoidRootPart.CFrame = CFrame.new(-919.958, 95.327, 2138.189)
-                        plr.CharacterAdded:Wait() wait(0.065)
-                        plr.Character.HumanoidRootPart.CFrame = location
-		        workspace["CurrentCamera"].CFrame = savecam
+                        char:Wait() wait(0.065)
+                        TPCFrame(savedcf)
+		        workspace["CurrentCamera"].CFrame = savedcamcf
                         elseif Team == game.Teams.Guards then
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
-                        plr.CharacterAdded:Wait() wait(0.065)
-                        plr.Character.HumanoidRootPart.CFrame = location
-		        workspace["CurrentCamera"].CFrame = savecam
+                        char:Wait() wait(0.065)
+                        TPCFrame(savedcf)
+		        workspace["CurrentCamera"].CFrame = savedcamcf
                         elseif Team == game.Teams.Inmates then
                         workspace.Remote.TeamEvent:FireServer("Bright orange")
-                        plr.CharacterAdded:Wait() wait(0.065)
-                        plr.Character.HumanoidRootPart.CFrame = location
-		        workspace["CurrentCamera"].CFrame = savecam
+                        char:Wait() wait(0.065)
+                        TPCFrame(savedcf)
+		        workspace["CurrentCamera"].CFrame = savedcamcf
 	                elseif Team == game.Teams.Neutral then
 		        workspace.Remote.TeamEvent:FireServer("Medium stone grey")
                         end
 end
 
-function U() spawn(function() while getgenv().autore do if plr.Character.Humanoid.Health <= 15 then ChangeTeam(plr.Team) end
+local function GiveItem(Item)
+        if Item == "Remington 870" then
+                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["Remington 870"]})
+        elseif Item == "Hammer" then
+                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.single["Hammer"]})
+        elseif Item == "Knife" then
+                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.single["Crude Knife"]})
+        elseif Item == "AK-47" then
+                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["AK-47"]})
+        elseif Item == "M9" then
+                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["M9"]})
+        elseif Item == "M4A1" then
+                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["M4A1"]})
+        end
+end
+
+local function Kill(Player)
+        local events = {}
+	local gun = nil
+	GiveItem("Remington 870")
+	for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+		if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
+			gun = v
+		end
+	end
+	if gun == nil then
+		for i,v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+			if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
+				gun = v
+			end
+		end
+	end
+	coroutine.wrap(function()
+		for i = 1,30 do
+			game.ReplicatedStorage.ReloadEvent:FireServer(gun)
+			wait(.5)
+		end
+	end)()
+	for i = 1,5 do
+		events[#events + 1] = {
+			Hit = Player.Character:FindFirstChild("Head") or Player.Character:FindFirstChildOfClass("Part"),
+			Cframe = CFrame.new(),
+			RayObject = Ray.new(Vector3.new(), Vector3.new()),
+			Distance = 0
+		}
+	end
+	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
+end
+
+local KillTeam = function(Team)
+	local events = {}
+	local gun = nil
+	GiveItem("Remington 870")
+	for i,v in pairs(game.Players:GetPlayers()) do
+		if v ~= game.Players.LocalPlayer and v.TeamColor.Name == Team then
+			if v.TeamColor.Name == game.Players.LocalPlayer.TeamColor.Name then
+				local savedcf = GetOrientation()
+				local camcf = workspace.CurrentCamera.CFrame
+				workspace.Remote.loadchar:InvokeServer(nil, BrickColor.random().Name)
+				workspace.CurrentCamera.CFrame = camcf
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = savedcf
+			end
+			for i = 1,10 do
+				events[#events + 1] = {
+					Hit = v.Character:FindFirstChild("Head") or v.Character:FindFirstChildOfClass("Part"),
+					Cframe = CFrame.new(),
+					RayObject = Ray.new(Vector3.new(), Vector3.new()),
+					Distance = 0
+				}
+			end
+		end
+	end
+	for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+		if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
+			gun = v
+		end
+	end
+	if gun == nil then
+		for i,v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
+			if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
+				gun = v
+			end
+		end
+	end
+	coroutine.wrap(function()
+		for i = 1,30 do
+			game.ReplicatedStorage.ReloadEvent:FireServer(gun)
+			wait(.5)
+		end
+	end)()
+	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
+end
+
+local function CheckTeamKill(Player)
+        local Player = GetPlayer(Player)
+        if Player.Team == game.Teams.Inmates then
+	if plr.Team == game.Teams.Inmates then
+	Criminal()
+	task.wait(0.15)
+	Kill(Player)
+	elseif plr.Team == game.Teams.Guards then
+	Criminal()
+	task.wait(0.25)
+	Kill(Player)
+	elseif plr.Team == game.Teams.Criminals then
+	Kill(Player)
+	end
+        elseif Player.Team == game.Teams.Guards then
+        if plr.Team == game.Teams.Guards then
+        Criminal()
+        task.wait(0.4)
+        Kill(Player)
+        elseif plr.Team == game.Teams.Criminals then
+        Kill(Player)
+        elseif plr.Team == game.Teams.Inmates then
+        Kill(Player)
+        end
+        elseif Player.Team == game.Teams.Criminals then
+        if plr.Team == game.Teams.Guards then
+        ChangeTeam(game.Teams.Inmates)
+        task.wait(0.3)
+        Kill(Player)
+        elseif plr.Team == game.Teams.Criminals then
+        ChangeTeam(game.Teams.Inmates)
+        task.wait(0.3)
+        Kill(Player)
+        elseif plr.Team == game.Teams.Inmates then
+        Kill(Player)
+	end
+        end
+end
+
+local KillInmates = function()
+	if plr.Team == game.Teams.Criminals then
+	KillTeam(BrickColor.new("Bright orange").Name)
+	elseif plr.Team == game.Teams.Guards then
+	Criminal()
+	task.wait(0.45)
+	KillTeam(BrickColor.new("Bright orange").Name)
+	elseif plr.Team == game.Teams.Inmates then
+	Criminal()
+	task.wait(0.15)
+	KillTeam(BrickColor.new("Bright orange").Name)
+	end
+end
+
+local function KillGuards()
+	if plr.Team == game.Teams.Guards then
+	ChangeTeam(game.Teams.Inmates)
+	task.wait(0.15)
+	KillTeam(BrickColor.new("Bright blue").Name)
+	elseif plr.Team == game.Teams.Inmates then
+	KillTeam(BrickColor.new("Bright blue").Name)
+	elseif plr.Team == game.Teams.Criminals then
+	KillTeam(BrickColor.new("Bright blue").Name)
+	end
+end
+
+local KillCriminals = function()
+	if plr.Team == game.Teams.Criminals then
+        ChangeTeam(game.Teams.Inmates)
+	task.wait(0.15)
+        KillTeam(BrickColor.new("Really red").Name)
+	elseif plr.Team == game.Teams.Guards then
+	ChangeTeam(game.Teams.Inmates)
+	task.wait(0.15)
+	KillTeam(BrickColor.new("Really red").Name)
+	elseif plr.Team == game.Teams.Inmates then
+	KillTeam(BrickColor.new("Really red").Name)
+	end
+end
+
+local function KillAll()
+	KillInmates()
+	task.wait(0.1)
+	KillGuards()
+	task.wait(0.2)
+	KillCriminals()
+end
+
+function A() spawn(function() while getgenv().autore do if plr.Character.Humanoid.Health <= 15 then ChangeTeam(plr.Team) end
 wait()
+end
+end)
+end
+
+function U() spawn(function() while getgenv().loopkillall do KillAll()
+task.wait(0.7)
+end
+end)
+end
+
+function C() spawn(function() while getgenv().loopkillinmates do KillInmates()
+task.wait(0.3)
+end
+end)
+end
+
+function G() spawn(function() while getgenv().loopkillguards do KillGuards()
+task.wait(0.3)
+end
+end)
+end
+
+function D() spawn(function() while getgenv().loopkillcriminals do KillCriminals()
+task.wait(0.3)
+end
+end)
+end
+
+function H(Player) spawn(function() while getgenv().loopkillplayer do CheckTeamKill(Player)
+task.wait(0.3)
 end
 end)
 end
@@ -116,6 +346,8 @@ local UIGridLayout = Instance.new("UIGridLayout")
 local AutoRespawn = Instance.new("TextButton")
 local UnautoRespawn = Instance.new("TextButton")
 local Kill = Instance.new("TextButton")
+local Loopkill = Instance.new("TextButton")
+local Unloopkill = Instance.new("TextButton")
 local player = Instance.new("TextBox")
 
 --Properties:
@@ -266,18 +498,36 @@ UnautoRespawn.Text = "Auto Respawn"
 UnautoRespawn.TextColor3 = Color3.fromRGB(255, 255, 255)
 UnautoRespawn.TextSize = 14.000
 
-Cure.Name = "Cure"
-Cure.Parent = scripts
-Cure.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
-Cure.BorderSizePixel = 0
-Cure.Size = UDim2.new(0, 200, 0, 50)
-Cure.Font = Enum.Font.Roboto
-Cure.Text = "Give Cure"
-Cure.TextColor3 = Color3.fromRGB(255, 255, 255)
-Cure.TextSize = 14.000
-Cure.MouseButton1Down:Connect(function()
-GiveItem("Cure")
-end)
+Kill.Name = "Kill"
+Kill.Parent = scripts
+Kill.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+Kill.BorderSizePixel = 0
+Kill.Size = UDim2.new(0, 200, 0, 50)
+Kill.Font = Enum.Font.Roboto
+Kill.Text = "Kill"
+Kill.TextColor3 = Color3.fromRGB(255, 255, 255)
+Kill.TextSize = 14.000
+
+Loopkill.Name = "Loopkill"
+Loopkill.Parent = scripts
+Loopkill.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+Loopkill.BorderSizePixel = 0
+Loopkill.Size = UDim2.new(0, 200, 0, 50)
+Loopkill.Font = Enum.Font.Roboto
+Loopkill.Text = "Loopkill"
+Loopkill.TextColor3 = Color3.fromRGB(255, 255, 255)
+Loopkill.TextSize = 14.000
+
+Unloopkill.Name = "Unloopkill"
+Unloopkill.Parent = scripts
+Unloopkill.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+Unloopkill.BorderSizePixel = 0
+Unloopkill.Size = UDim2.new(0, 200, 0, 50)
+Unloopkill.Visible = false
+Unloopkill.Font = Enum.Font.Roboto
+Unloopkill.Text = "Unloopkill"
+Unloopkill.TextColor3 = Color3.fromRGB(255, 255, 255)
+Unloopkill.TextSize = 14.000
 
 player.Name = "player"
 player.Parent = main
@@ -296,12 +546,98 @@ player.TextSize = 14.000
 AutoRespawn.MouseButton1Down:Connect(function()
 AutoRespawn.Visible = false
 UnautoRespawn.Visible = true
-getgenv().autore = false U()
+getgenv().autore = false A()
 end)
 
 UnautoRespawn.MouseButton1Down:Connect(function()
 UnautoRespawn.Text = "Auto Respawn: Off"
 UnautoRespawn.Visible = false
 AutoRespawn.Visible = true
-getgenv().autore = true U()
+getgenv().autore = true A()
+end)
+
+Kill.MouseButton1Down:Connect(function()
+local Target = player.Text
+if Target == "all" or Target == "others" or Target == "everyone" then
+KillAll()
+Notif("(Success) Killed all")
+elseif Target == "inmates" then
+KillInmates()
+Notif("(Success) Killed inmates")
+elseif Target == "guards" then
+KillGuards()
+Notif("(Success) Killed guards")
+elseif Target == "criminals" then
+KillCriminals()
+Notif("(Success) Killed criminals")
+else
+if GetPlayer(Target) ~= nil then
+CheckTeamKill(Target)
+Notif("(Success) Killed "..GetPlayer(Target).DisplayName)
+else
+Notif("(Error) No Player Found",3)
+end
+end
+end)
+
+Loopkill.MouseButton1Down:Connect(function()
+Loopkill.Visible = false
+Unloopkill.Visible = true
+local Target = player.Text
+if Target == "all" or Target == "others" or Target == "everyone" then
+getgenv().loopkillall = true
+U()
+Notif("(Success) Loopkilled all")
+elseif Target == "inmates" then
+getgenv().loopkillinmates = true
+C()
+Notif("(Success) Loopkilled inmates")
+elseif Target == "guards" then
+getgenv().loopkillguards = true
+G()
+Notif("(Success) Loopkilled guards")
+elseif Target == "criminals" then
+getgenv().loopkillcriminals = true
+D()
+Notif("(Success) Loopkilled criminals")
+else
+if GetPlayer(Target) ~= nil then
+getgenv().loopkillplayer = true
+H(GetPlayer(Target))
+Notif("(Success) Loopkilled "..GetPlayer(Target).DisplayName)
+else
+Notif("(Error) No Player Found",3)
+end
+end
+end)
+
+Unloopkill.MouseButton1Down:Connect(function()
+Loopkill.Visible = true
+Unloopkill.Visible = false
+local Target = player.Text
+if Target == "all" or Target == "others" or Target == "everyone" then
+getgenv().loopkillall = false
+U()
+Notif("(Success) Unloopkilled all")
+elseif Target == "inmates" then
+getgenv().loopkillinmates = false
+C()
+Notif("(Success) Unloopkilled inmates")
+elseif Target == "guards" then
+getgenv().loopkillguards = false
+G()
+Notif("(Success) Unloopkilled guards")
+elseif Target == "criminals" then
+getgenv().loopkillcriminals = false
+D()
+Notif("(Success) Unloopkilled criminals")
+else
+if GetPlayer(Target) ~= nil then
+getgenv().loopkillplayer = false
+H(GetPlayer(Target))
+Notif("(Success) Unloopkilled "..GetPlayer(Target).DisplayName)
+else
+Notif("(Error) No Player Found",3)
+end
+end
 end)
