@@ -77,7 +77,7 @@ local function Criminal()
 	local savedcamcf = savedcamcf()
 	if plr.Team == game.Teams.Guards then
 	GetChar().HumanoidRootPart.CFrame = CFrame.new(-919.958, 95.327, 2138.189)
-	char:Wait() wait(0.05)
+	char:Wait() wait(0.075)
 	GetChar().HumanoidRootPart.CFrame = savedcf
 	workspace["CurrentCamera"].CFrame = savedcamcf
 	elseif plr.Team == game.Teams.Inmates then
@@ -92,19 +92,19 @@ local function ChangeTeam(Team)
 	local savedcamcf = savedcamcf()
 	if Team == game.Teams.Criminals then
 workspace.Remote.TeamEvent:FireServer("Bright blue") 
-char:Wait() wait(0.05)
+char:Wait() wait(0.075)
 plr.Character.HumanoidRootPart.CFrame = CFrame.new(-919.958, 95.327, 2138.189)
-char:Wait() wait(0.05)
+char:Wait() wait(0.075)
 plr.Character.HumanoidRootPart.CFrame = savedcf
 workspace["CurrentCamera"].CFrame = savedcamcf
 	elseif Team == game.Teams.Inmates then
 		workspace.Remote.TeamEvent:FireServer("Bright orange")
-		char:Wait() wait(0.05)
+		char:Wait() wait(0.075)
 		GetChar().HumanoidRootPart.CFrame = savedcf
 		workspace["CurrentCamera"].CFrame = savedcamcf
 	elseif Team == game.Teams.Guards then
 		workspace.Remote.TeamEvent:FireServer("Bright blue")
-		char:Wait() wait(0.05)
+		char:Wait() wait(0.075)
 		GetChar().HumanoidRootPart.CFrame = savedcf
 		workspace["CurrentCamera"].CFrame = savedcamcf
 	elseif Team == game.Teams.Neutral then
