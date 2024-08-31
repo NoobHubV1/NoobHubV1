@@ -311,6 +311,14 @@ local function AllGuns()
 	GiveItem("M9")
 	end
 end
+
+local function Aura()
+	for i, v in pairs(game.Players:GetPlayers()) do
+	        if v ~= plr then
+			 game.ReplicatedStorage.meleeEvent:FireServer(v)
+	        end
+	end
+end
 	
 function A() spawn(function() while getgenv().autore do if plr.Character.Humanoid.Health <= 15 then ChangeTeam(plr.Team) end
 wait()
@@ -354,7 +362,13 @@ end
 end)
 end
 
-local destruct = Instance.new("ScreenGui")
+function F() spawn(function() while getgenv().killaura do Aura()
+task.wait()
+end
+end)
+end
+
+local NoobHubV1 = Instance.new("ScreenGui")
 local open = Instance.new("TextButton")
 local close = Instance.new("TextButton")
 local main = Instance.new("Frame")
@@ -366,21 +380,28 @@ local UIGridLayout = Instance.new("UIGridLayout")
 local Refresh = Instance.new("TextButton")
 local AutoRespawn = Instance.new("TextButton")
 local UnautoRespawn = Instance.new("TextButton")
-local AutoGuns = Instance.new("TextButton")
-local AutoGuns = Instance.new("TextButton")
 local Kill = Instance.new("TextButton")
 local Loopkill = Instance.new("TextButton")
 local Unloopkill = Instance.new("TextButton")
+local AutoGuns = Instance.new("TextButton")
+local UnautoGuns = Instance.new("TextButton")
+local AllGuns = Instance.new("TextButton")
+local Inmate = Instance.new("TextButton")
+local Guard = Instance.new("TextButton")
+local Criminal = Instance.new("TextButton")
+local Neutral = Instance.new("TextButton")
+local KillAura = Instance.new("TextButton")
+local UnkillAura = Instance.new("TextButton")
 local player = Instance.new("TextBox")
 
 --Properties:
 
-destruct.Name = "destruct"
-destruct.Parent = game.CoreGui
-destruct.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+NoobHubV1.Name = "NoobHubV1"
+NoobHubV1.Parent = game.CoreGui
+NoobHubV1.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 open.Name = "open"
-open.Parent = destruct
+open.Parent = NoobHubV1
 open.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
 open.BorderSizePixel = 0
 open.Size = UDim2.new(0, 200, 0, 50)
@@ -395,7 +416,7 @@ main.Visible = true
 end)
 
 close.Name = "close"
-close.Parent = destruct
+close.Parent = NoobHubV1
 close.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
 close.BorderSizePixel = 0
 close.Size = UDim2.new(0, 200, 0, 50)
@@ -411,7 +432,7 @@ main.Visible = false
 end)
 
 main.Name = "main"
-main.Parent = destruct
+main.Parent = NoobHubV1
 main.BackgroundColor3 = Color3.fromRGB(76, 76, 76)
 main.BackgroundTransparency = 0.3
 main.BorderSizePixel = 0
@@ -563,6 +584,110 @@ Unloopkill.Text = "Unloopkill"
 Unloopkill.TextColor3 = Color3.fromRGB(255, 255, 255)
 Unloopkill.TextSize = 14.000
 
+AutoGuns.Name = "AutoGuns"
+AutoGuns.Parent = scripts
+AutoGuns.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+AutoGuns.BorderSizePixel = 0
+AutoGuns.Size = UDim2.new(0, 200, 0, 50)
+AutoGuns.Visible = false
+AutoGuns.Font = Enum.Font.Roboto
+AutoGuns.Text = "Auto Guns: On"
+AutoGuns.TextColor3 = Color3.fromRGB(255, 255, 255)
+AutoGuns.TextSize = 14.000
+
+UnautoGuns.Name = "UnautoGuns"
+UnautoGuns.Parent = scripts
+UnautoGuns.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+UnautoGuns.BorderSizePixel = 0
+UnautoGuns.Size = UDim2.new(0, 200, 0, 50)
+UnautoGuns.Font = Enum.Font.Roboto
+UnautoGuns.Text = "Auto Guns"
+UnautoGuns.TextColor3 = Color3.fromRGB(255, 255, 255)
+UnautoGuns.TextSize = 14.000
+
+AllGuns.Name = "AllGuns"
+AllGuns.Parent = scripts
+AllGuns.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+AllGuns.BorderSizePixel = 0
+AllGuns.Size = UDim2.new(0, 200, 0, 50)
+AllGuns.Font = Enum.Font.Roboto
+AllGuns.Text = "All Guns"
+AllGuns.TextColor3 = Color3.fromRGB(255, 255, 255)
+AllGuns.TextSize = 14.000
+
+Inmate.Name = "Inmate"
+Inmate.Parent = scripts
+Inmate.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+Inmate.BorderSizePixel = 0
+Inmate.Size = UDim2.new(0, 200, 0, 50)
+Inmate.Font = Enum.Font.Roboto
+Inmate.Text = "Inmate"
+Inmate.TextColor3 = Color3.fromRGB(255, 255, 255)
+Inmate.TextSize = 14.000
+Inmate.MouseButton1Down:Connect(function()
+ChangeTeam(game.Teams.Inmates)
+end)
+
+Guard.Name = "Guard"
+Guard.Parent = scripts
+Guard.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+Guard.BorderSizePixel = 0
+Guard.Size = UDim2.new(0, 200, 0, 50)
+Guard.Font = Enum.Font.Roboto
+Guard.Text = "Guard"
+Guard.TextColor3 = Color3.fromRGB(255, 255, 255)
+Guard.TextSize = 14.000
+Guard.MouseButton1Down:Connect(function()
+ChangeTeam(game.Teams.Guards)
+end)
+
+Criminal.Name = "Criminal"
+Criminal.Parent = scripts
+Criminal.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+Criminal.BorderSizePixel = 0
+Criminal.Size = UDim2.new(0, 200, 0, 50)
+Criminal.Font = Enum.Font.Roboto
+Criminal.Text = "Criminal"
+Criminal.TextColor3 = Color3.fromRGB(255, 255, 255)
+Criminal.TextSize = 14.000
+Criminal.MouseButton1Down:Connect(function()
+ChangeTeam(game.Teams.Criminals)
+end)
+
+Neutral.Name = "Neutral"
+Neutral.Parent = scripts
+Neutral.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+Neutral.BorderSizePixel = 0
+Neutral.Size = UDim2.new(0, 200, 0, 50)
+Neutral.Font = Enum.Font.Roboto
+Neutral.Text = "Neutral"
+Neutral.TextColor3 = Color3.fromRGB(255, 255, 255)
+Neutral.TextSize = 14.000
+Neutral.MouseButton1Down:Connect(function()
+ChangeTeam(game.Teams.Neutral)
+end)
+
+KillAura.Name = "KillAura"
+KillAura.Parent = scripts
+KillAura.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+KillAura.BorderSizePixel = 0
+KillAura.Size = UDim2.new(0, 200, 0, 50)
+KillAura.Visible = false
+KillAura.Font = Enum.Font.Roboto
+KillAura.Text = "Kill Aura: On"
+KillAura.TextColor3 = Color3.fromRGB(255, 255, 255)
+KillAura.TextSize = 14.000
+
+UnkillAura.Name = "UnkillAura"
+UnkillAura.Parent = scripts
+UnkillAura.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+UnkillAura.BorderSizePixel = 0
+UnkillAura.Size = UDim2.new(0, 200, 0, 50)
+UnkillAura.Font = Enum.Font.Roboto
+UnkillAura.Text = "Kill Aura"
+UnkillAura.TextColor3 = Color3.fromRGB(255, 255, 255)
+UnkillAura.TextSize = 14.000
+
 player.Name = "player"
 player.Parent = main
 player.BackgroundColor3 = Color3.fromRGB(85, 85, 85)
@@ -678,4 +803,34 @@ else
 Notif("(Error) No Player Found",3)
 end
 end
+end)
+
+AutoGuns.MouseButton1Down:Connect(function()
+AutoGuns.Visible = false
+UnautoGuns.Visible = true
+getgenv().autoguns = false Y()
+end)
+
+UnautoGuns.MouseButton1Down:Connect(function()
+UnautoGuns.Text = "Auto Guns: Off"
+UnautoGuns.Visible = false
+AutoGuns.Visible = true
+getgenv().autoguns = true Y()
+end)
+
+AllGuns.MouseButton1Down:Connect(function()
+AllGuns()
+end)
+
+KillAura.MouseButton1Down:Connect(function()
+KillAura.Visible = false
+UnkillAura.Visible = true
+getgenv().killaura = false F()
+end)
+
+UnkillAura.MouseButton1Down:Connect(function()
+UnkillAura.Text = "Kill Aura: Off"
+UnkillAura.Visible = false
+KillAura.Visible = true
+getgenv().killaura = true F()
 end)
