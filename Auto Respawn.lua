@@ -164,8 +164,12 @@ local function Notif(Text,Dur)
 	return
 end
 
+local function savePos()
+	return plr.Character.HumanoidRootPart.CFrame
+end
+
 local ChangeTeam = function(Team)
-                        local location = plr.Character.HumanoidRootPart.CFrame
+                        local location = savePos()
                         if Team == game.Teams.Criminals then
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
 		        plr.CharacterAdded:Wait() task.wait(0.1)
