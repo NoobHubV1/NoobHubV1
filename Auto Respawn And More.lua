@@ -1,5 +1,6 @@
 local plr = game.Players.LocalPlayer
 local char = plr.CharacterAdded
+local BuyGamepass = game:GetService("MarketplaceService"):UserOwnsGamePassAsync(tonumber((plr.CharacterAppearance):split('=')[#((plr.CharacterAppearance):split('='))]), 96651)
 
 function Tween(Obj, Prop, New, Time)
 	if not Time then
@@ -99,7 +100,7 @@ local ChangeTeam = function(Team)
                         if Team == game.Teams.Criminals then
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
 		        char:Wait() wait(0.065)
-                        plr.Character.HumanoidRootPart.CFrame = CFrame.new(-919.958, 95.327, 2138.189)
+                        TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
                         char:Wait() wait(0.065)
                         TPCFrame(savedcf)
 		        workspace["CurrentCamera"].CFrame = savedcamcf
@@ -298,6 +299,19 @@ local function KillAll()
 	KillCriminals()
 end
 
+local function AllGuns()
+        if BuyGamepass then
+	GiveItem("AK-47")
+	GiveItem("Remington 870")
+	GiveItem("M9")
+	GiveItem("M4A1")
+	else
+	GiveItem("AK-47")
+	GiveItem("Remington 870")
+	GiveItem("M9")
+	end
+end
+	
 function A() spawn(function() while getgenv().autore do if plr.Character.Humanoid.Health <= 15 then ChangeTeam(plr.Team) end
 wait()
 end
@@ -334,6 +348,12 @@ end
 end)
 end
 
+function Y() spawn(function() while getgenv().autoguns do AllGuns()
+task.wait(0.5)
+end
+end)
+end
+
 local destruct = Instance.new("ScreenGui")
 local open = Instance.new("TextButton")
 local close = Instance.new("TextButton")
@@ -343,8 +363,11 @@ local line = Instance.new("Frame")
 local ImageLabel = Instance.new("ImageLabel")
 local scripts = Instance.new("ScrollingFrame")
 local UIGridLayout = Instance.new("UIGridLayout")
+local Refresh = Instance.new("TextButton")
 local AutoRespawn = Instance.new("TextButton")
 local UnautoRespawn = Instance.new("TextButton")
+local AutoGuns = Instance.new("TextButton")
+local AutoGuns = Instance.new("TextButton")
 local Kill = Instance.new("TextButton")
 local Loopkill = Instance.new("TextButton")
 local Unloopkill = Instance.new("TextButton")
@@ -376,6 +399,7 @@ close.Parent = destruct
 close.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
 close.BorderSizePixel = 0
 close.Size = UDim2.new(0, 200, 0, 50)
+close.Visible = false
 close.Font = Enum.Font.Roboto
 close.Text = "Close"
 close.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -477,6 +501,16 @@ UIGridLayout.Parent = scripts
 UIGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UIGridLayout.CellSize = UDim2.new(0, 100, 0, 30)
 
+Refresh.Name = "Refresh"
+Refresh.Parent = scripts
+Refresh.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+Refresh.BorderSizePixel = 0
+Refresh.Size = UDim2.new(0, 200, 0, 50)
+Refresh.Font = Enum.Font.Roboto
+Refresh.Text = "Respawn"
+Refresh.TextColor3 = Color3.fromRGB(255, 255, 255)
+Refresh.TextSize = 14.000
+
 AutoRespawn.Name = "AutoRespawn"
 AutoRespawn.Parent = scripts
 AutoRespawn.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
@@ -542,6 +576,10 @@ player.PlaceholderText = "PLAYER"
 player.Text = ""
 player.TextColor3 = Color3.fromRGB(255, 255, 255)
 player.TextSize = 14.000
+
+Refresh.MouseButton1Down:Connect(function()
+ChangeTeam(plr.Team)
+end)
 
 AutoRespawn.MouseButton1Down:Connect(function()
 AutoRespawn.Visible = false
