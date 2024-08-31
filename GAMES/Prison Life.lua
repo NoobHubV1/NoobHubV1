@@ -2,6 +2,7 @@ local Library = loadstring(Game:HttpGetAsync(("https://raw.githubusercontent.com
 local Players = game.Players
 local plr = Players.LocalPlayer
 local BuyGamepass = game:GetService("MarketplaceService"):UserOwnsGamePassAsync(tonumber((game:GetService("Players").LocalPlayer.CharacterAppearance):split('=')[#((game:GetService("Players").LocalPlayer.CharacterAppearance):split('='))]), 96651)
+local char = plr.CharacterAdded
 
 local function Tween(Obj, Prop, New, Time)
 	if not Time then
@@ -63,46 +64,49 @@ local function GetChar()
 	return plr.Character
 end
 
-local GetPos = function()
-        return GetChar().Torso.Position
+local savedcf = function()
+        return GetChar().HumanoidRootPart.CFrame
+end
+
+local function savedcamcf()
+	return workspace["CurrentCamera"].CFrame
 end
 
 local function Criminal()
-	local savedcf = GetPos()
+	local savedcf = savedcf()
+	local savedcamcf = savedcamcf()
 	if plr.Team == game.Teams.Guards then
 	GetChar().HumanoidRootPart.CFrame = CFrame.new(-919.958, 95.327, 2138.189)
-	task.wait(0.4)
-	GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
-	task.wait(0.75)
-	GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
+	char:Wait() wait(0.05)
+	GetChar().HumanoidRootPart.CFrame = savedcf
+	workspace["CurrentCamera"].CFrame = savedcamcf
 	elseif plr.Team == game.Teams.Inmates then
 	GetChar().HumanoidRootPart.CFrame = CFrame.new(-919.958, 95.327, 2138.189)
 	task.wait()
-        GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
+        GetChar().HumanoidRootPart.CFrame = savedcf
 	end
 end
 
 local function ChangeTeam(Team)
-	local savedcf = GetPos()
+	local savedcf = savedcf()
+	local savedcamcf = savedcamcf()
 	if Team == game.Teams.Criminals then
-workspace.Remote.TeamEvent:FireServer("Bright blue") task.wait(0.2)
+workspace.Remote.TeamEvent:FireServer("Bright blue") 
+char:Wait() wait(0.05)
 plr.Character.HumanoidRootPart.CFrame = CFrame.new(-919.958, 95.327, 2138.189)
-task.wait(0.4)
-plr.Character.HumanoidRootPart.CFrame = CFrame.new(savedcf)
-	task.wait(0.75)
-	GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
+char:Wait() wait(0.05)
+plr.Character.HumanoidRootPart.CFrame = savedcf
+workspace["CurrentCamera"].CFrame = savedcamcf
 	elseif Team == game.Teams.Inmates then
 		workspace.Remote.TeamEvent:FireServer("Bright orange")
-		task.wait(0.19)
-		GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
-		task.wait(0.75)
-	GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
+		char:Wait() wait(0.05)
+		GetChar().HumanoidRootPart.CFrame = savedcf
+		workspace["CurrentCamera"].CFrame = savedcamcf
 	elseif Team == game.Teams.Guards then
 		workspace.Remote.TeamEvent:FireServer("Bright blue")
-		task.wait(0.19)
-		GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
-		task.wait(0.75)
-	GetChar().HumanoidRootPart.CFrame = CFrame.new(savedcf)
+		char:Wait() wait(0.05)
+		GetChar().HumanoidRootPart.CFrame = savedcf
+		workspace["CurrentCamera"].CFrame = savedcamcf
 	elseif Team == game.Teams.Neutral then
 		workspace.Remote.TeamEvent:FireServer("Medium stone grey")
 	end
