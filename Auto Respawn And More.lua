@@ -319,6 +319,53 @@ local function Aura()
 	        end
 	end
 end
+
+local function ServerCrash()
+	task.spawn(function()
+	getgenv().Loop = true
+	while Loop do
+	for i = 1, 5 do
+local Gun = "Remington 870"
+
+local Player = game.Players.LocalPlayer.Name
+
+GiveItem(Gun)
+
+for i,v in pairs(game.Players[ Player ].Backpack:GetChildren()) do
+    if v.name == (Gun) then
+        v.Parent = game.Players.LocalPlayer.Character
+    end
+end
+
+Gun = game.Players[ Player ].Character[ Gun ]
+
+plr.Character.Humanoid:UnequipTools()
+
+function FireGun(target)
+coroutine.resume(coroutine.create(function()
+local bulletTable = {}
+table.insert(bulletTable, {
+Hit = target,
+Distance = 100,
+Cframe = CFrame.new(0,1,1),
+RayObject = Ray.new(Vector3.new(0.1,0.2), Vector3.new(0.3,0.4))
+})
+game.ReplicatedStorage.ShootEvent:FireServer(bulletTable, Gun)
+wait()
+end))
+end
+
+while game:GetService("RunService").Stepped:wait() do
+for count = 0, 10, 10 do
+FireGun()
+end
+end
+task.wait()
+	end
+	task.wait()
+	end
+	end)
+end
 	
 function A() spawn(function() while getgenv().autore do if plr.Character.Humanoid.Health <= 15 then ChangeTeam(plr.Team) end
 wait()
@@ -392,6 +439,7 @@ local Criminal = Instance.new("TextButton")
 local Neutral = Instance.new("TextButton")
 local KillAura = Instance.new("TextButton")
 local UnkillAura = Instance.new("TextButton")
+local Servercrash = Instance.new("TextButton")
 local player = Instance.new("TextBox")
 
 --Properties:
@@ -688,6 +736,16 @@ UnkillAura.Text = "Kill Aura"
 UnkillAura.TextColor3 = Color3.fromRGB(255, 255, 255)
 UnkillAura.TextSize = 14.000
 
+Servercrash.Name = "Servercrash"
+Servercrash.Parent = scripts
+Servercrash.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+Servercrash.BorderSizePixel = 0
+Servercrash.Size = UDim2.new(0, 200, 0, 50)
+Servercrash.Font = Enum.Font.Roboto
+Servercrash.Text = "Server Crash"
+Servercrash.TextColor3 = Color3.fromRGB(255, 255, 255)
+Servercrash.TextSize = 14.000
+
 player.Name = "player"
 player.Parent = main
 player.BackgroundColor3 = Color3.fromRGB(85, 85, 85)
@@ -833,4 +891,8 @@ UnkillAura.Text = "Kill Aura: Off"
 UnkillAura.Visible = false
 KillAura.Visible = true
 getgenv().killaura = true F()
+end)
+
+Servercrash.MouseButton1Down:Connect(function()
+ServerCrash()
 end)
