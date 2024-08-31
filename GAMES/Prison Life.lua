@@ -1684,8 +1684,8 @@ end)
 PrisonLife:CreateButton("Admin Gui", function()LoadstringHttps("https://raw.githubusercontent.com/NoobHubV1/RobloxScripts/main/Prison%20Life%20Admin.lua")
 end)
 
-PrisonLife:CreateButton("Auto Respawn Button", function()Notif("Script Made by iTsSaalty") task.wait(1)
-LoadstringHttps("https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/Auto%20Respawn.lua")
+PrisonLife:CreateButton("Auto Respawn Button", function()Notif("Script Made by Me") task.wait(1)
+LoadstringHttps("https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/Auto%20Respawn%20And%20More.lua")
 end)
 
 PrisonLife:CreateButton("Kill Plr", function()KillPlr()
