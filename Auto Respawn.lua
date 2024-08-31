@@ -177,19 +177,19 @@ local ChangeTeam = function(Team)
 	                local savecam = savecamPos()
                         if Team == game.Teams.Criminals then
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
-		        plr.CharacterAdded:Wait() wait(0.05)
+		        plr.CharacterAdded:Wait() wait(0.075)
                         plr.Character.HumanoidRootPart.CFrame = CFrame.new(-919.958, 95.327, 2138.189)
-                        plr.CharacterAdded:Wait() wait(0.05)
+                        plr.CharacterAdded:Wait() wait(0.075)
                         plr.Character.HumanoidRootPart.CFrame = location
 		        workspace["CurrentCamera"].CFrame = savecam
                         elseif Team == game.Teams.Guards then
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
-                        plr.CharacterAdded:Wait() wait(0.05)
+                        plr.CharacterAdded:Wait() wait(0.075)
                         plr.Character.HumanoidRootPart.CFrame = location
 		        workspace["CurrentCamera"].CFrame = savecam
                         elseif Team == game.Teams.Inmates then
                         workspace.Remote.TeamEvent:FireServer("Bright orange")
-                        plr.CharacterAdded:Wait() wait(0.05)
+                        plr.CharacterAdded:Wait() wait(0.075)
                         plr.Character.HumanoidRootPart.CFrame = location
 		        workspace["CurrentCamera"].CFrame = savecam
 	                elseif Team == game.Teams.Neutral then
