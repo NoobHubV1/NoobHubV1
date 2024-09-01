@@ -2,6 +2,7 @@ local Players = game.Players
 local plr = Players.LocalPlayer
 local char = plr.CharacterAdded
 local BuyGamepass = game:GetService("MarketplaceService"):UserOwnsGamePassAsync(tonumber((plr.CharacterAppearance):split('=')[#((plr.CharacterAppearance):split('='))]), 96651)
+local Flinger = loadstring(game:HttpGet("https://pastebinp.com/raw/HWH951dz"))()
 
 function Tween(Obj, Prop, New, Time)
 	if not Time then
@@ -161,9 +162,9 @@ local function Kill(Player)
 		end
 	end
 	coroutine.wrap(function()
-		for i = 1,30 do
+		for i = 1,50 do
 			game.ReplicatedStorage.ReloadEvent:FireServer(gun)
-			wait(.5)
+			task.wait()
 		end
 	end)()
 	for i = 1,5 do
@@ -264,6 +265,10 @@ local function CheckTeamKill(Player)
 end
 
 local KillInmates = function()
+	for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
+	if v ~= plr then
+	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
+	else
 	if plr.Team == game.Teams.Criminals then
 	KillTeam(BrickColor.new("Bright orange").Name)
 	elseif plr.Team == game.Teams.Guards then
@@ -275,9 +280,16 @@ local KillInmates = function()
 	task.wait(0.15)
 	KillTeam(BrickColor.new("Bright orange").Name)
 	end
+	end
+	end
+	end
 end
 
 local function KillGuards()
+	for i,v in pairs(game.Teams.Guards:GetPlayers()) do
+	if v ~= plr then
+	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
+	else
 	if plr.Team == game.Teams.Guards then
 	ChangeTeam(game.Teams.Inmates)
 	task.wait(0.15)
@@ -287,15 +299,25 @@ local function KillGuards()
 	elseif plr.Team == game.Teams.Criminals then
 	KillTeam(BrickColor.new("Bright blue").Name)
 	end
+	end
+	end
+	end
 end
 
 local KillCriminals = function()
+	for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
+	if v ~= plr then
+	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
+	else
 	if plr.Team == game.Teams.Criminals or plr.Team == game.Teams.Guards then
         ChangeTeam(game.Teams.Inmates)
 	char:Wait() wait(0.065)
         KillTeam(BrickColor.new("Really red").Name)
 	elseif plr.Team == game.Teams.Inmates then
 	KillTeam(BrickColor.new("Really red").Name)
+	end
+	end
+	end
 	end
 end
 
@@ -458,6 +480,16 @@ end
 G:Enable()
 return G
 end
+
+local function Fling(Player)
+     if Player:lower() == "all" then
+     Flinger:GetTarget(Player)
+     Flinger:flingAll()
+     else
+     Flinger:GetTarget(Player)
+     Flinger:Fling()
+     end
+end
 	
 function A() spawn(function() while getgenv().autore do if plr.Character.Humanoid.Health <= 15 then ChangeTeam(plr.Team) end
 wait()
@@ -466,7 +498,7 @@ end)
 end
 
 function U() spawn(function() while getgenv().loopkillall do KillAll()
-task.wait(0.7)
+task.wait(0.5)
 end
 end)
 end
@@ -503,7 +535,7 @@ end
 
 function F() spawn(function() while getgenv().killaura do Aura()
 task.wait()
-end
+ end
 end)
 end
 
@@ -515,6 +547,12 @@ end
 
 function M(Player) spawn(function() while getgenv().viewplayer do View(Player)
 task.wait()
+end
+end)
+end
+
+function E(Player) spawn(function() while getgenv().loopfling do Fling(Player)
+task.wait(1)
 end
 end)
 end
@@ -549,6 +587,9 @@ local unff = Instance.new("TextButton")
 local view = Instance.new("TextButton")
 local unview = Instance.new("TextButton")
 local antifling = Instance.new("TextButton")
+local fling = Instance.new("TextButton")
+local loopfling = Instance.new("TextButton")
+local unloopfling = Instance.new("TextButton")
 local player = Instance.new("TextBox")
 
 --Properties:
@@ -562,6 +603,7 @@ open.Parent = NoobHubV1
 open.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
 open.BorderSizePixel = 0
 open.Size = UDim2.new(0, 200, 0, 50)
+open.Visible = false
 open.Font = Enum.Font.Roboto
 open.Text = "Open"
 open.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -577,7 +619,7 @@ close.Parent = NoobHubV1
 close.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
 close.BorderSizePixel = 0
 close.Size = UDim2.new(0, 200, 0, 50)
-close.Visible = false
+close.Visible = true
 close.Font = Enum.Font.Roboto
 close.Text = "Close"
 close.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -595,7 +637,7 @@ main.BackgroundTransparency = 0.3
 main.BorderSizePixel = 0
 main.Position = UDim2.new(0.268847764, 0, 0.372854918, 0)
 main.Size = UDim2.new(0, 325, 0, 239)
-main.Visible = false
+main.Visible = true
 main.Active = true
 
 local UserInputService = game:GetService("UserInputService")
@@ -921,6 +963,37 @@ antifling.MouseButton1Down:Connect(function()
 Antifling()
 end)
 
+fling.Name = "fling"
+fling.Parent = scripts
+fling.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+fling.BorderSizePixel = 0
+fling.Size = UDim2.new(0, 200, 0, 50)
+fling.Font = Enum.Font.Roboto
+fling.Text = "fling"
+fling.TextColor3 = Color3.fromRGB(255, 255, 255)
+fling.TextSize = 14.000
+
+loopfling.Name = "loopfling"
+loopfling.Parent = scripts
+loopfling.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+loopfling.BorderSizePixel = 0
+loopfling.Size = UDim2.new(0, 200, 0, 50)
+loopfling.Font = Enum.Font.Roboto
+loopfling.Text = "loopfling"
+loopfling.TextColor3 = Color3.fromRGB(255, 255, 255)
+loopfling.TextSize = 14.000
+
+unloopfling.Name = "unloopfling"
+unloopfling.Parent = scripts
+unloopfling.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+unloopfling.BorderSizePixel = 0
+unloopfling.Size = UDim2.new(0, 200, 0, 50)
+unloopfling.Visible = false
+unloopfling.Font = Enum.Font.Roboto
+unloopfling.Text = "unloopfling"
+unloopfling.TextColor3 = Color3.fromRGB(255, 255, 255)
+unloopfling.TextSize = 14.000
+
 player.Name = "player"
 player.Parent = main
 player.BackgroundColor3 = Color3.fromRGB(85, 85, 85)
@@ -1095,10 +1168,17 @@ getgenv().ff = true K()
 end)
 
 view.MouseButton1Down:Connect(function()
+local Target = player.Text
+if GetPlayer(Target) ~= nil then
+getgenv().viewplayer = true M(Target)
+Notif("(Success) View "..GetPlayer(Target).DisplayName)
 view.Visible = false
 unview.Visible = true
-local Target = player.Text
-getgenv().viewplayer = true M(Target)
+else
+Notif("(Error) No Player Found")
+view.Visible = true
+unview.Visible = false
+end
 end)
 
 unview.MouseButton1Down:Connect(function()
@@ -1106,4 +1186,34 @@ view.Visible = true
 unview.Visible = false
 getgenv().viewplayer = false M()
 View("me")
+end)
+
+fling.MouseButton1Down:Connect(function()
+local Target = player.Text
+if GetPlayer(Target) ~= nil then
+Fling(Target)
+Notif("(Success) Fling "..GetPlayer(Target).DisplayName)
+else
+Notif("(Error) No Player Found")
+end
+end)
+
+loopfling.MouseButton1Down:Connect(function()
+local Target = player.Text
+if GetPlayer(Target) ~= nil then
+getgenv().loopfling = true E(Target)
+Notif("(Success) View "..GetPlayer(Target).DisplayName)
+loopfling.Visible = false
+unloopfling.Visible = true
+else
+Notif("(Error) No Player Found")
+loopfling.Visible = true
+unloopfling.Visible = false
+end
+end)
+
+unloopfling.MouseButton1Down:Connect(function()
+loopfling.Visible = true
+unloopfling.Visible = false
+getgenv().loopfling = false E()
 end)
