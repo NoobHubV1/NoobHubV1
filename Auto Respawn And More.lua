@@ -222,6 +222,8 @@ end
 
 local function CheckTeamKill(Player)
         local Player = GetPlayer(Player)
+	if Player.Character.Humanoid.Health == 0 or Player.Character:FindFirstChild("ForceField") then -- nothing
+	else
         if Player.Team == game.Teams.Inmates then
 	if plr.Team == game.Teams.Inmates then
 	Criminal()
@@ -257,6 +259,7 @@ local function CheckTeamKill(Player)
         Kill(Player)
 	end
         end
+	end
 end
 
 local KillInmates = function()
