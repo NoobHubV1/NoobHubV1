@@ -105,6 +105,8 @@ local ChangeTeam = function(Team)
                         TPCFrame(savedcf)
 		        workspace["CurrentCamera"].CFrame = savedcamcf
                         elseif Team == game.Teams.Guards then
+		        workspace.Remote.TeamEvent:FireServer("Bright orange")
+		        char:Wait() wait(0.065)
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
                         char:Wait() wait(0.065)
                         TPCFrame(savedcf)
@@ -366,6 +368,14 @@ task.wait()
 	end
 	end)
 end
+
+local function FF()
+	if plr.Character:FindFirstChild("ForceField") then
+	-- nothing
+	else
+	ChangeTeam(plr.Team)
+	end
+end
 	
 function A() spawn(function() while getgenv().autore do if plr.Character.Humanoid.Health <= 15 then ChangeTeam(plr.Team) end
 wait()
@@ -415,6 +425,12 @@ end
 end)
 end
 
+function K() spawn(function() while getgenv().ff do FF()
+task.wait(0.1)
+end
+end)
+end
+
 local NoobHubV1 = Instance.new("ScreenGui")
 local open = Instance.new("TextButton")
 local close = Instance.new("TextButton")
@@ -440,6 +456,8 @@ local Neutral = Instance.new("TextButton")
 local KillAura = Instance.new("TextButton")
 local UnkillAura = Instance.new("TextButton")
 local Servercrash = Instance.new("TextButton")
+local ff = Instance.new("TextButton")
+local unff = Instance.new("TextButton")
 local player = Instance.new("TextBox")
 
 --Properties:
@@ -746,6 +764,27 @@ Servercrash.Text = "Server Crash"
 Servercrash.TextColor3 = Color3.fromRGB(255, 255, 255)
 Servercrash.TextSize = 14.000
 
+ff.Name = "ff"
+ff.Parent = scripts
+ff.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+ff.BorderSizePixel = 0
+ff.Size = UDim2.new(0, 200, 0, 50)
+ff.Visible = false
+ff.Font = Enum.Font.Roboto
+ff.Text = "ff: On"
+ff.TextColor3 = Color3.fromRGB(255, 255, 255)
+ff.TextSize = 14.000
+
+unff.Name = "unff"
+unff.Parent = scripts
+unff.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+unff.BorderSizePixel = 0
+unff.Size = UDim2.new(0, 200, 0, 50)
+unff.Font = Enum.Font.Roboto
+unff.Text = "ff"
+unff.TextColor3 = Color3.fromRGB(255, 255, 255)
+unff.TextSize = 14.000
+
 player.Name = "player"
 player.Parent = main
 player.BackgroundColor3 = Color3.fromRGB(85, 85, 85)
@@ -895,4 +934,17 @@ end)
 
 Servercrash.MouseButton1Down:Connect(function()
 ServerCrash()
+end)
+
+ff.MouseButton1Down:Connect(function()
+ff.Visible = false
+unff.Visible = true
+getgenv().ff = false K()
+end)
+
+unff.MouseButton1Down:Connect(function()
+unff.Text = "ff: Off"
+unff.Visible = false
+ff.Visible = true
+getgenv().ff = true K()
 end)
