@@ -561,6 +561,29 @@ local function TaseAll()
 	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
 	ChangeTeam(savedteam)
 end
+
+function Arrest(Player, Time)
+	if Player.Character.Humanoid.Health == 0 then -- nothing
+	else
+	local Time = Time or 1
+	local savedcf = savePos()
+	local savedcamcf = savecamPos()
+	if Player then
+		repeat wait()
+			TPCFrame(Player.Character.HumanoidRootPart.CFrame)
+			for i = 1,Time do
+				coroutine.wrap(function()
+					workspace.Remote.arrest:InvokeServer(Player.Character.Head)
+				end)()
+			end
+		until Player.Character.Head:FindFirstChild("handcuffedGui")
+		wait()
+	end
+	game.Players.LocalPlayer.Character.Humanoid.Sit = false
+	TPCFrame(savedcf)
+	workspace.CurrentCamera.CFrame = savedcamcf
+	end
+end
 	
 function A() spawn(function() while getgenv().autore do if plr.Character.Humanoid.Health <= 15 then ChangeTeam(plr.Team) end
 wait()
@@ -662,6 +685,7 @@ local fling = Instance.new("TextButton")
 local loopfling = Instance.new("TextButton")
 local unloopfling = Instance.new("TextButton")
 local tase = Instance.new("TextButton")
+local arrest = Instance.new("TextButton")
 local player = Instance.new("TextBox")
 
 --Properties:
@@ -1076,6 +1100,16 @@ tase.Text = "tase"
 tase.TextColor3 = Color3.fromRGB(255, 255, 255)
 tase.TextSize = 14.000
 
+arrest.Name = "arrest"
+arrest.Parent = scripts
+arrest.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+tasearrestBorderSizePixel = 0
+arrest.Size = UDim2.new(0, 200, 0, 50)
+arrest.Font = Enum.Font.Roboto
+arrest.Text = "arrest"
+arrest.TextColor3 = Color3.fromRGB(255, 255, 255)
+arrest.TextSize = 14.000
+
 player.Name = "player"
 player.Parent = main
 player.BackgroundColor3 = Color3.fromRGB(85, 85, 85)
@@ -1318,5 +1352,15 @@ Notif("(Success) Tase "..GetPlayer(Target).DisplayName)
 else
 Notif("(Error) No Player Found")
 end
+end
+end)
+
+arrest.MouseButton1Down:Connect(function()
+local Player = GetPlayer(player.Text)
+if Player ~= nil then
+Arrest(Player)
+Notif("(Success) Arrest "..Player.DisplayName)
+else
+Notif("(Error) No Player Found")
 end
 end)
