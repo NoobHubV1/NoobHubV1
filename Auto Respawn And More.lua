@@ -1,4 +1,5 @@
-local plr = game.Players.LocalPlayer
+local Players = game.Players
+local plr = Players.LocalPlayer
 local char = plr.CharacterAdded
 local BuyGamepass = game:GetService("MarketplaceService"):UserOwnsGamePassAsync(tonumber((plr.CharacterAppearance):split('=')[#((plr.CharacterAppearance):split('='))]), 96651)
 
@@ -289,14 +290,10 @@ local function KillGuards()
 end
 
 local KillCriminals = function()
-	if plr.Team == game.Teams.Criminals then
+	if plr.Team == game.Teams.Criminals or plr.Team == game.Teams.Guards then
         ChangeTeam(game.Teams.Inmates)
-	task.wait(0.15)
+	char:Wait() wait(0.065)
         KillTeam(BrickColor.new("Really red").Name)
-	elseif plr.Team == game.Teams.Guards then
-	ChangeTeam(game.Teams.Inmates)
-	task.wait(0.15)
-	KillTeam(BrickColor.new("Really red").Name)
 	elseif plr.Team == game.Teams.Inmates then
 	KillTeam(BrickColor.new("Really red").Name)
 	end
@@ -335,7 +332,6 @@ local function ServerCrash()
 	task.spawn(function()
 	getgenv().Loop = true
 	while Loop do
-	for i = 1, 5 do
 local Gun = "Remington 870"
 
 local Player = game.Players.LocalPlayer.Name
@@ -372,8 +368,7 @@ FireGun()
 end
 end
 task.wait()
-	end
-	task.wait()
+	wait()
 	end
 	end)
 end
@@ -389,6 +384,79 @@ end
 local function View(Player)
 	local Player = GetPlayer(Player)
 	workspace["CurrentCamera"].CameraSubject = Player.Character
+end
+
+local function Antifling()
+        local function isPartRotatingTooFast(part)
+		if part and part:IsA("BasePart") then
+			local lastRotation = part.Rotation
+			wait(0.1) -- Wait a short time to get a second rotation value for comparison
+			local currentRotation = part.Rotation
+			local rotationChange = (currentRotation - lastRotation).Magnitude
+			return rotationChange > rotationThreshold
+		end
+		return false
+	end
+
+	local function isPartInLocalPlayerCharacter(part)
+		local localPlayer = game.Players.LocalPlayer
+		if localPlayer and localPlayer.Character then
+			return part:IsDescendantOf(localPlayer.Character)
+		end
+		return false
+	end
+
+	local function createSelectionBox(target)
+		local outline = Instance.new("SelectionBox")
+		outline.Name = "RedOutline"
+		outline.Color3 = outlineColor.Color
+		outline.Adornee = target
+		outline.Parent = target
+		return outline
+	end
+
+local G = {}
+local C = nil
+
+	local function Collide(plr)
+	if plr and plr.Character and plr ~= game.Players.LocalPlayer then
+	for i,v in pairs (plr.Character:GetDescendants()) do
+	if v:IsA"BasePart" and v.CanCollide == true then
+	v.CanCollide = false
+     v.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
+    v.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+    v.CustomPhysicalProperties = PhysicalProperties.new(0, 0, 0)
+	end
+	end
+	end
+	end
+	
+	local function Enable()
+	for i,v in pairs (Players:GetPlayers()) do
+	Collide(v)
+	end
+	end
+	
+	Notif("Anti Fling Executed",8)
+
+function G:Enable()
+	C = game:GetService"RunService".RenderStepped: Connect (Enable)
+        end
+function G:Disable()
+   C: Disconnect ()
+for i,v in pairs(Players:GetPlayers()) do
+if v ~= plr then
+for h,b in pairs(v.Character:GetDescendants()) do
+if b:IsA"BasePart" and b.CanCollide == false then
+b.CanCollide = true
+end
+end
+end
+end
+end
+
+G:Enable()
+return G
 end
 	
 function A() spawn(function() while getgenv().autore do if plr.Character.Humanoid.Health <= 15 then ChangeTeam(plr.Team) end
@@ -480,6 +548,7 @@ local ff = Instance.new("TextButton")
 local unff = Instance.new("TextButton")
 local view = Instance.new("TextButton")
 local unview = Instance.new("TextButton")
+local antifling = Instance.new("TextButton")
 local player = Instance.new("TextBox")
 
 --Properties:
@@ -838,6 +907,19 @@ unview.Font = Enum.Font.Roboto
 unview.Text = "unview"
 unview.TextColor3 = Color3.fromRGB(255, 255, 255)
 unview.TextSize = 14.000
+
+antifling.Name = "antifling"
+antifling.Parent = scripts
+antifling.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+antifling.BorderSizePixel = 0
+antifling.Size = UDim2.new(0, 200, 0, 50)
+antifling.Font = Enum.Font.Roboto
+antifling.Text = "antifling"
+antifling.TextColor3 = Color3.fromRGB(255, 255, 255)
+antifling.TextSize = 14.000
+antifling.MouseButton1Down:Connect(function()
+Antifling()
+end)
 
 player.Name = "player"
 player.Parent = main
