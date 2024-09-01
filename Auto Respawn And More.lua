@@ -569,7 +569,7 @@ function Arrest(Player, Time)
 	local savedcf = savePos()
 	local savedcamcf = savecamPos()
 	if Player then
-		repeat wait()
+		repeat task.wait()
 			TPCFrame(Player.Character.HumanoidRootPart.CFrame)
 			for i = 1,Time do
 				coroutine.wrap(function()
@@ -577,7 +577,7 @@ function Arrest(Player, Time)
 				end)()
 			end
 		until Player.Character.Head:FindFirstChild("handcuffedGui")
-		wait()
+		task.wait()
 	end
 	game.Players.LocalPlayer.Character.Humanoid.Sit = false
 	TPCFrame(savedcf)
@@ -1356,11 +1356,22 @@ end
 end)
 
 arrest.MouseButton1Down:Connect(function()
-local Player = GetPlayer(player.Text)
+local args = player.Text
+local Player = GetPlayer(args)
+if args == "all" then
+for _,x in pairs(game.Players:GetPlayers()) do
+if x ~= plr then
+if x.Team == game.Teams.Criminals then
+Arrest(x)
+end
+end
+end
+else
 if Player ~= nil then
 Arrest(Player)
 Notif("(Success) Arrest "..Player.DisplayName)
 else
 Notif("(Error) No Player Found")
+end
 end
 end)
