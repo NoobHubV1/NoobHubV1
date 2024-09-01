@@ -60,9 +60,15 @@ end
 
 function GetPlayer(Player)
         local function findPlayer(stringg)
-		for _, v in pairs(game.Players:GetPlayers()) do
-			if (stringg:lower() == (v.Name:lower()):sub(1, #stringg)) or (stringg:lower() == (v.DisplayName:lower()):sub(1, #stringg)) then return v end
-		end
+		if (stringg == ("me")) then
+			return plr
+		else
+		        for _, v in pairs(game.Players:GetPlayers()) do
+			        if (stringg:lower() == (v.Name:lower()):sub(1, #stringg)) or (stringg:lower() == (v.DisplayName:lower()):sub(1, #stringg)) then 
+					return v 
+				end
+		        end
+	        end
 	end
 	return findPlayer(Player)
 end
@@ -376,6 +382,11 @@ local function FF()
 	ChangeTeam(plr.Team)
 	end
 end
+
+local function View(Player)
+	local Player = GetPlayer(Player)
+	workspace["CurrentCamera"].CameraSubject = Player.Character
+end
 	
 function A() spawn(function() while getgenv().autore do if plr.Character.Humanoid.Health <= 15 then ChangeTeam(plr.Team) end
 wait()
@@ -431,6 +442,12 @@ end
 end)
 end
 
+function M(Player) spawn(function() while getgenv().viewplayer do View(Player)
+task.wait()
+end
+end)
+end
+
 local NoobHubV1 = Instance.new("ScreenGui")
 local open = Instance.new("TextButton")
 local close = Instance.new("TextButton")
@@ -458,6 +475,8 @@ local UnkillAura = Instance.new("TextButton")
 local Servercrash = Instance.new("TextButton")
 local ff = Instance.new("TextButton")
 local unff = Instance.new("TextButton")
+local view = Instance.new("TextButton")
+local unview = Instance.new("TextButton")
 local player = Instance.new("TextBox")
 
 --Properties:
@@ -785,6 +804,27 @@ unff.Text = "ff"
 unff.TextColor3 = Color3.fromRGB(255, 255, 255)
 unff.TextSize = 14.000
 
+view.Name = "view"
+view.Parent = scripts
+view.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+view.BorderSizePixel = 0
+view.Size = UDim2.new(0, 200, 0, 50)
+view.Font = Enum.Font.Roboto
+view.Text = "view"
+view.TextColor3 = Color3.fromRGB(255, 255, 255)
+view.TextSize = 14.000
+
+unview.Name = "unview"
+unview.Parent = scripts
+unview.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+unview.BorderSizePixel = 0
+unview.Size = UDim2.new(0, 200, 0, 50)
+unview.Visible = false
+unview.Font = Enum.Font.Roboto
+unview.Text = "unview"
+unview.TextColor3 = Color3.fromRGB(255, 255, 255)
+unview.TextSize = 14.000
+
 player.Name = "player"
 player.Parent = main
 player.BackgroundColor3 = Color3.fromRGB(85, 85, 85)
@@ -863,7 +903,7 @@ Notif("(Success) Loopkilled criminals")
 else
 if GetPlayer(Target) ~= nil then
 getgenv().loopkillplayer = true
-H(GetPlayer(Target))
+H(Target)
 Notif("(Success) Loopkilled "..GetPlayer(Target).DisplayName)
 else
 Notif("(Error) No Player Found",3)
@@ -894,7 +934,7 @@ Notif("(Success) Unloopkilled criminals")
 else
 if GetPlayer(Target) ~= nil then
 getgenv().loopkillplayer = false
-H(GetPlayer(Target))
+H(Target)
 Notif("(Success) Unloopkilled "..GetPlayer(Target).DisplayName)
 else
 Notif("(Error) No Player Found",3)
@@ -916,7 +956,16 @@ getgenv().autoguns = true Y()
 end)
 
 AllGuns.MouseButton1Down:Connect(function()
-AllGuns()
+if BuyGamepass then
+	GiveItem("AK-47")
+	GiveItem("Remington 870")
+	GiveItem("M9")
+	GiveItem("M4A1")
+else
+	GiveItem("AK-47")
+	GiveItem("Remington 870")
+	GiveItem("M9")
+end
 end)
 
 KillAura.MouseButton1Down:Connect(function()
@@ -947,4 +996,18 @@ unff.Text = "ff: Off"
 unff.Visible = false
 ff.Visible = true
 getgenv().ff = true K()
+end)
+
+view.MouseButton1Down:Connect(function()
+view.Visible = false
+unview.Visible = true
+local Target = player.Text
+getgenv().viewplayer = true M(Target)
+end)
+
+unview.MouseButton1Down:Connect(function()
+view.Visible = true
+unview.Visible = false
+getgenv().viewplayer = false M()
+View("me")
 end)
