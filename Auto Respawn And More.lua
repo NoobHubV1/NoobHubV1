@@ -87,6 +87,10 @@ local function savecamPos()
 	return workspace["CurrentCamera"].CFrame
 end
 
+local function saveteam()
+	return plr.Team
+end
+
 local function Criminal()
 	local savedcf = savePos()
 	local savedcamcf = savecamPos()
@@ -113,8 +117,6 @@ local ChangeTeam = function(Team)
                         TPCFrame(savedcf)
 		        workspace["CurrentCamera"].CFrame = savedcamcf
                         elseif Team == game.Teams.Guards then
-		        workspace.Remote.TeamEvent:FireServer("Bright orange")
-		        char:Wait() wait(0.065)
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
                         char:Wait() wait(0.065)
                         TPCFrame(savedcf)
@@ -214,9 +216,9 @@ local KillTeam = function(Team)
 		end
 	end
 	coroutine.wrap(function()
-		for i = 1,30 do
+		for i = 1,50 do
 			game.ReplicatedStorage.ReloadEvent:FireServer(gun)
-			wait(.5)
+			task.wait()
 		end
 	end)()
 	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
@@ -323,9 +325,9 @@ end
 
 local function KillAll()
 	KillInmates()
-	task.wait(0.1)
+	task.wait(0.05)
 	KillGuards()
-	task.wait(0.2)
+	task.wait(0.3)
 	KillCriminals()
 end
 
@@ -490,6 +492,75 @@ local function Fling(Player)
      Flinger:Fling()
      end
 end
+
+local function Tase(Player)
+        local events = {}
+	local gun = nil
+	local savedteam = saveteam()
+	for i,v in pairs(game.Players:GetPlayers()) do
+		if v ~= plr and v == Player then
+			events[#events + 1] = {
+				Hit = v.Character:FindFirstChildOfClass("Part"),
+				Cframe = CFrame.new(),
+				RayObject = Ray.new(Vector3.new(), Vector3.new()),
+				Distance = 0
+			}
+		end
+	end
+	if not game.Players.LocalPlayer.Character:FindFirstChild("Taser") and not game.Players.LocalPlayer:FindFirstChild("Backpack"):FindFirstChild("Taser") then
+		savedteam = saveteam()
+		ChangeTeam(game.Teams.Guards)
+	end
+	gun = game.Players.LocalPlayer.Character:FindFirstChild("Taser") or game.Players.LocalPlayer.Backpack:FindFirstChild("Taser")
+	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
+	ChangeTeam(savedteam)
+end
+
+local function TaseTeam(Team)
+	local events = {}
+	local gun = nil
+	local savedteam = saveteam()
+	for i,v in pairs(game.Players:GetPlayers()) do
+		if v ~= plr and v.Team == Team then
+			events[#events + 1] = {
+				Hit = v.Character:FindFirstChildOfClass("Part"),
+				Cframe = CFrame.new(),
+				RayObject = Ray.new(Vector3.new(), Vector3.new()),
+				Distance = 0
+			}
+		end
+	end
+	if not game.Players.LocalPlayer.Character:FindFirstChild("Taser") and not game.Players.LocalPlayer:FindFirstChild("Backpack"):FindFirstChild("Taser") then
+		savedteam = saveteam()
+		ChangeTeam(game.Teams.Guards)
+	end
+	gun = game.Players.LocalPlayer.Character:FindFirstChild("Taser") or game.Players.LocalPlayer.Backpack:FindFirstChild("Taser")
+	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
+	ChangeTeam(savedteam)
+end
+
+local function TaseAll()
+	local events = {}
+	local gun = nil
+	local savedteam = saveteam()
+	for i,v in pairs(game.Players:GetPlayers()) do
+		if v ~= plr then
+			events[#events + 1] = {
+				Hit = v.Character:FindFirstChildOfClass("Part"),
+				Cframe = CFrame.new(),
+				RayObject = Ray.new(Vector3.new(), Vector3.new()),
+				Distance = 0
+			}
+		end
+	end
+	if not game.Players.LocalPlayer.Character:FindFirstChild("Taser") and not game.Players.LocalPlayer:FindFirstChild("Backpack"):FindFirstChild("Taser") then
+		savedteam = saveteam()
+		ChangeTeam(game.Teams.Guards)
+	end
+	gun = game.Players.LocalPlayer.Character:FindFirstChild("Taser") or game.Players.LocalPlayer.Backpack:FindFirstChild("Taser")
+	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
+	ChangeTeam(savedteam)
+end
 	
 function A() spawn(function() while getgenv().autore do if plr.Character.Humanoid.Health <= 15 then ChangeTeam(plr.Team) end
 wait()
@@ -590,6 +661,7 @@ local antifling = Instance.new("TextButton")
 local fling = Instance.new("TextButton")
 local loopfling = Instance.new("TextButton")
 local unloopfling = Instance.new("TextButton")
+local tase = Instance.new("TextButton")
 local player = Instance.new("TextBox")
 
 --Properties:
@@ -994,6 +1066,16 @@ unloopfling.Text = "unloopfling"
 unloopfling.TextColor3 = Color3.fromRGB(255, 255, 255)
 unloopfling.TextSize = 14.000
 
+tase.Name = "tase"
+tase.Parent = scripts
+tase.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+tase.BorderSizePixel = 0
+tase.Size = UDim2.new(0, 200, 0, 50)
+tase.Font = Enum.Font.Roboto
+tase.Text = "tase"
+tase.TextColor3 = Color3.fromRGB(255, 255, 255)
+tase.TextSize = 14.000
+
 player.Name = "player"
 player.Parent = main
 player.BackgroundColor3 = Color3.fromRGB(85, 85, 85)
@@ -1216,4 +1298,25 @@ unloopfling.MouseButton1Down:Connect(function()
 loopfling.Visible = true
 unloopfling.Visible = false
 getgenv().loopfling = false E()
+end)
+
+tase.MouseButton1Down:Connect(function()
+local Target = player.Text
+if Target == "all" or Target == "others" or Target == "everyone" then
+TaseAll()
+Notif("(Success) Tase All")
+elseif Target == "inmates" or Target == "prisoners" then
+TaseTeam(game.Teams.Inmates)
+Notif("(Success) Tase Inmates")
+elseif Target == "criminals" or Target == "crims" then
+TaseTeam(game.Teams.Criminals)
+Notif("(Success) Tase Criminals")
+else
+if GetPlayer(Target) ~= nil then
+Tase(GetPlayer(Target))
+Notif("(Success) Tase "..GetPlayer(Target).DisplayName)
+else
+Notif("(Error) No Player Found")
+end
+end
 end)
