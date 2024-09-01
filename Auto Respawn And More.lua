@@ -584,6 +584,25 @@ function Arrest(Player, Time)
 	workspace.CurrentCamera.CFrame = savedcamcf
 	end
 end
+
+local function MeleeEvent(Player)
+	game.ReplicatedStorage.meleeEvent:FireServer(Player)
+end
+
+local function MeleeKill(Player)
+        for i,v in pairs(Players:GetPlayers()) do
+                    pcall(function()
+                        if v == Player and not v.Character:FindFirstChildOfClass("ForceField") and v.Character.Humanoid.Health > 0 then
+                            while v.Character:WaitForChild("Humanoid").Health > 0 do
+                                task.wait()
+                                TPCFrame(v.Character.HumanoidRootPart.CFrame)
+				MeleeEvent(v)
+                            end
+                        end
+                    end)
+                    task.wait()
+	end
+end
 	
 function A() spawn(function() while getgenv().autore do if plr.Character.Humanoid.Health <= 15 then ChangeTeam(plr.Team) end
 wait()
@@ -686,6 +705,7 @@ local loopfling = Instance.new("TextButton")
 local unloopfling = Instance.new("TextButton")
 local tase = Instance.new("TextButton")
 local arrest = Instance.new("TextButton")
+local meleekill = Instance.new("TextButton")
 local player = Instance.new("TextBox")
 
 --Properties:
@@ -1110,6 +1130,16 @@ arrest.Text = "arrest"
 arrest.TextColor3 = Color3.fromRGB(255, 255, 255)
 arrest.TextSize = 14.000
 
+meleekill.Name = "meleekill"
+meleekill.Parent = scripts
+meleekill.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+meleekill.BorderSizePixel = 0
+meleekill.Size = UDim2.new(0, 200, 0, 50)
+meleekill.Font = Enum.Font.Roboto
+meleekill.Text = "meleekill"
+meleekill.TextColor3 = Color3.fromRGB(255, 255, 255)
+meleekill.TextSize = 14.000
+
 player.Name = "player"
 player.Parent = main
 player.BackgroundColor3 = Color3.fromRGB(85, 85, 85)
@@ -1374,4 +1404,10 @@ else
 Notif("(Error) No Player Found")
 end
 end
+end)
+
+meleekill.MouseButton1Down:Connect(function()
+local savedcf = savePos()
+MeleeKill(GetPlayer(player.Text))
+TPCFrame(savedcf)
 end)
