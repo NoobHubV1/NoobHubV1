@@ -1407,7 +1407,43 @@ end
 end)
 
 meleekill.MouseButton1Down:Connect(function()
+local args = player.Text
 local savedcf = savePos()
-MeleeKill(GetPlayer(player.Text))
+if args == "all" or args == "everyone" or args == "others" then
+for _,v in pairs(game.Players:GetPlayers()) do
+if v ~= plr then
+MeleeKill(v)
+end
+end
+Notif("(Success) Meleekill All")
+elseif args == "inmates" or args == "prisoners" then
+for _,v in pairs(game.Teams.Inmates:GetPlayers()) do
+if v ~= plr then
+MeleeKill(v)
+end
+end
+Notif("(Success) Meleekill Inmates")
+elseif args == "guards" or args == "cops" then
+for _,v in pairs(game.Teams.Guards:GetPlayers()) do
+if v ~= plr then
+MeleeKill(v)
+end
+end
+Notif("(Success) Meleekill Guards")
+elseif args == "criminals" or args == "crims" then
+for _,v in pairs(game.Teams.Criminals:GetPlayers()) do
+if v ~= plr then
+MeleeKill(v)
+end
+end
+Notif("(Success) Meleekill Criminals")
+else
+if GetPlayer(args) ~= nil then
+MeleeKill(GetPlayer(args))
 TPCFrame(savedcf)
+Notif("(Success) Meleekill "..GetPlayer(args).DisplayName)
+else
+Notif("(Error) No Player Found")
+end
+end
 end)
