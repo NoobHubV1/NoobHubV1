@@ -739,7 +739,18 @@ Criminal.Text = "Criminal"
 Criminal.TextColor3 = Color3.fromRGB(255, 255, 255)
 Criminal.TextSize = 14.000
 Criminal.MouseButton1Down:Connect(function()
-ChangeTeam(game.Teams.Criminals)
+local savedcf = savePos()
+local savedcamcf = savecamPos()
+if plr.Team == game.Teams.Guards then
+TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
+char:Wait() wait(0.065)
+TPCFrame(savedcf)
+workspace["CurrentCamera"].CFrame = savedcamcf
+elseif plr.Team == game.Teams.Inmates then
+TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
+task.wait()
+TPCFrame(savedcf)
+end
 end)
 
 Neutral.Name = "Neutral"
