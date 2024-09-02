@@ -1212,32 +1212,42 @@ end
 end)
 
 Loopkill.MouseButton1Down:Connect(function()
-Loopkill.Visible = false
-Unloopkill.Visible = true
 local Target = player.Text
 if Target == "all" or Target == "others" or Target == "everyone" then
 getgenv().loopkillall = true
 U()
 Notif("(Success) Loopkilled all")
+Loopkill.Visible = false
+Unloopkill.Visible = true
 elseif Target == "inmates" then
 getgenv().loopkillinmates = true
 C()
 Notif("(Success) Loopkilled inmates")
+Loopkill.Visible = false
+Unloopkill.Visible = true
 elseif Target == "guards" then
 getgenv().loopkillguards = true
 G()
 Notif("(Success) Loopkilled guards")
+Loopkill.Visible = false
+Unloopkill.Visible = true
 elseif Target == "criminals" then
 getgenv().loopkillcriminals = true
 D()
 Notif("(Success) Loopkilled criminals")
+Loopkill.Visible = false
+Unloopkill.Visible = true
 else
 if GetPlayer(Target) ~= nil then
 getgenv().loopkillplayer = true
 H(Target)
 Notif("(Success) Loopkilled "..GetPlayer(Target).DisplayName)
+Loopkill.Visible = false
+Unloopkill.Visible = true
 else
 Notif("(Error) No Player Found",3)
+Loopkill.Visible = true
+Unloopkill.Visible = false
 end
 end
 end)
@@ -1263,13 +1273,8 @@ getgenv().loopkillcriminals = false
 D()
 Notif("(Success) Unloopkilled criminals")
 else
-if GetPlayer(Target) ~= nil then
-getgenv().loopkillplayer = false
-H(Target)
-Notif("(Success) Unloopkilled "..GetPlayer(Target).DisplayName)
-else
-Notif("(Error) No Player Found",3)
-end
+getgenv().loopkillplayer = false H()
+Notif("(Success) Unloopkill")
 end
 end)
 
