@@ -562,6 +562,10 @@ local function TaseAll()
 	ChangeTeam(savedteam)
 end
 
+local function Goto(Player)
+	TPCFrame(Player.Character.HumanoidRootPart.CFrame)
+end
+
 function Arrest(Player, Time)
 	if Player.Character.Humanoid.Health == 0 then -- nothing
 	else
@@ -570,7 +574,7 @@ function Arrest(Player, Time)
 	local savedcamcf = savecamPos()
 	if Player then
 		repeat task.wait()
-			TPCFrame(Player.Character.HumanoidRootPart.CFrame)
+			Goto(Player)
 			for i = 1,Time do
 				coroutine.wrap(function()
 					workspace.Remote.arrest:InvokeServer(Player.Character.Head)
@@ -595,7 +599,7 @@ local function MeleeKill(Player)
                         if v == Player and not v.Character:FindFirstChildOfClass("ForceField") and v.Character.Humanoid.Health > 0 then
                             while v.Character:WaitForChild("Humanoid").Health > 0 do
                                 task.wait()
-                                TPCFrame(v.Character.HumanoidRootPart.CFrame)
+                                Goto(v)
 				MeleeEvent(v)
                             end
                         end
@@ -617,31 +621,31 @@ end)
 end
 
 function C() spawn(function() while getgenv().loopkillinmates do KillInmates()
-task.wait(0.3)
+task.wait()
 end
 end)
 end
 
 function G() spawn(function() while getgenv().loopkillguards do KillGuards()
-task.wait(0.3)
+task.wait()
 end
 end)
 end
 
 function D() spawn(function() while getgenv().loopkillcriminals do KillCriminals()
-task.wait(0.3)
+task.wait()
 end
 end)
 end
 
 function H(Player) spawn(function() while getgenv().loopkillplayer do CheckTeamKill(Player)
-task.wait(0.3)
+task.wait()
 end
 end)
 end
 
 function Y() spawn(function() while getgenv().autoguns do AllGuns()
-task.wait(0.5)
+task.wait()
 end
 end)
 end
@@ -666,6 +670,30 @@ end
 
 function E(Player) spawn(function() while getgenv().loopfling do Fling(Player)
 task.wait(1)
+end
+end)
+end
+
+function T() spawn(function() while getgenv().loopmkillall do for i,v in pairs(game.Players:GetPlayers()) do if v ~= plr then MeleeKill(v) end end
+task.wait()
+end
+end)
+end
+
+function O() spawn(function() while getgenv().loopmkillinmates do for i,v in pairs(game.Teams.Inmates:GetPlayers()) do if v ~= plr then MeleeKill(v) end end
+task.wait()
+end
+end)
+end
+
+function X() spawn(function() while getgenv().loopmkillguards do for i,v in pairs(game.Teams.Guards:GetPlayers()) do if v ~= plr then MeleeKill(v) end end
+task.wait()
+end
+end)
+end
+
+function Z() spawn(function() while getgenv().loopmkillcriminals do for i,v in pairs(game.Teams.Criminals:GetPlayers()) do if v ~= plr then MeleeKill(v) end end
+task.wait()
 end
 end)
 end
@@ -707,6 +735,7 @@ local unloopfling = Instance.new("TextButton")
 local tase = Instance.new("TextButton")
 local arrest = Instance.new("TextButton")
 local meleekill = Instance.new("TextButton")
+local goto = Instance.new("TextButton")
 local player = Instance.new("TextBox")
 
 --Properties:
@@ -1155,6 +1184,20 @@ meleekill.Font = Enum.Font.Roboto
 meleekill.Text = "meleekill"
 meleekill.TextColor3 = Color3.fromRGB(255, 255, 255)
 meleekill.TextSize = 14.000
+
+goto.Name = "goto"
+goto.Parent = scripts
+goto.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+goto.BorderSizePixel = 0
+goto.Size = UDim2.new(0, 200, 0, 50)
+goto.Font = Enum.Font.Roboto
+goto.Text = "goto"
+goto.TextColor3 = Color3.fromRGB(255, 255, 255)
+goto.TextSize = 14.000
+goto.MouseButton1Down:Connect(function()
+local args = GetPlayer(player.Text)
+Goto(args)
+end)
 
 player.Name = "player"
 player.Parent = main
