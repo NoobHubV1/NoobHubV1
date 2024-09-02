@@ -1515,6 +1515,22 @@ local Player = GetPlayer(args)
 if args == "all" then
 for _,x in pairs(game.Players:GetPlayers()) do
 if x ~= plr then
+if x.Team == game.Teams.Criminals or x.Team == game.Teams.Inmates then
+Arrest(x)
+end
+end
+end
+elseif args == "inmates" then
+for _,x in pairs(game.Players:GetPlayers()) do
+if x ~= plr then
+if x.Team == game.Teams.Inmates then
+Arrest(x)
+end
+end
+end
+elseif args == "criminals" then
+for _,x in pairs(game.Players:GetPlayers()) do
+if x ~= plr then
 if x.Team == game.Teams.Criminals then
 Arrest(x)
 end
