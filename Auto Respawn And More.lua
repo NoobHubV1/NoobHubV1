@@ -313,7 +313,7 @@ local KillCriminals = function()
 	else
 	if plr.Team == game.Teams.Criminals or plr.Team == game.Teams.Guards then
         ChangeTeam(game.Teams.Inmates)
-	char:Wait() wait(0.065)
+	task.wait(0.2)
         KillTeam(BrickColor.new("Really red").Name)
 	elseif plr.Team == game.Teams.Inmates then
 	KillTeam(BrickColor.new("Really red").Name)
