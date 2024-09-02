@@ -671,6 +671,7 @@ end)
 end
 
 local NoobHubV1 = Instance.new("ScreenGui")
+local destroy = Instance.new("TextButton")
 local open = Instance.new("TextButton")
 local close = Instance.new("TextButton")
 local main = Instance.new("Frame")
@@ -714,12 +715,27 @@ NoobHubV1.Name = "NoobHubV1"
 NoobHubV1.Parent = game.CoreGui
 NoobHubV1.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
+destroy.Name = "destroy"
+destroy.Parent = NoobHubV1
+destroy.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+destroy.Position = UDim2.new(0, 0, 0.533834577, 0)
+destroy.BorderSizePixel = 0
+destroy.Size = UDim2.new(0, 200, 0, 50)
+destroy.Visible = true
+destroy.Font = Enum.Font.Roboto
+destroy.Text = "destroy"
+destroy.TextColor3 = Color3.fromRGB(255, 255, 255)
+destroy.TextSize = 14.000
+destroy.MouseButton1Click:Connect(function()
+NoobHubV1:Destroy()
+end)
+
 open.Name = "open"
 open.Parent = NoobHubV1
 open.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
 open.BorderSizePixel = 0
 open.Size = UDim2.new(0, 200, 0, 50)
-open.Visible = false
+open.Visible = true
 open.Font = Enum.Font.Roboto
 open.Text = "Open"
 open.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -735,7 +751,7 @@ close.Parent = NoobHubV1
 close.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
 close.BorderSizePixel = 0
 close.Size = UDim2.new(0, 200, 0, 50)
-close.Visible = true
+close.Visible = false
 close.Font = Enum.Font.Roboto
 close.Text = "Close"
 close.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -753,7 +769,7 @@ main.BackgroundTransparency = 0.3
 main.BorderSizePixel = 0
 main.Position = UDim2.new(0.268847764, 0, 0.372854918, 0)
 main.Size = UDim2.new(0, 325, 0, 239)
-main.Visible = true
+main.Visible = false
 main.Active = true
 
 local UserInputService = game:GetService("UserInputService")
