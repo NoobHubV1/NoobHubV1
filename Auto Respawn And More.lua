@@ -746,6 +746,8 @@ local meleekill = Instance.new("TextButton")
 local goto = Instance.new("TextButton")
 local meleelk = Instance.new("TextButton")
 local unmeleelk = Instance.new("TextButton")
+local saveposition = Instance.new("TextButton")
+local loadposition = Instance.new("TextButton")
 local player = Instance.new("TextBox")
 
 --Properties:
@@ -1229,6 +1231,32 @@ unmeleelk.Font = Enum.Font.Roboto
 unmeleelk.Text = "unmeleelk"
 unmeleelk.TextColor3 = Color3.fromRGB(255, 255, 255)
 unmeleelk.TextSize = 14.000
+
+saveposition.Name = "saveposition"
+saveposition.Parent = scripts
+saveposition.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+saveposition.BorderSizePixel = 0
+saveposition.Size = UDim2.new(0, 200, 0, 50)
+saveposition.Font = Enum.Font.Roboto
+saveposition.Text = "saveposition"
+saveposition.TextColor3 = Color3.fromRGB(255, 255, 255)
+saveposition.TextSize = 14.000
+saveposition.MouseButton1Down:Connect(function()
+savedcf = savePos()
+end)
+
+loadposition.Name = "loadposition"
+loadposition.Parent = scripts
+loadposition.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+loadposition.BorderSizePixel = 0
+loadposition.Size = UDim2.new(0, 200, 0, 50)
+loadposition.Font = Enum.Font.Roboto
+loadposition.Text = "saveposition"
+loadposition.TextColor3 = Color3.fromRGB(255, 255, 255)
+loadposition.TextSize = 14.000
+loadposition.MouseButton1Down:Connect(function()
+TPCFrame(savedcf)
+end)
 
 player.Name = "player"
 player.Parent = main
