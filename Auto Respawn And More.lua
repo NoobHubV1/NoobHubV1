@@ -600,6 +600,7 @@ local function MeleeKill(Player)
                         if v == Player and not v.Character:FindFirstChildOfClass("ForceField") and v.Character.Humanoid.Health > 0 then
                             while v.Character:WaitForChild("Humanoid").Health > 0 do
                                 task.wait()
+				plr.Character.Humanoid.Sit = false
                                 Goto(v)
 				MeleeEvent(v)
                             end
