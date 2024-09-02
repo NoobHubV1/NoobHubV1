@@ -594,6 +594,7 @@ local function MeleeEvent(Player)
 end
 
 local function MeleeKill(Player)
+	local savedcf = savePos()
         for i,v in pairs(Players:GetPlayers()) do
                     pcall(function()
                         if v == Player and not v.Character:FindFirstChildOfClass("ForceField") and v.Character.Humanoid.Health > 0 then
@@ -602,6 +603,7 @@ local function MeleeKill(Player)
                                 Goto(v)
 				MeleeEvent(v)
                             end
+			TPCFrame(savedcf)
                         end
                     end)
                     task.wait()
@@ -698,6 +700,12 @@ end
 end)
 end
 
+function I(Player) spawn(function() while getgenv().loopmkillplayer do MeleeKill(Player)
+task.wait()
+end
+end)
+end
+
 local NoobHubV1 = Instance.new("ScreenGui")
 local destroy = Instance.new("TextButton")
 local open = Instance.new("TextButton")
@@ -736,6 +744,8 @@ local tase = Instance.new("TextButton")
 local arrest = Instance.new("TextButton")
 local meleekill = Instance.new("TextButton")
 local goto = Instance.new("TextButton")
+local meleelk = Instance.new("TextButton")
+local unmeleelk = Instance.new("TextButton")
 local player = Instance.new("TextBox")
 
 --Properties:
@@ -1199,6 +1209,27 @@ local args = GetPlayer(player.Text)
 Goto(args)
 end)
 
+meleelk.Name = "meleelk"
+meleelk.Parent = scripts
+meleelk.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+meleelk.BorderSizePixel = 0
+meleelk.Size = UDim2.new(0, 200, 0, 50)
+meleelk.Font = Enum.Font.Roboto
+meleelk.Text = "meleelk"
+meleelk.TextColor3 = Color3.fromRGB(255, 255, 255)
+meleelk.TextSize = 14.000
+
+unmeleelk.Name = "unmeleelk"
+unmeleelk.Parent = scripts
+unmeleelk.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+unmeleelk.BorderSizePixel = 0
+unmeleelk.Size = UDim2.new(0, 200, 0, 50)
+unmeleelk.Visible = false
+unmeleelk.Font = Enum.Font.Roboto
+unmeleelk.Text = "unmeleelk"
+unmeleelk.TextColor3 = Color3.fromRGB(255, 255, 255)
+unmeleelk.TextSize = 14.000
+
 player.Name = "player"
 player.Parent = main
 player.BackgroundColor3 = Color3.fromRGB(85, 85, 85)
@@ -1472,13 +1503,13 @@ end)
 
 meleekill.MouseButton1Down:Connect(function()
 local args = player.Text
-local savedcf = savePos()
 if args == "all" or args == "everyone" or args == "others" then
 for _,v in pairs(game.Players:GetPlayers()) do
 if v ~= plr then
 MeleeKill(v)
 end
 end
+TPCFrame(savedcf)
 Notif("(Success) Meleekill All")
 elseif args == "inmates" or args == "prisoners" then
 for _,v in pairs(game.Teams.Inmates:GetPlayers()) do
@@ -1504,10 +1535,56 @@ Notif("(Success) Meleekill Criminals")
 else
 if GetPlayer(args) ~= nil then
 MeleeKill(GetPlayer(args))
-TPCFrame(savedcf)
 Notif("(Success) Meleekill "..GetPlayer(args).DisplayName)
 else
 Notif("(Error) No Player Found")
 end
 end
+end)
+
+meleelk.MouseButton1Down:Connect(function()
+local args = player.Text
+if args == "all" or args == "everyone" or args == "others" then
+getgenv().loopmkillall = true T()
+Notif("(Success) Loopmkilled All")
+meleelk.Visible = false
+unmeleelk.Visible = true
+elseif args == "inmates" then
+getgenv().loopmkillinmates = false O()
+Notif("(Success) Loopmkilled Inmates")
+meleelk.Visible = false
+unmeleelk.Visible = true
+elseif args == "guards" then
+getgenv().loopmkillguards = true X()
+Notif("(Success) Loopmkilled Guards")
+meleelk.Visible = false
+unmeleelk.Visible = true
+elseif args == "criminals" then
+getgenv().loopmkillcriminals = true Z()
+Notif("(Success) Loopmkilled Criminals")
+meleelk.Visible = false
+unmeleelk.Visible = true
+else
+if GetPlayer(args) ~= nil then
+getgenv().loopmkillplayer = true I(GetPlayer(args))
+Notif("(Success) Loopmkilled "..GetPlayer(args).DisplayName)
+meleelk.Visible = false
+unmeleelk.Visible = true
+else
+Notif("(Error) No Player Found")
+meleelk.Visible = true
+unmeleelk.Visible = false
+end
+end
+end)
+
+unmeleelk.MouseButton1Down:Connect(function()
+meleelk.Visible = true
+unmeleelk.Visible = false
+getgenv().loopmkillall = false T()
+getgenv().loopmkillinmates = false O()
+getgenv().loopmkillguards = false X()
+getgenv().loopmkillcriminals = false Z()
+getgenv().loopmkillplayer = false I()
+Notif("(Success) Unloopmkill All")
 end)
