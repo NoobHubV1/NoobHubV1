@@ -1251,7 +1251,7 @@ loadposition.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
 loadposition.BorderSizePixel = 0
 loadposition.Size = UDim2.new(0, 200, 0, 50)
 loadposition.Font = Enum.Font.Roboto
-loadposition.Text = "saveposition"
+loadposition.Text = "loadposition"
 loadposition.TextColor3 = Color3.fromRGB(255, 255, 255)
 loadposition.TextSize = 14.000
 loadposition.MouseButton1Down:Connect(function()
