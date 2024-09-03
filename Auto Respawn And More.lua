@@ -887,7 +887,7 @@ scripts.BackgroundColor3 = Color3.fromRGB(63, 63, 63)
 scripts.BackgroundTransparency = 1
 scripts.BorderSizePixel = 0
 scripts.Position = UDim2.new(0, 0, 0.134782612, 0)
-scripts.Size = UDim2.new(0, 625, 0, 273)
+scripts.Size = UDim2.new(0, 425, 0, 273)
 scripts.CanvasSize = UDim2.new(0, 0, 1.150, 0)
 
 UIGridLayout.Parent = scripts
