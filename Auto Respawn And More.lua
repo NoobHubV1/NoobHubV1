@@ -389,11 +389,20 @@ end
 local function KillAll()
 	for _,v in pairs(game.Players:GetPlayers()) do
 	if v ~= plr then
-	if v.Team == game.Teams.Guards or v.Team == game.Teams.Inmates or v.Team == game.Teams.Criminals then
+	if v.Team == game.Teams.Guards or v.Team == game.Teams.Criminals then
 	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
 	else
 	KillCriminalsAndGuards()
+	end
+	end
+	end
+	end
 	task.wait(0.1)
+	for _,v in pairs(game.Players:GetPlayers()) do
+	if v ~= plr then
+	if v.Team == game.Teams.Inmates then
+	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
+	else
 	KillInmates()
 	end
 	end
