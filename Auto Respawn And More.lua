@@ -96,7 +96,7 @@ local function Criminal()
 	local savedcamcf = savecamPos()
 	if plr.Team == game.Teams.Guards then
 	TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
-	char:Wait() wait(0.065)
+	char:Wait() wait(0.06)
 	TPCFrame(savedcf)
 	workspace["CurrentCamera"].CFrame = savedcamcf
 	elseif plr.Team == game.Teams.Inmates then
@@ -111,19 +111,19 @@ local ChangeTeam = function(Team)
 	                local savedcamcf = savecamPos()
                         if Team == game.Teams.Criminals then
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
-		        char:Wait() wait(0.065)
+		        char:Wait() wait(0.06)
                         TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
-                        char:Wait() wait(0.065)
+                        char:Wait() wait(0.06)
                         TPCFrame(savedcf)
 		        workspace["CurrentCamera"].CFrame = savedcamcf
                         elseif Team == game.Teams.Guards then
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
-                        char:Wait() wait(0.065)
+                        char:Wait() wait(0.06)
                         TPCFrame(savedcf)
 		        workspace["CurrentCamera"].CFrame = savedcamcf
                         elseif Team == game.Teams.Inmates then
                         workspace.Remote.TeamEvent:FireServer("Bright orange")
-                        char:Wait() wait(0.065)
+                        char:Wait() wait(0.06)
                         TPCFrame(savedcf)
 		        workspace["CurrentCamera"].CFrame = savedcamcf
 	                elseif Team == game.Teams.Neutral then
