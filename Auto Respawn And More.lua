@@ -65,9 +65,9 @@ function GetPlayer(Player)
 		if (stringg == ("me")) then
 			return plr
 		else
-		        for _, v in pairs(game.Players:GetPlayers()) do
-			        if (stringg:lower() == (v.Name:lower()):sub(1, #stringg)) or (stringg:lower() == (v.DisplayName:lower()):sub(1, #stringg)) or (stringg:lower() == (v.UserId:lower()):sub(1, #stringg)) then 
-					return v 
+		        for _,player in pairs(game.Players:GetPlayers()) do
+			        if (stringg:lower() == (player.Name:lower()):sub(1, #stringg)) or (stringg:lower() == (player.DisplayName:lower()):sub(1, #stringg)) then
+					return player
 				end
 		        end
 	        end
