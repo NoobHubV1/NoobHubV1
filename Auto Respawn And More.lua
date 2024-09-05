@@ -150,7 +150,7 @@ end
 local function Kill(Player)
         local events = {}
 	local gun = nil
-	GiveItem("Remington 870")
+	GiveItem("AK-47")
 	for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
 		if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
 			gun = v
@@ -183,7 +183,7 @@ end
 local KillTeam = function(Team)
 	local events = {}
 	local gun = nil
-	GiveItem("Remington 870")
+	GiveItem("AK-47")
 	for i,v in pairs(game.Players:GetPlayers()) do
 		if v ~= game.Players.LocalPlayer and v.TeamColor.Name == Team then
 			if v.TeamColor.Name == game.Players.LocalPlayer.TeamColor.Name then
@@ -227,7 +227,7 @@ end
 local function Kill2Team(Team1, Team2)
 	local events = {}
 	local gun = nil
-	GiveItem("Remington 870")
+	GiveItem("AK-47")
 	for i,v in pairs(game.Players:GetPlayers()) do
 		if v.TeamColor.Name == Team1 or v.TeamColor.Name == Team2 then
 			if v.TeamColor.Name == game.Players.LocalPlayer.TeamColor.Name then
