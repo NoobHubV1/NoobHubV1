@@ -149,18 +149,11 @@ end
 
 local function Kill(Player)
         local events = {}
-	local gun = nil
+	local gun = plr.Character:FindFirstChild("AK-47") or plr.Backpack:FindFirstChild("AK-47")
 	GiveItem("AK-47")
 	for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
 		if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
 			gun = v
-		end
-	end
-	if gun == nil then
-		for i,v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
-			if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
-				gun = v
-			end
 		end
 	end
 	coroutine.wrap(function()
@@ -182,7 +175,7 @@ end
 
 local KillTeam = function(Team)
 	local events = {}
-	local gun = nil
+	local gun = plr.Character:FindFirstChild("AK-47") or plr.Backpack:FindFirstChild("AK-47")
 	GiveItem("AK-47")
 	for i,v in pairs(game.Players:GetPlayers()) do
 		if v ~= game.Players.LocalPlayer and v.TeamColor.Name == Team then
@@ -203,18 +196,6 @@ local KillTeam = function(Team)
 			end
 		end
 	end
-	for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-		if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
-			gun = v
-		end
-	end
-	if gun == nil then
-		for i,v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
-			if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
-				gun = v
-			end
-		end
-	end
 	coroutine.wrap(function()
 		for i = 1,50 do
 			game.ReplicatedStorage.ReloadEvent:FireServer(gun)
@@ -226,7 +207,7 @@ end
 
 local function Kill2Team(Team1, Team2)
 	local events = {}
-	local gun = nil
+	local gun = plr.Character:FindFirstChild("AK-47") or plr.Backpack:FindFirstChild("AK-47")
 	GiveItem("AK-47")
 	for i,v in pairs(game.Players:GetPlayers()) do
 		if v.TeamColor.Name == Team1 or v.TeamColor.Name == Team2 then
@@ -244,18 +225,6 @@ local function Kill2Team(Team1, Team2)
 					RayObject = Ray.new(Vector3.new(), Vector3.new()),
 					Distance = 0
 				}
-			end
-		end
-	end
-	for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-		if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
-			gun = v
-		end
-	end
-	if gun == nil then
-		for i,v in pairs(game.Players.LocalPlayer.Character:GetChildren()) do
-			if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
-				gun = v
 			end
 		end
 	end
