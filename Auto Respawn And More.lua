@@ -162,7 +162,7 @@ local function Kill(Player)
 			task.wait()
 		end
 	end)()
-	for i = 1,5 do
+	for i = 1,10 do
 		events[#events + 1] = {
 			Hit = Player.Character:FindFirstChild("Head") or Player.Character:FindFirstChildOfClass("Part"),
 			Cframe = CFrame.new(),
