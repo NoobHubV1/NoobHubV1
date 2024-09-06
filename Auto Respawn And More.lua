@@ -623,6 +623,7 @@ function Arrest(Player, Time)
 	if Player then
 		repeat task.wait()
 			Goto(Player)
+			plr.Character.Humanoid.Sit = false
 			for i = 1,Time do
 				coroutine.wrap(function()
 					workspace.Remote.arrest:InvokeServer(Player.Character.Head)
