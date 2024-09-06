@@ -797,6 +797,7 @@ local meleelk = Instance.new("TextButton")
 local unmeleelk = Instance.new("TextButton")
 local saveposition = Instance.new("TextButton")
 local loadposition = Instance.new("TextButton")
+local speed = Instance.new("TextButton")
 local player = Instance.new("TextBox")
 
 --Properties:
@@ -1291,7 +1292,7 @@ saveposition.Text = "saveposition"
 saveposition.TextColor3 = Color3.fromRGB(255, 255, 255)
 saveposition.TextSize = 14.000
 saveposition.MouseButton1Down:Connect(function()
-savedcf = savePos()
+old = savePos()
 end)
 
 loadposition.Name = "loadposition"
@@ -1304,7 +1305,20 @@ loadposition.Text = "loadposition"
 loadposition.TextColor3 = Color3.fromRGB(255, 255, 255)
 loadposition.TextSize = 14.000
 loadposition.MouseButton1Down:Connect(function()
-TPCFrame(savedcf)
+TPCFrame(old)
+end)
+
+speed.Name = "speed"
+speed.Parent = scripts
+speed.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+speed.BorderSizePixel = 0
+speed.Size = UDim2.new(0, 200, 0, 50)
+speed.Font = Enum.Font.Roboto
+speed.Text = "speed"
+speed.TextColor3 = Color3.fromRGB(255, 255, 255)
+speed.TextSize = 14.000
+speed.MouseButton1Down:Connect(function()
+plr.Character.Humanoid.WalkSpeed = player.Text
 end)
 
 player.Name = "player"
@@ -1316,7 +1330,7 @@ player.Size = UDim2.new(0, 410, 0, 33)
 player.ClearTextOnFocus = true
 player.Font = Enum.Font.SourceSans
 player.PlaceholderColor3 = Color3.fromRGB(152, 152, 152)
-player.PlaceholderText = "PLAYER"
+player.PlaceholderText = "PLAYER or NUMBER"
 player.Text = ""
 player.TextColor3 = Color3.fromRGB(255, 255, 255)
 player.TextSize = 14.000
@@ -1684,3 +1698,4 @@ end)
 
 Notif("(Auto Respawn And More) Script Loaded!")
 ChangeTeam(plr.Team)
+AllGuns()
