@@ -659,7 +659,7 @@ local function MeleeKill(Player)
 	end
 end
 	
-function A() spawn(function() while getgenv().autore do if plr.Character.Humanoid.Health <= 15 then ChangeTeam(plr.Team) end
+function A() spawn(function() while getgenv().autore do if plr.Character.Humanoid.Health <= 50 then ChangeTeam(plr.Team) end
 wait()
 end
 end)
@@ -1681,3 +1681,5 @@ getgenv().loopmkillcriminals = false Z()
 getgenv().loopmkillplayer = false I()
 Notif("(Success) Unloopmkill All")
 end)
+
+ChangeTeam(plr.Team)
