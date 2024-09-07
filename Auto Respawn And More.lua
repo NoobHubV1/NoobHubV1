@@ -554,7 +554,7 @@ end)
 end
 
 function U() spawn(function() while getgenv().loopkillall do KillAll()
-wait()
+task.wait(0.4)
 end
 end)
 end
