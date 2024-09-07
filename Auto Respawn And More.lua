@@ -560,6 +560,32 @@ local function God()
 				task.wait(1)
 				ChangeTeam(saveteam())
 end
+
+local function CFrameTP(Arg1)
+	if Arg1 == "nexus" or Arg1 == "nex" then
+		TPCFrame(CFrame.new(888, 100, 2388))
+	elseif Arg1 == "cafe" then
+		TPCFrame(CFrame.new(877, 100, 2256))
+	elseif Arg1 == "backnexus" then
+		TPCFrame(CFrame.new(982, 100, 2334))
+	elseif Arg1 == "yard" then
+		TPCFrame(CFrame.new(791, 98, 2498))
+	elseif Arg1 == "crimbase" or Arg1 == "cbase" then
+		TPCFrame(CFrame.new(-943, 95, 2055))
+	elseif Arg1 == "armory" or Arg1 == "arm" then
+		TPCFrame(CFrame.new(789, 100, 2260))
+	elseif Arg1 == "lunchroom" then
+		TPCFrame(CFrame.new(905, 100, 2226))
+	elseif Arg1 == "gate" then
+		TPCFrame(CFrame.new(505, 103, 2250))
+	elseif Arg1 == "tower" then
+		TPCFrame(CFrame.new(822, 131, 2588))
+	elseif Arg1 == "gatetower" or Arg1 == "gtower" then
+		TPCFrame(CFrame.new(502, 126, 2306))
+	elseif Arg1 == "sewer" then
+		TPCFrame(CFrame.new(916, 79, 2311))
+	end
+end
 	
 function A() spawn(function() while getgenv().autore do if plr.Character.Humanoid.Health <= 50 then ChangeTeam(plr.Team) end
 wait()
@@ -663,6 +689,12 @@ end
 end)
 end
 
+function Q() spawn(function() while getgenv().antisit do if plr.Character.Humanoid.Sit == true then plr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping) end
+task.wait()
+end
+end)
+end
+
 local NoobHubV1 = Instance.new("ScreenGui")
 local destroy = Instance.new("TextButton")
 local open = Instance.new("TextButton")
@@ -709,6 +741,10 @@ local speed = Instance.new("TextButton")
 local jumpower = Instance.new("TextButton")
 local God = Instance.new("TextButton")
 local Ungod = Instance.new("TextButton")
+local Opengate = Instance.new("TextButton")
+local tp = Instance.new("TextButton")
+local Antibring = Instance.new("TextButton")
+local Unantibring = Instance.new("TextButton")
 local player = Instance.new("TextBox")
 
 --Properties:
@@ -1266,6 +1302,59 @@ Ungod.Text = "God"
 Ungod.TextColor3 = Color3.fromRGB(255, 255, 255)
 Ungod.TextSize = 14.000
 
+Opengate.Name = "Opengate"
+Opengate.Parent = scripts
+Opengate.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+Opengate.BorderSizePixel = 0
+Opengate.Size = UDim2.new(0, 200, 0, 50)
+Opengate.Font = Enum.Font.Roboto
+Opengate.Text = "Open Gate"
+Opengate.TextColor3 = Color3.fromRGB(255, 255, 255)
+Opengate.TextSize = 14.000
+Opengate.MouseButton1Down:Connect(function()
+local save = savePos()
+TPCFrame(CFrame.new(504.531982421875, 105.01119995117188, 2241.22900390625))
+task.wait(0.2)
+workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.buttons["Prison Gate"]["Prison Gate"])
+task.wait()
+TPCFrame(save)
+end)
+
+tp.Name = "tp"
+tp.Parent = scripts
+tp.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+tp.BorderSizePixel = 0
+tp.Size = UDim2.new(0, 200, 0, 50)
+tp.Font = Enum.Font.Roboto
+tp.Text = "TPCFrame"
+tp.TextColor3 = Color3.fromRGB(255, 255, 255)
+tp.TextSize = 14.000
+tp.MouseButton1Down:Connect(function()
+local CFrame = player.Text
+CFrameTP(CFrame)
+end)
+
+Antibring.Name = "Antibring"
+Antibring.Parent = scripts
+Antibring.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+Antibring.BorderSizePixel = 0
+Antibring.Size = UDim2.new(0, 200, 0, 50)
+Antibring.Visible = false
+Antibring.Font = Enum.Font.Roboto
+Antibring.Text = "Antibring: On"
+Antibring.TextColor3 = Color3.fromRGB(255, 255, 255)
+Antibring.TextSize = 14.000
+
+Unantibring.Name = "Unantibring"
+Unantibring.Parent = scripts
+Unantibring.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+Unantibring.BorderSizePixel = 0
+Unantibring.Size = UDim2.new(0, 200, 0, 50)
+Unantibring.Font = Enum.Font.Roboto
+Unantibring.Text = "Antibring"
+Unantibring.TextColor3 = Color3.fromRGB(255, 255, 255)
+Unantibring.TextSize = 14.000
+
 player.Name = "player"
 player.Parent = main
 player.BackgroundColor3 = Color3.fromRGB(85, 85, 85)
@@ -1275,7 +1364,7 @@ player.Size = UDim2.new(0, 410, 0, 33)
 player.ClearTextOnFocus = true
 player.Font = Enum.Font.SourceSans
 player.PlaceholderColor3 = Color3.fromRGB(152, 152, 152)
-player.PlaceholderText = "PLAYER or NUMBER"
+player.PlaceholderText = "PLAYER or NUMBER or CFRAME"
 player.Text = ""
 player.TextColor3 = Color3.fromRGB(255, 255, 255)
 player.TextSize = 14.000
@@ -1652,6 +1741,19 @@ Ungod.Text = "God: Off"
 Ungod.Visible = false
 God.Visible = true
 getgenv().godmode = true L()
+end)
+
+Antibring.MouseButton1Down:Connect(function()
+Antibring.Visible = false
+Unantibring.Visible = true
+getgenv().antisit = false Q()
+end)
+
+Unantibring.MouseButton1Down:Connect(function()
+Unantibring.Text = "Antibring: Off"
+Unantibring.Visible = false
+Antibring.Visible = true
+getgenv().antisit = true Q()
 end)
 
 Notif("(Auto Respawn And More) Script Loaded!")
