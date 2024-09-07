@@ -174,7 +174,7 @@ local function Kill(Player)
 end
 
 local function CheckTeamKill(Player)
-	if Player.Character.Humanoid.Health == 0 or Player.Character:FindFirstChild("ForceField") then -- nothing
+	if Player.Character.Humanoid.Health == 0 then -- nothing
 	else
         if Player.Team == game.Teams.Inmates then
 	if plr.Team == game.Teams.Inmates then
@@ -255,15 +255,15 @@ end
 
 local function KillAll()
 	for i,v in pairs(game.Players:GetPlayers()) do
-if v ~= plr then
-if v.Team == game.Teams.Inmates or v.Team == game.Teams.Guards or v.Team == game.Teams.Criminals then
-if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
-else
-CheckTeamKill(v)
-end
-end
-end
-end
+	if v ~= plr then
+	if v.Team == game.Teams.Inmates or v.Team == game.Teams.Guards or v.Team == game.Teams.Criminals then
+	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
+	else
+	CheckTeamKill(v)
+	end
+	end
+	end
+	end
 end
 
 local function AllGuns()
@@ -546,6 +546,20 @@ local function MeleeKill(Player)
                     task.wait()
 	end
 end
+
+local function God()
+        game.Players.LocalPlayer.Character.Humanoid.Name = 1
+				local l = game.Players.LocalPlayer.Character["1"]:Clone()
+				l.Parent = game.Players.LocalPlayer.Character
+				l.Name = "Humanoid"
+				game.Players.LocalPlayer.Character.Animate.Disabled = true
+				wait()
+				game.Players.LocalPlayer.Character.Animate.Disabled = false
+				game.Players.LocalPlayer.Character["1"]:Destroy()
+				game.Workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character
+				task.wait(1)
+				ChangeTeam(saveteam())
+end
 	
 function A() spawn(function() while getgenv().autore do if plr.Character.Humanoid.Health <= 50 then ChangeTeam(plr.Team) end
 wait()
@@ -554,7 +568,7 @@ end)
 end
 
 function U() spawn(function() while getgenv().loopkillall do KillAll()
-task.wait(0.4)
+task.wait(0.5)
 end
 end)
 end
@@ -643,6 +657,12 @@ end
 end)
 end
 
+function L() spawn(function() while getgenv().godmode do God()
+wait()
+end
+end)
+end
+
 local NoobHubV1 = Instance.new("ScreenGui")
 local destroy = Instance.new("TextButton")
 local open = Instance.new("TextButton")
@@ -686,6 +706,9 @@ local unmeleelk = Instance.new("TextButton")
 local saveposition = Instance.new("TextButton")
 local loadposition = Instance.new("TextButton")
 local speed = Instance.new("TextButton")
+local jumpower = Instance.new("TextButton")
+local God = Instance.new("TextButton")
+local Ungod = Instance.new("TextButton")
 local player = Instance.new("TextBox")
 
 --Properties:
@@ -1209,6 +1232,40 @@ speed.MouseButton1Down:Connect(function()
 plr.Character.Humanoid.WalkSpeed = player.Text
 end)
 
+jumpower.Name = "jumpower"
+jumpower.Parent = scripts
+jumpower.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+jumpower.BorderSizePixel = 0
+jumpower.Size = UDim2.new(0, 200, 0, 50)
+jumpower.Font = Enum.Font.Roboto
+jumpower.Text = "jump"
+jumpower.TextColor3 = Color3.fromRGB(255, 255, 255)
+jumpower.TextSize = 14.000
+jumpower.MouseButton1Down:Connect(function()
+plr.Character.Humanoid.JumpPower = player.Text
+end)
+
+God.Name = "God"
+God.Parent = scripts
+God.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+God.BorderSizePixel = 0
+God.Size = UDim2.new(0, 200, 0, 50)
+God.Visible = false
+God.Font = Enum.Font.Roboto
+God.Text = "God: On"
+God.TextColor3 = Color3.fromRGB(255, 255, 255)
+God.TextSize = 14.000
+
+Ungod.Name = "Ungod"
+Ungod.Parent = scripts
+Ungod.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+Ungod.BorderSizePixel = 0
+Ungod.Size = UDim2.new(0, 200, 0, 50)
+Ungod.Font = Enum.Font.Roboto
+Ungod.Text = "God"
+Ungod.TextColor3 = Color3.fromRGB(255, 255, 255)
+Ungod.TextSize = 14.000
+
 player.Name = "player"
 player.Parent = main
 player.BackgroundColor3 = Color3.fromRGB(85, 85, 85)
@@ -1293,7 +1350,7 @@ Unloopkill.Visible = true
 else
 if GetPlayer(Target) ~= nil then
 getgenv().loopkillplayer = true
-H(Target)
+H(GetPlayer(Target))
 Notif("(Success) Loopkilled "..GetPlayer(Target).DisplayName)
 Loopkill.Visible = false
 Unloopkill.Visible = true
@@ -1584,6 +1641,22 @@ getgenv().loopmkillplayer = false I()
 Notif("(Success) Unloopmkill All")
 end)
 
-Notif("(Auto Respawn And More) Script Loaded! And Cmds")
+God.MouseButton1Down:Connect(function()
+God.Visible = false
+Ungod.Visible = true
+getgenv().godmode = false L()
+end)
+
+Ungod.MouseButton1Down:Connect(function()
+Ungod.Text = "God: Off"
+Ungod.Visible = false
+God.Visible = true
+getgenv().godmode = true L()
+end)
+
+Notif("(Auto Respawn And More) Script Loaded!")
 ChangeTeam(plr.Team)
-AllGuns()
+task.wait(0.1)
+getgenv().autoguns = true Y()
+wait(0.3)
+getgenv().autoguns = false Y()
