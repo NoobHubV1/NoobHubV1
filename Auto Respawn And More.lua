@@ -218,8 +218,7 @@ local KillInmates = function()
 	for i,v in pairs(game.Players:GetPlayers()) do
 if v ~= plr then
 if v.Team == game.Teams.Inmates then
-if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
-else
+if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
 CheckTeamKill(v)
 end
 end
@@ -231,8 +230,7 @@ local function KillGuards()
 	for i,v in pairs(game.Players:GetPlayers()) do
 if v ~= plr then
 if v.Team == game.Teams.Guards then
-if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
-else
+if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
 CheckTeamKill(v)
 end
 end
@@ -244,8 +242,7 @@ local KillCriminals = function()
 	for i,v in pairs(game.Players:GetPlayers()) do
 if v ~= plr then
 if v.Team == game.Teams.Criminals then
-if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
-else
+if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
 CheckTeamKill(v)
 end
 end
@@ -257,8 +254,7 @@ local function KillAll()
 	for i,v in pairs(game.Players:GetPlayers()) do
 	if v ~= plr then
 	if v.Team == game.Teams.Inmates or v.Team == game.Teams.Guards or v.Team == game.Teams.Criminals then
-	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
-	else
+	if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
 	CheckTeamKill(v)
 	end
 	end
@@ -594,25 +590,25 @@ end)
 end
 
 function U() spawn(function() while getgenv().loopkillall do KillAll()
-task.wait(0.5)
+wait()
 end
 end)
 end
 
 function C() spawn(function() while getgenv().loopkillinmates do KillInmates()
-task.wait(0.5)
+wait()
 end
 end)
 end
 
 function G() spawn(function() while getgenv().loopkillguards do KillGuards()
-task.wait(0.5)
+wait()
 end
 end)
 end
 
 function D() spawn(function() while getgenv().loopkillcriminals do KillCriminals()
-task.wait(0.5)
+wait()
 end
 end)
 end
