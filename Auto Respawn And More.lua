@@ -554,31 +554,31 @@ end)
 end
 
 function U() spawn(function() while getgenv().loopkillall do KillAll()
-task.wait(0.5)
+wait()
 end
 end)
 end
 
 function C() spawn(function() while getgenv().loopkillinmates do KillInmates()
-task.wait()
+wait()
 end
 end)
 end
 
 function G() spawn(function() while getgenv().loopkillguards do KillGuards()
-task.wait()
+wait()
 end
 end)
 end
 
 function D() spawn(function() while getgenv().loopkillcriminals do KillCriminals()
-task.wait()
+wait()
 end
 end)
 end
 
 function H(Player) spawn(function() while getgenv().loopkillplayer do CheckTeamKill(Player)
-task.wait()
+wait()
 end
 end)
 end
@@ -596,7 +596,7 @@ end)
 end
 
 function K() spawn(function() while getgenv().ff do FF()
-task.wait(0.1)
+task.wait(0.05)
 end
 end)
 end
