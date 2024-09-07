@@ -173,72 +173,7 @@ local function Kill(Player)
 	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
 end
 
-local KillTeam = function(Team)
-	local events = {}
-	local gun = plr.Character:FindFirstChild("AK-47") or plr.Backpack:FindFirstChild("AK-47")
-	GiveItem("AK-47")
-	for i,v in pairs(game.Players:GetPlayers()) do
-		if v ~= game.Players.LocalPlayer and v.TeamColor.Name == Team then
-			if v.TeamColor.Name == game.Players.LocalPlayer.TeamColor.Name then
-				local savedcf = GetOrientation()
-				local camcf = workspace.CurrentCamera.CFrame
-				workspace.Remote.loadchar:InvokeServer(nil, BrickColor.random().Name)
-				workspace.CurrentCamera.CFrame = camcf
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = savedcf
-			end
-			for i = 1,10 do
-				events[#events + 1] = {
-					Hit = v.Character:FindFirstChild("Head") or v.Character:FindFirstChildOfClass("Part"),
-					Cframe = CFrame.new(),
-					RayObject = Ray.new(Vector3.new(), Vector3.new()),
-					Distance = 0
-				}
-			end
-		end
-	end
-	coroutine.wrap(function()
-		for i = 1,50 do
-			game.ReplicatedStorage.ReloadEvent:FireServer(gun)
-			task.wait()
-		end
-	end)()
-	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
-end
-
-local function Kill2Team(Team1, Team2)
-	local events = {}
-	local gun = plr.Character:FindFirstChild("AK-47") or plr.Backpack:FindFirstChild("AK-47")
-	GiveItem("AK-47")
-	for i,v in pairs(game.Players:GetPlayers()) do
-		if v.TeamColor.Name == Team1 or v.TeamColor.Name == Team2 then
-			if v.TeamColor.Name == game.Players.LocalPlayer.TeamColor.Name then
-				local savedcf = GetOrientation()
-				local camcf = workspace.CurrentCamera.CFrame
-				workspace.Remote.loadchar:InvokeServer(nil, BrickColor.random().Name)
-				workspace.CurrentCamera.CFrame = camcf
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = savedcf
-			end
-			for i = 1,10 do
-				events[#events + 1] = {
-					Hit = v.Character:FindFirstChild("Head") or v.Character:FindFirstChildOfClass("Part"),
-					Cframe = CFrame.new(),
-					RayObject = Ray.new(Vector3.new(), Vector3.new()),
-					Distance = 0
-				}
-			end
-		end
-	end
-	coroutine.wrap(function()
-		for i = 1,50 do
-			game.ReplicatedStorage.ReloadEvent:FireServer(gun)
-			task.wait()
-		end
-	end)()
-	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
-end
-
 local function CheckTeamKill(Player)
-        local Player = GetPlayer(Player)
 	if Player.Character.Humanoid.Health == 0 or Player.Character:FindFirstChild("ForceField") then -- nothing
 	else
         if Player.Team == game.Teams.Inmates then
@@ -280,103 +215,55 @@ local function CheckTeamKill(Player)
 end
 
 local KillInmates = function()
-	for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
-	if v ~= plr then
-	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
-	else
-	if plr.Team == game.Teams.Criminals then
-	KillTeam(BrickColor.new("Bright orange").Name)
-	elseif plr.Team == game.Teams.Guards then
-	Criminal()
-	task.wait(0.45)
-	KillTeam(BrickColor.new("Bright orange").Name)
-	elseif plr.Team == game.Teams.Inmates then
-	Criminal()
-	task.wait(0.15)
-	KillTeam(BrickColor.new("Bright orange").Name)
-	end
-	end
-	end
-	end
+	for i,v in pairs(game.Players:GetPlayers()) do
+if v ~= plr then
+if v.Team == game.Teams.Inmates then
+if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
+else
+CheckTeamKill(v)
+end
+end
+end
+end
 end
 
 local function KillGuards()
-	for i,v in pairs(game.Teams.Guards:GetPlayers()) do
-	if v ~= plr then
-	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
-	else
-	if plr.Team == game.Teams.Guards then
-	ChangeTeam(game.Teams.Inmates)
-	task.wait(0.15)
-	KillTeam(BrickColor.new("Bright blue").Name)
-	elseif plr.Team == game.Teams.Inmates then
-	KillTeam(BrickColor.new("Bright blue").Name)
-	elseif plr.Team == game.Teams.Criminals then
-	KillTeam(BrickColor.new("Bright blue").Name)
-	end
-	end
-	end
-	end
+	for i,v in pairs(game.Players:GetPlayers()) do
+if v ~= plr then
+if v.Team == game.Teams.Guards then
+if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
+else
+CheckTeamKill(v)
+end
+end
+end
+end
 end
 
 local KillCriminals = function()
-	for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
-	if v ~= plr then
-	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
-	else
-	if plr.Team == game.Teams.Criminals or plr.Team == game.Teams.Guards then
-        ChangeTeam(game.Teams.Inmates)
-	task.wait(0.2)
-        KillTeam(BrickColor.new("Really red").Name)
-	elseif plr.Team == game.Teams.Inmates then
-	KillTeam(BrickColor.new("Really red").Name)
-	end
-	end
-	end
-	end
-end
-
-local KillCriminalsAndGuards = function()
 	for i,v in pairs(game.Players:GetPlayers()) do
-	if v ~= plr then
-	if v.Team == game.Teams.Guards or v.Team == game.Teams.Criminals then
-	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
-	else
-	if plr.Team == game.Teams.Criminals or plr.Team == game.Teams.Guards then
-        ChangeTeam(game.Teams.Inmates)
-	task.wait(0.2)
-        Kill2Team(BrickColor.new("Really red").Name, BrickColor.new("Bright blue").Name)
-	elseif plr.Team == game.Teams.Inmates then
-	Kill2Team(BrickColor.new("Really red").Name, BrickColor.new("Bright blue").Name)
-	end
-	end
-	end
-	end
-	end
+if v ~= plr then
+if v.Team == game.Teams.Criminals then
+if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
+else
+CheckTeamKill(v)
+end
+end
+end
+end
 end
 
 local function KillAll()
-	for _,v in pairs(game.Players:GetPlayers()) do
-	if v ~= plr then
-	if v.Team == game.Teams.Guards or v.Team == game.Teams.Criminals then
-	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
-	else
-	KillCriminalsAndGuards()
-	end
-	end
-	end
-	end
-	task.wait(0.1)
-	for _,v in pairs(game.Players:GetPlayers()) do
-	if v ~= plr then
-	if v.Team == game.Teams.Inmates then
-	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
-	else
-	KillInmates()
-	end
-	end
-	end
-	end
+	for i,v in pairs(game.Players:GetPlayers()) do
+if v ~= plr then
+if v.Team == game.Teams.Inmates or v.Team == game.Teams.Guards or v.Team == game.Teams.Criminals then
+if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
+else
+CheckTeamKill(v)
+end
+end
+end
+end
 end
 
 local function AllGuns()
@@ -1369,7 +1256,7 @@ KillCriminals()
 Notif("(Success) Killed criminals")
 else
 if GetPlayer(Target) ~= nil then
-CheckTeamKill(Target)
+CheckTeamKill(GetPlayer(Target))
 Notif("(Success) Killed "..GetPlayer(Target).DisplayName)
 else
 Notif("(Error) No Player Found",3)
@@ -1697,6 +1584,6 @@ getgenv().loopmkillplayer = false I()
 Notif("(Success) Unloopmkill All")
 end)
 
-Notif("(Auto Respawn And More) Script Loaded!")
+Notif("(Auto Respawn And More) Script Loaded! And Cmds")
 ChangeTeam(plr.Team)
 AllGuns()
