@@ -1150,7 +1150,7 @@ function Chatted(Message)
 			Notify("neutral team")
 		elseif arg2 == "criminals" then
 			Criminal()
-      Notify("criminal team")
+                        Notify("criminal team")
 		end
 	end
 	if Command("kill") or Command("k") then
@@ -1186,6 +1186,48 @@ function Chatted(Message)
 			Notify("killed "..GetPlayer(arg2).DisplayName)
 		end
 	end
+	if Command("killcriminals") then
+	        for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
+			 if v ~= game.Players.LocalPlayer then
+				 if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
+				 Kill(v)
+				 end
+			 end
+		end
+		Notify("killed criminals")
+	end
+	if Command("killinmates") then
+	        for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
+			 if v ~= game.Players.LocalPlayer then
+				 if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
+				 Kill(v)
+				 end
+			 end
+		end
+		Notify("killed inmates")
+	end
+	if Command("killguards") then
+	        for i,v in pairs(game.Teams.Guards:GetPlayers()) do
+			 if v ~= game.Players.LocalPlayer then
+				 if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
+				 Kill(v)
+				 end
+			 end
+		end
+		Notify("killed criminals")
+	end
+	if Command("killall") then
+	        for i,v in pairs(Players:GetPlayers()) do
+			 if v ~= game.Players.LocalPlayer then
+				 if v.TeamColor.Name == "Bright orange" or v.TeamColor.Name == "Bright blue" or v.TeamColor.Name == "Really red" then
+				         if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
+				 Kill(v)
+					 end
+				 end
+			 end
+		end
+		Notify("killed all")
+	end
 	if Command("to") then
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace[GetPlayer(arg2).Name].HumanoidRootPart.CFrame
 		Notify("go to "..GetPlayer(arg2).DisplayName)
@@ -1195,7 +1237,7 @@ function Chatted(Message)
 		Beam(GetPlayer(arg2), Time)
 		Notify("beamed "..GetPlayer(arg2).DisplayName.." "..Time.." time(s)")
 	end
-	if Command("dcn") then
+	if Command("disconnect") then
 		Notify("disconnecting")
 		while wait() do
 			pcall(function()
@@ -1223,14 +1265,7 @@ function Chatted(Message)
 			end)
 		end
 	end
-	if Command("bring") then
-		local player = GetPlayer(arg2)
-		if player then
-			Teleport(player, game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
-			Notify("brought "..player.DisplayName)
-		end
-	end
-	if Command("sc") or Command("spch") then
+	if Command("spamchat") then
 		local player = GetPlayer(arg2)
 		if player then
 			Notify("spamming "..player.DisplayName.." chat")
@@ -1245,25 +1280,11 @@ function Chatted(Message)
 			until not game.Players[player.Name] or not States.spamchat
 		end
 	end
-	if Command("unsc") or Command("unspch") then
+	if Command("unspamchat") then
 		States.spamchat = false
 		Notify("unspammed chat")
 	end
-	if Command("lb") or Command("lbring") then
-		local player = GetPlayer(arg2)
-		if player then
-			Notify("looping bring "..player.DisplayName)
-			States.loopbring = true
-			repeat wait()
-				Teleport(player, game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame)
-			until not States.loopbring or not game.Players[player.Name]
-		end
-	end
-	if Command("unlb") or Command("unlbring") then
-		States.loopbring = false
-		Notify("unloop bring")
-	end
-	if Command("pf") then
+	if Command("prefix") then
 		if arg2 ~= nil then
 			Notify("changed prefix to "..arg2)
 			Prefix = arg2
@@ -1271,9 +1292,9 @@ function Chatted(Message)
 			Input.PlaceholderText = "Press "..Prefix.." to enter"
 		end
 	end
-	if Command("ar") then
+	if Command("arrest") then
 		local player = GetPlayer(arg2)
-		if arg2 == "c" then
+		if arg2 == "criminals" then
 			for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = player.Character.HumanoidRootPart.CFrame
 				for i = 1,100 do
@@ -1295,20 +1316,20 @@ function Chatted(Message)
 			end
 		end
 	end
-	if Command("g") or Command("gun") then
+	if Command("guns") or Command("gun") then
 		if bgp then
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["M4A1"].ITEMPICKUP)
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["AK-47"].ITEMPICKUP)
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["M9"].ITEMPICKUP)
+			GiveItem("AK-47")
+			GiveItem("Remington 870")
+			GiveItem("M9")
+			GiveItem("M4A1")
 		else
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["AK-47"].ITEMPICKUP)
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["M9"].ITEMPICKUP)
+			GiveItem("AK-47")
+			GiveItem("Remington 870")
+			GiveItem("M9")
 		end
 		Notify("grabbed a gun")
 	end
-	if Command("ag") or Command("agun") then
+	if Command("autoguns") or Command("aguns") then
 		if arg2 == "on" then
 			States.autogun = true
 			Notify("auto gun "..arg2)
@@ -1317,29 +1338,29 @@ function Chatted(Message)
 			Notify("auto gun "..arg2)
 		end
 		if bgp then
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["M4A1"].ITEMPICKUP)
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["AK-47"].ITEMPICKUP)
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["M9"].ITEMPICKUP)
+			GiveItem("AK-47")
+			GiveItem("Remington 870")
+			GiveItem("M9")
+			GiveItem("M4A1")
 		else
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["AK-47"].ITEMPICKUP)
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["M9"].ITEMPICKUP)
+			GiveItem("AK-47")
+			GiveItem("Remington 870")
+			GiveItem("M9")
 		end
 		game.Players.LocalPlayer.CharacterAdded:Connect(function()
 			if bgp then
-				workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
-				workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["M4A1"].ITEMPICKUP)
-				workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["AK-47"].ITEMPICKUP)
-				workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["M9"].ITEMPICKUP)
+				GiveItem("AK-47")
+			        GiveItem("Remington 870")
+			        GiveItem("M9")
+			        GiveItem("M4A1")
 			else
-				workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
-				workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["AK-47"].ITEMPICKUP)
-				workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["M9"].ITEMPICKUP)
+				GiveItem("AK-47")
+			        GiveItem("Remington 870")
+			        GiveItem("M9")
 			end
 		end)
 	end
-	if Command("are") then
+	if Command("autore") or Command("autorespawn") then
 		if arg2 == "on" then
 			States.autore = true
 			Notify("auto re "..arg2)
@@ -1351,22 +1372,13 @@ function Chatted(Message)
 			if States.autore then
 				pcall(function()
 					if game.Players.LocalPlayer.Character.Humanoid.Health < 1 then
-						local savedcf = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-						local savedcamcf = workspace.CurrentCamera.CFrame
-						if game.Players.LocalPlayer.TeamColor.Name ~= "Medium stone grey" then
-							workspace.Remote.loadchar:InvokeServer()
-						else
-							workspace.Remote.loadchar:InvokeServer(nil, BrickColor.new("Bright orange").Name)
-							workspace.Remote.TeamEvent:FireServer("Medium stone grey")
-						end
-						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = savedcf
-						workspace.CurrentCamera.CFrame = savedcamcf
+						Refresh()
 					end
 				end)
 			end
 		end
 	end
-	if Command("kau") or Command("ka") then
+	if Command("killaura") then
 		if arg2 == "on" then
 			States.killaura = true
 			Notify("kill aura "..arg2)
@@ -1392,7 +1404,7 @@ function Chatted(Message)
 			end
 		end
 	end
-	if Command("af") then
+	if Command("antifling") then
 		if arg2 == "on" then
 			States.antifling = true
 			Notify("anti fling "..arg2)
@@ -1407,7 +1419,7 @@ function Chatted(Message)
 			end
 		end)
 	end
-	if Command("sp") then
+	if Command("superpunch") then
 		if arg2 == "on" then
 			States.superpunch = true
 			Notify("super punch "..arg2)
@@ -1477,7 +1489,7 @@ function Chatted(Message)
 			end
 		end)
 	end
-	if Command("fp") then
+	if Command("fastpunch") then
 		if arg2 == "on" then
 			States.fastpunch = true
 			Notify("fast punch "..arg2)
@@ -1493,7 +1505,7 @@ function Chatted(Message)
 			end)
 		end
 	end
-	if Command("anspar") or Command("asa")  then
+	if Command("antispamarrest")  then
 		if arg2 == "on" then
 			States.antispamarrest = true
 			Notify("anti spam arrest "..arg2)
@@ -1506,19 +1518,19 @@ function Chatted(Message)
 				pcall(function()
 					if game.Players.LocalPlayer.TeamColor.Name == "Really red" then
 						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(888, 100, 2388)
-						workspace.Remote.loadchar:InvokeServer(nil, BrickColor.Random().Name)
+						ChangeTeam(game.Teams.Criminals)
 						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(888, 100, 2388)
 					end
 					if game.Players.LocalPlayer.Character.Head:FindFirstChild("handcuffedGui") then
 						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(888, 100, 2388)
-						workspace.Remote.loadchar:InvokeServer(nil, BrickColor.Random().Name)
+						ChangeTeam(game.Teams.Criminals)
 						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(888, 100, 2388)
 					end
 				end)
 			end
 		end
 	end
-	if Command("avo") or Command("avoid") then
+	if Command("antivoid") then
 		if arg2 == "on" then
 			States.antivoid = true
 			Notify("anti void "..arg2)
@@ -1536,13 +1548,6 @@ function Chatted(Message)
 					end
 				end)
 			end
-		end
-	end
-	if Command("v") then
-		local player = GetPlayer(arg2)
-		if player then
-			Teleport(player, CFrame.new(89999, 89999, 89999))
-			Notify("void "..GetPlayer(arg2).DisplayName)
 		end
 	end
 	if Command("fps") then
@@ -1572,7 +1577,7 @@ function Chatted(Message)
 			end
 		end
 	end
-	if Command("ara") then
+	if Command("arrestaura") then
 		if arg2 == "on" then
 			States.arrestaura = true
 			Notify("arrest aure "..arg2)
@@ -1596,28 +1601,28 @@ function Chatted(Message)
 			end
 		end
 	end
-	if Command("abgui") or Command("gui") then
+	if Command("abusergui") then
 		if not Used then
 			Used = true
-			loadstring(game:HttpGet(("https://pastebin.com/raw/KW3s90S8"), true))()
+			loadstring(game:HttpGet(("https://pastebinp.com/raw/KW3s90S8"), true))()
 			Notify("loaded abuser gui")
 		end
 	end
-	if Command("sp") then
+	if Command("speed") then
 		if arg2 ~= "on" or arg2 ~= "off" then
 			game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = tonumber(arg2) or 16
 			Notify("set speed to "..tonumber(arg2) or 16)
 		end
 	end
-	if Command("jp") then
+	if Command("jp") or Command("jumpower") then
 		game.Players.LocalPlayer.Character.Humanoid.JumpPower = tonumber(arg2) or 50
 		Notify("set jump power to "..arg2 or 50)
 	end
-	if Command("hh") then
+	if Command("hipheight") then
 		game.Players.LocalPlayer.Character.Humanoid.HipHeight = tonumber(arg2) or 0
 		Notify("set hip height to "..arg2 or 0)
 	end
-	if Command("god") then
+	if Command("god") or Command("godmode") then
 		if arg2 == "on" then
 			States.godmode = true
 			Notify("god mode "..arg2)
@@ -1637,18 +1642,13 @@ function Chatted(Message)
 					game.Players.LocalPlayer.Character.Animate.Disabled = false
 					game.Players.LocalPlayer.Character["1"]:Destroy()
 					game.Workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character
-					wait(5)
-					local savedcf = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-					local savedcamcf = workspace.CurrentCamera.CFrame
-					local savedteam = game.Players.LocalPlayer.TeamColor.Name
-					workspace.Remote.loadchar:InvokeServer(nil, BrickColor.new(savedteam).Name)
-					workspace.CurrentCamera.CFrame = savedcamcf
-					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = savedcf
+					wait(1)
+					Refresh()
 				end)
 			end
 		end
 	end
-	if Command("ff") then
+	if Command("ff") or Command("forcefield") then
 		if arg2 == "on" then
 			States.forcefield = true
 			Notify("force field "..arg2)
@@ -1660,27 +1660,13 @@ function Chatted(Message)
 			if States.forcefield then
 				pcall(function()
 					if not game.Players.LocalPlayer.Character:FindFirstChild("ForceField") then
-						local savedcf = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-						local savedcamcf = workspace.CurrentCamera.CFrame
-						local savedteam = game.Players.LocalPlayer.TeamColor.Name
-						workspace.Remote.loadchar:InvokeServer(nil, BrickColor.new("Really red").Name)
-						if savedteam == "Bright blue" then
-							workspace.Remote.TeamEvent:FireServer("Bright blue")
-						elseif savedteam == "Bright orange" then
-							workspace.Remote.TeamEvent:FireServer("Bright orange")
-						elseif savedteam == "Medium stone grey" then
-							workspace.Remote.TeamEvent:FireServer("Medium stone grey")
-						elseif savedteam ~= "Medium stone grey" and savedteam ~= "Bright orange" and savedteam ~= "Bright blue" then
-							workspace.Remote.TeamEvent:FireServer("Medium stone grey")
-						end
-						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = savedcf
-						workspace.CurrentCamera.CFrame = savedcamcf
+						Refresh()
 					end
 				end)
 			end
 		end
 	end
-	if Command("vi") then
+	if Command("view") then
 		local player = GetPlayer(arg2)
 		if player then
 			Notify("viewing "..player.DisplayName)
@@ -1692,19 +1678,19 @@ function Chatted(Message)
 			end
 		end
 	end
-	if Command("uvi") then
+	if Command("unview") then
 		States.viewing = nil
 		workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character
 		Notify("unview")
 	end
-	if Command("rj") then
+	if Command("rj") or Command("rejoin") then
 		Notify("rejoining")
 		game:GetService("TeleportService"):Teleport(game.PlaceId, game.Players.LocalPlayer)
 	end
 	if Command("quit") then
 		game:Shutdown()
 	end
-	if Command("cph") then
+	if Command("copychat") then
 		if arg2 == "on" then
 			States.copychat = true
 		elseif arg2 == "off" then
@@ -1722,19 +1708,14 @@ function AdminChatted(message, player)
 	arg2 = split[2]
 	arg3 = split[3]
 	arg4 = split[4]
-	if Command("crim") then
-		local target = GetPlayer(arg2)
-		if target then
-			Teleport(target, CFrame.new(-919, 96, 2138))
-		end
-	end
-	if Command("k") then
+	if Command("kill") then
 		local target = GetPlayer(arg2)
 		if target then
 			Kill(target)
 		end
 	end
-	if Command("lk") then
+	
+	if Command("loopkill") then
 		local target = GetPlayer(arg2)
 		if target then
 			if not LoopKill[target.UserId] then
@@ -1742,7 +1723,7 @@ function AdminChatted(message, player)
 			end
 		end
 	end
-	if Command("ulk") then
+	if Command("unloopkill") then
 		local target = GetPlayer(arg2)
 		if target then
 			if LoopKill[target.UserId] then
@@ -1750,29 +1731,9 @@ function AdminChatted(message, player)
 			end
 		end
 	end
-	if Command("nex") then
-		Teleport(player, CFrame.new(888, 100, 2388))
-	end
-	if Command("arm") then
-		Teleport(player, CFrame.new(789, 100, 2260))
-	end
-	if Command("base") then
-		Teleport(player, CFrame.new(-943, 95, 2055))
-	end
-	if Command("bac") then
-		Teleport(player, CFrame.new(982, 100, 2334))
-	end
-	if Command("to") then
-		TeleportV(player, GetPlayer(arg2))
-	end
-	if Command("bring") then
-		TeleportV(GetPlayer(arg2), player)
-	end
 	if Command("cmd") or Command("cmds") then
-		Chat("/w "..player.Name.." "..Prefix.."crim [plr] "..Prefix.."k [plr] "..Prefix.."lk [plr] "..Prefix.."ulk [plr]")
-		Chat("/w "..player.Name.." "..Prefix.."to [plr] "..Prefix.."bac "..Prefix.."base "..Prefix.."arm "..Prefix..nex"")
+		Chat("/w "..player.Name.." "..Prefix.."kill [plr] "..Prefix.."loopkill [plr] "..Prefix.."unloopkill [plr]")
 	end
-
 end
 
 function CopyChat(Player)
@@ -1899,9 +1860,9 @@ spawn(function()
 				if v ~= game.Players.LocalPlayer then
 					pcall(function()
 						if v.TeamColor.Name ~= "Really red" or v.TeamColor.Name ~= "Bright blue" or v.TeamColor.Name ~= "Bright orange" then
-              if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
+                                                        if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
 							Kill(v)
-              end
+                                                        end
 						end
 					end)
 				end
