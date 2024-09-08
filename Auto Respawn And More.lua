@@ -151,11 +151,6 @@ local function Kill(Player)
         local events = {}
 	local gun = plr.Character:FindFirstChild("AK-47") or plr.Backpack:FindFirstChild("AK-47")
 	GiveItem("AK-47")
-	for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
-		if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
-			gun = v
-		end
-	end
 	coroutine.wrap(function()
 		for i = 1,50 do
 			game.ReplicatedStorage.ReloadEvent:FireServer(gun)
