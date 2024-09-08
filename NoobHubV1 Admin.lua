@@ -28,6 +28,7 @@ LoadingScreen.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 LoadingScreen.BorderSizePixel = 0
 LoadingScreen.Position = UDim2.new(0.402142167, 0, 0.415692836, 0)
 LoadingScreen.Size = UDim2.new(0, 200, 0, 100)
+LoadingScreen.Visible = true
 
 LoadingLabel.Name = "LoadingLabel"
 LoadingLabel.Parent = LoadingScreen
@@ -227,7 +228,7 @@ CmdHandler.ScrollBarThickness = 2
 UIListLayout.Parent = CmdHandler
 UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 
-COMMANDS.Name = "COMMANDS"
+COMMANDS.Name = "CMDS"
 COMMANDS.Parent = nil
 COMMANDS.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 COMMANDS.BackgroundTransparency = 1.000
@@ -258,7 +259,7 @@ Close.MouseButton1Click:Connect(function()
 	CmdGui.Visible = false
 end)
 
-local Prefix = "."
+local Prefix = ";"
 local States = {}
 local Admin = {}
 local LoopKill = {}
@@ -540,8 +541,8 @@ function Command(Cmd)
 	return arg1 == Prefix..Cmd
 end
 
-ChatNotify('[EZ Admin]: Thanks '..game.Players.LocalPlayer.DisplayName..' for using "Easy Admin"')
-ChatNotify('[EZ Admin]: Made by : Discord > LocalPlayer#7434 | Youtube > CXZ NAME_R')
+ChatNotify('[NoobHubV1 Admin]: Thanks '..game.Players.LocalPlayer.DisplayName..' for using "NoobHubV1 Admin"')
+ChatNotify('[NoobHubV1 Admin]: Made by : NoobHubV1 | Youtube > @PhoBo2014')
 ChatNotify('To see all avaibled commands please chat/type "'..Prefix..'cmd" or "'..Prefix..'cmds" and enjoy')
 ChatNotify('The commands are hard to under stand you can open output ot see what they do')
 Input.PlaceholderText = "Press "..Prefix.." to enter"
@@ -557,22 +558,23 @@ function Chatted(Message)
 			Prefix.."cmd/cmds - show cmds bar",
 			Prefix.."re/refresh - refresh",
 			Prefix.."res/respawn - respawn",
-			Prefix.."team [team] - changes team",
+			Prefix.."inmates/inmate - inmate team",
+			Prefix.."guards/guard - guard team ",
 			Prefix.."kill [plr] - kill",
-      Prefix.."killinmates - kill team inmates",
-      Prefix.."killguards [plr] - kill team guards",
-      Prefix.."killcriminals - kill team criminals",
-      Prefix.."killall - kill all",
+                        Prefix.."killinmates - kill team inmates",
+                        Prefix.."killguards [plr] - kill team guards",
+                        Prefix.."killcriminals - kill team criminals",
+                        Prefix.."killall - kill all",
 			Prefix.."loopkill [plr] - loop kills",
-      Prefix.."loopkillinmates - loop kills team inmates",
-      Prefix.."loopkillguards - loop kills team guards",
-      Prefix.."loopkillcriminals - loop kills team criminals",
-      Prefix.."loopkillall - loop kills all",
+                        Prefix.."loopkillinmates - loop kills team inmates",
+                        Prefix.."loopkillguards - loop kills team guards",
+                        Prefix.."loopkillcriminals - loop kills team criminals",
+                        Prefix.."loopkillall - loop kills all",
 			Prefix.."unloopkill [plr] - unloop kills",
-      Prefix.."unloopkillinmates - unloop kills team inmates",
-      Prefix.."unloopkillguards - unloop kills team guards",
-      Prefix.."unloopkillcriminals - unloop kills team criminals",
-      Prefix.."unloopkillall - unloop kills all",
+                        Prefix.."unloopkillinmates - unloop kills team inmates",
+                        Prefix.."unloopkillguards - unloop kills team guards",
+                        Prefix.."unloopkillcriminals - unloop kills team criminals",
+                        Prefix.."unloopkillall - unloop kills all",
 			Prefix.."to [plr] - go to player",
 			Prefix.."beam [plr] [time] - beam player",
 			Prefix.."disconnect - disconnect",
@@ -647,21 +649,19 @@ function Chatted(Message)
 	end
 	if Command("ac") then
 		if arg2 == "on" then
-			States.anticrash = true
+			getgenv().anticrash = true
 			Notify("anti crash "..arg2)
 		elseif arg2 == "off" then
-			States.anticrash = false
+			getgenv().anticrash = false
 			Notify("anti crash "..arg2)
 		end
-		while wait() do
-			if States.anticrash then
-				for i,v in pairs(game.Players:GetPlayers()) do
-					pcall(function()
-						coroutine.wrap(function()
-							v.Character.vest:Destroy()
-						end)()
-					end)
-				end
+		while getgenv().anticrash do wait()
+			for i,v in pairs(game.Players:GetPlayers()) do
+				pcall(function()
+					coroutine.wrap(function()
+						v.Character.vest:Destroy()
+					end)()
+				end)
 			end
 		end
 	end
@@ -825,22 +825,20 @@ function Chatted(Message)
 	end
 	if Command("antishield") then
 		if arg2 == "on" then
-			States.antishield = true
+			getgenv().antishield = true
 			Notify("anti shield "..arg2)
 		elseif arg2 == "off" then
-			States.antishield = false
+			getgenv().antishield = false
 			Notify("anti shield "..arg2)
 		end
-		while wait() do
-			if States.antishield then
-				pcall(function()
-					for i,v in pairs(game.Players:GetPlayers()) do							
-						if workspace[v.Name].Torso:FindFirstChild("ShieldFolder") then
-							workspace[v.Name].Torso:FindFirstChild("ShieldFolder"):Destroy()
-						end
+		while getgenv().antishield do wait()
+			pcall(function()
+				for i,v in pairs(game.Players:GetPlayers()) do							
+					if workspace[v.Name].Torso:FindFirstChild("ShieldFolder") then
+						workspace[v.Name].Torso:FindFirstChild("ShieldFolder"):Destroy()
 					end
-				end)
-			end
+				end
+			end)
 		end
 	end
 	if Command("loopkill") then
@@ -1138,53 +1136,21 @@ function Chatted(Message)
 		Respawn()
 		Notify("respawned player")
 	end
-	if Command("team") then
-		if arg2 == "inmates" then
-			ChangeTeam(game.Teams.Inmates)
-			Notify("inmate team")
-		elseif arg2 == "guards" then
-			ChangeTeam(game.Teams.Guards)
-			Notify("guard team")
-		elseif arg2 == "n" then
-			ChangeTeam(game.Teams.Neutral)
-			Notify("neutral team")
-		elseif arg2 == "criminals" then
-			Criminal()
-                        Notify("criminal team")
+	if Command("inmate") or Command("inmates") then
+		ChangeTeam(game.Teams.Inmates)
+		Notify("inmate team")
+	end
+	if Command("guard") or Command("guards") then
+		ChangeTeam(game.Teams.Guards)
+		if plr.TeamColor.Name == "Bright blue" then
+		Notify("guard team")
+		else
+		Notify("guards team full")
 		end
 	end
-	if Command("kill") or Command("k") then
-		if arg2 == "c" then
-			for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
-				if v ~= game.Players.LocalPlayer then
-					Kill(v)
-				end
-			end
-			Notify("killed criminals")
-		elseif arg2 == "i" then
-			for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
-				if v ~= game.Players.LocalPlayer then
-					Kill(v)
-				end
-			end
-			Notify("killed inmates")
-		elseif arg2 == "g" then
-			for i,v in pairs(game.Teams.Guards:GetPlayers()) do
-				if v ~= game.Players.LocalPlayer then
-					Kill(v)
-				end
-			end
-			Notify("killed criminals")
-		elseif arg2 == "all" then
-			for i,v in pairs(game.Players:GetPlayers()) do
-				if v ~= game.Players.LocalPlayer then
-					Kill(v)
-				end
-			end
-		else
-			Kill(GetPlayer(arg2))
-			Notify("killed "..GetPlayer(arg2).DisplayName)
-		end
+	if Command("criminal") or Command("criminals") or Command("crims") or Command("crim") then
+		Criminal()
+		Notify("criminal team")
 	end
 	if Command("killcriminals") then
 	        for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
@@ -1221,7 +1187,7 @@ function Chatted(Message)
 			 if v ~= game.Players.LocalPlayer then
 				 if v.TeamColor.Name == "Bright orange" or v.TeamColor.Name == "Bright blue" or v.TeamColor.Name == "Really red" then
 				         if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
-				 Kill(v)
+				         Kill(v)
 					 end
 				 end
 			 end
@@ -1246,7 +1212,7 @@ function Chatted(Message)
 					local Gun = game.Players.LocalPlayer.Character:FindFirstChild("Remington 870") or game.Players.LocalPlayer.Backpack:FindFirstChild("Remington 870")
 					Head = game.Players.LocalPlayer.Character.Head
 					if not Gun then
-						workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
+						GiveItem("Remington 870")
 						Gun = game.Players.LocalPlayer.Character:FindFirstChild("Remington 870") or game.Players.LocalPlayer.Backpack:FindFirstChild("Remington 870")
 					end
 					if Gun and Head then
@@ -1362,44 +1328,40 @@ function Chatted(Message)
 	end
 	if Command("autore") or Command("autorespawn") then
 		if arg2 == "on" then
-			States.autore = true
+			getgenv().autore = true
 			Notify("auto re "..arg2)
 		elseif arg2 == "off" then
-			States.autore = false
+			getgenv().autore = false
 			Notify("auto re "..arg2)
 		end
-		while wait() do
-			if States.autore then
-				pcall(function()
-					if game.Players.LocalPlayer.Character.Humanoid.Health < 1 then
-						Refresh()
-					end
-				end)
-			end
+		while getgenv().autore do wait()
+			pcall(function()
+				if game.Players.LocalPlayer.Character.Humanoid.Health < 1 then
+					Refresh()
+				end
+			end)
 		end
 	end
 	if Command("killaura") then
 		if arg2 == "on" then
-			States.killaura = true
+			getgenv().killaura = true
 			Notify("kill aura "..arg2)
 		elseif arg2 == "off" then
-			States.killaura = false
+			getgenv().killaura = false
 			Notify("kill aura "..arg2)
 		end
-		while wait() do
-			if States.killaura then
-				for i,v in pairs(game.Players:GetPlayers()) do
-					if v ~= game.Players.LocalPlayer then
-						pcall(function()
-							if (v.Character.HumanoidRootPart.Position-game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 10 then
-								for n = 1,10 do
-									coroutine.wrap(function()
-										game.ReplicatedStorage.meleeEvent:FireServer(v)
-									end)()
-								end
+		while getgenv().killaura do wait()
+			for i,v in pairs(game.Players:GetPlayers()) do
+				if v ~= game.Players.LocalPlayer then
+					pcall(function()
+						if (v.Character.HumanoidRootPart.Position-game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 10 then
+							for n = 1,10 do
+								coroutine.wrap(function()
+									game.ReplicatedStorage.meleeEvent:FireServer(v)
+								end)()
 							end
-						end)
-					end
+						end
+					end)
 				end
 			end
 		end
@@ -1491,68 +1453,62 @@ function Chatted(Message)
 	end
 	if Command("fastpunch") then
 		if arg2 == "on" then
-			States.fastpunch = true
+			getgenv().fastpunch = true
 			Notify("fast punch "..arg2)
 		elseif arg2 == "off" then
-			States.fastpunch = false
+			getgenv().fastpunch = false
 			Notify("fast punch "..arg2)
 		end
-		while wait() do
+		while getgenv().fastpunch do wait()
 			pcall(function()
-				if States.fastpunch then
-					getsenv(game.Players.LocalPlayer.Character.ClientInputHandler).cs.isFighting = false
+				getsenv(game.Players.LocalPlayer.Character.ClientInputHandler).cs.isFighting = false
+			end)
+		end
+	end
+	if Command("antispamarrest") then
+		if arg2 == "on" then
+			getgenv().antispamarrest = true
+			Notify("anti spam arrest "..arg2)
+		elseif arg2 == "off" then
+			getgenv().antispamarrest = false
+			Notify("anti spam arrest "..arg2)
+		end
+		while getgenv().antispamarrest do wait()
+			pcall(function()
+				if game.Players.LocalPlayer.TeamColor.Name == "Really red" then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(888, 100, 2388)
+					ChangeTeam(game.Teams.Criminals)
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(888, 100, 2388)
+				end
+				if game.Players.LocalPlayer.Character.Head:FindFirstChild("handcuffedGui") then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(888, 100, 2388)
+					ChangeTeam(game.Teams.Criminals)
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(888, 100, 2388)
 				end
 			end)
 		end
 	end
-	if Command("antispamarrest")  then
-		if arg2 == "on" then
-			States.antispamarrest = true
-			Notify("anti spam arrest "..arg2)
-		elseif arg2 == "off" then
-			States.antispamarrest = false
-			Notify("anti spam arrest "..arg2)
-		end
-		while wait() do
-			if States.antispamarrest then
-				pcall(function()
-					if game.Players.LocalPlayer.TeamColor.Name == "Really red" then
-						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(888, 100, 2388)
-						ChangeTeam(game.Teams.Criminals)
-						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(888, 100, 2388)
-					end
-					if game.Players.LocalPlayer.Character.Head:FindFirstChild("handcuffedGui") then
-						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(888, 100, 2388)
-						ChangeTeam(game.Teams.Criminals)
-						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(888, 100, 2388)
-					end
-				end)
-			end
-		end
-	end
 	if Command("antivoid") then
 		if arg2 == "on" then
-			States.antivoid = true
+			getgenv().antivoid = true
 			Notify("anti void "..arg2)
 		elseif arg2 == "off" then
-			States.antivoid = false
+			getgenv().antivoid = false
 			Notify("anti void "..arg2)
 		end
-		while wait() do
-			if States.antivoid then
-				pcall(function()
-					if game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y < 1 then
-						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(888, 100, 2388)
-					elseif game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y > 97500 then
-						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(888, 100, 2388)
-					end
-				end)
-			end
+		while getgenv().antivoid do wait()
+			pcall(function()
+				if game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y < 1 then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(888, 100, 2388)
+				elseif game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y > 97500 then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(888, 100, 2388)
+				end
+			end)
 		end
 	end
 	if Command("fps") then
 		if arg2 == "on" then
-			States.fps = true
+			getgenv().fps = true
 			for _,v in pairs(game:GetDescendants()) do
 				pcall(function()
 					v.Material = Enum.Material.Plastic
@@ -1560,43 +1516,39 @@ function Chatted(Message)
 			end
 			Notify("boost fps "..arg2)
 		elseif arg2 == "off" then
-			States.fps = false
+			getgenv().fps = false
 			Notify("boost fps "..arg2)
 		end
-		while wait() do
-			if States.fps then
-				pcall(function()
-					for i,v in pairs(game.Players:GetPlayers()) do
-						if v ~= game.Players.LocalPlayer then
-							if v.Character.Humanoid.Health < 1 then
-								v.Character:Destroy()
-							end
+		while getgenv().fps do wait()
+			pcall(function()
+				for i,v in pairs(game.Players:GetPlayers()) do
+					if v ~= game.Players.LocalPlayer then
+						if v.Character.Humanoid.Health < 1 then
+							v.Character:Destroy()
 						end
 					end
-				end)
-			end
+				end
+			end)
 		end
 	end
 	if Command("arrestaura") then
 		if arg2 == "on" then
-			States.arrestaura = true
+			getgenv().arrestaura = true
 			Notify("arrest aure "..arg2)
 		elseif arg2 == "off" then
-			States.arrestaura = false
+			getgenv().arrestaura = false
 			Notify("arrest aure "..arg2)
 		end
-		while wait() do
-			if States.arrestaura then
-				for i,v in pairs(game.Players:GetPlayers()) do
-					if v ~= game.Players.LocalPlayer then
-						pcall(function()
-							if (v.Character.HumanoidRootPart.Position-game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 10 then
-								coroutine.wrap(function()
-									ArrestEvent(v, 1)
-								end)()
-							end
-						end)
-					end
+		while getgenv().arrestaura do wait()
+			for i,v in pairs(game.Players:GetPlayers()) do
+				if v ~= game.Players.LocalPlayer then
+					pcall(function()
+						if (v.Character.HumanoidRootPart.Position-game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 10 then
+							coroutine.wrap(function()
+								ArrestEvent(v, 1)
+							end)()
+						end
+					end)
 				end
 			end
 		end
@@ -1608,7 +1560,7 @@ function Chatted(Message)
 			Notify("loaded abuser gui")
 		end
 	end
-	if Command("speed") then
+	if Command("speed") or Command("ws") then
 		if arg2 ~= "on" or arg2 ~= "off" then
 			game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = tonumber(arg2) or 16
 			Notify("set speed to "..tonumber(arg2) or 16)
@@ -1624,46 +1576,42 @@ function Chatted(Message)
 	end
 	if Command("god") or Command("godmode") then
 		if arg2 == "on" then
-			States.godmode = true
+			getgenv().godmode = true
 			Notify("god mode "..arg2)
 		elseif arg2 == "off" then
-			States.godmode = false
+			getgenv().godmode = false
 			Notify("god mode "..arg2)
 		end
-		while wait() do
-			if States.godmode then
-				pcall(function()
-					game.Players.LocalPlayer.Character.Humanoid.Name = 1
-					local l = game.Players.LocalPlayer.Character["1"]:Clone()
-					l.Parent = game.Players.LocalPlayer.Character
-					l.Name = "Humanoid"
-					game.Players.LocalPlayer.Character.Animate.Disabled = true
-					wait()
-					game.Players.LocalPlayer.Character.Animate.Disabled = false
-					game.Players.LocalPlayer.Character["1"]:Destroy()
-					game.Workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character
-					wait(1)
-					Refresh()
-				end)
-			end
+		while getgenv().godmode do wait()
+			pcall(function()
+				game.Players.LocalPlayer.Character.Humanoid.Name = 1
+				local l = game.Players.LocalPlayer.Character["1"]:Clone()
+				l.Parent = game.Players.LocalPlayer.Character
+				l.Name = "Humanoid"
+				game.Players.LocalPlayer.Character.Animate.Disabled = true
+				wait()
+				game.Players.LocalPlayer.Character.Animate.Disabled = false
+				game.Players.LocalPlayer.Character["1"]:Destroy()
+				game.Workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character
+				wait(1)
+				Refresh()
+			end)
 		end
 	end
 	if Command("ff") or Command("forcefield") then
 		if arg2 == "on" then
-			States.forcefield = true
+			getgenv().forcefield = true
 			Notify("force field "..arg2)
 		elseif arg2 == "off" then
-			States.forcefield = false
+			getgenv().forcefield = false
 			Notify("force field "..arg2)
 		end
-		while wait() do
-			if States.forcefield then
-				pcall(function()
-					if not game.Players.LocalPlayer.Character:FindFirstChild("ForceField") then
-						Refresh()
-					end
-				end)
-			end
+		while getgenv().forcefield do wait()
+			pcall(function()
+				if not game.Players.LocalPlayer.Character:FindFirstChild("ForceField") then
+					Refresh()
+				end
+			end)
 		end
 	end
 	if Command("view") then
@@ -1714,7 +1662,34 @@ function AdminChatted(message, player)
 			Kill(target)
 		end
 	end
-	
+	if Command("killinmates") or Command("killinmate") then
+		for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
+			if v ~= plr or v ~= player then
+				Kill(v)
+			end
+		end
+	end
+	if Command("killguards") or Command("killguard") then
+		for i,v in pairs(game.Teams.Guards:GetPlayers()) do
+			if v ~= plr or v ~= player then
+				Kill(v)
+			end
+		end
+	end
+	if Command("killcriminals") or Command("killcriminal") then
+		for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
+			if v ~= plr or v ~= player then
+				Kill(v)
+			end
+		end
+	end
+	if Command("killall") or Command("killothers") then
+		for i,v in pairs(game.Players:GetPlayers()) do
+			if v ~= plr or v ~= player then
+				Kill(v)
+			end
+		end
+	end
 	if Command("loopkill") then
 		local target = GetPlayer(arg2)
 		if target then
@@ -1722,6 +1697,65 @@ function AdminChatted(message, player)
 				LoopKill[target.UserId] = {player = target}
 			end
 		end
+	end
+	if Command("loopkillall") or Command("loopkillothers") then
+		getgenv().loopkillall = true
+		while getgenv().loopkillall do
+			for i,v in pairs(game.Players:GetPlayers()) do
+				if v ~= plr or v ~= player then
+					Kill(v)
+				end
+			end
+		end
+	end
+	if Command("loopkillinmates") or Command("loopkillinmate") then
+		getgenv().loopkillinmates = true
+		while getgenv().loopkillinmates do
+			for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
+				if v ~= plr or v ~= player then
+					Kill(v)
+				end
+			end
+		end
+	end
+	if Command("loopkillguards") or Command("loopkillguard") then
+		getgenv().loopkillguards = true
+		while getgenv().loopkillguards do
+			for i,v in pairs(game.Teams.Guards:GetPlayers()) do
+				if v ~= plr or v ~= player then
+					Kill(v)
+				end
+			end
+		end
+	end
+	if Command("loopkillcriminals") or Command("loopkillcriminal") then
+		getgenv().loopkillcriminals = true
+		while getgenv().loopkillcriminals do
+			for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
+				if v ~= plr or v ~= player then
+					Kill(v)
+				end
+			end
+		end
+	end
+	if Command("unloopkillall") then
+		getgenv().loopkillall = false
+	end
+	if Command("unloopkillinmates") then
+		getgenv().loopkillinmates = false
+	end
+	if Command("unloopkillguards") then
+		getgenv().loopkillguards = false
+	end
+	if Command("unloopkillcriminals") then
+		getgenv().loopkillcriminals = false
+	end
+	if Command("clearloopkills") then
+		getgenv().loopkillinmates = false
+		getgenv().loopkillguards = false
+		getgenv().loopkillcriminals = false
+		getgenv().loopkillall = false
+		
 	end
 	if Command("unloopkill") then
 		local target = GetPlayer(arg2)
@@ -1732,7 +1766,9 @@ function AdminChatted(message, player)
 		end
 	end
 	if Command("cmd") or Command("cmds") then
-		Chat("/w "..player.Name.." "..Prefix.."kill [plr] "..Prefix.."loopkill [plr] "..Prefix.."unloopkill [plr]")
+		Chat("/w "..player.Name.." "..Prefix.."kill [plr] "..Prefix.."killinmates "..Prefix.."killinmate "..Prefix.."killguards "..Prefix.."killguard "..Prefix.."killcriminals "..Prefix.."killcriminal "..Prefix.."killall "..Prefix.."killothers")
+		Chat("/w "..player.Name.." "..Prefix.."loopkill [plr] "..Prefix.."loopkillinmates "..Prefix.."loopkillinmate "..Prefix.."loopkillguards "..Prefix.."loopkillguard "..Prefix.."loopkillcriminals "..Prefix.."loopkillcriminal "..Prefix.."loopkillall "..Prefix.."loopkillothers")
+		Chat("/w "..player.Name.." "..Prefix.."unloopkill [plr] "..Prefix.."unloopkillinmates "..Prefix.."unloopkillguards "..Prefix.."unloopkillcriminals "..Prefix.."unloopkillall "..Prefix.."clearloopkills")
 	end
 end
 
@@ -1806,66 +1842,58 @@ spawn(function()
 end)
 
 spawn(function()
-	while wait() do
-		if States.loopkill_criminals then
-			for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
-				pcall(function()
-					if v ~= game.Players.LocalPlayer then
-            if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
-						Kill(v)
-            end
-					end
-				end)
-			end
-		end
-	end
-end)
-
-spawn(function()
-	while wait() do
-		if States.loopkill_inmates then
-			for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
-				pcall(function()
-					if v ~= game.Players.LocalPlayer then
-            if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
-						Kill(v)
-            end
-					end
-				end)
-			end
-		end
-	end
-end)
-
-spawn(function()
-	while wait() do
-		if States.loopkill_guards then
-			for i,v in pairs(game.Teams.Guards:GetPlayers()) do
-				pcall(function()
-					if v ~= game.Players.LocalPlayer then
-            if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
-						Kill(v)
-            end
-					end
-				end)
-			end
-		end
-	end
-end)
-
-spawn(function()
-	while wait() do
-		if States.loopkill_other then
-			for i,v in pairs(game.Players:GetPlayers()) do
+	while getgenv().loopkillcriminals do wait()
+		for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
+			pcall(function()
 				if v ~= game.Players.LocalPlayer then
-					pcall(function()
-						if v.TeamColor.Name ~= "Really red" or v.TeamColor.Name ~= "Bright blue" or v.TeamColor.Name ~= "Bright orange" then
-                                                        if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
-							Kill(v)
-                                                        end
-						end
-					end)
+                                        if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
+					Kill(v)
+					end
 				end
+			end)
+		end
+	end
+end)
+
+spawn(function()
+	while getgenv().loopkillinmates do wait()
+		for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
+			pcall(function()
+				if v ~= game.Players.LocalPlayer then
+                                        if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
+					Kill(v)
+                                        end
+				end
+			end)
+		end
+	end
+end)
+
+spawn(function()
+	while getgenv().loopkillguards do wait()
+		for i,v in pairs(game.Teams.Guards:GetPlayers()) do
+			pcall(function()
+				if v ~= game.Players.LocalPlayer then
+                                        if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
+					Kill(v)
+                                        end
+				end
+			end)
+		end
+	end
+end)
+
+spawn(function()
+	while getgenv().loopkillall do wait()
+		for i,v in pairs(game.Players:GetPlayers()) do
+			if v ~= game.Players.LocalPlayer then
+				pcall(function()
+					if v.TeamColor.Name ~= "Really red" or v.TeamColor.Name ~= "Bright blue" or v.TeamColor.Name ~= "Bright orange" then
+                                                if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
+						Kill(v)
+                                                end
+					end
+				end)
 			end
 		end
 	end
