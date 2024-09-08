@@ -1,4 +1,6 @@
 local CmdBar = Instance.new("ScreenGui")
+local Open = Instance.new("TextButton")
+local C
 local LoadingScreen = Instance.new("Frame")
 local LoadingLabel = Instance.new("TextLabel")
 local Background = Instance.new("Frame")
@@ -258,6 +260,10 @@ Close.TextWrapped = true
 Close.MouseButton1Click:Connect(function()
 	CmdGui.Visible = false
 end)
+
+if DisableScript then
+	DisableScript()
+end
 
 local Prefix = ";"
 local States = {}
@@ -556,6 +562,7 @@ function Chatted(Message)
 	if Command("cmd") or Command("cmds") then
 		local Commands = {
 			Prefix.."cmd/cmds - show cmds bar",
+			Prefix.."unload/destroygui/destroy - destroygui",
 			Prefix.."re/refresh - refresh",
 			Prefix.."res/respawn - respawn",
 			Prefix.."inmates/inmate - inmate team",
@@ -632,6 +639,8 @@ function Chatted(Message)
 			Prefix.."admin [plr] - admin",
 			Prefix.."unadmin [plr] - unadmin",
 			Prefix.."clearadmins - clear admins",
+			Prefix.."executebardestroy - destroy execute bar",
+			Prefix.."executebarrestore - restore execute bar",
 		}
 		for i,v in pairs(CmdHandler:GetChildren()) do
 			if v:IsA("TextLabel") then
@@ -647,7 +656,21 @@ function Chatted(Message)
 		CmdGui.Visible = true
 		Notify("commands")
 	end
-	if Command("ac") then
+	if Command("unload") or Command("destroygui") or Command("destroy") then
+		pcall(function()
+		CmdBar:Destroy()
+		local States = {}
+                local Admin = {}
+                local LoopKill = {}
+                local InvisibleChecked = {}
+                local SpamArrestSuper = {}
+		ScriptDisabled = true
+		for i,v in pairs(game.Lighting:GetChildren()) do
+			v.Parent = workspace
+		end
+	        end)
+	end
+	if Command("anticrash") then
 		if arg2 == "on" then
 			getgenv().anticrash = true
 			Notify("anti crash "..arg2)
@@ -1904,3 +1927,18 @@ Background.Visible = true
 wait(1)
 
 LoadingScreen.Visible = false
+
+getgenv().DisableScript = function()
+	pcall(function()
+		CmdBar:Destroy()
+		local States = {}
+                local Admin = {}
+                local LoopKill = {}
+                local InvisibleChecked = {}
+                local SpamArrestSuper = {}
+		ScriptDisabled = true
+		for i,v in pairs(game.Lighting:GetChildren()) do
+			v.Parent = workspace
+		end
+	end)
+end
