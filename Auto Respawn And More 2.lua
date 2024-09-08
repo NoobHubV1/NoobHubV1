@@ -147,7 +147,7 @@ local function GiveItem(Item)
         end
 end
 
-local function Kill(Player)
+local function KillPlayer(Player)
         local events = {}
 	local gun = plr.Character:FindFirstChild("AK-47") or plr.Backpack:FindFirstChild("AK-47")
 	GiveItem("AK-47")
@@ -168,42 +168,50 @@ local function Kill(Player)
 	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
 end
 
-local function CheckTeamKill(Player)
+local function Kill(Player)
 	if Player.Character.Humanoid.Health == 0 then -- nothing
 	else
         if Player.Team == game.Teams.Inmates then
 	if plr.Team == game.Teams.Inmates then
 	Criminal()
 	task.wait(0.15)
-	Kill(Player)
+	KillPlayer(Player)
 	elseif plr.Team == game.Teams.Guards then
 	Criminal()
 	task.wait(0.25)
-	Kill(Player)
+	KillPlayer(Player)
 	elseif plr.Team == game.Teams.Criminals then
-	Kill(Player)
+	KillPlayer(Player)
 	end
         elseif Player.Team == game.Teams.Guards then
         if plr.Team == game.Teams.Guards then
         Criminal()
         task.wait(0.4)
-        Kill(Player)
+        KillPlayer(Player)
         elseif plr.Team == game.Teams.Criminals then
-        Kill(Player)
+        KillPlayer(Player)
         elseif plr.Team == game.Teams.Inmates then
-        Kill(Player)
+        KillPlayer(Player)
         end
         elseif Player.Team == game.Teams.Criminals then
         if plr.Team == game.Teams.Guards then
         ChangeTeam(game.Teams.Inmates)
         task.wait(0.3)
-        Kill(Player)
+        KillPlayer(Player)
         elseif plr.Team == game.Teams.Criminals then
         ChangeTeam(game.Teams.Inmates)
         task.wait(0.3)
-        Kill(Player)
+        KillPlayer(Player)
         elseif plr.Team == game.Teams.Inmates then
-        Kill(Player)
+        KillPlayer(Player)
+	end
+	elseif Player.Team == game.Teams.Neutral then
+	if plr.Team == game.Teams.Guards then
+        KillPlayer(Player)
+        elseif plr.Team == game.Teams.Criminals then
+        KillPlayer(Player)
+        elseif plr.Team == game.Teams.Inmates then
+        KillPlayer(Player)
 	end
         end
 	end
@@ -213,7 +221,7 @@ local KillInmates = function()
 	for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
 if v ~= plr then
 if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
-CheckTeamKill(v)
+Kill(v)
 end
 end
 end
@@ -223,7 +231,7 @@ local function KillGuards()
 	for i,v in pairs(game.Teams.Guards:GetPlayers()) do
 if v ~= plr then
 if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
-CheckTeamKill(v)
+Kill(v)
 end
 end
 end
@@ -233,7 +241,7 @@ local KillCriminals = function()
 	for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
 if v ~= plr then
 if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
-CheckTeamKill(v)
+Kill(v)
 end
 end
 end
@@ -242,10 +250,8 @@ end
 local function KillAll()
 	for i,v in pairs(game.Players:GetPlayers()) do
 	if v ~= plr then
-	if v.Team == game.Teams.Inmates or v.Team == game.Teams.Guards or v.Team == game.Teams.Criminals then
 	if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
-	CheckTeamKill(v)
-	end
+	Kill(v)
 	end
 	end
 	end
