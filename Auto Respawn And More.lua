@@ -223,36 +223,30 @@ local function CheckTeamKill(Player)
 end
 
 local KillInmates = function()
-	for i,v in pairs(game.Players:GetPlayers()) do
+	for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
 if v ~= plr then
-if v.Team == game.Teams.Inmates then
 if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
 CheckTeamKill(v)
-end
 end
 end
 end
 end
 
 local function KillGuards()
-	for i,v in pairs(game.Players:GetPlayers()) do
+	for i,v in pairs(game.Teams.Guards:GetPlayers()) do
 if v ~= plr then
-if v.Team == game.Teams.Guards then
 if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
 CheckTeamKill(v)
-end
 end
 end
 end
 end
 
 local KillCriminals = function()
-	for i,v in pairs(game.Players:GetPlayers()) do
+	for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
 if v ~= plr then
-if v.Team == game.Teams.Criminals then
 if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
 CheckTeamKill(v)
-end
 end
 end
 end
@@ -586,6 +580,8 @@ local function CFrameTP(Arg1)
 		TPCFrame(CFrame.new(502, 126, 2306))
 	elseif Arg1 == "sewer" then
 		TPCFrame(CFrame.new(916, 79, 2311))
+	elseif Arg1 == "neutralspawn" or Arg1 == "nspawn" then
+		TPCFrame(CFrame.new(879, 27, 2349))
 	end
 end
 	
@@ -596,25 +592,25 @@ end)
 end
 
 function U() spawn(function() while getgenv().loopkillall do KillAll()
-task.wait(0.5)
+task.wait(0.6)
 end
 end)
 end
 
 function C() spawn(function() while getgenv().loopkillinmates do KillInmates()
-task.wait(0.5)
+task.wait(0.6)
 end
 end)
 end
 
 function G() spawn(function() while getgenv().loopkillguards do KillGuards()
-task.wait(0.5)
+task.wait(0.6)
 end
 end)
 end
 
 function D() spawn(function() while getgenv().loopkillcriminals do KillCriminals()
-task.wait(0.5)
+task.wait(0.6)
 end
 end)
 end
