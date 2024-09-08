@@ -708,10 +708,6 @@ PrisonLife:CreateButton("Admin Gui", function()LoadstringHttps("https://raw.gith
 end)
 
 PrisonLife:CreateButton("Auto Respawn And More", function()Notif("Script Made by Me") task.wait(1)
-LoadstringHttps("https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/Auto%20Respawn%20And%20More.lua")
-end)
-
-PrisonLife:CreateButton("Auto Respawn And More 2", function()Notif("Script Reload") task.wait(1)
 LoadstringHttps("https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/Auto%20Respawn%20And%20More%202.lua")
 end)
 
