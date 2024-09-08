@@ -62,7 +62,7 @@ end
 
 function GetPlayer(Player)
         local function findPlayer(stringg)
-		if (stringg == ("me")) then
+		if (stringg == ("me")) or not stringg then
 			return plr
 		else
 		        for _,player in pairs(game.Players:GetPlayers()) do
@@ -70,7 +70,7 @@ function GetPlayer(Player)
 					return player
 				end
 		        end
-	        end
+		end
 	end
 	return findPlayer(Player)
 end
@@ -339,7 +339,8 @@ local function KillAll()
 	for i,v in pairs(game.Players:GetPlayers()) do
 	if v ~= plr then
 	if v.Team == game.Teams.Inmates or v.Team == game.Teams.Guards then
-	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then
+	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
+	else
 	KillInmatesAndGuards()
 	end
 	end
@@ -348,7 +349,8 @@ local function KillAll()
 	task.wait(0.1)
 	for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
 	if v ~= plr then
-	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then
+	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
+	else
 	KillCriminals()
 	end
 	end
@@ -677,7 +679,11 @@ local function CFrameTP(Arg1)
 		TPCFrame(CFrame.new(879, 27, 2349))
 	end
 end
-	
+
+local function Chat(Message, Whisper)
+	game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(Message, Whisper or "ALL")
+end
+
 function A() spawn(function() while getgenv().autore do if plr.Character.Humanoid.Health <= 50 then ChangeTeam(plr.Team) end
 wait()
 end
@@ -685,25 +691,25 @@ end)
 end
 
 function U() spawn(function() while getgenv().loopkillall do KillAll()
-task.wait(0.3)
+task.wait(0.4)
 end
 end)
 end
 
 function C() spawn(function() while getgenv().loopkillinmates do KillInmates()
-task.wait(0.3)
+task.wait(0.4)
 end
 end)
 end
 
 function G() spawn(function() while getgenv().loopkillguards do KillGuards()
-task.wait(0.3)
+task.wait(0.4)
 end
 end)
 end
 
 function D() spawn(function() while getgenv().loopkillcriminals do KillCriminals()
-task.wait(0.3)
+task.wait(0.4)
 end
 end)
 end
@@ -786,6 +792,25 @@ end
 end)
 end
 
+function W(Player) 
+spawn(function() 
+while getgenv().nuke do
+if Player.Character.Humanoid.Health == 0 then
+Chat(""..Player.DisplayName.." IS DEAD NUKE LAUNCHING!!!")
+task.wait(1)
+Chat("LAUNCHING IN 3")
+task.wait(1)
+Chat("LAUNCHING IN 2")
+task.wait(1)
+Chat("LAUNCHING IN 1")
+KillAll()
+Notif("Nuke from player has been removed.")
+end
+wait()
+end
+end)
+end
+
 local NoobHubV1 = Instance.new("ScreenGui")
 local destroy = Instance.new("TextButton")
 local open = Instance.new("TextButton")
@@ -836,6 +861,8 @@ local Opengate = Instance.new("TextButton")
 local tp = Instance.new("TextButton")
 local Antibring = Instance.new("TextButton")
 local Unantibring = Instance.new("TextButton")
+local Nuke = Instance.new("TextButton")
+local Unnuke = Instance.new("TextButton")
 local player = Instance.new("TextBox")
 
 --Properties:
@@ -1446,6 +1473,27 @@ Unantibring.Text = "Antibring"
 Unantibring.TextColor3 = Color3.fromRGB(255, 255, 255)
 Unantibring.TextSize = 14.000
 
+Nuke.Name = "Nuke"
+Nuke.Parent = scripts
+Nuke.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+Nuke.BorderSizePixel = 0
+Nuke.Size = UDim2.new(0, 200, 0, 50)
+Nuke.Font = Enum.Font.Roboto
+Nuke.Text = "Nuke"
+Nuke.TextColor3 = Color3.fromRGB(255, 255, 255)
+Nuke.TextSize = 14.000
+
+Unnuke.Name = "Unnuke"
+Unnuke.Parent = scripts
+Unnuke.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+Unnuke.BorderSizePixel = 0
+Unnuke.Size = UDim2.new(0, 200, 0, 50)
+Unnuke.Visible = false
+Unnuke.Font = Enum.Font.Roboto
+Unnuke.Text = "Unnuke"
+Unnuke.TextColor3 = Color3.fromRGB(255, 255, 255)
+Unnuke.TextSize = 14.000
+
 player.Name = "player"
 player.Parent = main
 player.BackgroundColor3 = Color3.fromRGB(85, 85, 85)
@@ -1847,6 +1895,36 @@ Antibring.Visible = true
 getgenv().antisit = true Q()
 end)
 
+Nuke.MouseButton1Down:Connect(function()
+local args = player.Text
+local Player = GetPlayer(args)
+if Player ~= nil then
+Chat("!!!A NUKE HAS BEEN PLACED ON "..Player.DisplayName.." KILLING HIM WILL GET EVERYONE DEAD!!!")
+getgenv().nuke = true W(Player)
+Nuke.Visible = false
+Unnuke.Visible = true
+else
+Notif("(Error) No Player Found")
+Nuke.Visible = true
+Unnuke.Visible = false
+end
+end)
+
+Unnuke.MouseButton1Down:Connect(function()
+local args = player.Text
+local Player = GetPlayer(args)
+if Player ~= nil then
+Chat(""..Player.DisplayName.." IS NO LONGER NUKE!")
+getgenv().nuke = false W(Player)
+Nuke.Visible = true
+Unnuke.Visible = false
+else
+Notif("(Error) No Player Found")
+Nuke.Visible = false
+Unnuke.Visible = true
+end
+end)
+			
 Notif("(Auto Respawn And More) Script Loaded!")
 ChangeTeam(plr.Team)
 task.wait(0.1)
