@@ -205,14 +205,6 @@ local function CheckTeamKill(Player)
         elseif plr.Team == game.Teams.Inmates then
         Kill(Player)
 	end
-	elseif Player.Team == game.Teams.Neutral then
-	if plr.Team == game.Teams.Criminals then
-	Kill(Player)
-	elseif plr.Team == game.Teams.Inmates then
-	Kill(Player)
-	elseif plr.Team == game.Teams.Guards then
-	Kill(Player)
-	end
         end
 	end
 end
@@ -250,8 +242,10 @@ end
 local function KillAll()
 	for i,v in pairs(game.Players:GetPlayers()) do
 	if v ~= plr then
+	if v.Team == game.Teams.Inmates or v.Team == game.Teams.Guards or v.Team == game.Teams.Criminals then
 	if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
 	CheckTeamKill(v)
+	end
 	end
 	end
 	end
