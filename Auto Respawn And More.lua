@@ -581,25 +581,25 @@ end)
 end
 
 function U() spawn(function() while getgenv().loopkillall do KillAll()
-task.wait(0.6)
+task.wait(0.5)
 end
 end)
 end
 
 function C() spawn(function() while getgenv().loopkillinmates do KillInmates()
-task.wait(0.6)
+task.wait(0.5)
 end
 end)
 end
 
 function G() spawn(function() while getgenv().loopkillguards do KillGuards()
-task.wait(0.6)
+task.wait(0.5)
 end
 end)
 end
 
 function D() spawn(function() while getgenv().loopkillcriminals do KillCriminals()
-task.wait(0.6)
+task.wait(0.5)
 end
 end)
 end
