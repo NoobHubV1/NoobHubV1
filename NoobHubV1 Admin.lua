@@ -329,19 +329,19 @@ function ChangeTeam(Team)
 	                local savedcamcf = savecamPos()
                         if Team == game.Teams.Criminals then
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
-		        char:Wait() task.wait(0.055)
+		        char:Wait() task.wait(0.05)
                         TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
                         char:Wait() task.wait(0.055)
                         TPCFrame(savedcf)
 		        workspace["CurrentCamera"].CFrame = savedcamcf
                         elseif Team == game.Teams.Guards then
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
-                        char:Wait() task.wait(0.055)
+                        char:Wait() task.wait(0.05)
                         TPCFrame(savedcf)
 		        workspace["CurrentCamera"].CFrame = savedcamcf
                         elseif Team == game.Teams.Inmates then
                         workspace.Remote.TeamEvent:FireServer("Bright orange")
-                        char:Wait() task.wait(0.055)
+                        char:Wait() task.wait(0.05)
                         TPCFrame(savedcf)
 		        workspace["CurrentCamera"].CFrame = savedcamcf
 	                elseif Team == game.Teams.Neutral then
@@ -379,7 +379,7 @@ function GiveItem(Item)
         end
 end
 
-local function KillPlayer(Player)
+function KillPlayer(Player)
         local events = {}
 	local gun = plr.Character:FindFirstChild("AK-47") or plr.Backpack:FindFirstChild("AK-47")
 	GiveItem("AK-47")
@@ -446,6 +446,50 @@ local function Kill(Player)
         KillPlayer(Player)
 	end
         end
+	end
+end
+
+function KillInmates()
+	for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
+	if v ~= plr then
+	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
+	else
+	Kill(v)
+	end
+	end
+	end
+end
+
+function KillGuards()
+	for i,v in pairs(game.Teams.Guards:GetPlayers()) do
+	if v ~= plr then
+	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
+	else
+	Kill(v)
+	end
+	end
+	end
+end
+
+function KillCriminals()
+	for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
+	if v ~= plr then
+	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
+	else
+	Kill(v)
+	end
+	end
+	end
+end
+
+function KillAll()
+	for i,v in pairs(game.Players:GetPlayers()) do
+	if v ~= plr then
+	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
+	else
+	Kill(v)
+	end
+	end
 	end
 end
 
@@ -877,44 +921,56 @@ function Chatted(Message)
 			end
 	end
   if Command("loopkillall") then
-			States.loopkill_other = true
+			getgenv().loopkillother = true
       Notify("loop kills all")
+		        while getgenv().loopkillother do task.wait(0.6)
+			KillAll()
+		        end
   end
   if Command("loopkillinmates") then
-			States.loopkill_inmates = true
+			getgenv().loopkillinmates = true
       Notify("loop kills inmates")
+		        while getgenv().loopkillinmates do task.wait(0.6)
+			KillInmates()
+		        end
   end
   if Command("loopkillguards") then
-			States.loopkill_guards = true
+			getgenv().loopkillguards = true
       Notify("loop kills guards")
+		        while getgenv().loopkillguards do task.wait(0.6)
+			KillGuards()
+		        end
   end
   if Command("loopkillcriminals") then
-			States.loopkill_criminals = true
+			getgenv().loopkillcriminals = true
       Notify("loop kills criminals")
+		        while getgenv().loopkillcriminals do task.wait(0.6)
+			KillCriminals()
+		        end
   end
   if Command("unloopkillall") then
-			States.loopkill_other = false
+			getgenv().loopkillother = false
       Notify("unloop kills all")
   end
-  if Command("unloopkillinmates") then
-			States.loopkill_inmates = false
-      Notify("unloop kills inmates")
-  end
-  if Command("unloopkillguards") then
-			States.loopkill_guards = false
-      Notify("unloop kills guards")
-  end
-  if Command("unloopkillcriminals") then
-			States.loopkill_criminals = false
-      Notify("unloop kills criminals")
-  end
-  if Command("clearloopkills") then
-      States.loopkill_criminals = false
-      States.loopkill_inmates = false
-      States.loopkill_guards = false
-      States.loopkill_other = false
-      Notify("clear loop kills")
-  end
+      if Command("unloopkillinmates") then
+	  getgenv().loopkillinmates = false
+          Notify("unloop kills inmates")
+      end
+      if Command("unloopkillguards") then
+	  getgenv().loopkillguards = false
+          Notify("unloop kills guards")
+      end
+      if Command("unloopkillcriminals") then
+	      getgenv().loopkillcriminals = false
+              Notify("unloop kills criminals")
+      end
+      if Command("clearloopkills") then
+              getgenv().loopkillcriminals = false
+              getgenv().loopkillinmates = false
+              getgenv().loopkillguards = false
+              getgenv().loopkillother = false
+              Notify("clear loop kills")
+        end
 	if Command("fly") then
 		States.fly = true
 		States.flyspeed = tonumber(arg2) or tonumber(States.flyspeed) or 1
@@ -1173,46 +1229,29 @@ function Chatted(Message)
 		Criminal()
 		Notify("criminal team")
 	end
-	if Command("killcriminals") then
-	        for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
-			 if v ~= game.Players.LocalPlayer then
-				 if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
-				 Kill(v)
-				 end
-			 end
+	if Command("kill") then
+	        local player = arg2
+		if GetPlayer(player) ~= nil then
+		Kill(GetPlayer(player))
+		Notify("killed "..GetPlayer(player).DisplayName)
+		else
+		Notify("No Player Found")
 		end
+	end
+	if Command("killcriminals") then
+	        KillCriminals()
 		Notify("killed criminals")
 	end
 	if Command("killinmates") then
-	        for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
-			 if v ~= game.Players.LocalPlayer then
-				 if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
-				 Kill(v)
-				 end
-			 end
-		end
+	        KillInmates()
 		Notify("killed inmates")
 	end
 	if Command("killguards") then
-	        for i,v in pairs(game.Teams.Guards:GetPlayers()) do
-			 if v ~= game.Players.LocalPlayer then
-				 if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
-				 Kill(v)
-				 end
-			 end
-		end
+	        KillGuards()
 		Notify("killed criminals")
 	end
 	if Command("killall") then
-	        for i,v in pairs(Players:GetPlayers()) do
-			 if v ~= game.Players.LocalPlayer then
-				 if v.TeamColor.Name == "Bright orange" or v.TeamColor.Name == "Bright blue" or v.TeamColor.Name == "Really red" then
-				         if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
-				         Kill(v)
-					 end
-				 end
-			 end
-		end
+	        KillAll()
 		Notify("killed all")
 	end
 	if Command("to") then
@@ -1318,34 +1357,24 @@ function Chatted(Message)
 	end
 	if Command("autoguns") or Command("aguns") then
 		if arg2 == "on" then
-			States.autogun = true
+			getgenv().autogun = true
 			Notify("auto gun "..arg2)
 		elseif arg2 == "off" then
-			States.autogun = false
+			getgenv().autogun = false
 			Notify("auto gun "..arg2)
 		end
-		if bgp then
-			GiveItem("AK-47")
-			GiveItem("Remington 870")
-			GiveItem("M9")
-			GiveItem("M4A1")
-		else
-			GiveItem("AK-47")
-			GiveItem("Remington 870")
-			GiveItem("M9")
-		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		while getgenv().autogun do wait()
 			if bgp then
 				GiveItem("AK-47")
-			        GiveItem("Remington 870")
-			        GiveItem("M9")
-			        GiveItem("M4A1")
+				GiveItem("Remington 870")
+				GiveItem("M9")
+				GiveItem("M4A1")
 			else
 				GiveItem("AK-47")
-			        GiveItem("Remington 870")
-			        GiveItem("M9")
+				GiveItem("Remington 870")
+				GiveItem("M9")
 			end
-		end)
+		end
 	end
 	if Command("autore") or Command("autorespawn") then
 		if arg2 == "on" then
@@ -1859,64 +1888,6 @@ spawn(function()
 				end
 			end
 		end)
-	end
-end)
-
-spawn(function()
-	while getgenv().loopkillcriminals do wait()
-		for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
-			pcall(function()
-				if v ~= game.Players.LocalPlayer then
-                                        if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
-					Kill(v)
-					end
-				end
-			end)
-		end
-	end
-end)
-
-spawn(function()
-	while getgenv().loopkillinmates do wait()
-		for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
-			pcall(function()
-				if v ~= game.Players.LocalPlayer then
-                                        if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
-					Kill(v)
-                                        end
-				end
-			end)
-		end
-	end
-end)
-
-spawn(function()
-	while getgenv().loopkillguards do wait()
-		for i,v in pairs(game.Teams.Guards:GetPlayers()) do
-			pcall(function()
-				if v ~= game.Players.LocalPlayer then
-                                        if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
-					Kill(v)
-                                        end
-				end
-			end)
-		end
-	end
-end)
-
-spawn(function()
-	while getgenv().loopkillall do wait()
-		for i,v in pairs(game.Players:GetPlayers()) do
-			if v ~= game.Players.LocalPlayer then
-				pcall(function()
-					if v.TeamColor.Name ~= "Really red" or v.TeamColor.Name ~= "Bright blue" or v.TeamColor.Name ~= "Bright orange" then
-                                                if v.Character.Humanoid.Health > 0 and v.Character.Head and v.Character and v ~= nil then
-						Kill(v)
-                                                end
-					end
-				end)
-			end
-		end
 	end
 end)
 
