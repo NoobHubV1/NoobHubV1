@@ -314,7 +314,7 @@ function Criminal()
 	local savedcamcf = savecamPos()
 	if plr.Team == game.Teams.Guards then
 	TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
-	char:Wait() task.wait(0.05)
+	char:Wait() task.wait(0.055)
 	TPCFrame(savedcf)
 	workspace["CurrentCamera"].CFrame = savedcamcf
 	elseif plr.Team == game.Teams.Inmates then
@@ -329,19 +329,19 @@ function ChangeTeam(Team)
 	                local savedcamcf = savecamPos()
                         if Team == game.Teams.Criminals then
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
-		        char:Wait() task.wait(0.05)
+		        char:Wait() task.wait(0.055)
                         TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
-                        char:Wait() task.wait(0.05)
+                        char:Wait() task.wait(0.055)
                         TPCFrame(savedcf)
 		        workspace["CurrentCamera"].CFrame = savedcamcf
                         elseif Team == game.Teams.Guards then
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
-                        char:Wait() task.wait(0.05)
+                        char:Wait() task.wait(0.055)
                         TPCFrame(savedcf)
 		        workspace["CurrentCamera"].CFrame = savedcamcf
                         elseif Team == game.Teams.Inmates then
                         workspace.Remote.TeamEvent:FireServer("Bright orange")
-                        char:Wait() task.wait(0.05)
+                        char:Wait() task.wait(0.055)
                         TPCFrame(savedcf)
 		        workspace["CurrentCamera"].CFrame = savedcamcf
 	                elseif Team == game.Teams.Neutral then
@@ -352,7 +352,7 @@ end
 function ChangeTeamNoSavePos(Team)
                         if Team == game.Teams.Criminals then
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
-		        char:Wait() task.wait(0.045)
+		        char:Wait() task.wait(0.055)
                         TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
                         elseif Team == game.Teams.Guards then
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
