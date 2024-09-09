@@ -1763,7 +1763,7 @@ function AdminChatted(message, player)
 	end
 	if Command("loopkillall") or Command("loopkillothers") then
 		getgenv().loopkillall = true
-		while getgenv().loopkillall do
+		while getgenv().loopkillall do task.wait(0.6)
 			for i,v in pairs(game.Players:GetPlayers()) do
 				if v ~= plr or v ~= player then
 					Kill(v)
@@ -1773,7 +1773,7 @@ function AdminChatted(message, player)
 	end
 	if Command("loopkillinmates") or Command("loopkillinmate") then
 		getgenv().loopkillinmates = true
-		while getgenv().loopkillinmates do
+		while getgenv().loopkillinmates do task.wait(0.6)
 			for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
 				if v ~= plr or v ~= player then
 					Kill(v)
@@ -1783,7 +1783,7 @@ function AdminChatted(message, player)
 	end
 	if Command("loopkillguards") or Command("loopkillguard") then
 		getgenv().loopkillguards = true
-		while getgenv().loopkillguards do
+		while getgenv().loopkillguards do task.wait(0.6)
 			for i,v in pairs(game.Teams.Guards:GetPlayers()) do
 				if v ~= plr or v ~= player then
 					Kill(v)
@@ -1793,7 +1793,7 @@ function AdminChatted(message, player)
 	end
 	if Command("loopkillcriminals") or Command("loopkillcriminal") then
 		getgenv().loopkillcriminals = true
-		while getgenv().loopkillcriminals do
+		while getgenv().loopkillcriminals do task.wait(0.6)
 			for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
 				if v ~= plr or v ~= player then
 					Kill(v)
