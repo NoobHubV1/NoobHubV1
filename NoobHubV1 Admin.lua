@@ -314,7 +314,7 @@ function Criminal()
 	local savedcamcf = savecamPos()
 	if plr.Team == game.Teams.Guards then
 	TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
-	char:Wait() task.wait(0.055)
+	char:Wait() task.wait(0.05)
 	TPCFrame(savedcf)
 	workspace["CurrentCamera"].CFrame = savedcamcf
 	elseif plr.Team == game.Teams.Inmates then
@@ -331,7 +331,7 @@ function ChangeTeam(Team)
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
 		        char:Wait() task.wait(0.05)
                         TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
-                        char:Wait() task.wait(0.055)
+                        char:Wait() task.wait(0.05)
                         TPCFrame(savedcf)
 		        workspace["CurrentCamera"].CFrame = savedcamcf
                         elseif Team == game.Teams.Guards then
@@ -352,7 +352,7 @@ end
 function ChangeTeamNoSavePos(Team)
                         if Team == game.Teams.Criminals then
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
-		        char:Wait() task.wait(0.055)
+		        char:Wait() task.wait(0.045)
                         TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
                         elseif Team == game.Teams.Guards then
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
@@ -380,7 +380,7 @@ function GiveItem(Item)
 end
 
 function KillPlayer(Player)
-        local events = {}
+	local events = {}
 	local gun = plr.Character:FindFirstChild("AK-47") or plr.Backpack:FindFirstChild("AK-47")
 	GiveItem("AK-47")
 	coroutine.wrap(function()
@@ -400,17 +400,17 @@ function KillPlayer(Player)
 	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
 end
 
-local function Kill(Player)
-	if Player.Character.Humanoid.Health == 0 then -- nothing
+function Kill(Player)
+	if Player.Character.Humanoid.Health == 0 or Player.Character:FindFirstChild("ForceField") then -- nothing
 	else
         if Player.Team == game.Teams.Inmates then
 	if plr.Team == game.Teams.Inmates then
 	Criminal()
-	task.wait(0.15)
+	task.wait(0.05)
 	KillPlayer(Player)
 	elseif plr.Team == game.Teams.Guards then
 	Criminal()
-	task.wait(0.25)
+	task.wait(0.15)
 	KillPlayer(Player)
 	elseif plr.Team == game.Teams.Criminals then
 	KillPlayer(Player)
@@ -418,7 +418,7 @@ local function Kill(Player)
         elseif Player.Team == game.Teams.Guards then
         if plr.Team == game.Teams.Guards then
         Criminal()
-        task.wait(0.4)
+        task.wait(0.3)
         KillPlayer(Player)
         elseif plr.Team == game.Teams.Criminals then
         KillPlayer(Player)
@@ -428,11 +428,11 @@ local function Kill(Player)
         elseif Player.Team == game.Teams.Criminals then
         if plr.Team == game.Teams.Guards then
         ChangeTeam(game.Teams.Inmates)
-        task.wait(0.3)
+        task.wait(0.2)
         KillPlayer(Player)
         elseif plr.Team == game.Teams.Criminals then
         ChangeTeam(game.Teams.Inmates)
-        task.wait(0.3)
+        task.wait(0.2)
         KillPlayer(Player)
         elseif plr.Team == game.Teams.Inmates then
         KillPlayer(Player)
@@ -485,6 +485,17 @@ end
 function KillAll()
 	for i,v in pairs(game.Players:GetPlayers()) do
 	if v ~= plr then
+	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
+	else
+	Kill(v)
+	end
+	end
+	end
+end
+
+function KillPlrs(Plrs)
+	for i,v in pairs(game.Players:GetPlayers()) do
+	if v ~= plr and v == Plrs then
 	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
 	else
 	Kill(v)
@@ -1230,10 +1241,10 @@ function Chatted(Message)
 		Notify("criminal team")
 	end
 	if Command("kill") then
-	        local player = arg2
-		if GetPlayer(player) ~= nil then
-		Kill(GetPlayer(player))
-		Notify("killed "..GetPlayer(player).DisplayName)
+	        local player = GetPlayer(arg2)
+		if player ~= nil then
+		Kill(player)
+		Notify("killed "..player.DisplayName)
 		else
 		Notify("No Player Found")
 		end
