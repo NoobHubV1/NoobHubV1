@@ -1,6 +1,4 @@
 local CmdBar = Instance.new("ScreenGui")
-local Open = Instance.new("TextButton")
-local C
 local LoadingScreen = Instance.new("Frame")
 local LoadingLabel = Instance.new("TextLabel")
 local Background = Instance.new("Frame")
