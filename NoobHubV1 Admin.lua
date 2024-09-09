@@ -1669,7 +1669,9 @@ function Chatted(Message)
 		end
 		while getgenv().forcefield do wait()
 			pcall(function()
-				if not game.Players.LocalPlayer.Character:FindFirstChild("ForceField") then
+				if game.Players.LocalPlayer.Character:FindFirstChild("ForceField") then 
+					-- nothing
+				else
 					Refresh()
 				end
 			end)
