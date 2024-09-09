@@ -449,12 +449,73 @@ function Kill(Player)
 	end
 end
 
+function KillTeam(Team)
+	local events = {}
+	local gun = plr.Character:FindFirstChild("AK-47") or plr.Backpack:FindFirstChild("AK-47")
+	for i,v in pairs(game.Players:GetPlayers()) do
+		if v ~= game.Players.LocalPlayer and v.TeamColor.Name == Team then
+			for i = 1,10 do
+				events[#events + 1] = {
+					Hit = v.Character:FindFirstChild("Head") or v.Character:FindFirstChildOfClass("Part"),
+					Cframe = CFrame.new(),
+					RayObject = Ray.new(Vector3.new(), Vector3.new()),
+					Distance = 0
+				}
+			end
+		end
+	end
+	GiveItem("AK-47")
+	coroutine.wrap(function()
+		for i = 1,50 do
+			game.ReplicatedStorage.ReloadEvent:FireServer(gun)
+			task.wait()
+		end
+	end)()
+	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
+end
+
+function Kill2Team(Team1, Team2)
+	local events = {}
+	local gun = plr.Character:FindFirstChild("AK-47") or plr.Backpack:FindFirstChild("AK-47")
+	for i,v in pairs(game.Players:GetPlayers()) do
+		if v ~= game.Players.LocalPlayer then
+			if v.TeamColor.Name == Team1 or v.TeamColor.Name == Team2 then
+			for i = 1,10 do
+				events[#events + 1] = {
+					Hit = v.Character:FindFirstChild("Head") or v.Character:FindFirstChildOfClass("Part"),
+					Cframe = CFrame.new(),
+					RayObject = Ray.new(Vector3.new(), Vector3.new()),
+					Distance = 0
+				}
+			end
+			end
+		end
+	end
+	GiveItem("AK-47")
+	coroutine.wrap(function()
+		for i = 1,50 do
+			game.ReplicatedStorage.ReloadEvent:FireServer(gun)
+			task.wait()
+		end
+	end)()
+	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
+end
+
 function KillInmates()
 	for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
 	if v ~= plr then
-	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
-	else
-	Kill(v)
+	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then
+	if plr.Team == game.Teams.Criminals then
+	KillTeam("Bright orange")
+	elseif plr.Team == game.Teams.Inmates then
+	Criminal()
+	task.wait(0.1)
+	KillTeam("Bright orange")
+	elseif plr.Team == game.Teams.Guards then
+	Criminal()
+	task.wait(0.25)
+	KillTeam("Bright orange")
+	end
 	end
 	end
 	end
@@ -463,9 +524,14 @@ end
 function KillGuards()
 	for i,v in pairs(game.Teams.Guards:GetPlayers()) do
 	if v ~= plr then
-	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
-	else
-	Kill(v)
+	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then
+	if plr.Team == game.Teams.Criminals or plr.Team == game.Teams.Inmates then
+	KillTeam("Bright blue")
+	elseif plr.Team == game.Teams.Guards then
+	ChangeTeam(game.Teams.Inmates)
+	task.wait(0.25)
+	KillTeam("Bright blue")
+	end
 	end
 	end
 	end
@@ -474,9 +540,36 @@ end
 function KillCriminals()
 	for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
 	if v ~= plr then
-	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
-	else
-	Kill(v)
+	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then
+	if plr.Team == game.Teams.Criminals then
+	ChangeTeam(game.Teams.Inmates)
+	task.wait(0.2)
+	KillTeam("Really red")
+	elseif plr.Team == game.Teams.Inmates then
+	KillTeam("Really red")
+	elseif plr.Team == game.Teams.Guards then
+	ChangeTeam(game.Teams.Inmates)
+	task.wait(0.2)
+	KillTeam("Really red")
+	end
+	end
+	end
+	end
+end
+
+function KillInmatesAndGuards()
+	for i,v in pairs(game.Players:GetPlayers()) do
+	if v ~= plr then
+	if v.TeamColor.Name == "Bright blue" or v.TeamColor.Name == "Bright orange" then
+	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then
+	if plr.Team == game.Teams.Inmates or plr.Team == game.Teams.Guards then
+	Criminal()
+	task.wait(0.2)
+	Kill2Team("Bright orange", "Bright blue")
+	elseif plr.Team == game.Teams.Criminals then
+	Kill2Team("Bright orange", "Bright blue")
+	end
+	end
 	end
 	end
 	end
@@ -485,20 +578,20 @@ end
 function KillAll()
 	for i,v in pairs(game.Players:GetPlayers()) do
 	if v ~= plr then
+	if v.Team == game.Teams.Inmates or v.Team == game.Teams.Guards then
 	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
 	else
-	Kill(v)
+	KillInmatesAndGuards()
 	end
 	end
 	end
-end
-
-function KillPlrs(Plrs)
-	for i,v in pairs(game.Players:GetPlayers()) do
-	if v ~= plr and v == Plrs then
+	end
+	task.wait(0.1)
+	for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
+	if v ~= plr then
 	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
 	else
-	Kill(v)
+	KillCriminals()
 	end
 	end
 	end
@@ -1726,32 +1819,16 @@ function AdminChatted(message, player)
 		end
 	end
 	if Command("killinmates") or Command("killinmate") then
-		for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
-			if v ~= plr or v ~= player then
-				Kill(v)
-			end
-		end
+		KillInmates()
 	end
 	if Command("killguards") or Command("killguard") then
-		for i,v in pairs(game.Teams.Guards:GetPlayers()) do
-			if v ~= plr or v ~= player then
-				Kill(v)
-			end
-		end
+		KillGuards()
 	end
 	if Command("killcriminals") or Command("killcriminal") then
-		for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
-			if v ~= plr or v ~= player then
-				Kill(v)
-			end
-		end
+		KillCriminals()
 	end
 	if Command("killall") or Command("killothers") then
-		for i,v in pairs(game.Players:GetPlayers()) do
-			if v ~= plr or v ~= player then
-				Kill(v)
-			end
-		end
+		KillAll()
 	end
 	if Command("loopkill") then
 		local target = GetPlayer(arg2)
@@ -1764,41 +1841,25 @@ function AdminChatted(message, player)
 	if Command("loopkillall") or Command("loopkillothers") then
 		getgenv().loopkillall = true
 		while getgenv().loopkillall do task.wait(0.6)
-			for i,v in pairs(game.Players:GetPlayers()) do
-				if v ~= plr or v ~= player then
-					Kill(v)
-				end
-			end
+			KillAll()
 		end
 	end
 	if Command("loopkillinmates") or Command("loopkillinmate") then
 		getgenv().loopkillinmates = true
 		while getgenv().loopkillinmates do task.wait(0.6)
-			for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
-				if v ~= plr or v ~= player then
-					Kill(v)
-				end
-			end
+			KillInmates()
 		end
 	end
 	if Command("loopkillguards") or Command("loopkillguard") then
 		getgenv().loopkillguards = true
 		while getgenv().loopkillguards do task.wait(0.6)
-			for i,v in pairs(game.Teams.Guards:GetPlayers()) do
-				if v ~= plr or v ~= player then
-					Kill(v)
-				end
-			end
+			KillGuards()
 		end
 	end
 	if Command("loopkillcriminals") or Command("loopkillcriminal") then
 		getgenv().loopkillcriminals = true
 		while getgenv().loopkillcriminals do task.wait(0.6)
-			for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
-				if v ~= plr or v ~= player then
-					Kill(v)
-				end
-			end
+			KillCriminals()
 		end
 	end
 	if Command("unloopkillall") then
