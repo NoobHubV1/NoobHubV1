@@ -314,7 +314,7 @@ function Criminal()
 	local savedcamcf = savecamPos()
 	if plr.Team == game.Teams.Guards then
 	TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
-	char:Wait() task.wait(0.03)
+	char:Wait() task.wait(0.045)
 	TPCFrame(savedcf)
 	workspace["CurrentCamera"].CFrame = savedcamcf
 	elseif plr.Team == game.Teams.Inmates then
@@ -329,19 +329,19 @@ function ChangeTeam(Team)
 	                local savedcamcf = savecamPos()
                         if Team == game.Teams.Criminals then
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
-		        char:Wait() task.wait(0.04)
+		        char:Wait() task.wait(0.045)
                         TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
-		        char:Wait() task.wait(0.04)
+		        char:Wait() task.wait(0.045)
                         TPCFrame(savedcf)
 		        workspace["CurrentCamera"].CFrame = savedcamcf
                         elseif Team == game.Teams.Guards then
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
-                        char:Wait() task.wait(0.04)
+                        char:Wait() task.wait(0.045)
                         TPCFrame(savedcf)
 		        workspace["CurrentCamera"].CFrame = savedcamcf
                         elseif Team == game.Teams.Inmates then
                         workspace.Remote.TeamEvent:FireServer("Bright orange")
-                        char:Wait() task.wait(0.04)
+                        char:Wait() task.wait(0.045)
                         TPCFrame(savedcf)
 		        workspace["CurrentCamera"].CFrame = savedcamcf
 	                elseif Team == game.Teams.Neutral then
@@ -398,6 +398,101 @@ function KillPlayer(Player)
 		}
 	end
 	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
+end
+
+function Tase(Player)
+        local events = {}
+	local gun = nil
+	local savedteam = saveteam()
+	for i,v in pairs(game.Players:GetPlayers()) do
+		if v ~= plr and v == Player then
+			events[#events + 1] = {
+				Hit = v.Character:FindFirstChildOfClass("Part"),
+				Cframe = CFrame.new(),
+				RayObject = Ray.new(Vector3.new(), Vector3.new()),
+				Distance = 0
+			}
+		end
+	end
+	if not game.Players.LocalPlayer.Character:FindFirstChild("Taser") and not game.Players.LocalPlayer:FindFirstChild("Backpack"):FindFirstChild("Taser") then
+		savedteam = plr.Team
+		ChangeTeam(game.Teams.Guards)
+	end
+	gun = game.Players.LocalPlayer.Character:FindFirstChild("Taser") or game.Players.LocalPlayer.Backpack:FindFirstChild("Taser")
+	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
+	ChangeTeam(savedteam)
+end
+
+function TaseNoSaveTeam(Player)
+        local events = {}
+	local gun = plr.Character:FindFirstChild("Taser") or plr.Backpack:FindFirstChild("Taser")
+	coroutine.wrap(function()
+		for i = 1,5 do
+			game.ReplicatedStorage.ReloadEvent:FireServer(gun)
+			task.wait()
+		end
+	end)()
+	for i,v in pairs(game.Players:GetPlayers()) do
+		if v ~= plr and v == Player then
+			events[#events + 1] = {
+				Hit = v.Character:FindFirstChildOfClass("Part"),
+				Cframe = CFrame.new(),
+				RayObject = Ray.new(Vector3.new(), Vector3.new()),
+				Distance = 0
+			}
+		end
+	end
+	if gun then -- nothing
+        else
+		ChangeTeam(game.Teams.Guards)
+	end
+	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
+end
+
+function TaseTeam(Team)
+	local events = {}
+	local gun = nil
+	local savedteam = saveteam()
+	for i,v in pairs(game.Players:GetPlayers()) do
+		if v ~= plr and v.Team == Team then
+			events[#events + 1] = {
+				Hit = v.Character:FindFirstChildOfClass("Part"),
+				Cframe = CFrame.new(),
+				RayObject = Ray.new(Vector3.new(), Vector3.new()),
+				Distance = 0
+			}
+		end
+	end
+	if not game.Players.LocalPlayer.Character:FindFirstChild("Taser") and not game.Players.LocalPlayer:FindFirstChild("Backpack"):FindFirstChild("Taser") then
+		savedteam = plr.Team
+		ChangeTeam(game.Teams.Guards)
+	end
+	gun = game.Players.LocalPlayer.Character:FindFirstChild("Taser") or game.Players.LocalPlayer.Backpack:FindFirstChild("Taser")
+	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
+	ChangeTeam(savedteam)
+end
+
+function TaseAll()
+	local events = {}
+	local gun = nil
+	local savedteam = saveteam()
+	for i,v in pairs(game.Players:GetPlayers()) do
+		if v ~= plr then
+			events[#events + 1] = {
+				Hit = v.Character:FindFirstChildOfClass("Part"),
+				Cframe = CFrame.new(),
+				RayObject = Ray.new(Vector3.new(), Vector3.new()),
+				Distance = 0
+			}
+		end
+	end
+	if not game.Players.LocalPlayer.Character:FindFirstChild("Taser") and not game.Players.LocalPlayer:FindFirstChild("Backpack"):FindFirstChild("Taser") then
+		savedteam = plr.Team
+		ChangeTeam(game.Teams.Guards)
+	end
+	gun = game.Players.LocalPlayer.Character:FindFirstChild("Taser") or game.Players.LocalPlayer.Backpack:FindFirstChild("Taser")
+	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
+	ChangeTeam(savedteam)
 end
 
 function Kill(Player)
@@ -640,7 +735,8 @@ function Chatted(Message)
 			Prefix.."arrestaura [on,off] - arrest aura",
 			Prefix.."autore/autorespawn [on,off] - auto re",
 			Prefix.."copychat [on,off] - copy chat",
-			Prefix.."killaura [on,off] - kill aura",
+			Prefix.."killaura [plr] - kill aura",
+			Prefix.."unkillaura [plr] - unkill aura",
 			Prefix.."antifling [on,off] - anti fling",
 			Prefix.."superpunch [on,off] - super punch",
 			Prefix.."fastpunch [on,off] - fast punch",
@@ -684,6 +780,14 @@ function Chatted(Message)
 			Prefix.."admin [plr] - admin",
 			Prefix.."unadmin [plr] - unadmin",
 			Prefix.."clearadmins - clear admins",
+			Prefix.."tase/taze [plr] - tase player",
+			Prefix.."taseinmates/tazeinmates - tase team inmates",
+			Prefix.."tasecriminals/tasecriminals/tasecrims/tazecrims - tase team criminals",
+			Prefix.."taseall/tazeall - tase inmates and criminals",
+			Prefix.."taseaura [plr] - tase aura",
+			Prefix.."untaseaura [plr] - untase aura",
+			Prefix.."clickkill - click kill player",
+			Prefix.."unclickkill - unclick kill player",
 		}
 		for i,v in pairs(CmdHandler:GetChildren()) do
 			if v:IsA("TextLabel") then
@@ -1081,10 +1185,7 @@ function Chatted(Message)
 				game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
 			end
 		end)
-		local savedcf = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-		local savedcamcf = workspace.CurrentCamera.CFrame
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = savedcf
-		workspace.CurrentCamera.CFrame = savedcamcf
+		Refresh()
 	end
 	if Command("rapidfire") then
 		if arg2 == "on" then
@@ -1233,7 +1334,9 @@ function Chatted(Message)
 	if Command("kill") then
 	        local player = GetPlayer(arg2)
 		if player ~= nil then
+		for i = 1,3 do
 		Kill(player)
+		end
 		Notify("killed "..player.DisplayName)
 		else
 		Notify("No Player Found")
@@ -1307,11 +1410,11 @@ function Chatted(Message)
 			until not game.Players[player.Name] or not States.spamchat
 		end
 	end
-	if Command("unspamchat") then
+	 if Command("unspamchat") then
 		States.spamchat = false
 		Notify("unspammed chat")
-	end
-	if Command("prefix") then
+	 end
+	 if Command("prefix") then
 		if arg2 ~= nil then
 			Notify("changed prefix to "..arg2)
 			Prefix = arg2
@@ -1391,30 +1494,6 @@ function Chatted(Message)
 					Refresh()
 				end
 			end)
-		end
-	end
-	if Command("killaura") then
-		if arg2 == "on" then
-			getgenv().killaura = true
-			Notify("kill aura "..arg2)
-		elseif arg2 == "off" then
-			getgenv().killaura = false
-			Notify("kill aura "..arg2)
-		end
-		while getgenv().killaura do wait()
-			for i,v in pairs(game.Players:GetPlayers()) do
-				if v ~= game.Players.LocalPlayer then
-					pcall(function()
-						if (v.Character.HumanoidRootPart.Position-game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 10 then
-							for n = 1,10 do
-								coroutine.wrap(function()
-									game.ReplicatedStorage.meleeEvent:FireServer(v)
-								end)()
-							end
-						end
-					end)
-				end
-			end
 		end
 	end
 	if Command("antifling") then
@@ -1585,16 +1664,16 @@ function Chatted(Message)
 	if Command("arrestaura") then
 		if arg2 == "on" then
 			getgenv().arrestaura = true
-			Notify("arrest aure "..arg2)
+			Notify("arrest aura "..arg2)
 		elseif arg2 == "off" then
 			getgenv().arrestaura = false
-			Notify("arrest aure "..arg2)
+			Notify("arrest aura "..arg2)
 		end
 		while getgenv().arrestaura do wait()
 			for i,v in pairs(game.Players:GetPlayers()) do
 				if v ~= game.Players.LocalPlayer then
 					pcall(function()
-						if (v.Character.HumanoidRootPart.Position-game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 10 then
+						if (v.Character.HumanoidRootPart.Position-game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 15 then
 							coroutine.wrap(function()
 								ArrestEvent(v, 1)
 							end)()
@@ -1602,6 +1681,64 @@ function Chatted(Message)
 					end)
 				end
 			end
+		end
+	end
+	if Command("taseaura") then
+		local player = GetPlayer(arg2)
+		if player ~= nil then
+		getgenv().taseaura = true
+		Notify("tase aura "..player.DisplayName)
+		else
+		Notify("No Player Found")
+		end
+		while getgenv().taseaura do wait()
+			for i,v in pairs(game.Players:GetPlayers()) do
+				if v ~= plr and v ~= player then
+					pcall(function()
+						if (v.Character.HumanoidRootPart.Position-player.Character.HumanoidRootPart.Position).Magnitude < 15 then
+							TaseNoSaveTeam(v)
+						end
+					end)
+				end
+			end
+		end
+	end
+	if Command("killaura") then
+		local player = GetPlayer(arg2)
+		if player ~= nil then
+		getgenv().killaura = true
+		Notify("kill aura "..player.DisplayName)
+		else
+		Notify("No Player Found")
+		end
+		while getgenv().killaura do wait()
+			for i,v in pairs(game.Players:GetPlayers()) do
+				if v ~= plr and v ~= player then
+					pcall(function()
+						if (v.Character.HumanoidRootPart.Position-player.Character.HumanoidRootPart.Position).Magnitude < 15 then
+							Kill(v)
+						end
+					end)
+				end
+			end
+		end
+	end
+	if Command("unkillaura") then
+		local player = GetPlayer(arg2)
+		if player ~= nil then
+		getgenv().killaura = false
+		Notify("unkill aura "..player.DisplayName)
+		else
+		Notify("No Player Found")
+		end
+	end
+	if Command("untaseaura") then
+		local player = GetPlayer(arg2)
+		if player ~= nil then
+		getgenv().taseaura = false
+		Notify("untase aura "..player.DisplayName)
+		else
+		Notify("No Player Found")
 		end
 	end
 	if Command("abusergui") then
@@ -1698,7 +1835,31 @@ function Chatted(Message)
 			States.copychat = false
 		end
 	end
-
+	if Command("tase") or Command("taze") then
+		local player = GetPlayer(arg2)
+		if player ~= nil then
+		Tase(player)
+		Notify("tase/taze "..player.DisplayName)
+		else
+		Notify("No Player Found")
+		end
+	end
+	if Command("taseinmates") or Command("tazeinmates") then
+		TaseTeam(game.Teams.Inmates)
+		Notify("tase/taze inmates")
+	end
+	if Command("tasecriminals") or Command("tazecriminals") or Command("tasecrims") or Command("tazecrims") then
+		TaseTeam(game.Teams.Criminals)
+	end
+	if Command("taseall") or Command("tazeall") then
+		TaseAll()
+	end
+	if Command("clickkill") then
+		States.Clickkill = true
+	end
+	if Command("unclickkill") then
+		States.Clickkill = false
+	end
 end
 
 game.Players.LocalPlayer.Chatted:Connect(Chatted)
@@ -1712,7 +1873,9 @@ function AdminChatted(message, player)
 	if Command("kill") then
 		local target = GetPlayer(arg2)
 		if target then
+			for i = 1, 3 do wait()
 			Kill(target)
+			end
 		end
 	end
 	if Command("killinmates") or Command("killinmate") then
@@ -1786,10 +1949,85 @@ function AdminChatted(message, player)
 			end
 		end
 	end
+	if Command("tase") then
+		local target = GetPlayer(arg2)
+		if target then
+			Tase(target)
+		end
+	end
+	if Command("taseinmates") then
+		TaseTeam(game.Teams.Inmates)
+	end
+	if Command("tasecriminals") then
+		TaseTeam(game.Teams.Criminals)
+	end
+	if Command("taseall") then
+		TaseAll()
+	end
+	if Command("killaura") then
+		local target = GetPlayer(arg2)
+		if target ~= nil then
+		getgenv().kill_aura = true
+		Chat("/w "..player.Name.." kill aura "..target.DisplayName)
+		else
+		Chat("/w "..player.Name.." No Player Found")
+		end
+		while getgenv().kill_aura do wait()
+			for i,v in pairs(game.Players:GetPlayers()) do
+				if v ~= plr and v ~= player then
+					pcall(function()
+						if (v.Character.HumanoidRootPart.Position-target.Character.HumanoidRootPart.Position).Magnitude < 15 then
+							Kill(v)
+						end
+					end)
+				end
+			end
+		end
+	end
+	if Command("unkillaura") then
+		local target = GetPlayer(arg2)
+		if target ~= nil then
+		getgenv().kill_aura = false
+		Chat("/w "..player.Name.." unkill aura "..target.DisplayName)
+		else
+		Chat("/w "..player.Name.." No Player Found")
+		end
+	end
+	if Command("taseaura") then
+		local target = GetPlayer(arg2)
+		if target ~= nil then
+		getgenv().tase_aura = true
+		Chat("/w "..player.Name.." tase aura "..target.DisplayName)
+		else
+		Chat("/w "..player.Name.." No Player Found")
+		end
+		while getgenv().tase_aura do wait()
+			for i,v in pairs(game.Players:GetPlayers()) do
+				if v ~= plr and v ~= player then
+					pcall(function()
+						if (v.Character.HumanoidRootPart.Position-target.Character.HumanoidRootPart.Position).Magnitude < 15 then
+							TaseNoSaveTeam(v)
+						end
+					end)
+				end
+			end
+		end
+	end
+	if Command("untaseaura") then
+		local target = GetPlayer(arg2)
+		if target ~= nil then
+		getgenv().tase_aura = false
+		Chat("/w "..player.Name.." untase aura "..target.DisplayName)
+		else
+		Chat("/w "..player.Name.." No Player Found")
+		end
+	end
 	if Command("cmd") or Command("cmds") then
-		Chat("/w "..player.Name.." "..Prefix.."kill [plr] "..Prefix.."killinmates "..Prefix.."killinmate "..Prefix.."killguards "..Prefix.."killguard "..Prefix.."killcriminals "..Prefix.."killcriminal "..Prefix.."killall "..Prefix.."killothers")
-		Chat("/w "..player.Name.." "..Prefix.."loopkill [plr] "..Prefix.."loopkillinmates "..Prefix.."loopkillinmate "..Prefix.."loopkillguards "..Prefix.."loopkillguard "..Prefix.."loopkillcriminals "..Prefix.."loopkillcriminal "..Prefix.."loopkillall "..Prefix.."loopkillothers")
-		Chat("/w "..player.Name.." "..Prefix.."unloopkill [plr] "..Prefix.."unloopkillinmates "..Prefix.."unloopkillguards "..Prefix.."unloopkillcriminals "..Prefix.."unloopkillall "..Prefix.."clearloopkills")
+		Chat("/w "..player.Name.." "..Prefix.."kill [plr] "..Prefix.."killinmates "..Prefix.."killinmate "..Prefix.."killguards "..Prefix.."killguard "..Prefix.."killcriminals "..Prefix.."killcriminal "..Prefix.."killall "..Prefix.."killothers") wait(.2)
+		Chat("/w "..player.Name.." "..Prefix.."loopkill [plr] "..Prefix.."loopkillinmates "..Prefix.."loopkillinmate "..Prefix.."loopkillguards "..Prefix.."loopkillguard "..Prefix.."loopkillcriminals "..Prefix.."loopkillcriminal "..Prefix.."loopkillall "..Prefix.."loopkillothers") wait(.2)
+		Chat("/w "..player.Name.." "..Prefix.."unloopkill [plr] "..Prefix.."unloopkillinmates "..Prefix.."unloopkillguards "..Prefix.."unloopkillcriminals "..Prefix.."unloopkillall "..Prefix.."clearloopkills") wait(.2)
+		Chat("/w "..player.Name.." "..Prefix.."tase [plr] "..Prefix.."taseinmates "..Prefix.."tasecriminals "..Prefix.."taseall") wait(.2)
+		Chat("/w "..player.Name.." "..Prefix.."killaura [plr] "..Prefix.."unkillaura [plr] "..Prefix.."taseaura [plr] "..Prefix.."untaseaura [plr]")
 	end
 end
 
@@ -1860,6 +2098,70 @@ spawn(function()
 			end
 		end)
 	end
+end)
+
+spawn(function()
+	local Players = game.Players
+	local Mouse = game.Players.LocalPlayer:GetMouse()
+
+		Mouse.Button1Down:Connect(function()
+			if States.Clickkill then
+		local Target = Mouse.Target
+		if Target and Target.Parent and Target.Parent:IsA("Model") and Players:GetPlayerFromCharacter(Target.Parent) then
+			 local PlayerName = Players:GetPlayerFromCharacter(Target.Parent).Name
+	 local player = game.Players.LocalPlayer
+	 local Targets = {PlayerName}
+
+	 local Players = game:GetService("Players")
+	 local Player = Players.LocalPlayer
+	 
+	 local AllBool = false
+
+	 local getPlayer = function(Name)
+		Name = Name:lower()
+		if Name == "all" or Name == "others" then
+			AllBool = true
+			return
+		elseif Name == "random" then
+			local GetPlayers = Players:GetPlayers()
+			if table.find(GetPlayers,Player) then table.remove(GetPlayers,table.find(GetPlayers,Player)) end
+			return GetPlayers[math.random(#GetPlayers)]
+		elseif Name ~= "random" and Name ~= "all" and Name ~= "others" then
+			for _,x in next, Players:GetPlayers() do
+				if x ~= Player then
+					if x.Name:lower():match("^"..Name) then
+						return x;
+					elseif x.DisplayName:lower():match("^"..Name) then
+						return x;
+					end
+				end
+			end
+		else
+			return
+		end
+	 end
+
+	 if AllBool then
+		KillAll()
+	 end
+
+	 for _,x in next, Targets do
+		if getPlayer(x) and getPlayer(x) ~= Player then
+			if getPlayer(x).UserId ~= 1414978355 then
+				local TPlayer = getPlayer(x)
+				if TPlayer then
+					for i = 1,3 do wait()
+						Kill(TPlayer)
+					end
+				end
+			else
+			end
+		elseif not GetPlayer(x) and not AllBool then
+		end
+	 end
+		end
+		 end
+	 end)
 end)
 
 Background.Visible = true
