@@ -3,8 +3,11 @@ local LoadingScreen = Instance.new("Frame")
 local LoadingLabel = Instance.new("TextLabel")
 local Background = Instance.new("Frame")
 local Input = Instance.new("TextBox")
+local Open = Instance.new("TextButton")
+local Close2 = Instance.new("TextButton")
 local Output = Instance.new("TextButton")
 local OutputFrame = Instance.new("Frame")
+local Close1 = Instance.new("TextButton")
 local Output1 = Instance.new("TextLabel")
 local Output4 = Instance.new("TextLabel")
 local Output5 = Instance.new("TextLabel")
@@ -79,6 +82,41 @@ Input.Text = ""
 Input.TextColor3 = Color3.fromRGB(255, 255, 255)
 Input.TextSize = 14.000
 
+Open.Name = "Open"
+Open.Parent = CmdBar
+Open.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+Open.BorderSizePixel = 0
+Open.Size = UDim2.new(0, 35, 0, 35)
+Open.Visible = false
+Open.Font = Enum.Font.Gotham
+Open.Text = "Open"
+Open.TextColor3 = Color3.fromRGB(255, 255, 255)
+Open.TextScaled = true
+Open.TextSize = 14.000
+Open.TextWrapped = true
+Open.MouseButton1Click:Connect(function()
+	Background.Visible = true
+	Close2.Visible = true
+	Open.Visible = false
+end)
+
+Close2.Name = "Close2"
+Close2.Parent = CmdBar
+Close2.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+Close2.BorderSizePixel = 0
+Close2.Size = UDim2.new(0, 35, 0, 35)
+Close2.Font = Enum.Font.Gotham
+Close2.Text = "Close"
+Close2.TextColor3 = Color3.fromRGB(255, 255, 255)
+Close2.TextScaled = true
+Close2.TextSize = 14.000
+Close2.TextWrapped = true
+Close2.MouseButton1Click:Connect(function()
+	Background.Visible = false
+	Open.Visible = true
+	Close2.Visible = false
+end)
+
 Output.Name = "Output"
 Output.Parent = Background
 Output.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
@@ -92,11 +130,7 @@ Output.TextScaled = true
 Output.TextSize = 18.000
 Output.TextWrapped = true
 Output.MouseButton1Click:Connect(function()
-	if OutputFrame.Visible == true then
-		OutputFrame.Visible = false
-	else
-		OutputFrame.Visible = true
-	end
+	OutputFrame.Visible = true
 end)
 
 OutputFrame.Name = "OutputFrame"
@@ -105,9 +139,25 @@ OutputFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 OutputFrame.BorderSizePixel = 0
 OutputFrame.Position = UDim2.new(0.0128585557, 0, 0.569282115, 0)
 OutputFrame.Size = UDim2.new(0, 100, 0, 150)
-OutputFrame.Visible = false
+OutputFrame.Visible = true
 OutputFrame.Active = true
 OutputFrame.Draggable = true
+
+Close1.Name = "Close1"
+Close1.Parent = OutputFrame
+Close1.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+Close1.BorderSizePixel = 0
+Close1.Position = UDim2.new(0.916666627, 0, 0, 0)
+Close1.Size = UDim2.new(0, 25, 0, 25)
+Close1.Font = Enum.Font.Gotham
+Close1.Text = "X"
+Close1.TextColor3 = Color3.fromRGB(255, 255, 255)
+Close1.TextScaled = true
+Close1.TextSize = 14.000
+Close1.TextWrapped = true
+Close1.MouseButton1Click:Connect(function()
+	OutputFrame.Visible = false
+end)
 
 Output1.Name = "Output1"
 Output1.Parent = OutputFrame
@@ -288,6 +338,7 @@ local States = {}
       States.fastpunch = false
       States.anticrash = false
       States.antiinvisible = false
+      States.Clicktase = false
 
 local Prefix = ";"
 local Admin = {}
@@ -444,7 +495,6 @@ function Tase(Player)
 		end
 	end
 	if not game.Players.LocalPlayer.Character:FindFirstChild("Taser") and not game.Players.LocalPlayer:FindFirstChild("Backpack"):FindFirstChild("Taser") then
-		savedteam = plr.Team
 		ChangeTeam(game.Teams.Guards)
 	end
 	gun = game.Players.LocalPlayer.Character:FindFirstChild("Taser") or game.Players.LocalPlayer.Backpack:FindFirstChild("Taser")
@@ -493,7 +543,6 @@ function TaseTeam(Team)
 		end
 	end
 	if not game.Players.LocalPlayer.Character:FindFirstChild("Taser") and not game.Players.LocalPlayer:FindFirstChild("Backpack"):FindFirstChild("Taser") then
-		savedteam = plr.Team
 		ChangeTeam(game.Teams.Guards)
 	end
 	gun = game.Players.LocalPlayer.Character:FindFirstChild("Taser") or game.Players.LocalPlayer.Backpack:FindFirstChild("Taser")
@@ -516,7 +565,6 @@ function TaseAll()
 		end
 	end
 	if not game.Players.LocalPlayer.Character:FindFirstChild("Taser") and not game.Players.LocalPlayer:FindFirstChild("Backpack"):FindFirstChild("Taser") then
-		savedteam = plr.Team
 		ChangeTeam(game.Teams.Guards)
 	end
 	gun = game.Players.LocalPlayer.Character:FindFirstChild("Taser") or game.Players.LocalPlayer.Backpack:FindFirstChild("Taser")
@@ -677,7 +725,6 @@ function Arrest(Player, Time)
 				end)()
 			end
 		until Player.Character.Head:FindFirstChild("handcuffedGui")
-		task.wait()
 	end
 	game.Players.LocalPlayer.Character.Humanoid.Sit = false
 	TPCFrame(savedcf)
@@ -838,6 +885,8 @@ function Chatted(Message)
 			Prefix.."unclickkill - unclick kill player",
 			Prefix.."clickarrest - click arrest player",
 			Prefix.."unclickarrest - unclick arrest player",
+			Prefix.."clicktase - click tase player",
+			Prefix.."unclicktase - unclick tase player",
 		}
 		for i,v in pairs(CmdHandler:GetChildren()) do
 			if v:IsA("TextLabel") then
@@ -1014,49 +1063,43 @@ function Chatted(Message)
 				Notify("unloop kills "..player.DisplayName)
 			end
 	end
-  if Command("loopkillall") then
-			States.loopkillall = true
-      Notify("loop kills all")
-  end
-  if Command("loopkillinmates") then
-			States.loopkillinmates = true
-      Notify("loop kills inmates")
-  end
-  if Command("loopkillguards") then
-			getgenv().loopkillguards = true
-      Notify("loop kills guards")
-		        while getgenv().loopkillguards do task.wait(0.6)
-			KillGuards()
-		        end
-  end
-  if Command("loopkillcriminals") then
-			getgenv().loopkillcriminals = true
-      Notify("loop kills criminals")
-		        while getgenv().loopkillcriminals do task.wait(0.6)
-			KillCriminals()
-		        end
-  end
-  if Command("unloopkillall") then
-			getgenv().loopkillall = false
-      Notify("unloop kills all")
-  end
-      if Command("unloopkillinmates") then
-	  getgenv().loopkillinmates = false
-          Notify("unloop kills inmates")
-      end
-      if Command("unloopkillguards") then
-	  getgenv().loopkillguards = false
-          Notify("unloop kills guards")
-      end
-      if Command("unloopkillcriminals") then
-	      getgenv().loopkillcriminals = false
+        if Command("loopkillall") then
+		States.loopkillall = true
+		Notify("loop kills all")
+        end
+        if Command("loopkillinmates") then
+		States.loopkillinmates = true
+                Notify("loop kills inmates")
+        end
+        if Command("loopkillguards") then
+		States.loopkillguards = true
+                Notify("loop kills guards")
+        end
+        if Command("loopkillcriminals") then
+		States.loopkillcriminals = true
+                Notify("loop kills criminals")
+        end
+        if Command("unloopkillall") then
+		States.loopkillall = false
+                Notify("unloop kills all")
+        end
+        if Command("unloopkillinmates") then
+		States.loopkillinmates = false
+                Notify("unloop kills inmates")
+        end
+        if Command("unloopkillguards") then
+	        States.loopkillguards = false
+                Notify("unloop kills guards")
+        end
+        if Command("unloopkillcriminals") then
+	      States.loopkillcriminals = false
               Notify("unloop kills criminals")
-      end
-      if Command("clearloopkills") then
-              getgenv().loopkillcriminals = false
-              getgenv().loopkillinmates = false
-              getgenv().loopkillguards = false
-              getgenv().loopkillall = false
+        end
+        if Command("clearloopkills") then
+              States.loopkillcriminals = false
+              States.loopkillinmates = false
+              States.loopkillguards = false
+              States.loopkillall = false
               Notify("clear loop kills")
         end
 	if Command("fly") then
@@ -1159,6 +1202,7 @@ function Chatted(Message)
 	end
 	if Command("unantitase") then
 		States.antitaser = false
+		Refresh()
 		Notify("anti taser off")
 	end
 	if Command("rapidfire") then
@@ -1586,9 +1630,27 @@ function Chatted(Message)
 	end
 	if Command("clickkill") then
 		States.Clickkill = true
+		Notify("click kill on")
 	end
 	if Command("unclickkill") then
 		States.Clickkill = false
+		Notify("click kill off")
+	end
+	if Command("clickarrest") then
+		States.Clickarrest = true
+		Notify("click arrest on")
+	end
+	if Command("unclickarrest") then
+		States.Clickarrest = false
+		Notify("click arrest off")
+	end
+	if Command("clicktase") then
+		States.Clicktase = true
+		Notify("click tase on")
+	end
+	if Command("unclicktase") then
+		States.Clicktase = false
+		Notify("click tase off")
 	end
 end
 
@@ -2345,6 +2407,72 @@ spawn(function()
 			end
 		end
 	end
+end)
+
+spawn(function()
+	local Players = game.Players
+	local Mouse = game.Players.LocalPlayer:GetMouse()
+
+		Mouse.Button1Down:Connect(function()
+			if States.Clicktase then
+		local Target = Mouse.Target
+		if Target and Target.Parent and Target.Parent:IsA("Model") and Players:GetPlayerFromCharacter(Target.Parent) then
+			 local PlayerName = Players:GetPlayerFromCharacter(Target.Parent).Name
+	 local player = game.Players.LocalPlayer
+	 local Targets = {PlayerName}
+
+	 local Players = game:GetService("Players")
+	 local Player = Players.LocalPlayer
+	 
+	 local AllBool = false
+
+	 local getPlayer = function(Name)
+		Name = Name:lower()
+		if Name == "all" or Name == "others" then
+			AllBool = true
+			return
+		elseif Name == "random" then
+			local GetPlayers = Players:GetPlayers()
+			if table.find(GetPlayers,Player) then table.remove(GetPlayers,table.find(GetPlayers,Player)) end
+			return GetPlayers[math.random(#GetPlayers)]
+		elseif Name ~= "random" and Name ~= "all" and Name ~= "others" then
+			for _,x in next, Players:GetPlayers() do
+				if x ~= Player then
+					if x.Name:lower():match("^"..Name) then
+						return x;
+					elseif x.DisplayName:lower():match("^"..Name) then
+						return x;
+					end
+				end
+			end
+		else
+			return
+		end
+	 end
+
+	 if AllBool then
+		for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
+			if v ~= plr then
+				Arrest(v)
+			end
+		end
+	 end
+
+	 for _,x in next, Targets do
+		if getPlayer(x) and getPlayer(x) ~= Player then
+			if getPlayer(x).UserId ~= 1414978355 then
+				local TPlayer = getPlayer(x)
+				if TPlayer then
+					Tase(TPlayer)
+				end
+			else
+			end
+		elseif not GetPlayer(x) and not AllBool then
+		end
+	 end
+		end
+		 end
+	 end)
 end)
 
 Background.Visible = true
