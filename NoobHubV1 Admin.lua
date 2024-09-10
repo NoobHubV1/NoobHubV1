@@ -208,7 +208,7 @@ LableLOL.BackgroundColor3 = Color3.fromRGB(255, 0, 255)
 LableLOL.BorderSizePixel = 0
 LableLOL.Size = UDim2.new(0, 300, 0, 25)
 LableLOL.Font = Enum.Font.GothamBlack
-LableLOL.Text = "Easy Admin"
+LableLOL.Text = "NoobHubV1 Admin"
 LableLOL.TextColor3 = Color3.fromRGB(255, 255, 255)
 LableLOL.TextScaled = true
 LableLOL.TextSize = 14.000
@@ -263,8 +263,17 @@ if DisableScript then
 	DisableScript()
 end
 
-local Prefix = ";"
 local States = {}
+      States.autogun = true
+      States.autore = true
+      States.ff = false
+      States.copychat = false
+      States.Clickkill = false
+      States.Clickarrest = false
+      States.loopkillall = false
+      States.loopkillinmates = false
+
+local Prefix = ";"
 local Admin = {}
 local LoopKill = {}
 local InvisibleChecked = {}
@@ -314,7 +323,7 @@ function Criminal()
 	local savedcamcf = savecamPos()
 	if plr.Team == game.Teams.Guards then
 	TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
-	char:Wait() task.wait(0.045)
+	char:Wait() task.wait(0.06)
 	TPCFrame(savedcf)
 	workspace["CurrentCamera"].CFrame = savedcamcf
 	elseif plr.Team == game.Teams.Inmates then
@@ -329,19 +338,19 @@ function ChangeTeam(Team)
 	                local savedcamcf = savecamPos()
                         if Team == game.Teams.Criminals then
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
-		        char:Wait() task.wait(0.045)
+		        char:Wait() task.wait(0.06)
                         TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
-		        char:Wait() task.wait(0.045)
+		        char:Wait() task.wait(0.06)
                         TPCFrame(savedcf)
 		        workspace["CurrentCamera"].CFrame = savedcamcf
                         elseif Team == game.Teams.Guards then
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
-                        char:Wait() task.wait(0.045)
+                        char:Wait() task.wait(0.06)
                         TPCFrame(savedcf)
 		        workspace["CurrentCamera"].CFrame = savedcamcf
                         elseif Team == game.Teams.Inmates then
                         workspace.Remote.TeamEvent:FireServer("Bright orange")
-                        char:Wait() task.wait(0.045)
+                        char:Wait() task.wait(0.06)
                         TPCFrame(savedcf)
 		        workspace["CurrentCamera"].CFrame = savedcamcf
 	                elseif Team == game.Teams.Neutral then
@@ -352,7 +361,7 @@ end
 function ChangeTeamNoSavePos(Team)
                         if Team == game.Teams.Criminals then
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
-		        char:Wait() task.wait(0.05)
+		        char:Wait() task.wait(0.06)
                         TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
                         elseif Team == game.Teams.Guards then
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
@@ -1034,18 +1043,12 @@ function Chatted(Message)
 			end
 	end
   if Command("loopkillall") then
-			getgenv().loopkillother = true
+			States.loopkillall = true
       Notify("loop kills all")
-		        while getgenv().loopkillother do task.wait(0.6)
-			KillAll()
-		        end
   end
   if Command("loopkillinmates") then
-			getgenv().loopkillinmates = true
+			States.loopkillinmates = true
       Notify("loop kills inmates")
-		        while getgenv().loopkillinmates do task.wait(0.6)
-			KillInmates()
-		        end
   end
   if Command("loopkillguards") then
 			getgenv().loopkillguards = true
@@ -1469,39 +1472,20 @@ function Chatted(Message)
 	end
 	if Command("autoguns") or Command("aguns") then
 		if arg2 == "on" then
-			getgenv().autogun = true
+			States.autogun = true
 			Notify("auto gun "..arg2)
 		elseif arg2 == "off" then
-			getgenv().autogun = false
+			States.autogun = false
 			Notify("auto gun "..arg2)
-		end
-		while getgenv().autogun do wait()
-			if bgp then
-				GiveItem("AK-47")
-				GiveItem("Remington 870")
-				GiveItem("M9")
-				GiveItem("M4A1")
-			else
-				GiveItem("AK-47")
-				GiveItem("Remington 870")
-				GiveItem("M9")
-			end
 		end
 	end
 	if Command("autore") or Command("autorespawn") then
 		if arg2 == "on" then
-			getgenv().autore = true
+			States.autore = true
 			Notify("auto re "..arg2)
 		elseif arg2 == "off" then
-			getgenv().autore = false
+			States.autore = false
 			Notify("auto re "..arg2)
-		end
-		while getgenv().autore do wait()
-			pcall(function()
-				if game.Players.LocalPlayer.Character.Humanoid.Health < 1 then
-					Refresh()
-				end
-			end)
 		end
 	end
 	if Command("antifling") then
@@ -1591,16 +1575,18 @@ function Chatted(Message)
 	end
 	if Command("fastpunch") then
 		if arg2 == "on" then
-			getgenv().fastpunch = true
+			States.fastpunch = true
 			Notify("fast punch "..arg2)
 		elseif arg2 == "off" then
-			getgenv().fastpunch = false
+			States.fastpunch = false
 			Notify("fast punch "..arg2)
 		end
-		while getgenv().fastpunch do wait()
-			pcall(function()
-				getsenv(game.Players.LocalPlayer.Character.ClientInputHandler).cs.isFighting = false
-			end)
+		while wait() do
+			if States.fastpunch then
+				pcall(function()
+				        getsenv(game.Players.LocalPlayer.Character.ClientInputHandler).cs.isFighting = false
+			        end)
+			end
 		end
 	end
 	if Command("antispamarrest") then
@@ -1796,20 +1782,11 @@ function Chatted(Message)
 	end
 	if Command("ff") or Command("forcefield") then
 		if arg2 == "on" then
-			getgenv().forcefield = true
+			States.forcefield = true
 			Notify("force field "..arg2)
 		elseif arg2 == "off" then
-			getgenv().forcefield = false
+			States.forcefield = false
 			Notify("force field "..arg2)
-		end
-		while getgenv().forcefield do wait()
-			pcall(function()
-				if game.Players.LocalPlayer.Character:FindFirstChild("ForceField") then 
-					-- nothing
-				else
-					Refresh()
-				end
-			end)
 		end
 	end
 	if Command("view") then
@@ -1947,7 +1924,6 @@ function AdminChatted(message, player)
 		getgenv().loopkillguards = false
 		getgenv().loopkillcriminals = false
 		getgenv().loopkillall = false
-		
 	end
 	if Command("unloopkill") then
 		local target = GetPlayer(arg2)
@@ -2214,7 +2190,11 @@ spawn(function()
 	 end
 
 	 if AllBool then
-		KillAll()
+		for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
+			if v ~= plr then
+				Arrest(v)
+			end
+		end
 	 end
 
 	 for _,x in next, Targets do
@@ -2234,6 +2214,65 @@ spawn(function()
 	 end)
 end)
 
+spawn(function()
+	while wait() do
+		if States.autogun then
+			if bgp then
+				GiveItem("AK-47")
+				GiveItem("Remington 870")
+				GiveItem("M9")
+				GiveItem("M4A1")
+			else
+				GiveItem("AK-47")
+				GiveItem("Remington 870")
+				GiveItem("M9")
+			end
+		end
+	end
+end)
+
+spawn(function()
+	while wait() do
+		if States.autore then
+			pcall(function()
+				if plr.Character.Humanoid.Health < 1 then
+					Refresh()
+				end
+			end)
+		end
+	end
+end)
+
+spawn(function()
+	while wait() do
+		if States.forcefield then
+			pcall(function()
+				if game.Players.LocalPlayer.Character:FindFirstChild("ForceField") then 
+					-- nothing
+				else
+					Refresh()
+				end
+			end)
+		end
+	end
+end)
+
+spawn(function()
+	while task.wait(0.7) do
+		if States.loopkillall then
+			KillAll()
+		end
+	end
+end)
+
+spawn(function()
+	while task.wait(0.7) do
+		if States.loopkillinmates then
+			KillInmates()
+		end
+	end
+end)
+		
 Background.Visible = true
 
 wait(1)
