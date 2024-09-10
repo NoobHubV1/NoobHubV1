@@ -379,6 +379,10 @@ function GiveItem(Item)
         end
 end
 
+function Goto(Player)
+	TPCFrame(Player.Character.HumanoidRootPart.CFrame)
+end
+
 function KillPlayer(Player)
 	local events = {}
 	local gun = plr.Character:FindFirstChild("AK-47") or plr.Backpack:FindFirstChild("AK-47")
@@ -633,25 +637,27 @@ function ArrestEvent(Player, Time)
 end
 
 function Arrest(Player, Time)
-	local Time = tonumber(Time) or 1
+	if Player.Character.Humanoid.Health == 0 then -- nothing
+	else
+	local Time = Time or 1
 	local savedcf = savePos()
 	local savedcamcf = savecamPos()
-	local savedteam = saveteam()
 	if Player then
-		repeat wait()
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Player.Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 1)
+		repeat task.wait()
+			Goto(Player)
+			plr.Character.Humanoid.Sit = false
 			for i = 1,Time do
 				coroutine.wrap(function()
 					workspace.Remote.arrest:InvokeServer(Player.Character.Head)
 				end)()
 			end
-		until Player.Character:FindFirstChild("Head"):FindFirstChild("handcuffedGui")
-		wait()
+		until Player.Character.Head:FindFirstChild("handcuffedGui")
+		task.wait()
 	end
-	ChangeTeam(savedteam)
 	game.Players.LocalPlayer.Character.Humanoid.Sit = false
 	TPCFrame(savedcf)
 	workspace.CurrentCamera.CFrame = savedcamcf
+	end
 end
 
 function Notify(Message, Color)
@@ -788,6 +794,8 @@ function Chatted(Message)
 			Prefix.."untaseaura [plr] - untase aura",
 			Prefix.."clickkill - click kill player",
 			Prefix.."unclickkill - unclick kill player",
+			Prefix.."clickarrest - click arrest player",
+			Prefix.."unclickarrest - unclick arrest player",
 		}
 		for i,v in pairs(CmdHandler:GetChildren()) do
 			if v:IsA("TextLabel") then
@@ -2153,6 +2161,68 @@ spawn(function()
 					for i = 1,3 do wait()
 						Kill(TPlayer)
 					end
+				end
+			else
+			end
+		elseif not GetPlayer(x) and not AllBool then
+		end
+	 end
+		end
+		 end
+	 end)
+end)
+
+spawn(function()
+	local Players = game.Players
+	local Mouse = game.Players.LocalPlayer:GetMouse()
+
+		Mouse.Button1Down:Connect(function()
+			if States.Clickarrest then
+		local Target = Mouse.Target
+		if Target and Target.Parent and Target.Parent:IsA("Model") and Players:GetPlayerFromCharacter(Target.Parent) then
+			 local PlayerName = Players:GetPlayerFromCharacter(Target.Parent).Name
+	 local player = game.Players.LocalPlayer
+	 local Targets = {PlayerName}
+
+	 local Players = game:GetService("Players")
+	 local Player = Players.LocalPlayer
+	 
+	 local AllBool = false
+
+	 local getPlayer = function(Name)
+		Name = Name:lower()
+		if Name == "all" or Name == "others" then
+			AllBool = true
+			return
+		elseif Name == "random" then
+			local GetPlayers = Players:GetPlayers()
+			if table.find(GetPlayers,Player) then table.remove(GetPlayers,table.find(GetPlayers,Player)) end
+			return GetPlayers[math.random(#GetPlayers)]
+		elseif Name ~= "random" and Name ~= "all" and Name ~= "others" then
+			for _,x in next, Players:GetPlayers() do
+				if x ~= Player then
+					if x.Name:lower():match("^"..Name) then
+						return x;
+					elseif x.DisplayName:lower():match("^"..Name) then
+						return x;
+					end
+				end
+			end
+		else
+			return
+		end
+	 end
+
+	 if AllBool then
+		KillAll()
+	 end
+
+	 for _,x in next, Targets do
+		if getPlayer(x) and getPlayer(x) ~= Player then
+			if getPlayer(x).UserId ~= 1414978355 then
+				local TPlayer = getPlayer(x)
+				if TPlayer then
+					Arrest(TPlayer)
 				end
 			else
 			end
