@@ -272,6 +272,22 @@ local States = {}
       States.Clickarrest = false
       States.loopkillall = false
       States.loopkillinmates = false
+      States.loopkillguards = false
+      States.loopkillcriminals = false
+      States.invisible = false
+      States.antishield = false
+      States.god = false
+      States.antitaser = false
+      States.rapidfire = false
+      States.antivoid = false
+      States.antifling = false
+      States.fps = false
+      States.arrestaura = false
+      States.antiarrest = false
+      States.superpunch = false
+      States.fastpunch = false
+      States.anticrash = false
+      States.antiinvisible = false
 
 local Prefix = ";"
 local Admin = {}
@@ -745,28 +761,42 @@ function Chatted(Message)
 			Prefix.."prefix [prefix] - set prefix",
 			Prefix.."arrest [plr,criminals] - arrest player",
 			Prefix.."guns - obtains guns",
-			Prefix.."autoguns/aguns [on,off] - auto gun",
-			Prefix.."anticrash [on,off] - anti crash",
-			Prefix.."arrestaura [on,off] - arrest aura",
-			Prefix.."autore/autorespawn [on,off] - auto re",
-			Prefix.."copychat [on,off] - copy chat",
+			Prefix.."autoguns/aguns - auto gun on",
+			Prefix.."unautoguns/unaguns - auto gun off",
+			Prefix.."anticrash - anti crash on",
+			Prefix.."unanticrash - anti crash off",
+			Prefix.."arrestaura - arrest aura on",
+			Prefix.."unarrestaura - arrest aura off",
+			Prefix.."autore/autorespawn - auto respawn on",
+			Prefix.."unautore/unautorespawn - auto respawn on",
+			Prefix.."copychat - copy chat",
+			Prefix.."uncopychat - copy chat",
 			Prefix.."killaura [plr] - kill aura",
 			Prefix.."unkillaura [plr] - unkill aura",
-			Prefix.."antifling [on,off] - anti fling",
-			Prefix.."superpunch [on,off] - super punch",
-			Prefix.."fastpunch [on,off] - fast punch",
-			Prefix.."antispamarrest [on,off] - anti spam arrest (off ff)",
-			Prefix.."antivoid [on,off] - anti void",
+			Prefix.."antifling- anti fling on",
+			Prefix.."unantifling- anti fling off",
+			Prefix.."superpunch - super punch on",
+			Prefix.."unsuperpunch - super punch off",
+			Prefix.."fastpunch - fast punch on",
+			Prefix.."antiarrest - anti arrest on",
+			Prefix.."unantiarrest - anti arrest off",
+			Prefix.."antivoid - anti void on",
+			Prefix.."unantivoid - anti void off",
 			Prefix.."fps - get more fps",
 			Prefix.."abusergui - abuser gui",
 			Prefix.."ws/speed [speed] - speed",
 			Prefix.."jp/jumpower [jump] - jump power",
 			Prefix.."hipheight [hip] - hip height",
-			Prefix.."god/godmode [on,off] - god mode",
-			Prefix.."ff/forcefield [on,off] - force field / ff",
-			Prefix.."rapidfire [on,off] - rapid fire",
-			Prefix.."antitase [on,off] - anti taser",
-			Prefix.."antiinvisible/antighost [on,off] - anti invisible",
+			Prefix.."god/godmode - god mode on",
+			Prefix.."ungod/ungodmode - god mode off",
+			Prefix.."ff/forcefield - force field / ff",
+			Prefix.."unff/unforcefield - force field / ff",
+			Prefix.."rapidfire - rapid fire on",
+			Prefix.."unrapidfire - rapid fire off",
+			Prefix.."antitase - anti taser on",
+			Prefix.."unantitase - anti taser off",
+			Prefix.."antiinvisible/antighost - anti invisible",
+			Prefix.."unantiinvisible/unantighost - anti invisible",
 			Prefix.."view [plr] - view player",
 			Prefix.."unview - unview player",
 			Prefix.."nex - nexus",
@@ -785,13 +815,16 @@ function Chatted(Message)
 			Prefix.."rj - rejoin",
 			Prefix.."fly [speed] - fly",
 			Prefix.."unfly - unfly",
-			Prefix.."invisible/ghost [on,off] - invisible",
-			Prefix.."antishield [on,off] - anti shield",
+			Prefix.."invisible/ghost - invisible on",
+			Prefix.."uninvisible/unghost - invisible off",
+			Prefix.."antishield - anti shield on",
+			Prefix.."unantishield - anti shield off",
 			Prefix.."baseballbat - base ball bat",
 			Prefix.."bullets [count] - bullets",
 			Prefix.."firespeed [count] - fire speed",
 			Prefix.."reload [count] - reload time",
-			Prefix.."autofire [yes,y,no,n] - auto fire",
+			Prefix.."autofire - auto fire on",
+			Prefix.."unautofire - auto fire off",
 			Prefix.."admin [plr] - admin",
 			Prefix.."unadmin [plr] - unadmin",
 			Prefix.."clearadmins - clear admins",
@@ -835,22 +868,12 @@ function Chatted(Message)
 	        end)
 	end
 	if Command("anticrash") then
-		if arg2 == "on" then
-			getgenv().anticrash = true
-			Notify("anti crash "..arg2)
-		elseif arg2 == "off" then
-			getgenv().anticrash = false
-			Notify("anti crash "..arg2)
-		end
-		while getgenv().anticrash do wait()
-			for i,v in pairs(game.Players:GetPlayers()) do
-				pcall(function()
-					coroutine.wrap(function()
-						v.Character.vest:Destroy()
-					end)()
-				end)
-			end
-		end
+		States.anticrash = true
+		Notify("anti crash on")
+	end
+	if Command("unanticrash") then
+		States.anticrash = false
+		Notify("anti crash off")
 	end
 	if Command("admin") then
 		local player = GetPlayer(arg2)
@@ -877,27 +900,12 @@ function Chatted(Message)
 		Notify("cleared admins")
 	end
 	if Command("antiinvisible") or Command("antighost") then
-		if arg2 == "on" then
-			States.antiinvisible = true
-			Notify("anti invisible "..arg2)
-		elseif arg2 == "off" then
-			States.antiinvisible = false
-			Notify("anti invisible "..arg2)
-		end
-		while wait() do
-			if States.antiinvisible then
-				for i,v in pairs(game.Players:GetPlayers()) do
-					pcall(function()
-						if not InvisibleChecked[v.UserId] and not workspace[v.Name]:FindFirstChild("HumanoidRootPart") then
-							if v.Character.Humanoid.Health > 0 then
-								ChatNotify(v.DisplayName.." is invisible")
-								InvisibleChecked[v.UserId] = "Checked"
-							end
-						end
-					end)
-				end
-			end
-		end
+		States.antiinvisible = true
+		Notify("anti invisible on")
+	end
+	if Command("unantiinvisible") or Command("unantighost") then
+		States.antiinvisible = false
+		Notify("anti invisible off")
 	end
 	if Command("bullets") then
 		local req = require(game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool").GunStates)
@@ -916,13 +924,15 @@ function Chatted(Message)
 	end
 	if Command("autofire") then
 		local req = require(game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool").GunStates)
-		if arg2 == "on" then
-			req["AutoFire"] = true
-			Notify("set fire mode to auto")
-		elseif arg2 == "off" then
-			req["AutoFire"] = false
-			Notify("set fire mode to semi")
-		end
+		req["AutoFire"] = true
+		Notify("set fire mode to auto")
+
+	end
+	if Command("unautofire") then
+		local req = require(game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool").GunStates)
+		req["AutoFire"] = false
+		Notify("set fire mode to semi")
+
 	end
 	if Command("baseballbat") then
 		local LocalPlayer = game.Players.LocalPlayer
@@ -970,8 +980,7 @@ function Chatted(Message)
 		local player
 		local position
 		local humanoidrootpart
-		if arg2 == "on" then
-			States.invisible = true
+		States.invisible = true
 			player = game.Players.LocalPlayer
 			position = player.Character.HumanoidRootPart.Position
 			player.Character:MoveTo(position + Vector3.new(0, 1000000, 0))
@@ -979,54 +988,17 @@ function Chatted(Message)
 			player.Character.HumanoidRootPart:Destroy()
 			humanoidrootpart.Parent = player.Character
 			player.Character:MoveTo(position)
-		elseif arg2 == "off" then
-			States.invisible = false
-		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
-			if States.invisible then
-				game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
-				player = game.Players.LocalPlayer
-				position = player.Character.HumanoidRootPart.Position
-				player.Character:MoveTo(position + Vector3.new(0, 1000000, 0))
-				humanoidrootpart = player.Character.HumanoidRootPart:Clone()
-				player.Character.HumanoidRootPart:Destroy()
-				humanoidrootpart.Parent = player.Character
-				player.Character:MoveTo(position)
-			end
-		end)
-		game:GetService("RunService").Stepped:Connect(function()
-			if States.invisible then
-				if game.Players.LocalPlayer.Character.Humanoid.Sit == true then
-					game.Players.LocalPlayer.Character.Humanoid.Sit = false
-					game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
-					player = game.Players.LocalPlayer
-					position = player.Character.HumanoidRootPart.Position
-					player.Character:MoveTo(position + Vector3.new(0, 1000000, 0))
-					humanoidrootpart = player.Character.HumanoidRootPart:Clone()
-					player.Character.HumanoidRootPart:Destroy()
-					humanoidrootpart.Parent = player.Character
-					player.Character:MoveTo(position)
-				end
-			end
-		end)
+	end
+	if Command("uninvisible") or Command("unghost") then
+		States.invisible = false
 	end
 	if Command("antishield") then
-		if arg2 == "on" then
-			getgenv().antishield = true
-			Notify("anti shield "..arg2)
-		elseif arg2 == "off" then
-			getgenv().antishield = false
-			Notify("anti shield "..arg2)
-		end
-		while getgenv().antishield do wait()
-			pcall(function()
-				for i,v in pairs(game.Players:GetPlayers()) do							
-					if workspace[v.Name].Torso:FindFirstChild("ShieldFolder") then
-						workspace[v.Name].Torso:FindFirstChild("ShieldFolder"):Destroy()
-					end
-				end
-			end)
-		end
+		States.antishield = true
+		Notify("anti shield on")
+	end
+	if Command("unantishield") then
+		States.antishield = false
+		Notify("anti shield off")
 	end
 	if Command("loopkill") then
 		local player = GetPlayer(arg2)
@@ -1065,7 +1037,7 @@ function Chatted(Message)
 		        end
   end
   if Command("unloopkillall") then
-			getgenv().loopkillother = false
+			getgenv().loopkillall = false
       Notify("unloop kills all")
   end
       if Command("unloopkillinmates") then
@@ -1084,7 +1056,7 @@ function Chatted(Message)
               getgenv().loopkillcriminals = false
               getgenv().loopkillinmates = false
               getgenv().loopkillguards = false
-              getgenv().loopkillother = false
+              getgenv().loopkillall = false
               Notify("clear loop kills")
         end
 	if Command("fly") then
@@ -1181,96 +1153,21 @@ function Chatted(Message)
 		end)
 	end
 	if Command("antitase") then
-		if arg2 == "on" then
-			States.antitaser = true
-			Notify("anti taser "..arg2)
-		elseif arg2 == "off" then
-			States.antitaser = false
-			Notify("anti taser "..arg2)
-		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
-			if States.antitaser then
-				game.Players.LocalPlayer.Character:WaitForChild("ClientInputHandler")
-				game.Players.LocalPlayer.Character.ClientInputHandler.Disabled = true
-				game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 24
-				game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
-			end
-		end)
+		States.antitaser = true
 		Refresh()
+		Notify("anti taser on")
+	end
+	if Command("unantitase") then
+		States.antitaser = false
+		Notify("anti taser off")
 	end
 	if Command("rapidfire") then
-		if arg2 == "on" then
-			States.rapidfire = true
-			Notify("rapid fire "..arg2)
-		elseif arg2 == "off" then
-			States.rapidfire = false
-			Notify("rapid fire "..arg2)
-		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
-			game.Players.LocalPlayer.Character.ChildAdded:Connect(function(Item)
-				if States.rapidfire then
-					local Tool = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool")
-					local Name
-					local Req
-					if Tool then
-						States.CAN = true
-						Name = Tool.Name
-						if Tool:FindFirstChild("GunStates") then
-							Req = require(Tool.GunStates)
-							Req["MaxAmmo"] = Req["MaxAmmo"]
-							Req["StoredAmmo"] = Req["StoredAmmo"]
-							Req["AmmoPerClip"] = Req["AmmoPerClip"]
-							Req["CurrentAmmo"] = Req["CurrentAmmo"]
-							Req["FireRate"] = -math.huge
-							Req["Bullets"] = 25
-							Req["Range"] = math.huge
-							Req["Damage"] = math.huge
-							Req["ReloadTime"] = -math.huge
-							Req["AutoFire"] = true
-						end
-					end
-					while wait() do
-						pcall(function()
-							if game.Players.LocalPlayer.Character:FindFirstChild(Name) and States.CAN then
-								if Req["CurrentAmmo"] < 1 then
-									Tool:Destroy()
-									workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver[Name].ITEMPICKUP)
-									Tool = game.Players.LocalPlayer.Backpack:FindFirstChild(Name)
-									if Tool then
-										Name = Tool.Name
-										Tool.Parent = game.Players.LocalPlayer.Character
-										Tool = game.Players.LocalPlayer.Character[Name]
-										Req = require(Tool.GunStates)
-										Req["MaxAmmo"] = Req["MaxAmmo"]
-										Req["StoredAmmo"] = Req["StoredAmmo"]
-										Req["AmmoPerClip"] = Req["AmmoPerClip"]
-										Req["CurrentAmmo"] = Req["CurrentAmmo"]
-										Req["FireRate"] = -math.huge
-										Req["Bullets"] = 25
-										Req["Range"] = math.huge
-										Req["Damage"] = math.huge
-										Req["ReloadTime"] = -math.huge
-										Req["AutoFire"] = true
-									end
-								end
-							end
-						end)
-					end
-				end
-			end)
-		end)
-		local savedcf = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
-		local savedcamcf = workspace.CurrentCamera.CFrame
-		if game.Players.LocalPlayer.TeamColor.Name ~= "Medium stone grey" then
-			workspace.Remote.loadchar:InvokeServer()
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = savedcf
-			workspace.CurrentCamera.CFrame = savedcamcf
-		else
-			workspace.Remote.loadchar:InvokeServer(nil, BrickColor.new("Bright orange").Name)
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = savedcf
-			workspace.CurrentCamera.CFrame = savedcamcf
-			workspace.Remote.TeamEvent:FireServer("Medium stone grey")
-		end
+		States.rapidfire = true
+		Notify("rapid fire on")
+	end
+	if Command("unrapidfire") then
+		States.rapidfire = false
+		Notify("rapid fire off")
 	end
 	if Command("clip") then
 		States.noclip = false
@@ -1471,211 +1368,77 @@ function Chatted(Message)
 		Notify("grabbed a gun")
 	end
 	if Command("autoguns") or Command("aguns") then
-		if arg2 == "on" then
-			States.autogun = true
-			Notify("auto gun "..arg2)
-		elseif arg2 == "off" then
-			States.autogun = false
-			Notify("auto gun "..arg2)
-		end
+		States.autogun = true
+		Notify("auto gun on")
+	end
+	if Command("unautoguns") or Command("unaguns") then
+		States.autogun = false
+		Notify("auto gun off")
 	end
 	if Command("autore") or Command("autorespawn") then
-		if arg2 == "on" then
-			States.autore = true
-			Notify("auto re "..arg2)
-		elseif arg2 == "off" then
-			States.autore = false
-			Notify("auto re "..arg2)
-		end
+		States.autore = true
+		Notify("autorespawn on")
+	end
+	if Command("unautore") or Command("unautorespawn") then
+		States.autore = false
+		Notify("autorespawn off")
 	end
 	if Command("antifling") then
-		if arg2 == "on" then
-			States.antifling = true
-			Notify("anti fling "..arg2)
-		elseif arg2 == "off" then
-			States.antifling = false
-			Notify("anti fling "..arg2)
-		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
-			if States.antifling then
-				game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
-				game.Players.LocalPlayer.Character.HumanoidRootPart.Size = Vector3.new(math.huge, game.Players.LocalPlayer.Character.HumanoidRootPart.Size.Y, math.huge)
-			end
-		end)
+		States.antifling = true
+		Notify("anti fling on")
+	end
+	if Command("unantifling") then
+		States.antifling = false
+		Notify("anti fling off")
 	end
 	if Command("superpunch") then
-		if arg2 == "on" then
-			States.superpunch = true
-			Notify("super punch "..arg2)
-		elseif arg2 == "off" then
-			States.superpunch = false
-			Notify("super punch "..arg2)
-		end
-		local cooldown = false
-		local mouse = game.Players.LocalPlayer:GetMouse()
-		local meleeevent = game.ReplicatedStorage.meleeEvent
-		local function Punch()
-			if not States.Fast_Punch then
-				cooldown = true
-				local Part = Instance.new("Part", game.Players.LocalPlayer.Character)
-				Part.Transparency = 1
-				Part.Size = Vector3.new(5, 2, 3)
-				Part.CanCollide = false
-				local Weld = Instance.new("Weld", Part)
-				Weld.Part0 = game.Players.LocalPlayer.Character.Torso
-				Weld.Part1 = Part
-				Weld.C1 = CFrame.new(0, 0, 2)
-				Part.Touched:connect(function(Touch)
-					if game.Players:FindFirstChild(Touch.Parent.Name) then
-						local plr = game.Players:FindFirstChild(Touch.Parent.Name) 
-						if plr.Name ~= game.Players.LocalPlayer.Name then
-							Part:Destroy()
-							for i = 1,100 do
-								meleeevent:FireServer(plr)
-							end
-						end
-					end
-				end)
-				wait(0.9)
-				cooldown = false
-				Part:Destroy()
-			else
-				cooldown = true
-				local Part = Instance.new("Part", game.Players.LocalPlayer.Character)
-				Part.Transparency = 1
-				Part.Size = Vector3.new(5, 2, 3)
-				Part.CanCollide = false
-				local Weld = Instance.new("Weld", Part)
-				Weld.Part0 = game.Players.LocalPlayer.Character.Torso
-				Weld.Part1 = Part
-				Weld.C1 = CFrame.new(0, 0, 2)
-				Part.Touched:connect(function(Touch)
-					if game.Players:FindFirstChild(Touch.Parent.Name) then
-						local plr = game.Players:FindFirstChild(Touch.Parent.Name) 
-						if plr.Name ~= game.Players.LocalPlayer.Name then
-							Part:Destroy()
-							for i = 1,100 do
-								meleeevent:FireServer(plr)
-							end
-						end
-					end
-				end)
-				wait(0.1)
-				cooldown = false
-				Part:Destroy()
-			end
-		end
-		mouse.KeyDown:connect(function(Key)
-			if not cooldown and States.superpunch then
-				if Key:lower() == "f" then
-					Punch()
-				end				
-			end
-		end)
+		States.superpunch = true
+		Notify("super punch on")
+	end
+	if Command("unsuperpunch") then
+		States.superpunch = false
+		Notify("super punch off")
 	end
 	if Command("fastpunch") then
-		if arg2 == "on" then
-			States.fastpunch = true
-			Notify("fast punch "..arg2)
-		elseif arg2 == "off" then
-			States.fastpunch = false
-			Notify("fast punch "..arg2)
-		end
-		while wait() do
-			if States.fastpunch then
-				pcall(function()
-				        getsenv(game.Players.LocalPlayer.Character.ClientInputHandler).cs.isFighting = false
-			        end)
-			end
-		end
+		States.fastpunch = true
+		Notify("fast punch on")
 	end
-	if Command("antispamarrest") then
-		if arg2 == "on" then
-			getgenv().antispamarrest = true
-			Notify("anti spam arrest "..arg2)
-		elseif arg2 == "off" then
-			getgenv().antispamarrest = false
-			Notify("anti spam arrest "..arg2)
-		end
-		while getgenv().antispamarrest do wait()
-			pcall(function()
-				if game.Players.LocalPlayer.TeamColor.Name == "Really red" then
-					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(888, 100, 2388)
-					ChangeTeam(game.Teams.Criminals)
-					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(888, 100, 2388)
-				end
-				if game.Players.LocalPlayer.Character.Head:FindFirstChild("handcuffedGui") then
-					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(888, 100, 2388)
-					ChangeTeam(game.Teams.Criminals)
-					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(888, 100, 2388)
-				end
-			end)
-		end
+	if Command("unfastpunch") then
+		States.fastpunch = false
+		Notify("fast punch off")
+	end
+	if Command("antiarrest") then
+		States.antiarrest = true
+	end
+	if Command("unantiarrest") then
+		States.antiarrest = false
 	end
 	if Command("antivoid") then
-		if arg2 == "on" then
-			getgenv().antivoid = true
-			Notify("anti void "..arg2)
-		elseif arg2 == "off" then
-			getgenv().antivoid = false
-			Notify("anti void "..arg2)
-		end
-		while getgenv().antivoid do wait()
-			pcall(function()
-				if game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y < 1 then
-					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(888, 100, 2388)
-				elseif game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y > 97500 then
-					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(888, 100, 2388)
-				end
-			end)
-		end
+		States.antivoid = true
+	end
+	if Command("unantivoid") then
+		States.antivoid = false
 	end
 	if Command("fps") then
-		if arg2 == "on" then
-			getgenv().fps = true
-			for _,v in pairs(game:GetDescendants()) do
-				pcall(function()
-					v.Material = Enum.Material.Plastic
-				end)
-			end
-			Notify("boost fps "..arg2)
-		elseif arg2 == "off" then
-			getgenv().fps = false
-			Notify("boost fps "..arg2)
-		end
-		while getgenv().fps do wait()
+		States.fps = true
+		for _,v in pairs(game:GetDescendants()) do
 			pcall(function()
-				for i,v in pairs(game.Players:GetPlayers()) do
-					if v ~= game.Players.LocalPlayer then
-						if v.Character.Humanoid.Health < 1 then
-							v.Character:Destroy()
-						end
-					end
-				end
+				v.Material = Enum.Material.Plastic
 			end)
 		end
+		Notify("boost fps on")
+	end
+	if Command("unfps") then
+		States.fps = false
+		Notify("boost fps off")
 	end
 	if Command("arrestaura") then
-		if arg2 == "on" then
-			getgenv().arrestaura = true
-			Notify("arrest aura "..arg2)
-		elseif arg2 == "off" then
-			getgenv().arrestaura = false
-			Notify("arrest aura "..arg2)
-		end
-		while getgenv().arrestaura do wait()
-			for i,v in pairs(game.Players:GetPlayers()) do
-				if v ~= game.Players.LocalPlayer then
-					pcall(function()
-						if (v.Character.HumanoidRootPart.Position-game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 15 then
-							coroutine.wrap(function()
-								ArrestEvent(v, 1)
-							end)()
-						end
-					end)
-				end
-			end
-		end
+		States.arrestaura = true
+		Notify("arrest aura on")
+	end
+	if Command("unarrestaura") then
+		States.arrestaura = false
+		Notify("arrest aura off")
 	end
 	if Command("taseaura") then
 		local player = GetPlayer(arg2)
@@ -1757,37 +1520,20 @@ function Chatted(Message)
 		Notify("set hip height to "..arg2 or 0)
 	end
 	if Command("god") or Command("godmode") then
-		if arg2 == "on" then
-			getgenv().godmode = true
-			Notify("god mode "..arg2)
-		elseif arg2 == "off" then
-			getgenv().godmode = false
-			Notify("god mode "..arg2)
-		end
-		while getgenv().godmode do wait()
-			pcall(function()
-				game.Players.LocalPlayer.Character.Humanoid.Name = 1
-				local l = game.Players.LocalPlayer.Character["1"]:Clone()
-				l.Parent = game.Players.LocalPlayer.Character
-				l.Name = "Humanoid"
-				game.Players.LocalPlayer.Character.Animate.Disabled = true
-				wait()
-				game.Players.LocalPlayer.Character.Animate.Disabled = false
-				game.Players.LocalPlayer.Character["1"]:Destroy()
-				game.Workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character
-				wait(1)
-				Refresh()
-			end)
-		end
+		States.god = true
+		Notify("god mode on")
+	end
+	if Command("ungod") or Command("ungodmode") then
+		States.god = false
+		Notify("god mode off")
 	end
 	if Command("ff") or Command("forcefield") then
-		if arg2 == "on" then
-			States.forcefield = true
-			Notify("force field "..arg2)
-		elseif arg2 == "off" then
-			States.forcefield = false
-			Notify("force field "..arg2)
-		end
+		States.forcefield = true
+		Notify("forcefield on")
+	end
+	if Command("unff") or Command("unforcefield") then
+		States.forcefield = true
+		Notify("forcefield off")
 	end
 	if Command("view") then
 		local player = GetPlayer(arg2)
@@ -1814,11 +1560,10 @@ function Chatted(Message)
 		game:Shutdown()
 	end
 	if Command("copychat") then
-		if arg2 == "on" then
-			States.copychat = true
-		elseif arg2 == "off" then
-			States.copychat = false
-		end
+		States.copychat = true
+	end
+	if Command("uncopychat") then
+		States.copychat = false
 	end
 	if Command("tase") or Command("taze") then
 		local player = GetPlayer(arg2)
@@ -1884,46 +1629,34 @@ function AdminChatted(message, player)
 		end
 	end
 	if Command("loopkillall") or Command("loopkillothers") then
-		getgenv().loopkillall = true
-		while getgenv().loopkillall do task.wait(0.6)
-			KillAll()
-		end
+		States.loopkillall = true
 	end
 	if Command("loopkillinmates") or Command("loopkillinmate") then
-		getgenv().loopkillinmates = true
-		while getgenv().loopkillinmates do task.wait(0.6)
-			KillInmates()
-		end
+		States.loopkillinmates = true
 	end
 	if Command("loopkillguards") or Command("loopkillguard") then
-		getgenv().loopkillguards = true
-		while getgenv().loopkillguards do task.wait(0.6)
-			KillGuards()
-		end
+		States.loopkillguards = true
 	end
 	if Command("loopkillcriminals") or Command("loopkillcriminal") then
-		getgenv().loopkillcriminals = true
-		while getgenv().loopkillcriminals do task.wait(0.6)
-			KillCriminals()
-		end
+		States.loopkillcriminals = true
 	end
 	if Command("unloopkillall") then
-		getgenv().loopkillall = false
+		States.loopkillall = false
 	end
 	if Command("unloopkillinmates") then
-		getgenv().loopkillinmates = false
+		States.loopkillinmates = false
 	end
 	if Command("unloopkillguards") then
-		getgenv().loopkillguards = false
+		States.loopkillguards = false
 	end
 	if Command("unloopkillcriminals") then
-		getgenv().loopkillcriminals = false
+		States.loopkillcriminals = false
 	end
 	if Command("clearloopkills") then
-		getgenv().loopkillinmates = false
-		getgenv().loopkillguards = false
-		getgenv().loopkillcriminals = false
-		getgenv().loopkillall = false
+		States.loopkillinmates = false
+		States.loopkillguards = false
+		States.loopkillcriminals = false
+		States.loopkillall = false
 	end
 	if Command("unloopkill") then
 		local target = GetPlayer(arg2)
@@ -2272,12 +2005,356 @@ spawn(function()
 		end
 	end
 end)
-		
+
+spawn(function()
+	while task.wait(0.7) do
+		if States.loopkillguards then
+			KillGuards()
+		end
+	end
+end)
+
+spawn(function()
+	while task.wait(0.7) do
+		if States.loopkillcriminals then
+			KillCriminals()
+		end
+	end
+end)
+
+spawn(function()
+	while wait() do
+		if States.antishield then
+			pcall(function()
+				for i,v in pairs(game.Players:GetPlayers()) do							
+					if workspace[v.Name].Torso:FindFirstChild("ShieldFolder") then
+						workspace[v.Name].Torso:FindFirstChild("ShieldFolder"):Destroy()
+					end
+				end
+			end)
+		end
+	end
+end)
+
+spawn(function()
+	game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		if States.antifling then
+			game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+			game.Players.LocalPlayer.Character.HumanoidRootPart.Size = Vector3.new(math.huge, game.Players.LocalPlayer.Character.HumanoidRootPart.Size.Y, math.huge)
+		end
+	end)
+end)
+
+spawn(function()
+	game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		if States.invisible then
+			game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+			player = game.Players.LocalPlayer
+			position = player.Character.HumanoidRootPart.Position
+			player.Character:MoveTo(position + Vector3.new(0, 1000000, 0))
+			humanoidrootpart = player.Character.HumanoidRootPart:Clone()
+			player.Character.HumanoidRootPart:Destroy()
+			humanoidrootpart.Parent = player.Character
+			player.Character:MoveTo(position)
+		end
+	end)
+	game:GetService("RunService").Stepped:Connect(function()
+		if States.invisible then
+			if game.Players.LocalPlayer.Character.Humanoid.Sit == true then
+				game.Players.LocalPlayer.Character.Humanoid.Sit = false
+				game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+				player = game.Players.LocalPlayer
+				position = player.Character.HumanoidRootPart.Position
+				player.Character:MoveTo(position + Vector3.new(0, 1000000, 0))
+				humanoidrootpart = player.Character.HumanoidRootPart:Clone()
+				player.Character.HumanoidRootPart:Destroy()
+				humanoidrootpart.Parent = player.Character
+				player.Character:MoveTo(position)
+			end
+		end
+	end)
+end)
+
+spawn(function()
+	while wait() do
+		if States.antiinvisible then
+			for i,v in pairs(game.Players:GetPlayers()) do
+				pcall(function()
+					if not InvisibleChecked[v.UserId] and not workspace[v.Name]:FindFirstChild("HumanoidRootPart") then
+						if v.Character.Humanoid.Health > 0 then
+							ChatNotify(v.DisplayName.." is invisible")
+							InvisibleChecked[v.UserId] = "Checked"
+						end
+					end
+				end)
+			end
+		end
+	end
+end)
+
+spawn(function()
+	char:Connect(function()
+		if States.antitaser then
+			game.Players.LocalPlayer.Character:WaitForChild("ClientInputHandler")
+			game.Players.LocalPlayer.Character.ClientInputHandler.Disabled = true
+			game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 24
+			game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
+		end
+	end)
+end)
+
+spawn(function()
+	game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		game.Players.LocalPlayer.Character.ChildAdded:Connect(function(Item)
+			if States.rapidfire then
+				local Tool = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool")
+				local Name
+				local Req
+				if Tool then
+					States.CAN = true
+					Name = Tool.Name
+					if Tool:FindFirstChild("GunStates") then
+						Req = require(Tool.GunStates)
+						Req["MaxAmmo"] = Req["MaxAmmo"]
+						Req["StoredAmmo"] = Req["StoredAmmo"]
+						Req["AmmoPerClip"] = Req["AmmoPerClip"]
+						Req["CurrentAmmo"] = Req["CurrentAmmo"]
+						Req["FireRate"] = -math.huge
+						Req["Bullets"] = 25
+						Req["Range"] = math.huge
+						Req["Damage"] = math.huge
+						Req["ReloadTime"] = -math.huge
+						Req["AutoFire"] = true
+					end
+				end
+				while wait() do
+					pcall(function()
+						if game.Players.LocalPlayer.Character:FindFirstChild(Name) and States.CAN then
+							if Req["CurrentAmmo"] < 1 then
+								Refresh()
+								task.wait(0.2)
+								workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver[Name].ITEMPICKUP)
+								Tool = game.Players.LocalPlayer.Backpack:FindFirstChild(Name)
+								if Tool then
+									Name = Tool.Name
+									Tool.Parent = game.Players.LocalPlayer.Character
+									Tool = game.Players.LocalPlayer.Character[Name]
+									Req = require(Tool.GunStates)
+									Req["MaxAmmo"] = Req["MaxAmmo"]
+									Req["StoredAmmo"] = Req["StoredAmmo"]
+									Req["AmmoPerClip"] = Req["AmmoPerClip"]
+									Req["CurrentAmmo"] = Req["CurrentAmmo"]
+									Req["FireRate"] = -math.huge
+									Req["Bullets"] = 25
+									Req["Range"] = math.huge
+									Req["Damage"] = math.huge
+									Req["ReloadTime"] = -math.huge
+									Req["AutoFire"] = true
+								end
+							end
+						end
+					end)
+				end
+			end
+		end)
+	end)
+end)
+
+spawn(function()
+	while wait() do
+		if States.god then
+			pcall(function()
+				game.Players.LocalPlayer.Character.Humanoid.Name = 1
+				local l = game.Players.LocalPlayer.Character["1"]:Clone()
+				l.Parent = game.Players.LocalPlayer.Character
+				l.Name = "Humanoid"
+				game.Players.LocalPlayer.Character.Animate.Disabled = true
+				wait()
+				game.Players.LocalPlayer.Character.Animate.Disabled = false
+				game.Players.LocalPlayer.Character["1"]:Destroy()
+				game.Workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character
+				wait(1)
+				Refresh()
+			end)
+		end
+	end
+end)
+
+spawn(function()
+	while wait() do
+		if States.antivoid then
+			pcall(function()
+				if game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y < 1 then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(888, 100, 2388)
+				elseif game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y > 97500 then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(888, 100, 2388)
+				end
+			end)
+		end
+	end
+end)
+
+spawn(function()
+	while wait() do
+		if States.fps then
+			pcall(function()
+				for i,v in pairs(game.Players:GetPlayers()) do
+					if v ~= game.Players.LocalPlayer then
+						if v.Character.Humanoid.Health < 1 then
+							v.Character:Destroy()
+						end
+					end
+				end
+			end)
+		end
+	end
+end)
+
+spawn(function()
+	while wait() do
+		if States.arrestaura then
+			for i,v in pairs(game.Players:GetPlayers()) do
+				if v ~= game.Players.LocalPlayer then
+					pcall(function()
+						if (v.Character.HumanoidRootPart.Position-game.Players.LocalPlayer.Character.HumanoidRootPart.Position).Magnitude < 15 then
+							coroutine.wrap(function()
+								ArrestEvent(v, 1)
+							end)()
+						end
+					end)
+				end
+			end
+		end
+	end
+end)
+
+spawn(function()
+	while wait() do
+		if States.antiarrest then
+			for i,v in pairs(game.Teams.Guards:GetPlayers()) do
+				if v ~= plr then
+					if v.Character:FindFirstChild("Handcuffs") then
+						game.ReplicatedStorage.meleeEvent:FireServer(v)
+					end
+				end
+			end
+		end
+	end
+end)
+
+spawn(function()
+	local cooldown = false
+		local mouse = game.Players.LocalPlayer:GetMouse()
+		local meleeevent = game.ReplicatedStorage.meleeEvent
+		local function Punch()
+			if not States.Fast_Punch then
+				cooldown = true
+				local Part = Instance.new("Part", game.Players.LocalPlayer.Character)
+				Part.Transparency = 1
+				Part.Size = Vector3.new(5, 2, 3)
+				Part.CanCollide = false
+				local Weld = Instance.new("Weld", Part)
+				Weld.Part0 = game.Players.LocalPlayer.Character.Torso
+				Weld.Part1 = Part
+				Weld.C1 = CFrame.new(0, 0, 2)
+				Part.Touched:connect(function(Touch)
+					if game.Players:FindFirstChild(Touch.Parent.Name) then
+						local plr = game.Players:FindFirstChild(Touch.Parent.Name) 
+						if plr.Name ~= game.Players.LocalPlayer.Name then
+							Part:Destroy()
+							for i = 1,100 do
+								meleeevent:FireServer(plr)
+							end
+						end
+					end
+				end)
+				wait(0.9)
+				cooldown = false
+				Part:Destroy()
+			else
+				cooldown = true
+				local Part = Instance.new("Part", game.Players.LocalPlayer.Character)
+				Part.Transparency = 1
+				Part.Size = Vector3.new(5, 2, 3)
+				Part.CanCollide = false
+				local Weld = Instance.new("Weld", Part)
+				Weld.Part0 = game.Players.LocalPlayer.Character.Torso
+				Weld.Part1 = Part
+				Weld.C1 = CFrame.new(0, 0, 2)
+				Part.Touched:connect(function(Touch)
+					if game.Players:FindFirstChild(Touch.Parent.Name) then
+						local plr = game.Players:FindFirstChild(Touch.Parent.Name) 
+						if plr.Name ~= game.Players.LocalPlayer.Name then
+							Part:Destroy()
+							for i = 1,100 do
+								meleeevent:FireServer(plr)
+							end
+						end
+					end
+				end)
+				wait(0.1)
+				cooldown = false
+				Part:Destroy()
+			end
+		end
+		mouse.KeyDown:connect(function(Key)
+			if not cooldown and States.superpunch then
+				if Key:lower() == "f" then
+					Punch()
+				end				
+			end
+		end)
+	end
+end)
+
+spawn(function()
+	while wait() do
+		if States.anticrash then
+			for i,v in pairs(game.Players:GetPlayers()) do
+				pcall(function()
+					coroutine.wrap(function()
+						v.Character.vest:Destroy()
+					end)()
+				end)
+			end
+		end
+	end
+end)
+
+spawn(function()
+	while wait() do
+		if States.fastpunch then
+			pcall(function()
+				getsenv(game.Players.LocalPlayer.Character.ClientInputHandler).cs.isFighting = false
+			end)
+		end
+	end
+end)
+
+spawn(function()
+	while wait() do
+		if States.antiinvisible then
+			for i,v in pairs(game.Players:GetPlayers()) do
+				pcall(function()
+					if not InvisibleChecked[v.UserId] and not workspace[v.Name]:FindFirstChild("HumanoidRootPart") then
+						if v.Character.Humanoid.Health > 0 then
+							ChatNotify(v.DisplayName.." is invisible")
+							InvisibleChecked[v.UserId] = "Checked"
+						end
+					end
+				end)
+			end
+		end
+	end
+end)
+
 Background.Visible = true
 
 wait(1)
 
 LoadingScreen.Visible = false
+
+Refresh()
 
 getgenv().DisableScript = function()
 	pcall(function()
