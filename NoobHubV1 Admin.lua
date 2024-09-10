@@ -2244,67 +2244,66 @@ end)
 
 spawn(function()
 	local cooldown = false
-		local mouse = game.Players.LocalPlayer:GetMouse()
-		local meleeevent = game.ReplicatedStorage.meleeEvent
-		local function Punch()
-			if not States.Fast_Punch then
-				cooldown = true
-				local Part = Instance.new("Part", game.Players.LocalPlayer.Character)
-				Part.Transparency = 1
-				Part.Size = Vector3.new(5, 2, 3)
-				Part.CanCollide = false
-				local Weld = Instance.new("Weld", Part)
-				Weld.Part0 = game.Players.LocalPlayer.Character.Torso
-				Weld.Part1 = Part
-				Weld.C1 = CFrame.new(0, 0, 2)
-				Part.Touched:connect(function(Touch)
-					if game.Players:FindFirstChild(Touch.Parent.Name) then
-						local plr = game.Players:FindFirstChild(Touch.Parent.Name) 
-						if plr.Name ~= game.Players.LocalPlayer.Name then
-							Part:Destroy()
-							for i = 1,100 do
-								meleeevent:FireServer(plr)
-							end
+	local mouse = game.Players.LocalPlayer:GetMouse()
+	local meleeevent = game.ReplicatedStorage.meleeEvent
+	local function Punch()
+		if not States.Fast_Punch then
+			cooldown = true
+			local Part = Instance.new("Part", game.Players.LocalPlayer.Character)
+			Part.Transparency = 1
+			Part.Size = Vector3.new(5, 2, 3)
+			Part.CanCollide = false
+			local Weld = Instance.new("Weld", Part)
+			Weld.Part0 = game.Players.LocalPlayer.Character.Torso
+			Weld.Part1 = Part
+			Weld.C1 = CFrame.new(0, 0, 2)
+			Part.Touched:connect(function(Touch)
+				if game.Players:FindFirstChild(Touch.Parent.Name) then
+					local plr = game.Players:FindFirstChild(Touch.Parent.Name) 
+					if plr.Name ~= game.Players.LocalPlayer.Name then
+						Part:Destroy()
+						for i = 1,100 do
+							meleeevent:FireServer(plr)
 						end
 					end
-				end)
-				wait(0.9)
-				cooldown = false
-				Part:Destroy()
-			else
-				cooldown = true
-				local Part = Instance.new("Part", game.Players.LocalPlayer.Character)
-				Part.Transparency = 1
-				Part.Size = Vector3.new(5, 2, 3)
-				Part.CanCollide = false
-				local Weld = Instance.new("Weld", Part)
-				Weld.Part0 = game.Players.LocalPlayer.Character.Torso
-				Weld.Part1 = Part
-				Weld.C1 = CFrame.new(0, 0, 2)
-				Part.Touched:connect(function(Touch)
-					if game.Players:FindFirstChild(Touch.Parent.Name) then
-						local plr = game.Players:FindFirstChild(Touch.Parent.Name) 
-						if plr.Name ~= game.Players.LocalPlayer.Name then
-							Part:Destroy()
-							for i = 1,100 do
-								meleeevent:FireServer(plr)
-							end
+				end
+			end)
+			wait(0.9)
+			cooldown = false
+			Part:Destroy()
+		else
+			cooldown = true
+			local Part = Instance.new("Part", game.Players.LocalPlayer.Character)
+			Part.Transparency = 1
+			Part.Size = Vector3.new(5, 2, 3)
+			Part.CanCollide = false
+			local Weld = Instance.new("Weld", Part)
+			Weld.Part0 = game.Players.LocalPlayer.Character.Torso
+			Weld.Part1 = Part
+			Weld.C1 = CFrame.new(0, 0, 2)
+			Part.Touched:connect(function(Touch)
+				if game.Players:FindFirstChild(Touch.Parent.Name) then
+					local plr = game.Players:FindFirstChild(Touch.Parent.Name) 
+					if plr.Name ~= game.Players.LocalPlayer.Name then
+						Part:Destroy()
+						for i = 1,100 do
+							meleeevent:FireServer(plr)
 						end
 					end
-				end)
-				wait(0.1)
-				cooldown = false
-				Part:Destroy()
-			end
+				end
+			end)
+			wait(0.1)
+			cooldown = false
+			Part:Destroy()
 		end
-		mouse.KeyDown:connect(function(Key)
-			if not cooldown and States.superpunch then
-				if Key:lower() == "f" then
-					Punch()
-				end				
-			end
-		end)
 	end
+	mouse.KeyDown:connect(function(Key)
+		if not cooldown and States.superpunch then
+			if Key:lower() == "f" then
+				Punch()
+			end				
+		end
+	end)
 end)
 
 spawn(function()
