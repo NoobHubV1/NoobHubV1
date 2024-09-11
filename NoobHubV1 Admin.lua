@@ -2459,7 +2459,10 @@ end)
 Background.Visible = true
 CmdGui.Visible = true
 
-Refresh()
+if plr.Character.Humanoid.Health == 0 then
+	-- nothing
+else
+	Refresh()
 
 wait(1)
 
