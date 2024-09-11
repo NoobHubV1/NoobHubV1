@@ -464,7 +464,7 @@ function Criminal()
 	local savedcf = savePos()
 	local savedcamcf = savecamPos()
 	if plr.Team == game.Teams.Guards then
-	firetouchinterest(plr.Character.HumanoidRootPart, spawnlocation, 0)
+	TPCFrame(CFrame.new(-976, 109, 2044))
 	char:Wait() task.wait(0.065)
 	TPCFrame(savedcf)
 	workspace["CurrentCamera"].CFrame = savedcamcf
@@ -479,7 +479,7 @@ function ChangeTeam(Team)
                         if Team == game.Teams.Criminals then
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
 		        char:Wait() task.wait(0.065)
-                        firetouchinterest(plr.Character.HumanoidRootPart, spawnlocation, 0)
+                        TPCFrame(CFrame.new(-976, 109, 2044))
 		        char:Wait() task.wait(0.065)
                         TPCFrame(savedcf)
 		        workspace["CurrentCamera"].CFrame = savedcamcf
