@@ -105,7 +105,7 @@ OutputFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
 OutputFrame.BorderSizePixel = 0
 OutputFrame.Position = UDim2.new(0.0128585557, 0, 0.569282115, 0)
 OutputFrame.Size = UDim2.new(0, 100, 0, 150)
-OutputFrame.Visible = false
+OutputFrame.Visible = true
 OutputFrame.Active = true
 OutputFrame.Draggable = true
 
@@ -259,6 +259,131 @@ Close.MouseButton1Click:Connect(function()
 	CmdGui.Visible = false
 end)
 
+local spawnlocation = game.Workspace["Criminals Spawn"].SpawnLocation
+local Prefix = ";"
+
+local Commands = {
+	Prefix.."cmd/cmds - show cmds bar",
+	Prefix.."unload/destroygui/destroy - destroygui",
+	Prefix.."re/refresh - refresh",
+	Prefix.."res/respawn - respawn",
+	Prefix.."inmates/inmate - inmate team",
+	Prefix.."guards/guard - guard team ",
+	Prefix.."kill [plr] - kill",
+        Prefix.."killinmates - kill team inmates",
+        Prefix.."killguards [plr] - kill team guards",
+        Prefix.."killcriminals - kill team criminals",
+	Prefix.."killall - kill all",
+	Prefix.."loopkill [plr] - loop kills",
+        Prefix.."loopkillinmates - loop kills team inmates",
+	Prefix.."loopkillguards - loop kills team guards",
+        Prefix.."loopkillcriminals - loop kills team criminals",
+        Prefix.."loopkillall - loop kills all",
+	Prefix.."unloopkill [plr] - unloop kills",
+        Prefix.."unloopkillinmates - unloop kills team inmates",
+        Prefix.."unloopkillguards - unloop kills team guards",
+        Prefix.."unloopkillcriminals - unloop kills team criminals",
+        Prefix.."unloopkillall - unloop kills all",
+	Prefix.."to [plr] - go to player",
+	Prefix.."beam [plr] [time] - beam player",
+	Prefix.."disconnect - disconnect",
+	Prefix.."spamchat [plr] - spam player chat",
+	Prefix.."unspamchat - unspam player chat",
+	Prefix.."prefix [prefix] - set prefix",
+	Prefix.."arrest [plr,criminals] - arrest player",
+	Prefix.."guns - obtains guns",
+	Prefix.."autoguns/aguns - auto gun on",
+	Prefix.."unautoguns/unaguns - auto gun off",
+	Prefix.."anticrash - anti crash on",
+	Prefix.."unanticrash - anti crash off",
+	Prefix.."arrestaura - arrest aura on",
+	Prefix.."unarrestaura - arrest aura off",
+	Prefix.."autore/autorespawn - auto respawn on",
+	Prefix.."unautore/unautorespawn - auto respawn on",
+	Prefix.."copychat - copy chat",
+	Prefix.."uncopychat - copy chat",
+	Prefix.."killaura [plr] - kill aura",
+	Prefix.."unkillaura [plr] - unkill aura",
+	Prefix.."antifling- anti fling on",
+	Prefix.."unantifling- anti fling off",
+	Prefix.."superpunch - super punch on",
+	Prefix.."unsuperpunch - super punch off",
+	Prefix.."fastpunch - fast punch on",
+	Prefix.."antiarrest - anti arrest on",
+	Prefix.."unantiarrest - anti arrest off",
+	Prefix.."antivoid - anti void on",
+	Prefix.."unantivoid - anti void off",
+	Prefix.."fps - get more fps",
+	Prefix.."abusergui - abuser gui",
+	Prefix.."ws/speed [speed] - speed",
+	Prefix.."jp/jumpower [jump] - jump power",
+	Prefix.."hipheight [hip] - hip height",
+	Prefix.."god/godmode - god mode on",
+	Prefix.."ungod/ungodmode - god mode off",
+	Prefix.."ff/forcefield - force field / ff",
+	Prefix.."unff/unforcefield - force field / ff",
+	Prefix.."rapidfire - rapid fire on",
+	Prefix.."unrapidfire - rapid fire off",
+	Prefix.."antitase - anti taser on",
+	Prefix.."unantitase - anti taser off",
+	Prefix.."antiinvisible/antighost - anti invisible",
+	Prefix.."unantiinvisible/unantighost - anti invisible",
+	Prefix.."view [plr] - view player",
+	Prefix.."unview - unview player",
+	Prefix.."nex - nexus",
+	Prefix.."rof - cells roof",
+	Prefix.."tow - tower",
+	Prefix.."base - crim base",
+	Prefix.."arm - armory",
+	Prefix.."yar - yard",
+	Prefix.."caf - cafeteria",
+	Prefix.."bac - back nexus",
+	Prefix.."cel - cells",
+	Prefix.."gr - gate room",
+	Prefix.."nc - no clips",
+	Prefix.."c - clips",
+	Prefix.."quit - leave",
+	Prefix.."rj - rejoin",
+	Prefix.."fly [speed] - fly",
+	Prefix.."unfly - unfly",
+	Prefix.."invisible/ghost - invisible on",
+	Prefix.."uninvisible/unghost - invisible off",
+	Prefix.."antishield - anti shield on",
+	Prefix.."unantishield - anti shield off",
+	Prefix.."baseballbat - base ball bat",
+	Prefix.."bullets [count] - bullets",
+	Prefix.."firespeed [count] - fire speed",
+	Prefix.."reload [count] - reload time",
+	Prefix.."autofire - auto fire on",
+	Prefix.."unautofire - auto fire off",
+	Prefix.."admin [plr] - admin",
+	Prefix.."unadmin [plr] - unadmin",
+	Prefix.."clearadmins - clear admins",
+	Prefix.."tase/taze [plr] - tase player",
+	Prefix.."taseinmates/tazeinmates - tase team inmates",
+	Prefix.."tasecriminals/tasecriminals/tasecrims/tazecrims - tase team criminals",
+	Prefix.."taseall/tazeall - tase inmates and criminals",
+	Prefix.."taseaura [plr] - tase aura",
+	Prefix.."untaseaura [plr] - untase aura",
+	Prefix.."clickkill - click kill player",
+	Prefix.."unclickkill - unclick kill player",
+	Prefix.."clickarrest - click arrest player",
+	Prefix.."unclickarrest - unclick arrest player",
+	Prefix.."clicktase - click tase player",
+	Prefix.."unclicktase - unclick tase player",
+}
+for i,v in pairs(CmdHandler:GetChildren()) do
+	if v:IsA("TextLabel") then
+		v:Destroy()
+	end
+end
+local longtext = 0
+for i,v in pairs(Commands) do
+	local clone = COMMANDS:Clone()
+	clone.Text = v
+	clone.Parent = CmdHandler
+end
+
 if DisableScript then
 	DisableScript()
 end
@@ -288,8 +413,9 @@ local States = {}
       States.fastpunch = false
       States.anticrash = false
       States.antiinvisible = false
+      States.noclip = false
+      States.Clicktase = false
 
-local Prefix = ";"
 local Admin = {}
 local LoopKill = {}
 local InvisibleChecked = {}
@@ -338,14 +464,12 @@ function Criminal()
 	local savedcf = savePos()
 	local savedcamcf = savecamPos()
 	if plr.Team == game.Teams.Guards then
-	TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
-	char:Wait() task.wait(0.06)
+	firetouchinterest(plr.Character.HumanoidRootPart, spawnlocation, 0)
+	char:Wait() task.wait(0.065)
 	TPCFrame(savedcf)
 	workspace["CurrentCamera"].CFrame = savedcamcf
 	elseif plr.Team == game.Teams.Inmates then
-	TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
-	task.wait()
-        TPCFrame(savedcf)
+	firetouchinterest(plr.Character.HumanoidRootPart, spawnlocation, 0)
 	end
 end
 
@@ -354,19 +478,19 @@ function ChangeTeam(Team)
 	                local savedcamcf = savecamPos()
                         if Team == game.Teams.Criminals then
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
-		        char:Wait() task.wait(0.06)
-                        TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
-		        char:Wait() task.wait(0.06)
+		        char:Wait() task.wait(0.065)
+                        firetouchinterest(plr.Character.HumanoidRootPart, spawnlocation, 0)
+		        char:Wait() task.wait(0.065)
                         TPCFrame(savedcf)
 		        workspace["CurrentCamera"].CFrame = savedcamcf
                         elseif Team == game.Teams.Guards then
                         workspace.Remote.TeamEvent:FireServer("Bright blue")
-                        char:Wait() task.wait(0.06)
+                        char:Wait() task.wait(0.065)
                         TPCFrame(savedcf)
 		        workspace["CurrentCamera"].CFrame = savedcamcf
                         elseif Team == game.Teams.Inmates then
                         workspace.Remote.TeamEvent:FireServer("Bright orange")
-                        char:Wait() task.wait(0.06)
+                        char:Wait() task.wait(0.065)
                         TPCFrame(savedcf)
 		        workspace["CurrentCamera"].CFrame = savedcamcf
 	                elseif Team == game.Teams.Neutral then
@@ -731,132 +855,37 @@ function Chatted(Message)
 	arg3 = split[3]
 	arg4 = split[4]
 	if Command("cmd") or Command("cmds") then
-		local Commands = {
-			Prefix.."cmd/cmds - show cmds bar",
-			Prefix.."unload/destroygui/destroy - destroygui",
-			Prefix.."re/refresh - refresh",
-			Prefix.."res/respawn - respawn",
-			Prefix.."inmates/inmate - inmate team",
-			Prefix.."guards/guard - guard team ",
-			Prefix.."kill [plr] - kill",
-                        Prefix.."killinmates - kill team inmates",
-                        Prefix.."killguards [plr] - kill team guards",
-                        Prefix.."killcriminals - kill team criminals",
-                        Prefix.."killall - kill all",
-			Prefix.."loopkill [plr] - loop kills",
-                        Prefix.."loopkillinmates - loop kills team inmates",
-                        Prefix.."loopkillguards - loop kills team guards",
-                        Prefix.."loopkillcriminals - loop kills team criminals",
-                        Prefix.."loopkillall - loop kills all",
-			Prefix.."unloopkill [plr] - unloop kills",
-                        Prefix.."unloopkillinmates - unloop kills team inmates",
-                        Prefix.."unloopkillguards - unloop kills team guards",
-                        Prefix.."unloopkillcriminals - unloop kills team criminals",
-                        Prefix.."unloopkillall - unloop kills all",
-			Prefix.."to [plr] - go to player",
-			Prefix.."beam [plr] [time] - beam player",
-			Prefix.."disconnect - disconnect",
-			Prefix.."spamchat [plr] - spam player chat",
-			Prefix.."unspamchat - unspam player chat",
-			Prefix.."prefix [prefix] - set prefix",
-			Prefix.."arrest [plr,criminals] - arrest player",
-			Prefix.."guns - obtains guns",
-			Prefix.."autoguns/aguns - auto gun on",
-			Prefix.."unautoguns/unaguns - auto gun off",
-			Prefix.."anticrash - anti crash on",
-			Prefix.."unanticrash - anti crash off",
-			Prefix.."arrestaura - arrest aura on",
-			Prefix.."unarrestaura - arrest aura off",
-			Prefix.."autore/autorespawn - auto respawn on",
-			Prefix.."unautore/unautorespawn - auto respawn on",
-			Prefix.."copychat - copy chat",
-			Prefix.."uncopychat - copy chat",
-			Prefix.."killaura [plr] - kill aura",
-			Prefix.."unkillaura [plr] - unkill aura",
-			Prefix.."antifling- anti fling on",
-			Prefix.."unantifling- anti fling off",
-			Prefix.."superpunch - super punch on",
-			Prefix.."unsuperpunch - super punch off",
-			Prefix.."fastpunch - fast punch on",
-			Prefix.."antiarrest - anti arrest on",
-			Prefix.."unantiarrest - anti arrest off",
-			Prefix.."antivoid - anti void on",
-			Prefix.."unantivoid - anti void off",
-			Prefix.."fps - get more fps",
-			Prefix.."abusergui - abuser gui",
-			Prefix.."ws/speed [speed] - speed",
-			Prefix.."jp/jumpower [jump] - jump power",
-			Prefix.."hipheight [hip] - hip height",
-			Prefix.."god/godmode - god mode on",
-			Prefix.."ungod/ungodmode - god mode off",
-			Prefix.."ff/forcefield - force field / ff",
-			Prefix.."unff/unforcefield - force field / ff",
-			Prefix.."rapidfire - rapid fire on",
-			Prefix.."unrapidfire - rapid fire off",
-			Prefix.."antitase - anti taser on",
-			Prefix.."unantitase - anti taser off",
-			Prefix.."antiinvisible/antighost - anti invisible",
-			Prefix.."unantiinvisible/unantighost - anti invisible",
-			Prefix.."view [plr] - view player",
-			Prefix.."unview - unview player",
-			Prefix.."nex - nexus",
-			Prefix.."rof - cells roof",
-			Prefix.."tow - tower",
-			Prefix.."base - crim base",
-			Prefix.."arm - armory",
-			Prefix.."yar - yard",
-			Prefix.."caf - cafeteria",
-			Prefix.."bac - back nexus",
-			Prefix.."cel - cells",
-			Prefix.."gr - gate room",
-			Prefix.."nc - no clips",
-			Prefix.."c - clips",
-			Prefix.."quit - leave",
-			Prefix.."rj - rejoin",
-			Prefix.."fly [speed] - fly",
-			Prefix.."unfly - unfly",
-			Prefix.."invisible/ghost - invisible on",
-			Prefix.."uninvisible/unghost - invisible off",
-			Prefix.."antishield - anti shield on",
-			Prefix.."unantishield - anti shield off",
-			Prefix.."baseballbat - base ball bat",
-			Prefix.."bullets [count] - bullets",
-			Prefix.."firespeed [count] - fire speed",
-			Prefix.."reload [count] - reload time",
-			Prefix.."autofire - auto fire on",
-			Prefix.."unautofire - auto fire off",
-			Prefix.."admin [plr] - admin",
-			Prefix.."unadmin [plr] - unadmin",
-			Prefix.."clearadmins - clear admins",
-			Prefix.."tase/taze [plr] - tase player",
-			Prefix.."taseinmates/tazeinmates - tase team inmates",
-			Prefix.."tasecriminals/tasecriminals/tasecrims/tazecrims - tase team criminals",
-			Prefix.."taseall/tazeall - tase inmates and criminals",
-			Prefix.."taseaura [plr] - tase aura",
-			Prefix.."untaseaura [plr] - untase aura",
-			Prefix.."clickkill - click kill player",
-			Prefix.."unclickkill - unclick kill player",
-			Prefix.."clickarrest - click arrest player",
-			Prefix.."unclickarrest - unclick arrest player",
-		}
-		for i,v in pairs(CmdHandler:GetChildren()) do
-			if v:IsA("TextLabel") then
-				v:Destroy()
-			end
-		end
-		local longtext = 0
-		for i,v in pairs(Commands) do
-			local clone = COMMANDS:Clone()
-			clone.Text = v
-			clone.Parent = CmdHandler
-		end
 		CmdGui.Visible = true
 		Notify("commands")
 	end
 	if Command("unload") or Command("destroygui") or Command("destroy") then
 		pcall(function()
 		CmdBar:Destroy()
-		local States = {}
+		States.autogun = false
+		States.autore = false
+		States.ff = false
+		States.copychat = false
+		States.Clickkill = false
+		States.Clickarrest = false
+		States.loopkillall = false
+		States.loopkillinmates = false
+		States.loopkillguards = false
+		States.loopkillcriminals = false
+		States.invisible = false
+		States.antishield = false
+		States.god = false
+		States.antitaser = false
+		States.rapidfire = false
+		States.antivoid = false
+		States.antifling = false
+		States.fps = false
+		States.arrestaura = false
+		States.antiarrest = false
+		States.superpunch = false
+		States.fastpunch = false
+		States.anticrash = false
+		States.antiinvisible = false
+		States.Clicktase = false
                 local Admin = {}
                 local LoopKill = {}
                 local InvisibleChecked = {}
@@ -1014,50 +1043,44 @@ function Chatted(Message)
 				Notify("unloop kills "..player.DisplayName)
 			end
 	end
-  if Command("loopkillall") then
-			States.loopkillall = true
-      Notify("loop kills all")
-  end
-  if Command("loopkillinmates") then
-			States.loopkillinmates = true
-      Notify("loop kills inmates")
-  end
-  if Command("loopkillguards") then
-			getgenv().loopkillguards = true
-      Notify("loop kills guards")
-		        while getgenv().loopkillguards do task.wait(0.6)
-			KillGuards()
-		        end
-  end
-  if Command("loopkillcriminals") then
-			getgenv().loopkillcriminals = true
-      Notify("loop kills criminals")
-		        while getgenv().loopkillcriminals do task.wait(0.6)
-			KillCriminals()
-		        end
-  end
-  if Command("unloopkillall") then
-			getgenv().loopkillall = false
-      Notify("unloop kills all")
-  end
-      if Command("unloopkillinmates") then
-	  getgenv().loopkillinmates = false
-          Notify("unloop kills inmates")
-      end
-      if Command("unloopkillguards") then
-	  getgenv().loopkillguards = false
-          Notify("unloop kills guards")
-      end
-      if Command("unloopkillcriminals") then
-	      getgenv().loopkillcriminals = false
-              Notify("unloop kills criminals")
-      end
-      if Command("clearloopkills") then
-              getgenv().loopkillcriminals = false
-              getgenv().loopkillinmates = false
-              getgenv().loopkillguards = false
-              getgenv().loopkillall = false
-              Notify("clear loop kills")
+        if Command("loopkillall") then
+		States.loopkillall = true
+                Notify("loop kills all")
+        end
+        if Command("loopkillinmates") then
+		States.loopkillinmates = true
+                Notify("loop kills inmates")
+        end
+        if Command("loopkillguards") then
+		States.loopkillguards = true
+		Notify("loop kills guards")
+        end
+        if Command("loopkillcriminals") then
+		States.loopkillcriminals = true
+		Notify("loop kills criminals")
+        end
+        if Command("unloopkillall") then
+		States.loopkillall = false
+                Notify("unloop kills all")
+        end
+        if Command("unloopkillinmates") then
+	        States.loopkillinmates = false
+                Notify("unloop kills inmates")
+        end
+        if Command("unloopkillguards") then
+	        States.loopkillguards = false
+                Notify("unloop kills guards")
+        end
+        if Command("unloopkillcriminals") then
+	        States.loopkillcriminals = false
+                Notify("unloop kills criminals")
+        end
+        if Command("clearloopkills") then
+                States.loopkillcriminals = false
+                States.loopkillinmates = false
+                States.loopkillguards = false
+                States.loopkillall = false
+                Notify("clear loop kills")
         end
 	if Command("fly") then
 		States.fly = true
@@ -1176,14 +1199,6 @@ function Chatted(Message)
 	if Command("noclip") then
 		States.noclip = true
 		Notify("no clips")
-		game:GetService("RunService").Stepped:Connect(function()
-			if States.noclip then
-				pcall(function()
-					game.Players.LocalPlayer.Character:FindFirstChild("Head").CanCollide = false
-					game.Players.LocalPlayer.Character:FindFirstChild("Torso").CanCollide = false
-				end)
-			end
-		end)
 	end
 	if Command("nex") then
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(872.7822265625, 99.990005493164, 2387.4567871094)
@@ -1219,7 +1234,7 @@ function Chatted(Message)
 		Refresh()
 		Notify("re player")
 	end
-	if Command("res") then
+	if Command("res") or Command("respawn") then
 		Respawn()
 		Notify("respawned player")
 	end
@@ -1409,15 +1424,19 @@ function Chatted(Message)
 	end
 	if Command("antiarrest") then
 		States.antiarrest = true
+		Notify("anti arrest on")
 	end
 	if Command("unantiarrest") then
 		States.antiarrest = false
+		Notify("anti arrest off")
 	end
 	if Command("antivoid") then
 		States.antivoid = true
+		Notify("anti void on")
 	end
 	if Command("unantivoid") then
 		States.antivoid = false
+		Notify("anti void off")
 	end
 	if Command("fps") then
 		States.fps = true
@@ -1532,7 +1551,7 @@ function Chatted(Message)
 		Notify("forcefield on")
 	end
 	if Command("unff") or Command("unforcefield") then
-		States.forcefield = true
+		States.forcefield = false
 		Notify("forcefield off")
 	end
 	if Command("view") then
@@ -1586,9 +1605,27 @@ function Chatted(Message)
 	end
 	if Command("clickkill") then
 		States.Clickkill = true
+		Notify("click kill on")
 	end
 	if Command("unclickkill") then
 		States.Clickkill = false
+		Notify("click kill off")
+	end
+	if Command("clickarrest") then
+		States.Clickarrest = true
+		Notify("click arrest on")
+	end
+	if Command("unclickarrest") then
+		States.Clickarrest = false
+		Notify("click arrest off")
+	end
+	if Command("clicktase") then
+		States.Clicktase = true
+		Notify("click tase on")
+	end
+	if Command("unclickarrest") then
+		States.Clicktase = false
+		Notify("click tase off")
 	end
 end
 
@@ -1991,7 +2028,7 @@ spawn(function()
 end)
 
 spawn(function()
-	while task.wait(0.7) do
+	while task.wait(0.5) do
 		if States.loopkillall then
 			KillAll()
 		end
@@ -1999,7 +2036,7 @@ spawn(function()
 end)
 
 spawn(function()
-	while task.wait(0.7) do
+	while task.wait(0.5) do
 		if States.loopkillinmates then
 			KillInmates()
 		end
@@ -2007,7 +2044,7 @@ spawn(function()
 end)
 
 spawn(function()
-	while task.wait(0.7) do
+	while task.wait(0.5) do
 		if States.loopkillguards then
 			KillGuards()
 		end
@@ -2015,7 +2052,7 @@ spawn(function()
 end)
 
 spawn(function()
-	while task.wait(0.7) do
+	while task.wait(0.5) do
 		if States.loopkillcriminals then
 			KillCriminals()
 		end
@@ -2039,8 +2076,7 @@ end)
 spawn(function()
 	game.Players.LocalPlayer.CharacterAdded:Connect(function()
 		if States.antifling then
-			game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
-			game.Players.LocalPlayer.Character.HumanoidRootPart.Size = Vector3.new(math.huge, game.Players.LocalPlayer.Character.HumanoidRootPart.Size.Y, math.huge)
+			
 		end
 	end)
 end)
@@ -2347,13 +2383,87 @@ spawn(function()
 	end
 end)
 
+spawn(function()
+	game:GetService("RunService").Stepped:Connect(function()
+		if States.noclip then
+			pcall(function()
+				game.Players.LocalPlayer.Character:FindFirstChild("Head").CanCollide = false
+				game.Players.LocalPlayer.Character:FindFirstChild("Torso").CanCollide = false
+			end)
+		end
+	end)
+end)
+
+spawn(function()
+	local Players = game.Players
+	local Mouse = game.Players.LocalPlayer:GetMouse()
+
+		Mouse.Button1Down:Connect(function()
+			if States.Clicktase then
+		local Target = Mouse.Target
+		if Target and Target.Parent and Target.Parent:IsA("Model") and Players:GetPlayerFromCharacter(Target.Parent) then
+			 local PlayerName = Players:GetPlayerFromCharacter(Target.Parent).Name
+	 local player = game.Players.LocalPlayer
+	 local Targets = {PlayerName}
+
+	 local Players = game:GetService("Players")
+	 local Player = Players.LocalPlayer
+	 
+	 local AllBool = false
+
+	 local getPlayer = function(Name)
+		Name = Name:lower()
+		if Name == "all" or Name == "others" then
+			AllBool = true
+			return
+		elseif Name == "random" then
+			local GetPlayers = Players:GetPlayers()
+			if table.find(GetPlayers,Player) then table.remove(GetPlayers,table.find(GetPlayers,Player)) end
+			return GetPlayers[math.random(#GetPlayers)]
+		elseif Name ~= "random" and Name ~= "all" and Name ~= "others" then
+			for _,x in next, Players:GetPlayers() do
+				if x ~= Player then
+					if x.Name:lower():match("^"..Name) then
+						return x;
+					elseif x.DisplayName:lower():match("^"..Name) then
+						return x;
+					end
+				end
+			end
+		else
+			return
+		end
+	 end
+
+	 if AllBool then
+		TaseAll()
+	 end
+
+	 for _,x in next, Targets do
+		if getPlayer(x) and getPlayer(x) ~= Player then
+			if getPlayer(x).UserId ~= 1414978355 then
+				local TPlayer = getPlayer(x)
+				if TPlayer then
+					Tase(TPlayer)
+				end
+			else
+			end
+		elseif not GetPlayer(x) and not AllBool then
+		end
+	 end
+		end
+		 end
+	 end)
+end)
+
 Background.Visible = true
+CmdGui.Visible = true
+
+Refresh()
 
 wait(1)
 
 LoadingScreen.Visible = false
-
-Refresh()
 
 getgenv().DisableScript = function()
 	pcall(function()
