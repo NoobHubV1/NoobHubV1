@@ -2463,6 +2463,7 @@ if plr.Character.Humanoid.Health == 0 then
 	-- nothing
 else
 	Refresh()
+end
 
 wait(1)
 
