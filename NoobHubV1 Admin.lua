@@ -710,11 +710,11 @@ local function Kill(Player)
         end
         elseif PlayerTeamC == "Really red" then
         if TeamC == "Bright blue" then
-        ChangeTeam(game.Teams.Inmates)
+        ChangeTeam(BrickColor.new("Bright orange").Name)
         task.wait(0.2)
         KillPlayer(Player)
         elseif TeamC == "Really red" then
-        ChangeTeam(game.Teams.Inmates)
+        ChangeTeam(BrickColor.new("Bright orange").Name)
         task.wait(0.15)
         KillPlayer(Player)
         elseif TeamC == "Bright orange" then
