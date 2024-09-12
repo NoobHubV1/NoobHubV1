@@ -1266,24 +1266,33 @@ function Chatted(Message)
 		end
 	end
 	if Command("killcriminals") then
+		for i = 1,3 do task.wait(0.5)
 	        KillCriminals()
+		end
 		Notify("killed criminals")
 	end
 	if Command("killinmates") then
+		for i = 1,3 do task.wait(0.5)
 	        KillInmates()
+		end
 		Notify("killed inmates")
 	end
 	if Command("killguards") then
+		for i = 1,3 do task.wait(0.5)
 	        KillGuards()
+		end
 		Notify("killed criminals")
 	end
 	if Command("killall") then
+		for i = 1,3 do task.wait(0.5)
 	        KillAll()
+		end
 		Notify("killed all")
 	end
 	if Command("to") then
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace[GetPlayer(arg2).Name].HumanoidRootPart.CFrame
-		Notify("go to "..GetPlayer(arg2).DisplayName)
+		local player = GetPlayer(arg2)
+		Goto(player)
+		Notify("go to "..player.DisplayName)
 	end
 	if Command("beam") then
 		local Time = tonumber(arg2) or 1
@@ -2270,7 +2279,9 @@ spawn(function()
 			for i,v in pairs(game.Teams.Guards:GetPlayers()) do
 				if v ~= plr then
 					if v.Character:FindFirstChild("Handcuffs") then
-						game.ReplicatedStorage.meleeEvent:FireServer(v)
+						for i = 1,2 do
+							game.ReplicatedStorage.meleeEvent:FireServer(v)
+						end
 					end
 				end
 			end
