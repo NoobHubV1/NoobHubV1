@@ -1,34 +1,3 @@
-game:GetService("StarterGui"):SetCore("SendNotification", { 
-
-	Title = "Script Loading..";
-
-	Text = "Your Script are working enjoy , updates soon :)";
-
-	Icon = "rbxthumb://type=Asset&id=https:8403291188&w=150&h=150"})
-
-Duration = 70;
-
-
-game:GetService("StarterGui"):SetCore("SendNotification", { 
-
-	Title = "Discord:)";
-
-	Text = "https://discord.gg/KB7PE3jc";
-
-	Icon = "rbxthumb://type=Asset&id=8403432698&w=150&h=150"})
-
-Duration = 90;
-
-game:GetService("StarterGui"):SetCore("SendNotification", { 
-
-	Title = "Script Loading";
-
-	Text = "Your Script are working enjoy, made Willy639K";
-
-	Icon = "rbxthumb://type=Asset&id=8403426624&w=150&h=150"})
-
-Duration = 90;
-
 local CmdGui = Instance.new("ScreenGui")
 local Background = Instance.new("Frame")
 local CmdName = Instance.new("TextLabel")
@@ -642,9 +611,7 @@ function Criminal()
 	TPCFrame(savedcf)
 	workspace["CurrentCamera"].CFrame = savedcamcf
 	elseif TeamC == "Bright orange" then
-	TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
-	task.wait()
-        TPCFrame(savedcf)
+	firetouchinterest(plr.Character.HumanoidRootPart, game.Workspace["Criminals Spawn"].SpawnLocation, 0)
 	end
 end
 
@@ -690,9 +657,14 @@ function GiveItem(Item)
 end
 
 function KillPlayer(Player)
-        local events = {}
+	local events = {}
 	local gun = plr.Character:FindFirstChild("AK-47") or plr.Backpack:FindFirstChild("AK-47")
 	GiveItem("AK-47")
+	for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+		if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
+			gun = v
+		end
+	end
 	coroutine.wrap(function()
 		for i = 1,50 do
 			game.ReplicatedStorage.ReloadEvent:FireServer(gun)
@@ -1245,44 +1217,32 @@ function PlayerChatted(Message)
 		Notify("Get all guns", Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("autogun") or Command("autoguns") or Command("autoallguns") then
-		States.Auto_Guns = true
+		States.autoguns = true
 		Notify("Turn auto guns on", Color3.fromRGB(0, 255, 0), "Success")
-		if BuyGamepass then
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["M4A1"].ITEMPICKUP)
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["AK-47"].ITEMPICKUP)
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["M9"].ITEMPICKUP)
-		else
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["AK-47"].ITEMPICKUP)
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["M9"].ITEMPICKUP)
-		end
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
-			if States.Auto_Guns then
-				pcall(function()
-					if BuyGamepass then
-						workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
-						workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["M4A1"].ITEMPICKUP)
-						workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["AK-47"].ITEMPICKUP)
-						workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["M9"].ITEMPICKUP)
-					else
-						workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
-						workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["AK-47"].ITEMPICKUP)
-						workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["M9"].ITEMPICKUP)
-					end
-				end)
+		while wait() do
+			if States.autoguns then
+				if BuyGamepass then
+					GiveItem("AK-47")
+					GiveItem("Remington 870")
+					GiveItem("M9")
+					GiveItem("M4A1")
+				else
+					GiveItem("AK-47")
+					GiveItem("Remington 870")
+					GiveItem("M9")
+				end
 			end
-		end)
+		end
 	end
 	if Command("unautogun") or Command("unautoguns") or Command("unautoallguns") then
-		States.Auto_Guns = false
+		States.autoguns = false
 		Notify("Turn auto guns off", Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("loopgoto") or Command("loopto") then
 		local Player = GetPlayer(Arg2)
 		if Player then
 			States.LoopGoto = true
-			repeat wait()
+			repeat task.wait()
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Player.Character.HumanoidRootPart.CFrame
 			until not States.LoopGoto or not game.Players[Player.Name]
 		end
@@ -1459,26 +1419,34 @@ function PlayerChatted(Message)
 	if Command("killall") then
 		for i,v in pairs(game.Players:GetPlayers()) do
 			if v ~= game.Players.LocalPlayer then
-				Kill(v)
+				if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then
+					-- nothing
+				else
+				        Kill(v)
+				end
 			end
 		end
 		Notify("Killed all players", Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("killinmate") or Command("killinmates") or Command("killsinmate") or Command("killsinmates") then
-		for i,v in pairs(game.Players:GetPlayers()) do
+		for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
 			if v ~= game.Players.LocalPlayer then
-				if v.TeamColor.Name == "Bright orange" then
-					Kill(v)
+				if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then
+					-- nothing
+				else
+				        Kill(v)
 				end
 			end
 		end
 		Notify("Killed all inmates", Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("killguard") or Command("killsguard") or Command("killguards") or Command("killsguards") then
-		for i,v in pairs(game.Players:GetPlayers()) do
+		for i,v in pairs(game.Teams.Guards:GetPlayers()) do
 			if v ~= game.Players.LocalPlayer then
-				if v.TeamColor.Name == "Bright blue" then
-					Kill(v)
+				if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then
+					-- nothing
+				else
+				        Kill(v)
 				end
 			end
 		end
