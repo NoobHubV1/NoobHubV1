@@ -371,6 +371,7 @@ Cmd[#Cmd + 1] =	{Text = "admin / giveadmin [plr]",Title = "Give a commands to pl
 Cmd[#Cmd + 1] =	{Text = "unadmin / removeadmin [plr]",Title = "Remove a commands from player"}
 Cmd[#Cmd + 1] =	{Text = "kill [plr,others,all]",Title = "Kill the player"}
 Cmd[#Cmd + 1] =	{Text = "loopkill / loopkills [plr,others,all]",Title = "Loop kills the player"}
+Cmd[#Cmd + 1] =	{Text = "unloopkill / unloopkills [plr,others,all]",Title = "Unloop kills the player"}
 Cmd[#Cmd + 1] =	{Text = "prefix / newprefix / changeprefix [prefix text]",Title = "Changes prefix"}
 Cmd[#Cmd + 1] =	{Text = "unload / destroygui",Title = "Unload the scripts"}
 Cmd[#Cmd + 1] =	{Text = "reload / update",Title = "Reload the script to new version"}
@@ -525,6 +526,21 @@ function Kill(player)
 			end)
 end
 
+function Bring(player)
+	pcall(function()
+		if (player ~= nil and player.Character ~= nil) then
+			if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+				for _, Part in pairs(player.Character:GetDescendants()) do
+					if (Part:IsA("BasePart")) then
+						Remote:FireServer(Part,plr)
+					end
+				end
+			player.Character.HumanoidRootPart.CFrame = plr.Character.HumanoidRootPart.CFrame
+			end
+		end
+	end)
+end
+
 local Mouse = game.Players.LocalPlayer:GetMouse()
 
 local function Notify(Message, Color, Text)
@@ -635,12 +651,36 @@ function PlayerChatted(Message)
           if Arg2 == "all" or Arg2 == "everyone" then
           States.loopkillall = true
           Notify("Loop kills all", Color3.fromRGB(0, 255, 0), "Success")
+	  elseif Arg2 == "others" then
+	  States.loopkillothers = true
+	  Notify("Loop kills others", Color3.fromRGB(0, 255, 0), "Success")
           else
+	  local Player = GetPlayer(Arg2)
           if Player ~= nil and not LoopKill[Player.UserId] then
-			    LoopKill[Player.UserId] = {Player = Player}
+		LoopKill[Player.UserId] = {Player = Player}
+		Notify("Loop kills "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
+	  else
+	        Notify("No Player Found / already loop kills", Color3.fromRGB(255, 0, 0), "Error")
           end
           end
-  end
+        end
+	if Command("unloopkill") or Command("unloopkills") then
+          if Arg2 == "all" or Arg2 == "everyone" then
+          States.loopkillall = false
+          Notify("Unloop kills all", Color3.fromRGB(0, 255, 0), "Success")
+	  elseif Arg2 == "others" then
+	  States.loopkillothers = false
+	  Notify("Unloop kills others", Color3.fromRGB(0, 255, 0), "Success")
+	  else
+	  local Player = GetPlayer(Arg2)
+          if Player ~= nil and LoopKill[Player.UserId] then
+		LoopKill[Player.UserId] = nil
+		Notify("Unoop kills "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
+	  else
+	        Notify("No Player Found / Player not loop kills", Color3.fromRGB(255, 0, 0), "Error")
+          end
+          end
+	end
 	if Command("prefix") or Command("newprefix") or Command("changeprefix") then
 		local NewPrefix = Arg2
 		if NewPrefix ~= nil then
