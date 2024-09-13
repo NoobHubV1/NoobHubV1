@@ -21,8 +21,9 @@ local Notify3 = Instance.new("TextLabel")
 local Notify2 = Instance.new("TextLabel")
 local Notify1 = Instance.new("TextLabel")
 local CloseBar = Instance.new("TextButton")
+local OpenBar = Instance.new("TextButton")
 local TransparencyBar = Instance.new("TextButton")
-local Prefix = "!"
+local Prefix = ";"
 
 CmdGui.Name = "CmdGui"
 CmdGui.Parent = game:GetService("CoreGui")
@@ -43,7 +44,7 @@ CmdName.BackgroundColor3 = Color3.fromRGB(255, 128, 0)
 CmdName.BorderSizePixel = 0
 CmdName.Size = UDim2.new(0, 350, 0, 25)
 CmdName.Font = Enum.Font.GothamBlack
-CmdName.Text = "Commands enjoy:)"
+CmdName.Text = "Commands"
 CmdName.TextColor3 = Color3.fromRGB(255, 255 , 0)
 CmdName.TextScaled = true
 CmdName.TextSize = 14.000
@@ -55,10 +56,11 @@ FindCmd.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 FindCmd.BorderColor3 = Color3.fromRGB(255, 128, 0)
 FindCmd.BorderSizePixel = 0
 FindCmd.Position = UDim2.new(0.0714285746, 0, 0.0702347234, 0)
+FindCmd.ClearTextOnFocus = false
 FindCmd.Size = UDim2.new(0, 300, 0, 20)
 FindCmd.Font = Enum.Font.SourceSans
 FindCmd.PlaceholderColor3 = Color3.fromRGB(255, 128, 0)
-FindCmd.PlaceholderText = "Dont find ur cmd?:( Search here!"
+FindCmd.PlaceholderText = "Search For Commands"
 FindCmd.Text = ""
 FindCmd.TextColor3 = Color3.fromRGB(255, 255, 0)
 FindCmd.TextSize = 14.000
@@ -147,7 +149,7 @@ Label.BorderSizePixel = 0
 Label.Position = UDim2.new(0, 0, 0, 0)
 Label.Size = UDim2.new(0, 250, 0, 25)
 Label.Font = Enum.Font.GothamBlack
-Label.Text = "Type ur cmd here:)"
+Label.Text = "Execute Bar"
 Label.TextColor3 = Color3.fromRGB(255, 255, 0)
 Label.TextScaled = true
 Label.TextSize = 14.000
@@ -158,6 +160,7 @@ Execute.Parent = Background2
 Execute.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 Execute.BorderColor3 = Color3.fromRGB(255, 128, 0)
 Execute.Position = UDim2.new(0.097, 0, 0.436, 0)
+Execute.ClearTextOnFocus = false
 Execute.Size = UDim2.new(0, 190, 0, 30)
 Execute.Font = Enum.Font.SourceSans
 Execute.PlaceholderColor3 = Color3.fromRGB(255, 255, 255)
@@ -308,6 +311,26 @@ CloseBar.TextSize = 14.000
 CloseBar.TextWrapped = true
 CloseBar.MouseButton1Click:Connect(function()
 	Background4.Visible = false
+	OpenBar.Visible = true
+	CloseBar.Visible = false
+end)
+
+OpenBar.Name = "OpenBar"
+OpenBar.Parent = CmdGui
+OpenBar.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+OpenBar.BorderSizePixel = 0
+OpenBar.Size = UDim2.new(0, 35, 0, 35)
+OpenBar.Visible = false
+OpenBar.Font = Enum.Font.GothamBlack
+OpenBar.Text = "Open"
+OpenBar.TextColor3 = Color3.fromRGB(255, 255, 255)
+OpenBar.TextScaled = true
+OpenBar.TextSize = 14.000
+OpenBar.TextWrapped = true
+OpenBar.MouseButton1Click:Connect(function()
+	Background4.Visible = true
+	OpenBar.Visible = false
+	CloseBar.Visible = true
 end)
 
 TransparencyBar.Name = "TransparencyBar"
@@ -323,20 +346,20 @@ TransparencyBar.TextScaled = true
 TransparencyBar.TextSize = 14.000
 TransparencyBar.TextWrapped = true
 TransparencyBar.MouseButton1Click:Connect(function()
-	if TransparencyBar.Text == "transparent" then
-		Background4.BackgroundTransparency = 0.700
-		CloseBar.BackgroundTransparency = 0.700
-		TransparencyBar.BackgroundTransparency = 0.700
-		TransparencyBar.Text = ""
+	if TransparencyBar.Text == "=" then
+		Background4.BackgroundTransparency = 0.750
+		CloseBar.BackgroundTransparency = 0.750
+		TransparencyBar.BackgroundTransparency = 0.750
+		TransparencyBar.Text = "+"
 	else
-		Background4.BackgroundTransparency = 0.790
-		CloseBar.BackgroundTransparency = 0.790
-		TransparencyBar.BackgroundTransparency = 0.790
+		Background4.BackgroundTransparency = 0.000
+		CloseBar.BackgroundTransparency = 0.000
+		TransparencyBar.BackgroundTransparency = 0.000
 		TransparencyBar.Text = "="
 	end
 end)
 
-local Versions = "1.0"
+local Versions = "1.5"
 local Cmd = {}
 
 Cmd[#Cmd + 1] = {Text = "versions "..Versions,Title = "Script Made NoobHubV1"}
@@ -346,22 +369,10 @@ Cmd[#Cmd + 1] =	{Text = "rejoin / rj",Title = "Rejoin the game"}
 Cmd[#Cmd + 1] =	{Text = "leave / leaveserver / quit",Title = "Leave the server"}
 Cmd[#Cmd + 1] =	{Text = "admin / giveadmin [plr]",Title = "Give a commands to player"}
 Cmd[#Cmd + 1] =	{Text = "unadmin / removeadmin [plr]",Title = "Remove a commands from player"}
-Cmd[#Cmd + 1] =	{Text = "kill [plr]",Title = "Kill the player"}
-Cmd[#Cmd + 1] =	{Text = "killall",Title = "Kill all players"}
-Cmd[#Cmd + 1] =	{Text = "killguard / killsguard",Title = "Kill all guards"}
-Cmd[#Cmd + 1] =	{Text = "killinmate / killsinmate",Title = "Kill all inmates"}
-Cmd[#Cmd + 1] =	{Text = "killcriminal / killscriminal",Title = "Kill all criminals"}
-Cmd[#Cmd + 1] =	{Text = "tase [plr]",Title = "Tase the player"}
-Cmd[#Cmd + 1] =	{Text = "loopkill / loopkills [plr]",Title = "Loop kills player"}
-Cmd[#Cmd + 1] =	{Text = "unloopkill / unloopkills [plr]",Title = "Unloop kills player"}
-Cmd[#Cmd + 1] =	{Text = "loopkillall / loopkillsall",Title = "Loop kills all players"}
-Cmd[#Cmd + 1] =	{Text = "loopkillguard / loopkillsguard",Title = "Loop kills all guards"}
-Cmd[#Cmd + 1] =	{Text = "loopkillinmate / loopkillinmates",Title = "Loop kills all inmates"}
-Cmd[#Cmd + 1] =	{Text = "loopkillcriminal / loopkillcriminals",Title = "Loop kills all criminals"}
-Cmd[#Cmd + 1] =	{Text = "unloopkillall / unloopkillsall",Title = "Unloop kills all players"}
-Cmd[#Cmd + 1] =	{Text = "unloopkillguard / unloopkillsguard",Title = "Unloop kills all guards"}
-Cmd[#Cmd + 1] =	{Text = "unloopkillinmate / unloopkillinmates",Title = "Unloop kills all inmates"}
-Cmd[#Cmd + 1] =	{Text = "unloopkillcriminal / unloopkillcriminals",Title = "Unloop kills all criminals"}
+Cmd[#Cmd + 1] =	{Text = "kill [plr,team,all]",Title = "Kill the player"}
+Cmd[#Cmd + 1] =	{Text = "tase [plr,team,all]",Title = "Tase the player"}
+Cmd[#Cmd + 1] =	{Text = "loopkill / loopkills [plr,team,all]",Title = "Loop kills player"}
+Cmd[#Cmd + 1] =	{Text = "unloopkill / unloopkills [plr,team,all]",Title = "Unloop kills player"}
 Cmd[#Cmd + 1] =	{Text = "inmate / inmates / prisoner / prisoners",Title = "Become inmate team"}
 Cmd[#Cmd + 1] =	{Text = "guard / guards / cop / polices",Title = "Become guard team"}
 Cmd[#Cmd + 1] =	{Text = "crim / criminals / criminal",Title = "Become criminal team"}
@@ -371,11 +382,10 @@ Cmd[#Cmd + 1] =	{Text = "res / respawn",Title = "Respawn on respawn pads"}
 Cmd[#Cmd + 1] =	{Text = "goto / to [plr]",Title = "Teleports to the player"}
 Cmd[#Cmd + 1] =	{Text = "arrest [plr] [time]",Title = "Arrest player that is a criminal"}
 Cmd[#Cmd + 1] =	{Text = "arrestall / arrestothers",Title = "Arrest all criminals"}
-Cmd[#Cmd + 1] =	{Text = "clearloopkill / clearloopkills",Title = "clear all loop kills table"}
 Cmd[#Cmd + 1] =	{Text = "auto / autore / autorefresh",Title = "Auto respawn on old position when died"}
 Cmd[#Cmd + 1] =	{Text = "unauto / unautore / unautorefresh",Title = "Stop auto respawn on old position when died"}
-Cmd[#Cmd + 1] =	{Text = "killaura",Title = "Activate kill aura"}
-Cmd[#Cmd + 1] =	{Text = "nokillaura / unkillaura",Title = "Unactivate kill aura"}
+Cmd[#Cmd + 1] =	{Text = "killaura [plr]",Title = "Activate kill aura Player"}
+Cmd[#Cmd + 1] =	{Text = "nokillaura / unkillaura [plr]",Title = "Unactivate kill aura Player"}
 Cmd[#Cmd + 1] = {Text = "antifling",Title = "Activate anti fling"}
 Cmd[#Cmd + 1] = {Text = "unantifling",Title = "Unactivate anti fling"}
 Cmd[#Cmd + 1] = {Text = "god",Title = "Become a god mode"}
@@ -458,14 +468,15 @@ Cmd[#Cmd + 1] =	{Text = "unantifell / unantivoid",Title = "Unactivate anti fell 
 Cmd[#Cmd + 1] =	{Text = "beam [plr]",Title = "Shoot a beam to player"}
 Cmd[#Cmd + 1] =	{Text = "lagbeam / beam2 [plr]",Title = "Shoot a beam to player but lag"}
 Cmd[#Cmd + 1] =	{Text = "crash / beam3 [plr]",Title = "Shoot a beam to player but even more lag"}
-Cmd[#Cmd + 1] = {Text = "antispamarrest",Title = "Activate anti spam arrest"}
-Cmd[#Cmd + 1] = {Text = "unantispamarrest",Title = "Unactivate anti spam arrest"}
+Cmd[#Cmd + 1] = {Text = "antiarrest",Title = "Activate anti arrest"}
+Cmd[#Cmd + 1] = {Text = "unantiarrest",Title = "Unactivate anti arrest"}
+Cmd[#Cmd + 1] = {Text = "arrestaura",Title = "Activate arrest aura"}
+Cmd[#Cmd + 1] = {Text = "unarrestaura",Title = "Unctivate arrest aura"}
 Cmd[#Cmd + 1] =	{Text = "!getprefix",Title = "If you for get prefix you can type this in chat"}
 
 local Players = game.Players
 local plr = Players.LocalPlayer
 local char = plr.CharacterAdded
-local TeamC = plr.TeamColor.Name
 local Mouse = plr:GetMouse()
 
 for i = 1,#Cmd do
@@ -556,7 +567,7 @@ local function GetCamPos()
 end
 
 local function GetTeam()
-	return TeamC
+	return plr.TeamColor.Name
 end
 
 function Goto(Player, Distance)
@@ -605,12 +616,12 @@ end
 function Criminal()
 	local savedcf = GetPos()
 	local savedcamcf = GetCamPos()
-	if TeamC == "Bright blue" then
+	if plr.TeamColor.Name == "Bright blue" then
 	TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
 	char:Wait() task.wait(0.065)
 	TPCFrame(savedcf)
 	workspace["CurrentCamera"].CFrame = savedcamcf
-	elseif TeamC == "Bright orange" then
+	elseif plr.TeamColor.Name == "Bright orange" then
 	firetouchinterest(plr.Character.HumanoidRootPart, game.Workspace["Criminals Spawn"].SpawnLocation, 0)
 	end
 end
@@ -683,49 +694,48 @@ function KillPlayer(Player)
 end
 
 local function Kill(Player)
-	local PlayerTeamC = Player.TeamColor.Name
 	if Player.Character.Humanoid.Health == 0 then -- nothing
 	else
-        if PlayerTeamC == "Bright orange" then
-	if TeamC == "Bright orange" then
+        if Player.TeamColor.Name == "Bright orange" then
+	if plr.TeamColor.Name == "Bright orange" then
 	Criminal()
 	task.wait(0.1)
 	KillPlayer(Player)
-	elseif TeamC == "Bright blue" then
+	elseif plr.TeamColor.Name == "Bright blue" then
 	Criminal()
 	task.wait(0.2)
 	KillPlayer(Player)
-	elseif TeamC == "Really red" then
+	elseif plr.TeamColor.Name == "Really red" then
 	KillPlayer(Player)
 	end
-        elseif PlayerTeamC == "Bright blue" then
-        if TeamC == "Bright blue" then
+        elseif Player.TeamColor.Name == "Bright blue" then
+        if plr.TeamColor.Name == "Bright blue" then
         Criminal()
         task.wait(0.2)
         KillPlayer(Player)
-        elseif TeamC == "Really red" then
+        elseif plr.TeamColor.Name == "Really red" then
         KillPlayer(Player)
-        elseif TeamC == "Bright orange" then
+        elseif plr.TeamColor.Name == "Bright orange" then
         KillPlayer(Player)
         end
-        elseif PlayerTeamC == "Really red" then
-        if TeamC == "Bright blue" then
+        elseif Player.TeamColor.Name == "Really red" then
+        if plr.TeamColor.Name == "Bright blue" then
         ChangeTeam(BrickColor.new("Bright orange").Name)
         task.wait(0.2)
         KillPlayer(Player)
-        elseif TeamC == "Really red" then
+        elseif plr.TeamColor.Name == "Really red" then
         ChangeTeam(BrickColor.new("Bright orange").Name)
         task.wait(0.15)
         KillPlayer(Player)
-        elseif TeamC == "Bright orange" then
+        elseif plr.TeamColor.Name == "Bright orange" then
         KillPlayer(Player)
 	end
-	elseif PlayerTeamC == game.Teams.Neutral then
-	if TeamC == "Bright blue" then
+	elseif Player.TeamColor.Name == "Medium stone grey" then
+	if plr.TeamColor.Name == "Bright blue" then
         KillPlayer(Player)
-        elseif TeamC == "Really red" then
+        elseif plr.TeamColor.Name == "Really red" then
         KillPlayer(Player)
-        elseif TeamC == "Bright orange" then
+        elseif plr.TeamColor.Name == "Bright orange" then
         KillPlayer(Player)
 	end
         end
@@ -738,6 +748,50 @@ function Tase(Player)
 	local savedteam = GetTeam()
 	for i,v in pairs(game.Players:GetPlayers()) do
 		if v ~= plr and v == Player then
+			events[#events + 1] = {
+				Hit = v.Character:FindFirstChildOfClass("Part"),
+				Cframe = CFrame.new(),
+				RayObject = Ray.new(Vector3.new(), Vector3.new()),
+				Distance = 0
+			}
+		end
+	end
+	if not game.Players.LocalPlayer.Character:FindFirstChild("Taser") and not game.Players.LocalPlayer:FindFirstChild("Backpack"):FindFirstChild("Taser") then
+		ChangeTeam(BrickColor.new("Bright blue").Name)
+	end
+	gun = game.Players.LocalPlayer.Character:FindFirstChild("Taser") or game.Players.LocalPlayer.Backpack:FindFirstChild("Taser")
+	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
+	ChangeTeam(BrickColor.new(savedteam).Name)
+end
+
+function TaseTeam(Team)
+	local events = {}
+	local gun = nil
+	local savedteam = GetTeam()
+	for i,v in pairs(game.Players:GetPlayers()) do
+		if v ~= plr and v.TeamColor.Name == Team then
+			events[#events + 1] = {
+				Hit = v.Character:FindFirstChildOfClass("Part"),
+				Cframe = CFrame.new(),
+				RayObject = Ray.new(Vector3.new(), Vector3.new()),
+				Distance = 0
+			}
+		end
+	end
+	if not game.Players.LocalPlayer.Character:FindFirstChild("Taser") and not game.Players.LocalPlayer:FindFirstChild("Backpack"):FindFirstChild("Taser") then
+		ChangeTeam(BrickColor.new("Bright blue").Name)
+	end
+	gun = game.Players.LocalPlayer.Character:FindFirstChild("Taser") or game.Players.LocalPlayer.Backpack:FindFirstChild("Taser")
+	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
+	ChangeTeam(BrickColor.new(savedteam).Name)
+end
+
+function TaseAll()
+	local events = {}
+	local gun = nil
+	local savedteam = GetTeam()
+	for i,v in pairs(game.Players:GetPlayers()) do
+		if v ~= plr then
 			events[#events + 1] = {
 				Hit = v.Character:FindFirstChildOfClass("Part"),
 				Cframe = CFrame.new(),
@@ -1123,7 +1177,7 @@ function PlayerChatted(Message)
 		end)
 	end
 	if Command("reload") or Command("update") then
-		Notify("Updating versions...", Color3.fromRGB(0, 255, 255), "Updates")
+		Notify("Reload Script...", Color3.fromRGB(0, 255, 255), "Reload")
 		pcall(function()
 			CmdGui:Destroy()
 			States = {}
@@ -1135,7 +1189,7 @@ function PlayerChatted(Message)
 				v.Parent = workspace
 			end
 		end)
-		Loadstring("https://pastebin.com/raw/9ab2s523")
+		Loadstring("https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/NoobHubV1%20Admin.lua")
 	end
 	if Command("beam") then
 		local Player = GetPlayer(Arg2)
@@ -1164,32 +1218,13 @@ function PlayerChatted(Message)
 			Notify("No player found", Color3.fromRGB(255, 0, 0), "Error")
 		end
 	end
-	if Command("antispamarrest") then
-		States.Anti_Spam_Arrest = true
-		Notify("Turn anti spam arrest on", Color3.fromRGB(0, 255, 0), "Success")
-		while wait() do
-			if States.Anti_Spam_Arrest then
-				pcall(function()
-					if game.Players.LocalPlayer.Character.Head:FindFirstChild("handcuffedGui") then
-						repeat wait()
-							coroutine.wrap(function()
-								game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(888, 100, 2388)
-								workspace.Remote.TeamEvent:FireServer("Medium stone grey")
-								workspace.Remote.TeamEvent:FireServer("Bright blue")
-							end)()
-						until game.Players.LocalPlayer.TeamColor.Name == "Bright blue"
-						wait(.1)
-						for i = 1,10 do
-							workspace.Remote.TeamEvent:FireServer("Medium stone grey")
-						end
-					end
-				end)
-			end
-		end
+	if Command("antiarrest") then
+		States.antiarrest = true
+		Notify("Turn anti arrest on", Color3.fromRGB(0, 255, 0), "Success")
 	end
-	if Command("unantispamarrest") then
-		States.Anti_Spam_Arrest = false
-		Notify("Turn anti spam arrest off", Color3.fromRGB(0, 255, 0), "Success")
+	if Command("unantiarrest") then
+		States.antiarrest = false
+		Notify("Turn anti arrest off", Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("inmate") or Command("inmates") or Command("prisoner") or Command("prisoners") then
 		ChangeTeam(BrickColor.new("Bright orange").Name)
@@ -1205,14 +1240,14 @@ function PlayerChatted(Message)
 	end
 	if Command("gun") or Command("guns") or Command("allguns") then
 		if BuyGamepass then
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["M4A1"].ITEMPICKUP)
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["AK-47"].ITEMPICKUP)
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["M9"].ITEMPICKUP)
+			GiveItem("AK-47")
+			GiveItem("Remington 870")
+			GiveItem("M9")
+			GiveItem("M4A1")
 		else
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["Remington 870"].ITEMPICKUP)
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["AK-47"].ITEMPICKUP)
-			workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver["M9"].ITEMPICKUP)
+			GiveItem("AK-47")
+			GiveItem("Remington 870")
+			GiveItem("M9")
 		end
 		Notify("Get all guns", Color3.fromRGB(0, 255, 0), "Success")
 	end
@@ -1318,11 +1353,12 @@ function PlayerChatted(Message)
 		end
 	end
 	if Command("criminal") or Command("criminals") or Command("crim") or Command("crims") or Command("crimes") or Command("crime") then
-		if TeamC == "Bright orange" then
+		if plr.TeamColor.Name == "Bright orange" then
 			Criminal()
-		elseif TeamC == "Really red" then
+		elseif plr.TeamColor.Name == "Really red" then
 			ChangeTeam(BrickColor.new("Really red").Name)
 		end
+		Notify("Become criminal", Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("neutral") or Command("neutrals") then
 		ChangeTeam(BrickColor.new("Medium stone grey").Name)
@@ -1382,12 +1418,21 @@ function PlayerChatted(Message)
 		Notify("Turn copy chat off", Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("tase") then
-		local Player = GetPlayer(Arg2)
+		local args = Arg2
+		if args == "all" or args == "everyone" or args == "others" then
+		TaseAll()
+		elseif args == "inmates" then
+		TaseTeam(BrickColor.new("Bright orange").Name)
+		elseif args == "criminals" then
+		TaseTeam(BrickColor.new("Really red").Name)
+		else
+		local Player = GetPlayer(args)
 		if Player ~= nil then
 			Tase(Player)
 			Notify("Tased "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
 		else
 			Notify("No player found", Color3.fromRGB(255, 0, 0), "Error")
+		end
 		end
 	end
 	if Command("noshield") or Command("antishield") then
@@ -1408,15 +1453,8 @@ function PlayerChatted(Message)
 		Notify("Turn anti shield users off", Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("kill") or Command("kills") then
-		local Player = GetPlayer(Arg2)
-		if Player ~= nil then
-			Kill(Player)
-			Notify("Killed "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
-		else
-			Notify("No player found", Color3.fromRGB(255, 0, 0), "Error")
-		end
-	end
-	if Command("killall") then
+		local args = Arg2
+		if args == "all" or args == "everyone" or args == "others" then
 		for i,v in pairs(game.Players:GetPlayers()) do
 			if v ~= game.Players.LocalPlayer then
 				if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then
@@ -1427,8 +1465,7 @@ function PlayerChatted(Message)
 			end
 		end
 		Notify("Killed all players", Color3.fromRGB(0, 255, 0), "Success")
-	end
-	if Command("killinmate") or Command("killinmates") or Command("killsinmate") or Command("killsinmates") then
+		elseif args == "inmates" then
 		for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
 			if v ~= game.Players.LocalPlayer then
 				if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then
@@ -1439,8 +1476,7 @@ function PlayerChatted(Message)
 			end
 		end
 		Notify("Killed all inmates", Color3.fromRGB(0, 255, 0), "Success")
-	end
-	if Command("killguard") or Command("killsguard") or Command("killguards") or Command("killsguards") then
+		elseif args == "guards" then
 		for i,v in pairs(game.Teams.Guards:GetPlayers()) do
 			if v ~= game.Players.LocalPlayer then
 				if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then
@@ -1451,8 +1487,7 @@ function PlayerChatted(Message)
 			end
 		end
 		Notify("Killed all guards", Color3.fromRGB(0, 255, 0), "Success")
-	end
-	if Command("killcriminal") or Command("killscriminal") or Command("killcriminals") or Command("killscriminals") then
+		elseif args == "criminals" then
 		for i,v in pairs(game.Players:GetPlayers()) do
 			if v ~= game.Players.LocalPlayer then
 				if v.TeamColor.Name == "Really red" then
@@ -1461,17 +1496,55 @@ function PlayerChatted(Message)
 			end
 		end
 		Notify("Killed all criminals", Color3.fromRGB(0, 255, 0), "Success")
+		else
+		local Player = GetPlayer(args)
+		if Player ~= nil then
+			Kill(Player)
+			Notify("Killed "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
+		else
+			Notify("No player found", Color3.fromRGB(255, 0, 0), "Error")
+		end
+		end
 	end
 	if Command("loopkill") or Command("loopkills") then
-		local Player = GetPlayer(Arg2)
+		local args = Arg2
+		if args == "all" or args == "everyone" or args == "others" then
+		States.loopkillall = true
+		Notify("Loop kills all", Color3.fromRGB(0, 255, 0), "Success")
+		elseif args == "guards" then
+		States.loopkillguards = true
+		Notify("Loop kills guards", Color3.fromRGB(0, 255, 0), "Success")
+		elseif args == "inmates" then
+		States.loopkillinmates = true
+		Notify("Loop kills inmates", Color3.fromRGB(0, 255, 0), "Success")
+		elseif args == "criminals" then
+		States.loopkillcriminals = true
+		Notify("Loop kills criminals", Color3.fromRGB(0, 255, 0), "Success")
+		else
+		local Player = GetPlayer(args)
 		if Player ~= nil and not LoopKill[Player.UserId] then
 			LoopKill[Player.UserId] = {Player = Player}
-			Notify("Looping kills "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
+			Notify("Loop kills "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
 		else
 			Notify("No player found / already loop kills", Color3.fromRGB(255, 0, 0), "Error")
 		end
+		end
 	end
 	if Command("unloopkill") or Command("unloopkills") then
+		local args = Arg2
+		if args == "all" or args == "everyone" or args == "others" then
+		States.loopkillall = false
+		Notify("Unloop kills all", Color3.fromRGB(0, 255, 0), "Success")
+		elseif args == "guards" then
+		States.loopkillguards = false
+		Notify("Unloop kills guards", Color3.fromRGB(0, 255, 0), "Success")
+		elseif args == "inmates" then
+		States.loopkillinmates = false
+		Notify("Unloop kills inmates", Color3.fromRGB(0, 255, 0), "Success")
+		elseif args == "criminals" then
+		States.loopkillcriminals = false
+		Notify("Unloop kills criminals", Color3.fromRGB(0, 255, 0), "Success")
+		else
 		local Player = GetPlayer(Arg2)
 		if Player ~= nil and LoopKill[Player.UserId] then
 			LoopKill[Player.UserId] = nil
@@ -1479,96 +1552,7 @@ function PlayerChatted(Message)
 		else
 			Notify("No player found / Player has no loop kills", Color3.fromRGB(255, 0, 0), "Error")
 		end
-	end
-	if Command("loopkillguard") or Command("loopkillguards") or Command("loopkillsguard") or Command("loopkillsguards") or Command("loopkillcop") or Command("loopkillpolices") or Command("loopkillspolices") then
-		States.loopkillguards = true
-		Notify("Looping kills all guards", Color3.fromRGB(0, 255, 0), "Success")
-		while task.wait(0.5) do
-			if States.loopkillguards then
-				for i,v in pairs(game.Teams.Guards:GetPlayers()) do
-					if v ~= game.Players.LocalPlayer then
-						pcall(function()
-							if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then
-								-- nothing
-							else
-								Kill(v)
-							end
-						end)
-					end
-				end
-			end
 		end
-	end
-	if Command("unloopkillguard") or Command("unloopkillguards") or Command("unloopkillsguard") or Command("unloopkillsguards") or Command("unloopkillcop") or Command("unloopkillpolices") or Command("unloopkillspolices") then
-		States.loopkillguards = false
-		Notify("Unloop kills all guards", Color3.fromRGB(0, 255, 0), "Success")
-	end
-	if Command("loopkillinmate") or Command("loopkillinmates") or Command("loopkillsinmate") or Command("loopkillsinmates") or Command("loopkillprisoner") or Command("loopkillprisoners") then
-		States.loopkillinmates = true
-		Notify("Looping kills all inmates", Color3.fromRGB(0, 255, 0), "Success")
-		while task.wait(0.5) do
-			if States.loopkillinmates then
-				for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
-					if v ~= game.Players.LocalPlayer then
-						pcall(function()
-							if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then
-								-- nothing
-							else
-								Kill(v)
-							end
-						end)
-					end
-				end
-			end
-		end
-	end
-	if Command("unloopkillinmate") or Command("unloopkillinmates") or Command("unloopkillsinmate") or Command("unloopkillsinmates") or Command("unloopkillprisoner") or Command("unloopkillprisoners") then
-		States.loopkillinmates = false
-		Notify("Unloop kills all inmates", Color3.fromRGB(0, 255, 0), "Success")
-	end
-	if Command("loopkillcriminal") or Command("loopkillcriminals") or Command("loopkillscriminal") or Command("loopkillscriminals") or Command("loopkillcrim") or Command("loopkillcrims") then
-		States.loopkillcriminals = true
-		Notify("Looping kills all criminals", Color3.fromRGB(0, 255, 0), "Success")
-		while task.wait(0.5) do
-			if States.loopkillcriminals then
-				for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
-					if v ~= game.Players.LocalPlayer then
-						pcall(function()
-							if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then
-								-- nothing
-							else
-								Kill(v)
-							end
-						end)
-					end
-				end
-			end
-		end
-	end
-	if Command("unloopkillcriminal") or Command("unloopkillcriminals") or Command("unloopkillscriminal") or Command("unloopkillscrriminals") or Command("unloopkillcrim") or Command("unloopkillcrims") then
-		States.loopkillcriminals = false
-		Notify("Unlooping kills all criminals", Color3.fromRGB(0, 255, 0), "Success")
-	end
-	if Command("loopkillall") or Command("loopkillsall") then
-		States.loopkillall = true
-		Notify("Looping kills all players", Color3.fromRGB(0, 255, 0), "Success")
-		while task.wait(0.5) do
-			if States.loopkillall then
-				for i,v in pairs(game.Players:GetPlayers()) do
-					if v ~= game.Players.LocalPlayer then
-						if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then
-							-- nothing
-						else
-							Kill(v)
-						end
-					end
-				end
-			end
-		end
-	end
-	if Command("unloopkillall") or Command("unloopkillsall") then
-		States.loopkillall = false
-		Notify("Unlooping kills all players", Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("goto") or Command("to") then
 		local Player = GetPlayer(Arg2)
@@ -1759,7 +1743,7 @@ function PlayerChatted(Message)
 	if Command("superknife") then
 		local Knife = game.Players.LocalPlayer.Backpack:FindFirstChild("Crude Knife") or game.Players.LocalPlayer.Character:FindFirstChild("Crude Knife")
 		if not Knife then
-			workspace.Remote.ItemHandler:InvokeServer(workspace["Prison_ITEMS"].single["Crude Knife"].ITEMPICKUP)
+			GiveItem("Knife")
 		end
 		wait()
 		Knife = game.Players.LocalPlayer.Backpack:FindFirstChild("Crude Knife") or game.Players.LocalPlayer.Character:FindFirstChild("Crude Knife")
@@ -1800,45 +1784,48 @@ function PlayerChatted(Message)
 		Notify("Unviewed", Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("antivoid") or Command("antifell") then
-		States.Anti_Void = true
+		States.antivoid = true
 		Notify("Turn anti void on", Color3.fromRGB(0, 255, 0), "Success")
-		while wait() do
-			if States.Anti_Void then
-				pcall(function()
-					if game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y < 1 then
-						game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(888, 100, 2388)
-					end
-				end)
-			end
-		end
 	end
 	if Command("unantivoid") or Command("unantifell") then
-		States.Anti_Void = false
+		States.antivoid = false
 		Notify("Turn anti void off", Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("killaura") then
+		local Player = GetPlayer(Arg2)
+		if Player ~= nil then
 		States.Kill_Aura = true
-		Notify("Turn kill aura on", Color3.fromRGB(0, 255, 0), "Success")
-	end
-	if Command("nokillaura") or Command("unkillaura") then
-		States.Kill_Aura = false
-		Notify("Turn kill aura off", Color3.fromRGB(0, 255, 0), "Success")
-	end
-	if Command("autore") or Command("autorefresh") then
-		States.Auto_Refresh = true
-		Notify("Turn auto refresh on", Color3.fromRGB(0, 255, 0), "Success")
+		Notify("Turn kill aura "..Player.Name.." on", Color3.fromRGB(0, 255, 0), "Success")
+		else
+		Notify("No Player Found", Color3.fromRGB(255, 0, 0), "Error")
+		end
 		while wait() do
-			if States.Auto_Refresh then
-				pcall(function()
-					if game.Players.LocalPlayer.Character.Humanoid.Health < 1 then
-						ChangeTeam(BrickColor.new(plr.TeamColor.Name).Name)
+			if States.Kill_Aura then
+				for i,v in pairs(game.Players:GetPlayers()) do
+					if v ~= plr and v ~= Player then
+						if (v.Character.HumanoidRootPart.Position-Player.Character.HumanoidRootPart.Position).Magnitude <= 20 then
+							Kill(v)
+						end
 					end
-				end)
+				end
 			end
 		end
 	end
+	if Command("nokillaura") or Command("unkillaura") then
+                local Player = GetPlayer(Arg2)
+		if Player ~= nil then
+		States.Kill_Aura = false
+		Notify("Turn kill aura "..Player.Name.." off", Color3.fromRGB(0, 255, 0), "Success")
+		else
+		Notify("No Player Found", Color3.fromRGB(255, 0, 0), "Error")
+		end
+	end
+	if Command("autore") or Command("autorefresh") then
+		States.autorespawn = true
+		Notify("Turn auto refresh on", Color3.fromRGB(0, 255, 0), "Success")
+	end
 	if Command("unautore") or Command("unautorefresh") then
-		States.Auto_Refresh = false
+		States.autorespawn = false
 		Notify("Turn auto refresh off", Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("prefix") or Command("newprefix") or Command("changeprefix") then
@@ -2606,25 +2593,132 @@ spawn(function()
 	end
 end)
 
-coroutine.wrap(function()
-	while wait() do
-		if States.Kill_Aura then
+spawn(function()
+	while task.wait(0.5) do
+		if States.loopkillguards then
+			for i,v in pairs(game.Teams.Guards:GetPlayers()) do
+				if v ~= game.Players.LocalPlayer then
+					pcall(function()
+						if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then
+							-- nothing
+						else
+							Kill(v)
+						end
+					end)
+				end
+			end
+		end
+	end
+end)
+
+spawn(function()
+	while task.wait(0.5) do
+		if States.loopkillcriminals then
+			for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
+				if v ~= game.Players.LocalPlayer then
+					pcall(function()
+						if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then
+							-- nothing
+						else
+							Kill(v)
+						end
+					end)
+				end
+			end
+		end
+	end
+end)
+
+spawn(function()
+	while task.wait(0.5) do
+		if States.loopkillinmates then
+			for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
+				if v ~= game.Players.LocalPlayer then
+					pcall(function()
+						if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then
+							-- nothing
+						else
+							Kill(v)
+						end
+					end)
+				end
+			end
+		end
+	end
+end)
+
+spawn(function()
+	while task.wait(0.5) do
+		if States.loopkillall then
 			for i,v in pairs(game.Players:GetPlayers()) do
-				pcall(function()
-					if v ~= game.Players.LocalPlayer then
-						local Distance = (v.Character:FindFirstChildOfClass("Part").Position - game.Players.LocalPlayer.Character:FindFirstChildOfClass("Part").Position).magnitude
-						if Distance <= 10 then
-							for i = 1,25 do
+				if v ~= game.Players.LocalPlayer then
+					pcall(function()
+						if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then
+							-- nothing
+						else
+							Kill(v)
+						end
+					end)
+				end
+			end
+		end
+	end
+end)
+
+spawn(function()
+	while wait() do
+		if States.antivoid then
+			pcall(function()
+				if game.Players.LocalPlayer.Character.HumanoidRootPart.Position.Y < 1 then
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(888, 100, 2388)
+				end
+			end)
+		end
+	end
+end)
+
+spawn(function()
+	while wait() do
+		if States.autorespawn then
+			if plr.Character.Humanoid.Health < 1 then
+				ChangeTeam(BrickColor.new(plr.TeamColor.Name).Name)
+			end
+		end
+	end
+end)
+
+spawn(function()
+	while wait() do
+		if States.antiarrest then
+			for i,v in pairs(game.Teams.Guards:GetPlayers()) do
+				if v ~= plr then
+					if v.Character:FindFirstChild("Handcuffs") then
+						if (v.Character.HumanoidRootPart.Position-plr.Character.HumanoidRootPart.Position).Magnitude <= 30 then
+							for i = 1, 50 do
 								game.ReplicatedStorage.meleeEvent:FireServer(v)
 							end
 						end
 					end
-				end)
+				end
 			end
 		end
 	end
-end)()
+end)
 
+spawn(function()
+	while wait() do
+		if States.arrestaura then
+			for i,v in pairs(game.Players:GetPlayers()) do
+				if v ~= plr then
+					if (v.Character.HumanoidRootPart.Position-plr.Character.HumanoidRootPart.Position).Magnutide <= 25 then
+						ArrestEvent(v, 5)
+					end
+				end
+			end
+		end
+	end
+end)
+		
 function CheckPermissions(Player)
 	Player.Chatted:Connect(function(Message)
 		if Admin[Player.UserId] then
