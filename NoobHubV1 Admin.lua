@@ -454,7 +454,7 @@ Cmd[#Cmd + 1] =	{Text = "crimbase / criminalbase",Title = "Teleports to the crim
 Cmd[#Cmd + 1] =	{Text = "lunchroom",Title = "Teleports to the cafeteria room"}
 Cmd[#Cmd + 1] =	{Text = "spamchat [delay]",Title = "Spam the chat"}
 Cmd[#Cmd + 1] =	{Text = "unspamchat",Title = "Unspam the chat"}
-Cmd[#Cmd + 1] =	{Text = "savepos / saveposition",Title = "Saves positions"}
+Cmd[#Cmd + 1] =	{Text = "findposition / getposition / getpos",Title = "Find positions"}
 Cmd[#Cmd + 1] =	{Text = "loadpos / loadposition",Title = "Loads positions"}
 Cmd[#Cmd + 1] =	{Text = "notify",Title = "Send a message when player leave / join"}
 Cmd[#Cmd + 1] =	{Text = "nonotify",Title = "Stop send a message when player leave / join"}
@@ -2041,11 +2041,13 @@ function PlayerChatted(Message)
 		workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.buttons["Prison Gate"]["Prison Gate"])
 		Notify("Opened gate", Color3.fromRGB(0, 255, 0), "Success")
 	end
-	if Command("getpos") then
-		print("Humanoid Root Part Position :")
-		print(game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
-		print("Camera CFrame :")
-		print(workspace.CurrentCamera.CFrame)
+	if Command("findposition") or Command("getposition") or Command("getpos") then
+		local CFrame = tostring(GetPos())
+		local CamCFrame = tostring(GetCamPos())
+		Notify("Player CFrame : "..CFrame, Color3.fromRGB(55, 155, 255), "CFrame")
+		setclipboard(""..CFrame)
+		Notify("Cam CFrame : "..CamCFrame, Color3.fromRGB(55, 155, 255), "CamCFrame")
+		setclipboard(""..CamCFrame)
 		Notify("Printed positions", Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("saveposition") or Command("savepos") then
