@@ -752,7 +752,7 @@ function PlayerChatted(Message)
 		if Arg2 == "all" or Arg2 == "everyone" or Arg2 == "others" then
 		for i,v in pairs(game.Players:GetPlayers()) do
 			if v ~= plr then
-				for i = 1,2 do wait(.1)
+				for i = 1,5 do wait(.1)
 					Teleport(v, GetPos())
 				end
 			end
@@ -761,7 +761,7 @@ function PlayerChatted(Message)
 		else
 		local Player = GetPlayer(Arg2)
 		if Player ~= nil then
-		for i = 1,2 do wait(.1)
+		for i = 1,5 do wait(.1)
 		Teleport(Player, GetPos())
 		end
 		Notify("Bringing "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
@@ -774,7 +774,7 @@ function PlayerChatted(Message)
 		local Player1 = GetPlayer(Arg2)
 		local Player2 = GetPlayer(Arg3)
 		if Player1 ~= nil and Player2 ~= nil then
-		for i = 1,2 do wait(.1)
+		for i = 1,5 do wait(.1)
 		TeleportV(Player1, Player2)
 		end
 		Notify("teleport "..Player1.Name.." to "..Player2.Name, Color3.fromRGB(0, 255, 0), "Success")
@@ -881,7 +881,7 @@ function PlayerChatted(Message)
 		if Arg2 == "all" or Arg2 == "everyone" then
 			for i,v in pairs(game.Players:GetPlayers()) do
 				if v.Name ~= plr then
-					for i = 1,3 do wait(.1)
+					for i = 1,5 do wait(.1)
 						Teleport(v, CFrame.new(277, 122, -195))
 					end
 				end
@@ -890,7 +890,7 @@ function PlayerChatted(Message)
 		elseif Arg2 == "others" then
 			for i,v in pairs(game.Players:GetPlayers()) do
 				if v ~= plr then
-					for i = 1,3 do wait(.1)
+					for i = 1,5 do wait(.1)
 						Teleport(v, CFrame.new(277, 122, -195))
 					end
 				end
@@ -899,7 +899,7 @@ function PlayerChatted(Message)
 		else
 			local Player = GetPlayer(Arg2)
 			if Player ~= nil then
-				for i = 1,3 do wait(.1)
+				for i = 1,5 do wait(.1)
 				Teleport(Player, CFrame.new(277, 122, -195))
 				end
 				Notify("Void kill "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
@@ -966,6 +966,64 @@ function PlayerChatted(Message)
 					end
 				end)
 			Notify("Freeze "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
+			else
+				Notify("No Player Found", Color3.fromRGB(255, 0, 0), "Error")
+			end
+		end
+	end
+	if Command("unfreeze") then
+		if Arg2 == "all" or Arg2 == "everyone" then
+			for i,v in pairs(game.Players:GetPlayers()) do
+				if v.Name ~= plr then
+			                pcall(function()
+		                                if (v ~= nil and v.Character ~= nil) then
+							if (v.Character:FindFirstChildOfClass("Part") ~= nil) then
+								for _, Part in pairs(v.Character:GetDescendants()) do
+									if (Part:IsA("BasePart")) then
+										Remote:FireServer(Part,plr)
+									end
+								end
+								v.Character.HumanoidRootPart.Anchored = false
+							end
+						end
+					end)
+				end
+			end
+		Notify("Unfreeze all", Color3.fromRGB(0, 255, 0), "Success")
+		elseif Arg2 == "others" then
+			for i,v in pairs(game.Players:GetPlayers()) do
+				if v ~= plr then
+			                pcall(function()
+		                                if (v ~= nil and v.Character ~= nil) then
+							if (v.Character:FindFirstChildOfClass("Part") ~= nil) then
+								for _, Part in pairs(v.Character:GetDescendants()) do
+									if (Part:IsA("BasePart")) then
+										Remote:FireServer(Part,plr)
+									end
+								end
+								v.Character.HumanoidRootPart.Anchored = false
+							end
+						end
+					end)
+				end
+			end
+		Notify("Unfreeze others", Color3.fromRGB(0, 255, 0), "Success")
+		else
+			local Player = GetPlayer(Arg2)
+			if Player ~= nil then
+				pcall(function()
+		                        if (Player ~= nil and Player.Character ~= nil) then
+						if (Player.Character:FindFirstChildOfClass("Part") ~= nil) then
+							for _, Part in pairs(Player.Character:GetDescendants()) do
+								if (Part:IsA("BasePart")) then
+									Remote:FireServer(Part,plr)
+								end
+							end
+							Player.Character.HumanoidRootPart.Anchored = false
+						end
+					end
+				end)
+			Notify("Unfreeze "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
 			else
 				Notify("No Player Found", Color3.fromRGB(255, 0, 0), "Error")
 			end
@@ -1045,10 +1103,16 @@ function AdminPlayerChatted(Message, Player)
 		States.loopkillothers = true
 		Chat("/w "..Player.Name.." (Success) Loop kills all")
 		elseif Arg2 == "others" then
-		States.loopkillother = true
+		States.loopkill = true
 		Chat("/w "..Player.Name.." (Success) Loop kills others")
+		else
+		local Player = GetPlayer(Arg2)
+		if Player ~= nil and not LoopKill[Player.UserId] then
+			LoopKill[Player.UserId] = {Player = Player}
+		end
+		end
 		while task.wait(0.5) do
-			if States.loopkillother then
+			if States.loopkill then
 				for i,v in pairs(game.players:GetPlayers()) do
 					if v ~= plr and v ~= Player then
 						Kill(v)
@@ -1056,19 +1120,13 @@ function AdminPlayerChatted(Message, Player)
 				end
 			end
 		end
-		else
-		local Player = GetPlayer(Arg2)
-		if Player ~= nil and not LoopKill[Player.UserId] then
-			LoopKill[Player.UserId] = {Player = Player}
-		end
-		end
 	end
 	if Command("unloopkill") or Command("unloopkills") then
 		if Arg2 == "all" or Arg2 == "everyone" then
 		States.loopkillothers = false
 		Chat("/w "..Player.Name.." (Success) Loop kills all")
 		elseif Arg2 == "others" then
-		States.loopkillother = false
+		States.loopkill = false
 		Chat("/w "..Player.Name.." (Success) Loop kills others")
 		else
 		local Player = GetPlayer(Arg2)
@@ -1081,7 +1139,7 @@ function AdminPlayerChatted(Message, Player)
 		if Arg2 == "all" or Arg2 == "everyone" or Arg2 == "others" then
 		for i,v in pairs(game.Players:GetPlayers()) do
 			if v ~= plr and v ~= Player then
-				for i = 1,3 do wait(.1)
+				for i = 1,5 do wait(.1)
 				TeleportV(v, Player)
 				end
 			end
@@ -1090,7 +1148,7 @@ function AdminPlayerChatted(Message, Player)
 		else
 		local Target = GetPlayer(Arg2)
 		if Target ~= nil then
-			for i = 1,3 do wait(0.1)
+			for i = 1,5 do wait(0.1)
 			TeleportV(Target, Player)
 			end
 			Chat("/w "..Player.Name.." Bringing "..Target.DisplayName)
@@ -1103,7 +1161,7 @@ function AdminPlayerChatted(Message, Player)
 		local Player1 = GetPlayer(Arg2)
 		local Player2 = GetPlayer(Arg3)
 		if Player1 ~= nil and Player2 ~= nil then
-			for i = 1,3 do wait(.1)
+			for i = 1,5 do wait(.1)
 				TeleportV(Player1, Player2)
 			end
 			Chat("/w "..Player.Name.." teleport "..Player1.DisplayName.." to "..Player2.DisplayName)
@@ -1114,7 +1172,7 @@ function AdminPlayerChatted(Message, Player)
 	if Command("goto") or Command("to") then
 		local Target = GetPlayer(Arg2)
 		if Target ~= nil then
-			for i = 1,2 do wait(.1)
+			for i = 1,5 do wait(.1)
 				TeleportV(Player, Target)
 			end
 			Chat("/w "..Player.Name.." goto "..Target.DisplayName)
@@ -1152,7 +1210,7 @@ function AdminPlayerChatted(Message, Player)
 		if Arg2 == "all" or Arg2 == "everyone" then
 			for i,v in pairs(game.Players:GetPlayers()) do
 				if v ~= plr then
-					for i = 1,3 do wait(.1)
+					for i = 1,5 do wait(.1)
 						Teleport(v, CFrame.new(277, 122, -195))
 					end
 				end
@@ -1161,7 +1219,7 @@ function AdminPlayerChatted(Message, Player)
 		elseif Arg2 == "others" then
 			for i,v in pairs(game.Players:GetPlayers()) do
 				if v ~= plr and v ~= Player then
-					for i = 1,3 do wait(.1)
+					for i = 1,5 do wait(.1)
 						Teleport(v, CFrame.new(277, 122, -195))
 					end
 				end
@@ -1170,7 +1228,7 @@ function AdminPlayerChatted(Message, Player)
 		else
 			local Target = GetPlayer(Arg2)
 			if Target ~= nil then
-				for i = 1,3 do wait(.1)
+				for i = 1,5 do wait(.1)
 				Teleport(Target, CFrame.new(277, 122, -195))
 				end
 				Chat("/w "..Player.Name.." Voidkill "..Target.DisplayName)
