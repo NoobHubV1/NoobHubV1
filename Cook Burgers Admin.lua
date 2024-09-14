@@ -370,6 +370,9 @@ Cmd[#Cmd + 1] =	{Text = "leave / leaveserver / quit",Title = "Leave the server"}
 Cmd[#Cmd + 1] =	{Text = "admin / giveadmin [plr]",Title = "Give a commands to player"}
 Cmd[#Cmd + 1] =	{Text = "unadmin / removeadmin [plr]",Title = "Remove a commands from player"}
 Cmd[#Cmd + 1] =	{Text = "kill [plr,others,all]",Title = "Kill the player"}
+Cmd[#Cmd + 1] =	{Text = "bring [plr,all]",Title = "Bring the player"}
+Cmd[#Cmd + 1] =	{Text = "teleport / tp [plr1,plr2]",Title = "tp player1 to player2"}
+Cmd[#Cmd + 1] =	{Text = "goto / to [plr]",Title = "teleport the player"}
 Cmd[#Cmd + 1] =	{Text = "loopkill / loopkills [plr,others,all]",Title = "Loop kills the player"}
 Cmd[#Cmd + 1] =	{Text = "unloopkill / unloopkills [plr,others,all]",Title = "Unloop kills the player"}
 Cmd[#Cmd + 1] =	{Text = "prefix / newprefix / changeprefix [prefix text]",Title = "Changes prefix"}
@@ -526,7 +529,7 @@ function Kill(player)
 			end)
 end
 
-function Bring(player)
+function Teleport(player, cframe)
 	pcall(function()
 		if (player ~= nil and player.Character ~= nil) then
 			if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
@@ -535,7 +538,22 @@ function Bring(player)
 						Remote:FireServer(Part,plr)
 					end
 				end
-			player.Character.HumanoidRootPart.CFrame = plr.Character.HumanoidRootPart.CFrame
+			player.Character.HumanoidRootPart.CFrame = cframe
+			end
+		end
+	end)
+end
+
+function TeleportV(player1, player2)
+	pcall(function()
+		if (player1 ~= nil and player1.Character ~= nil) then
+			if (player1.Character:FindFirstChildOfClass("Part") ~= nil) then
+				for _, Part in pairs(player1.Character:GetDescendants()) do
+					if (Part:IsA("BasePart")) then
+						Remote:FireServer(Part,plr)
+					end
+				end
+			player1.Character.HumanoidRootPart.CFrame = player2.Character.HumanoidRootPart.CFrame
 			end
 		end
 	end)
@@ -680,6 +698,49 @@ function PlayerChatted(Message)
 	        Notify("No Player Found / Player not loop kills", Color3.fromRGB(255, 0, 0), "Error")
           end
           end
+	end
+	if Command("bring") then
+		if Arg2 == "all" or Arg2 == "everyone" or Arg2 == "others" then
+		for i,v in pairs(game.Players:GetPlayers()) do
+			if v ~= plr then
+				for i = 1,2 do wait(.1)
+					Teleport(v, GetPos())
+				end
+			end
+		end
+		Notify("Bringing all", Color3.fromRGB(0, 255, 0), "Success")
+		else
+		local Player = GetPlayer(Arg2)
+		if Player ~= nil then
+		for i = 1,2 do wait(.1)
+		Teleport(Player, GetPos())
+		end
+		Notify("Bringing "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
+		else
+		Notify("No Player Found", Color3.fromRGB(255, 0, 0), "Error")
+		end
+		end
+	end
+	if Command("teleport") or Command("tp") then
+		local Player1 = GetPlayer(Arg2)
+		local Player2 = GetPlayer(Arg3)
+		if Player1 ~= nil and Player2 ~= nil then
+		for i = 1,2 do wait(.1)
+		TeleportV(Player1, Player2)
+		end
+		Notify("teleport "..Player1.Name.." to "..Player2.Name, Color3.fromRGB(0, 255, 0), "Success")
+		else
+		Notify("No Player Found", Color3.fromRGB(255, 0, 0), "Error")
+		end
+	end
+	if Command("goto") or Command("to") then
+		local Player = GetPlayer(Arg2)
+		if Player ~= nil then
+		TeleportV(plr, Player)
+		Notify("Goto "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
+		else
+		Notify("No Player Found", Color3.fromRGB(255, 0, 0), "Error")
+		end
 	end
 	if Command("prefix") or Command("newprefix") or Command("changeprefix") then
 		local NewPrefix = Arg2
