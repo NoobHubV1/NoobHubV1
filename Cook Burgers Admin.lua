@@ -24,6 +24,7 @@ local CloseBar = Instance.new("TextButton")
 local OpenBar = Instance.new("TextButton")
 local TransparencyBar = Instance.new("TextButton")
 local Prefix = ";"
+local PrefixCmd = "!"
 
 CmdGui.Name = "CmdGui"
 CmdGui.Parent = game:GetService("CoreGui")
@@ -36,7 +37,7 @@ Background.BorderSizePixel = 0
 Background.Position = UDim2.new(0.368556708, 0, 0.11490047, 0)
 Background.Size = UDim2.new(0, 350, 0, 350)
 Background.Active = true
-Background.Draggable = true
+Background.Draggable = false
 
 CmdName.Name = "CmdName"
 CmdName.Parent = Background
@@ -140,7 +141,7 @@ Background2.BorderSizePixel = 0
 Background2.Position = UDim2.new(0.012, 0, 0.807, 0)
 Background2.Size = UDim2.new(0, 250, 0, 80)
 Background2.Active = true
-Background2.Draggable = true
+Background2.Draggable = false
 
 Label.Name = "Label"
 Label.Parent = Background2
@@ -211,7 +212,7 @@ Background4.BorderSizePixel = 0
 Background4.Position = UDim2.new(0.0154639352, 0, 0.519107938, 0)
 Background4.Size = UDim2.new(0, 250, 0, 119)
 Background4.Active = true
-Background4.Draggable = true
+Background4.Draggable = false
 
 Notify6.Name = "Notify6"
 Notify6.Parent = Background4
@@ -319,7 +320,7 @@ OpenBar.Name = "OpenBar"
 OpenBar.Parent = CmdGui
 OpenBar.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
 OpenBar.BorderSizePixel = 0
-OpenBar.Size = UDim2.new(0, 35, 0, 35)
+OpenBar.Size = UDim2.new(0, 55, 0, 55)
 OpenBar.Visible = false
 OpenBar.Font = Enum.Font.GothamBlack
 OpenBar.Text = "Open"
@@ -365,6 +366,7 @@ local Cmd = {}
 Cmd[#Cmd + 1] = {Text = "versions "..Versions,Title = "Script Made NoobHubV1"}
 Cmd[#Cmd + 1] = {Text = "menu made by me NoobHubV1",Title = "Script maker"}
 Cmd[#Cmd + 1] =	{Text = "cmd / cmds",Title = "Show commands bar"}
+Cmd[#Cmd + 1] =	{Text = "drag [on,off]",Title = "drag script"}
 Cmd[#Cmd + 1] =	{Text = "rejoin / rj",Title = "Rejoin the game"}
 Cmd[#Cmd + 1] =	{Text = "leave / leaveserver / quit",Title = "Leave the server"}
 Cmd[#Cmd + 1] =	{Text = "admin / giveadmin [plr]",Title = "Give a commands to player"}
@@ -375,11 +377,15 @@ Cmd[#Cmd + 1] =	{Text = "teleport / tp [plr1,plr2]",Title = "tp player1 to playe
 Cmd[#Cmd + 1] =	{Text = "goto / to [plr]",Title = "teleport the player"}
 Cmd[#Cmd + 1] =	{Text = "loopkill / loopkills [plr,others,all]",Title = "Loop kills the player"}
 Cmd[#Cmd + 1] =	{Text = "unloopkill / unloopkills [plr,others,all]",Title = "Unloop kills the player"}
+Cmd[#Cmd + 1] =	{Text = "control [plr]",Title = "control the player"}
+Cmd[#Cmd + 1] =	{Text = "speed [plr,all,others] [number]",Title = "speed the player"}
+Cmd[#Cmd + 1] =	{Text = "findposition / findpos / getpos / getposition",Title = "player get pos"}
 Cmd[#Cmd + 1] =	{Text = "prefix / newprefix / changeprefix [prefix text]",Title = "Changes prefix"}
 Cmd[#Cmd + 1] =	{Text = "re / refresh",Title = "Respawn Character and save position"}
 Cmd[#Cmd + 1] =	{Text = "res / respawn",Title = "Respawn Character not save position"}
 Cmd[#Cmd + 1] =	{Text = "unload / destroygui",Title = "Unload the scripts"}
-Cmd[#Cmd + 1] =	{Text = "reload / update",Title = "Reload the script to new version"}
+Cmd[#Cmd + 1] =	{Text = "reload / update",Title = "Reload the script"}
+Cmd[#Cmd + 1] =	{Text = "voidkill [plr,all,others]",Title = "voidkill the player"}
 Cmd[#Cmd + 1] =	{Text = "How to open console?",Title = "To open console chat /console or press F9 or Fn + F9"}
 Cmd[#Cmd + 1] =	{Text = "lagserver / disconnect",Title = "Lag server and disconnect after 5 minutes of lagging"}
 Cmd[#Cmd + 1] =	{Text = "!getprefix",Title = "If you for get prefix you can type this in chat"}
@@ -561,6 +567,46 @@ function TeleportV(player1, player2)
 	end)
 end
 
+function Control(player)
+        for _, Part in pairs(player.Character:GetDescendants()) do
+		for i = 1,20 do
+			if (Part:IsA("BasePart")) then
+				Remote:FireServer(Part,plr)
+			end
+		end
+	end
+	plr.Character = player.Character
+	workspace.CurrentCamera.CameraSubject = player.Character
+	player.Character.Animate.Disabled = true
+	wait(0.1)
+	player.Character.Animate.Disabled = false
+end
+
+function Refresh()
+	local savedcf = GetPos()
+	local savedcamcf = GetCamPos()
+	game.ReplicatedStorage.Events.Player.SpawnRequestEvent:FireServer()
+	char:Wait() task.wait(0.065)
+	TPCFrame(savedcf)
+	task.wait(0.065)
+	workspace.CurrentCamera.CFrame = savedcamcf
+end
+
+function Speed(player, speed)
+	pcall(function()
+		if (player ~= nil and player.Character ~= nil) then
+			if (player.Character:FindFirstChildOfClass("Part") ~= nil) then
+				for _, Part in pairs(player.Character:GetDescendants()) do
+					if (Part:IsA("BasePart")) then
+						Remote:FireServer(Part,plr)
+					end
+				end
+			player.Character.Humanoid.WalkSpeed = (speed)
+			end
+		end
+	end)
+end
+
 local Mouse = game.Players.LocalPlayer:GetMouse()
 
 local function Notify(Message, Color, Text)
@@ -588,7 +634,7 @@ local function Command(Cmd)
 end
 
 local function PrefixCommand(Cmd)
-	return Arg1 == "!"..Cmd
+	return Arg1 == PrefixCmd..Cmd
 end
 
 --[[if not Slient then
@@ -746,18 +792,69 @@ function PlayerChatted(Message)
 		end
 	end
 	if Command("re") or Command("refresh") then
-		local savedcf = GetPos()
-		local savedcamcf = GetCamPos()
-		game.ReplicatedStorage.Events.Player.SpawnRequestEvent:FireServer()
-		char:Wait() task.wait(0.065)
-		TPCFrame(savedcf)
-		task.wait(0.065)
-		workspace.CurrentCamera.CFrame = savedcamcf
+		Refresh()
 		Notify("Refresh Character", Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("res") or Command("respawn") then
 		game.ReplicatedStorage.Events.Player.SpawnRequestEvent:FireServer()
 		Notify("Respawn Character", Color3.fromRGB(0, 255, 0), "Success")
+	end
+	if Command("control") then
+		local Player = GetPlayer(Arg2)
+		if Player ~= nil then
+			Control(Player)
+			Notify("Control "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
+		else
+			Notify("No Player Found", Color3.fromRGB(255, 0, 0), "Error")
+		end
+	end
+	if Command("speed") then
+		local speed = tonumber(Arg3)
+		if Arg2 == "all" or Arg2 == "everyone" then
+			for i,v in pairs(game.Players:GetPlayers()) do
+				if v.Name ~= plr then
+					Speed(v, speed)
+				end
+			end
+		Notify("Speed all "..speed, Color3.fromRGB(0, 255, 0), "Success")
+		elseif Arg2 == "others" then
+			for i,v in pairs(game.Players:GetPlayers()) do
+				if v ~= plr then
+					Speed(v, speed)
+				end
+			end
+		Notify("Speed others "..speed, Color3.fromRGB(0, 255, 0), "Success")
+		else
+			local Player = GetPlayer(Arg2)
+			if Player ~= nil and speed ~= nil then
+				Speed(Player, speed)
+				Notify("Speed "..Player.Name.." "..speed, Color3.fromRGB(0, 255, 0), "Success")
+			else
+				Notify("No Player Found / No Number Found", Color3.fromRGB(255, 0, 0), "Error")
+			end
+		end
+	end
+	if Command("drag") then
+		if not Arg2 then
+			if Background.Draggable == true or Background2.Draggable == true or Background4.Draggable == true then
+				Background.Draggable = false
+				Background2.Draggable = false
+				Background4.Draggable = false
+			else
+				Background.Draggable = true
+				Background2.Draggable = true
+				Background4.Draggable = true
+			end
+		end
+		if Arg2 == "on" then
+			Background.Draggable = true
+			Background2.Draggable = true
+			Background4.Draggable = true
+		elseif Arg2 == "off" then
+			Background.Draggable = false
+			Background2.Draggable = false
+			Background4.Draggable = false
+		end
 	end
 	if Command("prefix") or Command("newprefix") or Command("changeprefix") then
 		local NewPrefix = Arg2
@@ -769,15 +866,52 @@ function PlayerChatted(Message)
 			Notify("Text needed", Color3.fromRGB(255, 0, 0), "Error")
 		end
 	end
+	if Command("findposition") or Command("findpos") or Command("getposition") or Command("getpos") then
+		local Position = tostring(plr.Character.HumanoidRootPart.Position)
+		Notify("HumanoidRootPart Position : "..Position, Color3.fromRGB(55, 155, 255), "Position")
+		setclipboard(""..Position)
+		Notify("Find Position", Color3.fromRGB(0, 255, 0), "Success")
+	end
 	if Command("leave") or Command("leaveserver") or Command("quit") then
 		Notify("Leaving server", Color3.fromRGB(0, 255, 0), "Success")
 		wait(.1)
 		game:Shutdown()
 	end
+	if Command("voidkill") then
+		if Arg2 == "all" or Arg2 == "everyone" then
+			for i,v in pairs(game.Players:GetPlayers()) do
+				if v.Name ~= plr then
+					for i = 1,2 do wait(.1)
+						Teleport(v, CFrame.new(277, 122, -195))
+					end
+				end
+			end
+		Notify("Void Kill all", Color3.fromRGB(0, 255, 0), "Success")
+		elseif Arg2 == "others" then
+			for i,v in pairs(game.Players:GetPlayers()) do
+				if v ~= plr then
+					for i = 1,2 do wait(.1)
+						Teleport(v, CFrame.new(277, 122, -195))
+					end
+				end
+			end
+		Notify("Void Kill others", Color3.fromRGB(0, 255, 0), "Success")
+		else
+			local Player = GetPlayer(Arg2)
+			if Player ~= nil then
+				for i = 1,3 do wait(.1)
+				Teleport(Player, CFrame.new(277, 122, -195))
+				end
+				Notify("Void kill "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
+			else
+				Notify("No Player Found", Color3.fromRGB(255, 0, 0), "Error")
+			end
+		end
+	end
 	if Command("rejoin") or Command("rj") then
 		Notify("Rejoining server", Color3.fromRGB(0, 255, 0), "Success")
 		wait(.1)
-		game:GetService("TeleportService"):Teleport(game.PlaceId, game.Players.LocalPlayer)
+		game:GetService("TeleportService"):Teleport(game.PlaceId)
 	end
 	if Command("admin") or Command("giveadmin") then
 		local Player = GetPlayer(Arg2)
@@ -928,9 +1062,35 @@ function AdminPlayerChatted(Message, Player)
 			Chat("/w "..Player.Name.." No Player Found")
 		end
 	end
+	if Command("speed") then
+		local speed = tonumber(Arg3)
+		if Arg2 == "all" or Arg2 == "everyone" then
+			for i,v in pairs(game.Players:GetPlayers()) do
+				if v ~= plr then
+					Speed(v, speed)
+				end
+			end
+		Chat("/w "..Player.Name.." Speed all "..speed)
+		elseif Arg2 == "others" then
+			for i,v in pairs(game.Players:GetPlayers()) do
+				if v ~= plr and v ~= Player then
+					Speed(v, speed)
+				end
+			end
+		Chat("/w "..Player.Name.." Speed others "..speed)
+		else
+			local Target = GetPlayer(Arg2)
+			if Target ~= nil then
+				Speed(Target, speed)
+				Chat("/w "..Player.Name.." Speed "..Target.DisplayName.." "..speed)
+			else
+				Chat("/w "..Player.Name.." No Player Found")
+			end
+		end
+	end
 	if Command("cmd") or Command("cmds") then
 		Chat("/w "..Player.Name.." "..Prefix.."kill [plr,all,others] "..Prefix.."loopkill [plr,all,others] "..Prefix.."unloopkill [plr,all,others]") wait(.1)
-		Chat("/w "..Player.Name.." "..Prefix.."bring [plr,all] "..Prefix.."teleport / tp [plr1,plr2] "..Prefix.."goto / to [plr]")
+		Chat("/w "..Player.Name.." "..Prefix.."bring [plr,all] "..Prefix.."teleport / tp [plr1,plr2] "..Prefix.."goto / to [plr] "..Prefix.."speed [plr,all,others] [number]")
 	end
 end
 
@@ -1078,4 +1238,3 @@ getgenv().DisableScript = function()
 		end
 	end)
 end
-
