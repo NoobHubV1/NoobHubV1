@@ -359,7 +359,7 @@ TransparencyBar.MouseButton1Click:Connect(function()
 	end
 end)
 
-local Versions = "1.5"
+local Versions = "1.0"
 local Cmd = {}
 
 Cmd[#Cmd + 1] = {Text = "versions "..Versions,Title = "Script Made NoobHubV1"}
@@ -376,6 +376,8 @@ Cmd[#Cmd + 1] =	{Text = "goto / to [plr]",Title = "teleport the player"}
 Cmd[#Cmd + 1] =	{Text = "loopkill / loopkills [plr,others,all]",Title = "Loop kills the player"}
 Cmd[#Cmd + 1] =	{Text = "unloopkill / unloopkills [plr,others,all]",Title = "Unloop kills the player"}
 Cmd[#Cmd + 1] =	{Text = "prefix / newprefix / changeprefix [prefix text]",Title = "Changes prefix"}
+Cmd[#Cmd + 1] =	{Text = "re / refresh",Title = "Respawn Character and save position"}
+Cmd[#Cmd + 1] =	{Text = "res / respawn",Title = "Respawn Character not save position"}
 Cmd[#Cmd + 1] =	{Text = "unload / destroygui",Title = "Unload the scripts"}
 Cmd[#Cmd + 1] =	{Text = "reload / update",Title = "Reload the script to new version"}
 Cmd[#Cmd + 1] =	{Text = "How to open console?",Title = "To open console chat /console or press F9 or Fn + F9"}
@@ -685,6 +687,7 @@ function PlayerChatted(Message)
 	if Command("unloopkill") or Command("unloopkills") then
           if Arg2 == "all" or Arg2 == "everyone" then
           States.loopkillall = false
+	  States.loopkillother = false
           Notify("Unloop kills all", Color3.fromRGB(0, 255, 0), "Success")
 	  elseif Arg2 == "others" then
 	  States.loopkillothers = false
@@ -741,6 +744,20 @@ function PlayerChatted(Message)
 		else
 		Notify("No Player Found", Color3.fromRGB(255, 0, 0), "Error")
 		end
+	end
+	if Command("re") or Command("refresh") then
+		local savedcf = GetPos()
+		local savedcamcf = GetCamPos()
+		game.ReplicatedStorage.Events.Player.SpawnRequestEvent:FireServer()
+		char:Wait() task.wait(0.065)
+		TPCFrame(savedcf)
+		task.wait(0.065)
+		workspace.CurrentCamera.CFrame = savedcamcf
+		Notify("Refresh Character", Color3.fromRGB(0, 255, 0), "Success")
+	end
+	if Command("res") or Command("respawn") then
+		game.ReplicatedStorage.Events.Player.SpawnRequestEvent:FireServer()
+		Notify("Respawn Character", Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("prefix") or Command("newprefix") or Command("changeprefix") then
 		local NewPrefix = Arg2
@@ -809,22 +826,111 @@ function AdminPlayerChatted(Message, Player)
 	Arg3 = Split[3]
 	Arg4 = Split[4]
 	if Command("kill") or Command("kills") then
-		Kill(GetPlayer(Arg2))
+		if Arg2 == "all" or Arg2 == "everyone" then
+		for i,v in pairs(game.Players:GetPlayers()) do
+			if v ~= plr then
+				Kill(v)
+			end
+		end
+		elseif Arg2 == "others" then
+		for i,v in pairs(game.Players:GetPlayers()) do
+			if v ~= plr and v ~= Player then
+				Kill(v)
+			end
+		end
+		else
+		local Target = GetPlayer(Arg2)
+		if Target ~= nil then
+			Kill(Target)
+			Chat("/w "..Player.Name.." (Success) Killed "..Target.DisplayName)
+		else
+			Chat("/w "..Player.Name.." No Player Found")
+		end
+		end
 	end
 	if Command("loopkill") or Command("loopkills") then
+		if Arg2 == "all" or Arg2 == "everyone" then
+		States.loopkillothers = true
+		Chat("/w "..Player.Name.." (Success) Loop kills all")
+		elseif Arg2 == "others" then
+		States.loopkillother = true
+		Chat("/w "..Player.Name.." (Success) Loop kills others")
+		while task.wait(0.5) do
+			if States.loopkillother then
+				for i,v in pairs(game.players:GetPlayers()) do
+					if v ~= plr and v ~= Player then
+						Kill(v)
+					end
+				end
+			end
+		end
+		else
 		local Player = GetPlayer(Arg2)
 		if Player ~= nil and not LoopKill[Player.UserId] then
 			LoopKill[Player.UserId] = {Player = Player}
 		end
+		end
 	end
 	if Command("unloopkill") or Command("unloopkills") then
+		if Arg2 == "all" or Arg2 == "everyone" then
+		States.loopkillothers = false
+		Chat("/w "..Player.Name.." (Success) Loop kills all")
+		elseif Arg2 == "others" then
+		States.loopkillother = false
+		Chat("/w "..Player.Name.." (Success) Loop kills others")
+		else
 		local Player = GetPlayer(Arg2)
 		if Player ~= nil and LoopKill[Player.UserId] then
 			LoopKill[Player.UserId] = nil
 		end
+		end
+	end
+	if Command("bring") then
+		if Arg2 == "all" or Arg2 == "everyone" or Arg2 == "others" then
+		for i,v in pairs(game.Players:GetPlayers()) do
+			if v ~= plr and v ~= Player then
+				for i = 1,2 do wait(.1)
+				TeleportV(v, Player)
+				end
+			end
+		end
+		Chat("/w "..Player.Name.." Bringing all")
+		else
+		local Target = GetPlayer(Arg2)
+		if Target ~= nil then
+			TeleportV(Target, Player)
+			Chat("/w "..Player.Name.." Bringing "..Target.DisplayName)
+		else
+			Chat("/w "..Player.Name.." No Player Found")
+		end
+		end
+	end
+	if Command("teleport") or Command("tp") then
+		local Player1 = GetPlayer(Arg2)
+		local Player2 = GetPlayer(Arg3)
+		if Player1 ~= nil and Player2 ~= nil then
+			for i = 1,2 do wait(.1)
+				TeleportV(Player1, Player2)
+			end
+			Chat("/w "..Player.Name.." teleport "..Player1.DisplayName.." to "..Player2.DisplayName)
+		else
+			Chat("/w "..Player.Name.." No Player Found")
+		end
+	end
+	if Command("goto") or Command("to") then
+		local Target = GetPlayer(Arg2)
+		if Target ~= nil then
+			for i = 1,2 do wait(.1)
+				TeleportV(Player, Target)
+			end
+			Chat("/w "..Player.Name.." goto "..Target.DisplayName)
+		else
+			Chat("/w "..Player.Name.." No Player Found")
+		end
 	end
 	if Command("cmd") or Command("cmds") then
-		Chat("/w "..Player.Name.." "..Prefix.."kill [plr] "..Prefix.."killinmates")
+		Chat("/w "..Player.Name.." "..Prefix.."kill [plr,all,others] "..Prefix.."loopkill [plr,all,others] "..Prefix.."unloopkill [plr,all,others]") wait(.1)
+		Chat("/w "..Player.Name.." "..Prefix.."bring [plr,all] "..Prefix.."teleport / tp [plr1,plr2] "..Prefix.."goto / to [plr]")
 	end
 end
 
@@ -972,3 +1078,4 @@ getgenv().DisableScript = function()
 		end
 	end)
 end
+
