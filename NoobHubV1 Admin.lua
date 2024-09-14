@@ -620,6 +620,7 @@ function Criminal()
 	TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
 	char:Wait() task.wait(0.065)
 	TPCFrame(savedcf)
+	task.wait(0.065)
 	workspace["CurrentCamera"].CFrame = savedcamcf
 	elseif plr.TeamColor.Name == "Bright orange" then
 	firetouchinterest(plr.Character.HumanoidRootPart, game.Workspace["Criminals Spawn"].SpawnLocation, 0)
@@ -635,16 +636,19 @@ function ChangeTeam(Team)
         TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
         char:Wait() task.wait(0.065)
         TPCFrame(savedcf)
+	task.wait(0.065)
 	workspace["CurrentCamera"].CFrame = savedcamcf
         elseif Team == "Bright blue" then
 	workspace.Remote.TeamEvent:FireServer("Bright blue")
         char:Wait() task.wait(0.065)
         TPCFrame(savedcf)
+	task.wait(0.065)
 	workspace["CurrentCamera"].CFrame = savedcamcf
         elseif Team == "Bright orange" then
         workspace.Remote.TeamEvent:FireServer("Bright orange")
 	char:Wait() task.wait(0.065)
 	TPCFrame(savedcf)
+	task.wait(0.065)
 	workspace.CurrentCamera.CFrame = savedcamcf
 	elseif Team == "Medium stone grey" then
 	workspace.Remote.TeamEvent:FireServer("Medium stone grey")
