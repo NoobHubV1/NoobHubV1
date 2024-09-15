@@ -620,7 +620,6 @@ function Criminal()
 	TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
 	char:Wait() task.wait(0.065)
 	TPCFrame(savedcf)
-	task.wait(0.065)
 	workspace["CurrentCamera"].CFrame = savedcamcf
 	elseif plr.TeamColor.Name == "Bright orange" then
 	firetouchinterest(plr.Character.HumanoidRootPart, game.Workspace["Criminals Spawn"].SpawnLocation, 0)
@@ -636,19 +635,16 @@ function ChangeTeam(Team)
         TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
         char:Wait() task.wait(0.065)
         TPCFrame(savedcf)
-	task.wait(0.065)
 	workspace["CurrentCamera"].CFrame = savedcamcf
         elseif Team == "Bright blue" then
 	workspace.Remote.TeamEvent:FireServer("Bright blue")
         char:Wait() task.wait(0.065)
         TPCFrame(savedcf)
-	task.wait(0.065)
 	workspace["CurrentCamera"].CFrame = savedcamcf
         elseif Team == "Bright orange" then
         workspace.Remote.TeamEvent:FireServer("Bright orange")
 	char:Wait() task.wait(0.065)
 	TPCFrame(savedcf)
-	task.wait(0.065)
 	workspace.CurrentCamera.CFrame = savedcamcf
 	elseif Team == "Medium stone grey" then
 	workspace.Remote.TeamEvent:FireServer("Medium stone grey")
@@ -694,6 +690,68 @@ function KillPlayer(Player)
 			Distance = 0
 		}
 	end
+	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
+end
+
+function KillTeam(Team)
+	local events = {}
+	local gun = plr.Character:FindFirstChild("AK-47") or plr.Backpack:FindFirstChild("AK-47")
+	for i,v in pairs(game.Players:GetPlayers()) do
+		if v ~= game.Players.LocalPlayer and v.TeamColor.Name == Team then
+			for i = 1,10 do
+				events[#events + 1] = {
+					Hit = v.Character:FindFirstChild("Head") or v.Character:FindFirstChildOfClass("Part"),
+					Cframe = CFrame.new(),
+					RayObject = Ray.new(Vector3.new(), Vector3.new()),
+					Distance = 0
+				}
+			end
+		end
+	end
+	GiveItem("AK-47")
+	for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+		if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
+			gun = v
+		end
+	end
+	coroutine.wrap(function()
+		for i = 1,50 do
+			game.ReplicatedStorage.ReloadEvent:FireServer(gun)
+			task.wait()
+		end
+	end)()
+	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
+end
+
+function Kill2Team(Team1, Team2)
+	local events = {}
+	local gun = plr.Character:FindFirstChild("AK-47") or plr.Backpack:FindFirstChild("AK-47")
+	for i,v in pairs(game.Players:GetPlayers()) do
+		if v ~= game.Players.LocalPlayer then
+			if v.TeamColor.Name == Team1 or v.TeamColor.Name == Team2 then
+			for i = 1,10 do
+				events[#events + 1] = {
+					Hit = v.Character:FindFirstChild("Head") or v.Character:FindFirstChildOfClass("Part"),
+					Cframe = CFrame.new(),
+					RayObject = Ray.new(Vector3.new(), Vector3.new()),
+					Distance = 0
+				}
+			end
+			end
+		end
+	end
+	GiveItem("AK-47")
+	for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+		if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
+			gun = v
+		end
+	end
+	coroutine.wrap(function()
+		for i = 1,50 do
+			game.ReplicatedStorage.ReloadEvent:FireServer(gun)
+			task.wait()
+		end
+	end)()
 	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
 end
 
@@ -743,6 +801,102 @@ local function Kill(Player)
         KillPlayer(Player)
 	end
         end
+	end
+end
+
+function CheckKillTeam(TeamPath)
+	if TeamPath == "Bright orange" then
+	for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
+	if v ~= plr then
+	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
+	else
+	if plr.TeamColor.Name == "Really red" then
+	KillTeam("Bright orange")
+	elseif plr.TeamColor.Name == "Bright orange" then
+	Criminal()
+	task.wait(0.1)
+	KillTeam("Bright orange")
+	elseif plr.TeamColor.Name == "Bright blue" then
+	Criminal()
+	task.wait(0.2)
+	KillTeam("Bright orange")
+	end
+	end
+	end
+	end
+	elseif TeamPath == "Bright blue" then
+        for i,v in pairs(game.Teams.Guards:GetPlayers()) do
+	if v ~= plr then
+	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
+	else
+	if plr.TeamColor.Name == "Really red" or plr.TeamColor.Name == "Bright orange" then
+	KillTeam("Bright blue")
+	elseif plr.TeamColor.Name == "Bright blue" then
+	ChangeTeam(game.Teams.Inmates)
+	task.wait(0.2)
+	KillTeam("Bright blue")
+	end
+	end
+	end
+	end
+	elseif TeamPath == "Really red" then
+	for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
+	if v ~= plr then
+	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
+	else
+	if plr.TeamColor.Name == "Really red" then
+	ChangeTeam(BrickColor.new("Bright orange").Name)
+	task.wait(0.2)
+	KillTeam("Really red")
+	elseif plr.TeamColor.Name == "Bright blue" or plr.TeamColor.Name == "Bright orange" then
+	KillTeam("Really red")
+	end
+	end
+	end
+	end
+	end
+end
+
+function KillInmatesAndGuards()
+	for i,v in pairs(game.Players:GetPlayers()) do
+	if v ~= plr then
+	if v.TeamColor.Name == "Bright blue" or v.TeamColor.Name == "Bright orange" then
+	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then
+	else
+	if plr.TeamColor.Name == "Bright orange" or plr.TeamColor.Name == "Bright blue" then
+	Criminal()
+	task.wait(0.2)
+	Kill2Team("Bright orange", "Bright blue")
+	elseif plr.TeamColor.Name == "Really red" then
+	Kill2Team("Bright orange", "Bright blue")
+	end
+	end
+	end
+	end
+	end
+end
+
+function KillAll()
+	for i,v in pairs(game.Players:GetPlayers()) do
+		if v ~= plr then
+			if v.TeamColor.Name == "Bright orange" or v.TeamColor.Name == "Bright blue" then
+				if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
+				else
+					KillInmatesAndGuards()
+				end
+			end
+		end
+	end
+	task.wait(0.1)
+	for i,v in pairs(game.Players:GetPlayers()) do
+		if v ~= plr then
+			if v.TeamColor.Name == "Really red" then
+				if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
+				else
+					CheckKillTeam(BrickColor.new("Really red").Name)
+				end
+			end
+		end
 	end
 end
 
@@ -848,12 +1002,14 @@ function CreateBeam(Player, Distance, Position)
 			local Backpack = game.Players.LocalPlayer.Backpack
 			local Character = game.Players.LocalPlayer.Character
 			local Gun = Backpack:FindFirstChild("Remington 870") or Character:FindFirstChild("Remington 870")
-			if not Gun then
-				GiveItem("Remington 870")
-			end
+			GiveItem("Remington 870")
 			Gun = Backpack:FindFirstChild("Remington 870") or Character:FindFirstChild("Remington 870")
 			local Head = Player.Character.Head
 			if Head and Player and Character and Backpack and Gun and Distance and Position then
+				for i = 1,50 do
+				game.ReplicatedStorage.ReloadEvent:FireServer(Gun)
+				task.wait()
+				end
 				game.ReplicatedStorage.ShootEvent:FireServer({
 					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
 					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
@@ -865,8 +1021,7 @@ function CreateBeam(Player, Distance, Position)
 					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head}
 				}, Gun)
 			end
-			Gun.Parent = game.Players.LocalPlayer.Character
-			game.Players.LocalPlayer.Character:FindFirstChild("Remington 870"):Destroy()
+			
 		end)
 	end
 end
@@ -877,9 +1032,7 @@ function CreateBeam2(Player, Distance, Position)
 			local Backpack = game.Players.LocalPlayer.Backpack
 			local Character = game.Players.LocalPlayer.Character
 			local Gun = Backpack:FindFirstChild("AK-47") or Character:FindFirstChild("AK-47")
-			if not Gun then
-				GiveItem("AK-47")
-			end
+			GiveItem("AK-47")
 			Gun = Backpack:FindFirstChild("AK-47") or Character:FindFirstChild("AK-47")
 			local Head = Player.Character.Head
 			if Head and Player and Character and Backpack and Gun and Distance and Position then
@@ -928,9 +1081,7 @@ function CreateBeam3(Player, Distance, Position)
 			local Backpack = game.Players.LocalPlayer.Backpack
 			local Character = game.Players.LocalPlayer.Character
 			local Gun = Backpack:FindFirstChild("M9") or Character:FindFirstChild("M9")
-			if not Gun then
-				GiveItem("M9")
-			end
+			GiveItem("M9")
 			Gun = Backpack:FindFirstChild("M9") or Character:FindFirstChild("M9")
 			local Head = Player.Character.Head
 			if Head and Player and Character and Backpack and Gun and Distance and Position then
@@ -1459,46 +1610,16 @@ function PlayerChatted(Message)
 	if Command("kill") or Command("kills") then
 		local args = Arg2
 		if args == "all" or args == "everyone" or args == "others" then
-		for i,v in pairs(game.Players:GetPlayers()) do
-			if v ~= game.Players.LocalPlayer then
-				if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then
-					-- nothing
-				else
-				        Kill(v)
-				end
-			end
-		end
+		KillAll()
 		Notify("Killed all players", Color3.fromRGB(0, 255, 0), "Success")
 		elseif args == "inmates" then
-		for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
-			if v ~= game.Players.LocalPlayer then
-				if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then
-					-- nothing
-				else
-				        Kill(v)
-				end
-			end
-		end
+		CheckKillTeam(BrickColor.new("Bright orange").Name)
 		Notify("Killed all inmates", Color3.fromRGB(0, 255, 0), "Success")
 		elseif args == "guards" then
-		for i,v in pairs(game.Teams.Guards:GetPlayers()) do
-			if v ~= game.Players.LocalPlayer then
-				if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then
-					-- nothing
-				else
-				        Kill(v)
-				end
-			end
-		end
+		CheckKillTeam(BrickColor.new("Bright blue").Name)
 		Notify("Killed all guards", Color3.fromRGB(0, 255, 0), "Success")
 		elseif args == "criminals" then
-		for i,v in pairs(game.Players:GetPlayers()) do
-			if v ~= game.Players.LocalPlayer then
-				if v.TeamColor.Name == "Really red" then
-					Kill(v)
-				end
-			end
-		end
+		CheckKillTeam(BrickColor.new("Really red").Name)
 		Notify("Killed all criminals", Color3.fromRGB(0, 255, 0), "Success")
 		else
 		local Player = GetPlayer(args)
@@ -2602,17 +2723,9 @@ end)
 spawn(function()
 	while task.wait(0.5) do
 		if States.loopkillguards then
-			for i,v in pairs(game.Teams.Guards:GetPlayers()) do
-				if v ~= game.Players.LocalPlayer then
-					pcall(function()
-						if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then
-							-- nothing
-						else
-							Kill(v)
-						end
-					end)
-				end
-			end
+			pcall(function()
+				CheckKillTeam(BrickColor.new("Bright blue").Name)
+			end)
 		end
 	end
 end)
@@ -2620,17 +2733,9 @@ end)
 spawn(function()
 	while task.wait(0.5) do
 		if States.loopkillcriminals then
-			for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
-				if v ~= game.Players.LocalPlayer then
-					pcall(function()
-						if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then
-							-- nothing
-						else
-							Kill(v)
-						end
-					end)
-				end
-			end
+			pcall(function()
+				CheckKillTeam(BrickColor.new("Really red").Name)
+			end)
 		end
 	end
 end)
@@ -2638,17 +2743,9 @@ end)
 spawn(function()
 	while task.wait(0.5) do
 		if States.loopkillinmates then
-			for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
-				if v ~= game.Players.LocalPlayer then
-					pcall(function()
-						if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then
-							-- nothing
-						else
-							Kill(v)
-						end
-					end)
-				end
-			end
+			pcall(function()
+				CheckKillTeam(BrickColor.new("Bright orange").Name)
+			end)
 		end
 	end
 end)
@@ -2656,17 +2753,9 @@ end)
 spawn(function()
 	while task.wait(0.5) do
 		if States.loopkillall then
-			for i,v in pairs(game.Players:GetPlayers()) do
-				if v ~= game.Players.LocalPlayer then
-					pcall(function()
-						if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then
-							-- nothing
-						else
-							Kill(v)
-						end
-					end)
-				end
-			end
+			pcall(function()
+				KillAll()
+			end)
 		end
 	end
 end)
