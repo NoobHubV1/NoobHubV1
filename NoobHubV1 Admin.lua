@@ -1007,8 +1007,8 @@ function CreateBeam(Player, Distance, Position)
 			local Head = Player.Character.Head
 			if Head and Player and Character and Backpack and Gun and Distance and Position then
 				for i = 1,50 do
-				game.ReplicatedStorage.ReloadEvent:FireServer(Gun)
-				task.wait()
+					       game.ReplicatedStorage.ReloadEvent:FireServer(Gun)
+					task.wait()
 				end
 				game.ReplicatedStorage.ShootEvent:FireServer({
 					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
@@ -1021,7 +1021,6 @@ function CreateBeam(Player, Distance, Position)
 					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head}
 				}, Gun)
 			end
-			
 		end)
 	end
 end
@@ -1069,6 +1068,7 @@ function CreateBeam2(Player, Distance, Position)
 					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head},
 				}, Gun)
 			end
+			Gun.Handle:Destroy()
 			Gun.Parent = game.Players.LocalPlayer.Character
 			game.Players.LocalPlayer.Character:FindFirstChild("AK-47"):Destroy()
 		end)
@@ -1103,6 +1103,7 @@ function CreateBeam3(Player, Distance, Position)
 					{["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),["Distance"] = Distance,["Cframe"] = Position,["Hit"] = Head}
 				}, Gun)
 			end
+			Gun.Handle:Destroy()
 			Gun.Parent = game.Players.LocalPlayer.Character
 			game.Players.LocalPlayer.Character:FindFirstChild("M9"):Destroy()
 		end)
