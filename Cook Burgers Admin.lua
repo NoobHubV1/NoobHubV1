@@ -37,7 +37,7 @@ Background.BorderSizePixel = 0
 Background.Position = UDim2.new(0.368556708, 0, 0.11490047, 0)
 Background.Size = UDim2.new(0, 350, 0, 350)
 Background.Active = true
-Background.Draggable = false
+Background.Draggable = true
 
 CmdName.Name = "CmdName"
 CmdName.Parent = Background
@@ -141,7 +141,7 @@ Background2.BorderSizePixel = 0
 Background2.Position = UDim2.new(0.012, 0, 0.807, 0)
 Background2.Size = UDim2.new(0, 250, 0, 80)
 Background2.Active = true
-Background2.Draggable = false
+Background2.Draggable = true
 
 Label.Name = "Label"
 Label.Parent = Background2
@@ -212,7 +212,7 @@ Background4.BorderSizePixel = 0
 Background4.Position = UDim2.new(0.0154639352, 0, 0.519107938, 0)
 Background4.Size = UDim2.new(0, 250, 0, 119)
 Background4.Active = true
-Background4.Draggable = false
+Background4.Draggable = true
 
 Notify6.Name = "Notify6"
 Notify6.Parent = Background4
@@ -378,13 +378,14 @@ Cmd[#Cmd + 1] =	{Text = "goto / to [plr]",Title = "teleport the player"}
 Cmd[#Cmd + 1] =	{Text = "loopkill / loopkills [plr,others,all]",Title = "Loop kills the player"}
 Cmd[#Cmd + 1] =	{Text = "unloopkill / unloopkills [plr,others,all]",Title = "Unloop kills the player"}
 Cmd[#Cmd + 1] =	{Text = "control [plr]",Title = "control the player"}
-Cmd[#Cmd + 1] =	{Text = "speed [plr,all,others] [number]",Title = "speed the player"}
+Cmd[#Cmd + 1] =	{Text = "uncontrol [plr,all,others]",Title = "uncontrol the player"}
+Cmd[#Cmd + 1] =	{Text = "speed / ws [plr,all,others] [number]",Title = "speed the player"}
 Cmd[#Cmd + 1] =	{Text = "findposition / findpos / getpos / getposition",Title = "player get pos"}
 Cmd[#Cmd + 1] =	{Text = "prefix / newprefix / changeprefix [prefix text]",Title = "Changes prefix"}
 Cmd[#Cmd + 1] =	{Text = "re / refresh",Title = "Respawn Character and save position"}
 Cmd[#Cmd + 1] =	{Text = "res / respawn",Title = "Respawn Character not save position"}
 Cmd[#Cmd + 1] =	{Text = "unload / destroygui",Title = "Unload the scripts"}
-Cmd[#Cmd + 1] =	{Text = "reload / update",Title = "Reload the script"}
+Cmd[#Cmd + 1] =	{Text = "reload",Title = "Reload the script"}
 Cmd[#Cmd + 1] =	{Text = "voidkill [plr,all,others]",Title = "voidkill the player"}
 Cmd[#Cmd + 1] =	{Text = "void [plr,all,others]",Title = "teleports player to the void"}
 Cmd[#Cmd + 1] =	{Text = "freeze [plr,all,others]",Title = "freeze the player"}
@@ -808,7 +809,11 @@ function PlayerChatted(Message)
 			Notify("No Player Found", Color3.fromRGB(255, 0, 0), "Error")
 		end
 	end
-	if Command("speed") then
+	if Command("uncontrol") then
+		Refresh()
+		Notify("Uncontrol", Color3.fromRGB(0, 255, 0), "Success")
+	end
+	if Command("speed") or Command("ws") then
 		local speed = tonumber(Arg3)
 		if Arg2 == "all" or Arg2 == "everyone" then
 			for i,v in pairs(game.Players:GetPlayers()) do
@@ -912,6 +917,37 @@ function PlayerChatted(Message)
 		Notify("Rejoining server", Color3.fromRGB(0, 255, 0), "Success")
 		wait(.1)
 		game:GetService("TeleportService"):Teleport(game.PlaceId)
+	end
+	if Command("void") then
+		if Arg2 == "all" or Arg2 == "everyone" then
+			for i,v in pairs(game.Players:GetPlayers()) do
+				if v.Name ~= plr then
+					for i = 1,5 do wait(.1)
+						Teleport(v, CFrame.new(7^7, 8^9, 6^7))
+					end
+				end
+			end
+		Notify("Void all", Color3.fromRGB(0, 255, 0), "Success")
+		elseif Arg2 == "others" then
+			for i,v in pairs(game.Players:GetPlayers()) do
+				if v ~= plr then
+					for i = 1,5 do wait(.1)
+						Teleport(v, CFrame.new(7^7, 8^9, 6^7))
+					end
+				end
+			end
+		Notify("Void others", Color3.fromRGB(0, 255, 0), "Success")
+		else
+			local Player = GetPlayer(Arg2)
+			if Player ~= nil then
+				for i = 1,5 do wait(.1)
+				Teleport(Player, CFrame.new(7^7, 8^9, 6^7))
+				end
+				Notify("Void "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
+			else
+				Notify("No Player Found", Color3.fromRGB(255, 0, 0), "Error")
+			end
+		end
 	end
 	if Command("freeze") then
 		if Arg2 == "all" or Arg2 == "everyone" then
@@ -1180,7 +1216,7 @@ function AdminPlayerChatted(Message, Player)
 			Chat("/w "..Player.Name.." No Player Found")
 		end
 	end
-	if Command("speed") then
+	if Command("speed") or Command("ws") then
 		local speed = tonumber(Arg3)
 		if Arg2 == "all" or Arg2 == "everyone" then
 			for i,v in pairs(game.Players:GetPlayers()) do
@@ -1231,7 +1267,154 @@ function AdminPlayerChatted(Message, Player)
 				for i = 1,5 do wait(.1)
 				Teleport(Target, CFrame.new(277, 122, -195))
 				end
-				Chat("/w "..Player.Name.." Voidkill "..Target.DisplayName)
+				Chat("/w "..Player.Name.." Void Kill "..Target.DisplayName)
+			else
+				Chat("/w "..Player.Name.." No Player Found")
+			end
+		end
+	end
+	if Command("freeze") then
+		if Arg2 == "all" or Arg2 == "everyone" then
+			for i,v in pairs(game.Players:GetPlayers()) do
+				if v.Name ~= plr then
+			                pcall(function()
+		                                if (v ~= nil and v.Character ~= nil) then
+							if (v.Character:FindFirstChildOfClass("Part") ~= nil) then
+								for _, Part in pairs(v.Character:GetDescendants()) do
+									if (Part:IsA("BasePart")) then
+										Remote:FireServer(Part,plr)
+									end
+								end
+								v.Character.HumanoidRootPart.Anchored = true
+							end
+						end
+					end)
+				end
+			end
+		Chat("/w "..Player.Name.." Freeze all")
+		elseif Arg2 == "others" then
+			for i,v in pairs(game.Players:GetPlayers()) do
+				if v ~= plr then
+			                pcall(function()
+		                                if (v ~= nil and v.Character ~= nil) then
+							if (v.Character:FindFirstChildOfClass("Part") ~= nil) then
+								for _, Part in pairs(v.Character:GetDescendants()) do
+									if (Part:IsA("BasePart")) then
+										Remote:FireServer(Part,plr)
+									end
+								end
+								v.Character.HumanoidRootPart.Anchored = true
+							end
+						end
+					end)
+				end
+			end
+		Chat("/w "..Player.Name.." Freeze others")
+		else
+			local Target = GetPlayer(Arg2)
+			if Target ~= nil then
+				pcall(function()
+		                        if (Target ~= nil and Target.Character ~= nil) then
+						if (Target.Character:FindFirstChildOfClass("Part") ~= nil) then
+							for _, Part in pairs(Target.Character:GetDescendants()) do
+								if (Part:IsA("BasePart")) then
+									Remote:FireServer(Part,plr)
+								end
+							end
+							Target.Character.HumanoidRootPart.Anchored = true
+						end
+					end
+				end)
+			Chat("/w "..Player.Name.." Freeze "..Target.DisplayName)
+			else
+				Chat("/w "..Player.Name.." No Player Found")
+			end
+		end
+	end
+	if Command("void") then
+		if Arg2 == "all" or Arg2 == "everyone" then
+			for i,v in pairs(game.Players:GetPlayers()) do
+				if v ~= plr then
+					for i = 1,5 do wait(.1)
+						Teleport(v, CFrame.new(7^7, 8^9, 6^7))
+					end
+				end
+			end
+		Chat("/w "..Player.Name.." Void all")
+		elseif Arg2 == "others" then
+			for i,v in pairs(game.Players:GetPlayers()) do
+				if v ~= plr and v ~= Player then
+					for i = 1,5 do wait(.1)
+						Teleport(v, CFrame.new(7^7, 8^9, 6^7))
+					end
+				end
+			end
+		Chat("/w "..Player.Name.." Void others")
+		else
+			local Target = GetPlayer(Arg2)
+			if Target ~= nil then
+				for i = 1,5 do wait(.1)
+				Teleport(Target, CFrame.new(7^7, 8^9, 6^7))
+				end
+				Chat("/w "..Player.Name.." Void "..Target.DisplayName)
+			else
+				Chat("/w "..Player.Name.." No Player Found")
+			end
+		end
+	end
+	if Command("unfreeze") then
+		if Arg2 == "all" or Arg2 == "everyone" then
+			for i,v in pairs(game.Players:GetPlayers()) do
+				if v.Name ~= plr then
+			                pcall(function()
+		                                if (v ~= nil and v.Character ~= nil) then
+							if (v.Character:FindFirstChildOfClass("Part") ~= nil) then
+								for _, Part in pairs(v.Character:GetDescendants()) do
+									if (Part:IsA("BasePart")) then
+										Remote:FireServer(Part,plr)
+									end
+								end
+								v.Character.HumanoidRootPart.Anchored = false
+							end
+						end
+					end)
+				end
+			end
+		Chat("/w "..Player.Name.." Unfreeze all")
+		elseif Arg2 == "others" then
+			for i,v in pairs(game.Players:GetPlayers()) do
+				if v ~= plr then
+			                pcall(function()
+		                                if (v ~= nil and v.Character ~= nil) then
+							if (v.Character:FindFirstChildOfClass("Part") ~= nil) then
+								for _, Part in pairs(v.Character:GetDescendants()) do
+									if (Part:IsA("BasePart")) then
+										Remote:FireServer(Part,plr)
+									end
+								end
+								v.Character.HumanoidRootPart.Anchored = false
+							end
+						end
+					end)
+				end
+			end
+		Chat("/w "..Player.Name.." Unfreeze others")
+		else
+			local Target = GetPlayer(Arg2)
+			if Target ~= nil then
+				pcall(function()
+		                        if (Target ~= nil and Target.Character ~= nil) then
+						if (Target.Character:FindFirstChildOfClass("Part") ~= nil) then
+							for _, Part in pairs(Target.Character:GetDescendants()) do
+								if (Part:IsA("BasePart")) then
+									Remote:FireServer(Part,plr)
+								end
+							end
+							Target.Character.HumanoidRootPart.Anchored = false
+						end
+					end
+				end)
+			Chat("/w "..Player.Name.." Unfreeze "..Target.DisplayName)
 			else
 				Chat("/w "..Player.Name.." No Player Found")
 			end
@@ -1239,7 +1422,8 @@ function AdminPlayerChatted(Message, Player)
 	end
 	if Command("cmd") or Command("cmds") then
 		Chat("/w "..Player.Name.." "..Prefix.."kill [plr,all,others] "..Prefix.."loopkill [plr,all,others] "..Prefix.."unloopkill [plr,all,others]") wait(.1)
-		Chat("/w "..Player.Name.." "..Prefix.."bring [plr,all] "..Prefix.."teleport / tp [plr1,plr2] "..Prefix.."goto / to [plr] "..Prefix.."speed [plr,all,others] [number]")
+		Chat("/w "..Player.Name.." "..Prefix.."bring [plr,all] "..Prefix.."teleport / tp [plr1,plr2] "..Prefix.."goto / to [plr] "..Prefix.."speed / ws [plr,all,others] [number]") wait(.1)
+		Chat("/w "..Player.Name.." "..Prefix.."freeze [plr,all,others] "..Prefix.."unfreeze [plr,all,others] "..Prefix.."voidkill [plr,all,others] "..Prefix.."void [plr,all,others]")
 	end
 end
 
