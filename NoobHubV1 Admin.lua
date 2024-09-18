@@ -755,7 +755,7 @@ function Kill2Team(Team1, Team2)
 	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
 end
 
-local function Kill(Player)
+function Kill(Player)
 	if Player.Character.Humanoid.Health == 0 then -- nothing
 	else
         if Player.TeamColor.Name == "Bright orange" then
@@ -967,6 +967,8 @@ function TaseAll()
 end
 
 function ArrestEvent(Player, Time)
+	local Player = Player or plr
+	local Time = Time or 1
 	for i = 1,Time do
 		workspace.Remote.arrest:InvokeServer(Player.Character.Head)
 	end
@@ -984,7 +986,7 @@ function Arrest(Player, Time)
 			plr.Character.Humanoid.Sit = false
 			for i = 1,Time do
 				coroutine.wrap(function()
-					workspace.Remote.arrest:InvokeServer(Player.Character.Head)
+					ArrestEvent(Player, 1)
 				end)()
 			end
 		until Player.Character.Head:FindFirstChild("handcuffedGui")
@@ -2722,7 +2724,7 @@ spawn(function()
 end)
 
 spawn(function()
-	while task.wait(0.5) do
+	while wait() do
 		if States.loopkillguards then
 			pcall(function()
 				CheckKillTeam(BrickColor.new("Bright blue").Name)
@@ -2732,7 +2734,7 @@ spawn(function()
 end)
 
 spawn(function()
-	while task.wait(0.5) do
+	while wait() do
 		if States.loopkillcriminals then
 			pcall(function()
 				CheckKillTeam(BrickColor.new("Really red").Name)
@@ -2742,7 +2744,7 @@ spawn(function()
 end)
 
 spawn(function()
-	while task.wait(0.5) do
+	while wait() do
 		if States.loopkillinmates then
 			pcall(function()
 				CheckKillTeam(BrickColor.new("Bright orange").Name)
@@ -2752,7 +2754,7 @@ spawn(function()
 end)
 
 spawn(function()
-	while task.wait(0.5) do
+	while wait() do
 		if States.loopkillall then
 			pcall(function()
 				KillAll()
