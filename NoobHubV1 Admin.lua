@@ -1409,7 +1409,7 @@ function PlayerChatted(Message)
 		end
 		Notify("Get all guns", Color3.fromRGB(0, 255, 0), "Success")
 	end
-	if Command("autogun") or Command("autoguns") or Command("autoallguns") then
+	if Command("autogun") or Command("autoguns") or Command("autoallguns") or Command("aguns") then
 		States.autoguns = true
 		Notify("Turn auto guns on", Color3.fromRGB(0, 255, 0), "Success")
 		while wait() do
@@ -1920,18 +1920,22 @@ function PlayerChatted(Message)
 		Notify("Turn anti void off", Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("killaura") then
+		if not Arg2 then
+		States.Kill_Aura = true
+		Notify("Turn kill aura "..plr.Name.." on", Color3.fromRGB(0, 255, 0), "Success")
+		end
 		local Player = GetPlayer(Arg2)
 		if Player ~= nil then
-		States.Kill_Aura = true
+		States.Kill_Aura_Player = true
 		Notify("Turn kill aura "..Player.Name.." on", Color3.fromRGB(0, 255, 0), "Success")
 		else
 		Notify("No Player Found", Color3.fromRGB(255, 0, 0), "Error")
 		end
 		while wait() do
-			if States.Kill_Aura then
+			if States.Kill_Aura_Player then
 				for i,v in pairs(game.Players:GetPlayers()) do
 					if v ~= plr and v ~= Player then
-						if (v.Character.HumanoidRootPart.Position-Player.Character.HumanoidRootPart.Position).Magnitude <= 20 then
+						if (v.Character.HumanoidRootPart.Position-Player.Character.HumanoidRootPart.Position).Magnitude <= 25 then
 							Kill(v)
 						end
 					end
@@ -1940,9 +1944,13 @@ function PlayerChatted(Message)
 		end
 	end
 	if Command("nokillaura") or Command("unkillaura") then
+		if not Arg2 then
+		States.Kill_Aura = false
+		Notify("Turn kill aura "..plr.Name.." off", Color3.fromRGB(0, 255, 0), "Success")
+		end
                 local Player = GetPlayer(Arg2)
 		if Player ~= nil then
-		States.Kill_Aura = false
+		States.Kill_Aura_Player = false
 		Notify("Turn kill aura "..Player.Name.." off", Color3.fromRGB(0, 255, 0), "Success")
 		else
 		Notify("No Player Found", Color3.fromRGB(255, 0, 0), "Error")
@@ -2375,11 +2383,6 @@ function PlayerChatted(Message)
 	if Command("notifybar") then
 		Background4.Visible = true
 	end
-	if Command("unloopbring") then
-		States.LoopBring = false
-		States.PlayerToLoopBring = nil
-		Notify("Unlooping bring", Color3.fromRGB(0, 255, 0), "Success")
-	end
 	if Command("admin") or Command("giveadmin") then
 		local Player = GetPlayer(Arg2)
 		if Player ~= nil and not Admin[Player.UserId] then
@@ -2810,6 +2813,22 @@ spawn(function()
 				if v ~= plr then
 					if (v.Character.HumanoidRootPart.Position-plr.Character.HumanoidRootPart.Position).Magnutide <= 25 then
 						ArrestEvent(v, 5)
+					end
+				end
+			end
+		end
+	end
+end)
+
+spawn(function()
+	while wait() do
+		if States.Kill_Aura then
+			for i,v in pairs(game.Players:GetPlayers()) do
+				if v ~= plr then
+					if (v.Character.HumanoidRootPart.Position-plr.Character.HumanoidRootPart.Position).Magnitude <= 25 then
+						if v.Character.Humanoid.Health ~= 0 or not v.Character:FindFirstChild("ForceField") then
+							Kill(v)
+						end
 					end
 				end
 			end
