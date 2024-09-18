@@ -382,8 +382,7 @@ Cmd[#Cmd + 1] =	{Text = "res / respawn",Title = "Respawn on respawn pads"}
 Cmd[#Cmd + 1] =	{Text = "goto / to [plr]",Title = "Teleports to the player"}
 Cmd[#Cmd + 1] =	{Text = "arrest [plr] [time]",Title = "Arrest player that is a criminal"}
 Cmd[#Cmd + 1] =	{Text = "arrestall / arrestothers",Title = "Arrest all criminals"}
-Cmd[#Cmd + 1] =	{Text = "auto / autore / autorefresh",Title = "Auto respawn on old position when died"}
-Cmd[#Cmd + 1] =	{Text = "unauto / unautore / unautorefresh",Title = "Stop auto respawn on old position when died"}
+Cmd[#Cmd + 1] =	{Text = "auto / autore / autorefresh / autorespawn [on,off]",Title = "Auto respawn on old position when died"}
 Cmd[#Cmd + 1] =	{Text = "killaura [plr]",Title = "Activate kill aura Player"}
 Cmd[#Cmd + 1] =	{Text = "nokillaura / unkillaura [plr]",Title = "Unactivate kill aura Player"}
 Cmd[#Cmd + 1] = {Text = "antifling",Title = "Activate anti fling"}
@@ -468,10 +467,10 @@ Cmd[#Cmd + 1] =	{Text = "unantifell / unantivoid",Title = "Unactivate anti fell 
 Cmd[#Cmd + 1] =	{Text = "beam [plr]",Title = "Shoot a beam to player"}
 Cmd[#Cmd + 1] =	{Text = "lagbeam / beam2 [plr]",Title = "Shoot a beam to player but lag"}
 Cmd[#Cmd + 1] =	{Text = "crash / beam3 [plr]",Title = "Shoot a beam to player but even more lag"}
-Cmd[#Cmd + 1] = {Text = "antiarrest",Title = "Activate anti arrest"}
-Cmd[#Cmd + 1] = {Text = "unantiarrest",Title = "Unactivate anti arrest"}
+Cmd[#Cmd + 1] = {Text = "antiarrest [on,off]",Title = "Activate anti arrest"}
 Cmd[#Cmd + 1] = {Text = "arrestaura",Title = "Activate arrest aura"}
 Cmd[#Cmd + 1] = {Text = "unarrestaura",Title = "Unctivate arrest aura"}
+Cmd[#Cmd + 1] = {Text = "forcefield / ff [on,off]",Title = "Activate forcefield"}
 Cmd[#Cmd + 1] =	{Text = "!getprefix",Title = "If you for get prefix you can type this in chat"}
 
 local Players = game.Players
@@ -1377,12 +1376,22 @@ function PlayerChatted(Message)
 		end
 	end
 	if Command("antiarrest") then
-		States.antiarrest = true
-		Notify("Turn anti arrest on", Color3.fromRGB(0, 255, 0), "Success")
-	end
-	if Command("unantiarrest") then
-		States.antiarrest = false
-		Notify("Turn anti arrest off", Color3.fromRGB(0, 255, 0), "Success")
+		if not Arg2 then
+			if States.antiarrest == true then
+				States.antiarrest = false
+				Notify("Turn anti arrest off", Color3.fromRGB(0, 255, 0), "Success")
+			else
+				States.antiarrest = true
+				Notify("Turn anti arrest on", Color3.fromRGB(0, 255, 0), "Success")
+			end
+		end
+		if Arg2 == "on" then
+			States.antiarrest = true
+			Notify("Turn anti arrest on", Color3.fromRGB(0, 255, 0), "Success")
+		elseif Arg2 == "off" then
+			States.antiarrest = false
+			Notify("Turn anti arrest off", Color3.fromRGB(0, 255, 0), "Success")
+		end
 	end
 	if Command("inmate") or Command("inmates") or Command("prisoner") or Command("prisoners") then
 		ChangeTeam(BrickColor.new("Bright orange").Name)
@@ -1956,13 +1965,23 @@ function PlayerChatted(Message)
 		Notify("No Player Found", Color3.fromRGB(255, 0, 0), "Error")
 		end
 	end
-	if Command("autore") or Command("autorefresh") then
-		States.autorespawn = true
-		Notify("Turn auto refresh on", Color3.fromRGB(0, 255, 0), "Success")
-	end
-	if Command("unautore") or Command("unautorefresh") then
-		States.autorespawn = false
-		Notify("Turn auto refresh off", Color3.fromRGB(0, 255, 0), "Success")
+	if Command("autore") or Command("autorefresh") or Command("autorespawn") then
+		if not Arg2 then
+			if States.autorespawn == true then
+				States.autorespawn = false
+				Notify("Turn auto refresh off", Color3.fromRGB(0, 255, 0), "Success")
+			else
+				States.autorespawn = true
+				Notify("Turn auto refresh on", Color3.fromRGB(0, 255, 0), "Success")
+			end
+		end
+		if Arg2 == "on" then
+			States.autorespawn = true
+			Notify("Turn auto refresh on", Color3.fromRGB(0, 255, 0), "Success")
+		elseif Arg2 == "off" then
+			States.autorespawn = false
+			Notify("Turn auto refresh off", Color3.fromRGB(0, 255, 0), "Success")
+		end
 	end
 	if Command("prefix") or Command("newprefix") or Command("changeprefix") then
 		local NewPrefix = Arg2
@@ -2561,7 +2580,24 @@ function PlayerChatted(Message)
 		end
 		Notify("Showed Commands", Color3.fromRGB(0, 255, 0), "Success")
 	end
-
+	if Command("forcefield") or Command("ff") then
+		if not Arg2 then
+			if States.ff == true then
+				States.ff = false
+				Notify("Turn forcefield off", Color3.fromRGB(0, 255, 0), "Success")
+			else
+				States.ff = true
+				Notify("Turn forcefield on", Color3.fromRGB(0, 255, 0), "Success")
+			end
+		end
+		if Arg2 == "on" then
+			States.ff = true
+			Notify("Turn forcefield on", Color3.fromRGB(0, 255, 0), "Success")
+		elseif Arg2 == "off" then
+			States.ff = false
+			Notify("Turn forcefield off", Color3.fromRGB(0, 255, 0), "Success")
+		end
+	end
 end
 
 function AdminPlayerChatted(Message, Player)
@@ -2831,6 +2867,16 @@ spawn(function()
 						end
 					end
 				end
+			end
+		end
+	end
+end)
+
+spawn(function()
+	while wait() do
+		if States.ff then
+			if not game.Players.LocalPlayer.Character:FindFirstChild("ForceField") then
+				ChangeTeam(BrickColor.new(plr.TeamColor.Name).Name)
 			end
 		end
 	end
