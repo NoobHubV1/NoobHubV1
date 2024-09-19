@@ -462,6 +462,7 @@ Cmd[#Cmd + 1] =	{Text = "uncopychat",Title = "uncopies all players chats"}
 Cmd[#Cmd + 1] =	{Text = "chatnotify",Title = "Chats when player leave / join"}
 Cmd[#Cmd + 1] =	{Text = "unchatnotify / nochatnotify",Title = "Stop chat when player leave / join"}
 Cmd[#Cmd + 1] =	{Text = "opengate",Title = "Open the gate"}
+Cmd[#Cmd + 1] = {Text = "bring [plr]",Title = "Teleport player to me"}
 Cmd[#Cmd + 1] =	{Text = "antifell / antivoid",Title = "Activate anti fell to the void when respawn as custom team"}
 Cmd[#Cmd + 1] =	{Text = "unantifell / unantivoid",Title = "Unactivate anti fell to the void when respawn as custom team"}
 Cmd[#Cmd + 1] =	{Text = "beam [plr]",Title = "Shoot a beam to player"}
@@ -1111,6 +1112,7 @@ end
 
 function Bring(Target,TeleportTo)
 	if not TeleportTo then TeleportTo = GetPos() end
+	local LastPosition = GetPos()
 	local CarSelected = nil
 	local Seat = nil
 	local Attempts = 0
@@ -1157,6 +1159,10 @@ function Bring(Target,TeleportTo)
 			task.wait()
 			CarSelected:SetPrimaryPartCFrame(TeleportTo)
 		end
+		repeat
+		        plr.Character:FindFirstChildOfClass("Humanoid").Sit = false
+		until plr.Character.Humanoid.Sit == false
+		TPCFrame(LastPosition)
 	end
 end
 
