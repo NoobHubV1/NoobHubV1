@@ -612,6 +612,18 @@ function TPCFrame(Arg2)
 	plr.Character.HumanoidRootPart.CFrame = Arg2
 end
 
+function GuardsFull(a)
+	if #game:GetService("Teams").Guards:GetPlayers()==8 then
+		if a then
+			if Player.Team == game.Teams.Guards then
+				return false
+			end
+		end
+		return false
+	end
+	return true
+end
+
 function Criminal()
 	local savedcf = GetPos()
 	local savedcamcf = GetCamPos()
@@ -625,29 +637,57 @@ function Criminal()
 	end
 end
 
-function ChangeTeam(Team)
-	local savedcf = GetPos()
-	local savedcamcf = GetCamPos()
-        if Team == "Really red" then
-        workspace.Remote.TeamEvent:FireServer("Bright blue")
-	char:Wait() task.wait(0.065)
-        TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
-        char:Wait() task.wait(0.065)
-        TPCFrame(savedcf)
-	workspace["CurrentCamera"].CFrame = savedcamcf
-        elseif Team == "Bright blue" then
-	workspace.Remote.TeamEvent:FireServer("Bright blue")
-        char:Wait() task.wait(0.065)
-        TPCFrame(savedcf)
-	workspace["CurrentCamera"].CFrame = savedcamcf
-        elseif Team == "Bright orange" then
-        workspace.Remote.TeamEvent:FireServer("Bright orange")
-	char:Wait() task.wait(0.065)
-	TPCFrame(savedcf)
-	workspace.CurrentCamera.CFrame = savedcamcf
-	elseif Team == "Medium stone grey" then
-	workspace.Remote.TeamEvent:FireServer("Medium stone grey")
+function ChangeTeam(Team, Position, NoForce)
+	if not Position then Position = GetPos() end
+	if typeof(Position):lower() == "position" then Position = CFrame.new(Position) end
+	local LastPosition = GetPos()
+	local LastCameraPosition = workspace.CurrentCamera.CFrame
+	if not Team then Team = plr.TeamColor.Name end
+	local done = false
+	Respawned = plr.CharacterAdded:Connect(function(c)
+		if done then return end
+		done = true
+		task.spawn(function()
+			workspace.CurrentCamera.CameraType = Enum.CameraType.Scriptable
+			wait(.1)
+			workspace.CurrentCamera.CameraType = Enum.CameraType.Custom
+			workspace.CurrentCamera.CameraSubject = plr.Character:WaitForChild("Humanoid")
+
+		end)
+		task.spawn(function()
+			c:WaitForChild("ForceField"):Destroy()
+		end)
+		for i =1,10 do
+			c:WaitForChild("HumanoidRootPart").CFrame = LastPosition
+			game:GetService("RunService").Stepped:Wait()
+		end
+		Position = nil--// why the fuck it keep spawning somewhere else!!!! GRRRRR
+		NoForce = nil
+		LastCameraPosition = nil
+		Team = nil
+	end)
+	if Team ~= "Really red" then
+		Position = Position
+		workspace.Remote.TeamEvent:FireServer(Team)
+	else
+		if not GuardsFull(true) then
+			workspace.Remote.TeamEvent:FireServer("Bright blue")
+		else
+			workspace.Remote.TeamEvent:FireServer("Bright orange")
+		end
+		repeat
+			game:GetService("RunService").Stepped:Wait()
+			if firetouchinterest then
+				firetouchinterest(plr.Character:FindFirstChildOfClass("Part"), game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1], 0)
+				firetouchinterest(plr.Character:FindFirstChildOfClass("Part"), game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1], 1)
+			end
+			game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1].Transparency = 1
+			game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1].CanCollide = false
+			game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1].CFrame = GetPos()
+		until plr.TeamColor.Name == "Really red"
+		game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1].CFrame = CFrame.new(0, 3125, 0)
 	end
+	return nil
 end
 
 function GiveItem(Item)
@@ -663,6 +703,19 @@ function GiveItem(Item)
                 Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["M9"]})
         elseif Item == "M4A1" then
                 Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["M4A1"]})
+	end
+end
+
+function Guns()
+	if BuyGamepass then
+		GiveItem("Remington 870")
+		GiveItem("AK-47")
+		GiveItem("M9")
+		GiveItem("M4A1")
+	else
+		GiveItem("Remington 870")
+		GiveItem("AK-47")
+		GiveItem("M9")
 	end
 end
 
@@ -1406,35 +1459,12 @@ function PlayerChatted(Message)
 		end
 	end
 	if Command("gun") or Command("guns") or Command("allguns") then
-		if BuyGamepass then
-			GiveItem("AK-47")
-			GiveItem("Remington 870")
-			GiveItem("M9")
-			GiveItem("M4A1")
-		else
-			GiveItem("AK-47")
-			GiveItem("Remington 870")
-			GiveItem("M9")
-		end
+		Guns()
 		Notify("Get all guns", Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("autogun") or Command("autoguns") or Command("autoallguns") or Command("aguns") then
 		States.autoguns = true
 		Notify("Turn auto guns on", Color3.fromRGB(0, 255, 0), "Success")
-		while wait() do
-			if States.autoguns then
-				if BuyGamepass then
-					GiveItem("AK-47")
-					GiveItem("Remington 870")
-					GiveItem("M9")
-					GiveItem("M4A1")
-				else
-					GiveItem("AK-47")
-					GiveItem("Remington 870")
-					GiveItem("M9")
-				end
-			end
-		end
 	end
 	if Command("unautogun") or Command("unautoguns") or Command("unautoallguns") then
 		States.autoguns = false
@@ -2728,6 +2758,28 @@ end
 
 game.Players.LocalPlayer.Chatted:Connect(PlayerChatted)
 
+plr.CharacterAdded:Connect(function(NewChar)
+	NewChar:WaitForChild("Humanoid")
+	if States.autoguns then
+		Guns()
+	end
+	if States.autorespawn then
+		NewChar:WaitForChild("Humanoid").BreakJointsOnDeath = not States.autorespawn
+		NewChar:WaitForChild("Humanoid").Died:Connect(function()
+			if States.autorespawn == true then
+				local savedteam = GetTeam()
+				ChangeTeam(BrickColor.new(savedteam).Name)
+				task.spawn(function()
+					if States.autoguns then
+						wait(.5)
+						Guns()
+					end
+				end)
+			end
+		end)
+	end
+end)
+
 spawn(function()
 	while wait() do
 		for i,v in pairs(LoopKill) do
@@ -2810,16 +2862,6 @@ spawn(function()
 					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(888, 100, 2388)
 				end
 			end)
-		end
-	end
-end)
-
-spawn(function()
-	while wait() do
-		if States.autorespawn then
-			if plr.Character.Humanoid.Health < 1 then
-				ChangeTeam(BrickColor.new(plr.TeamColor.Name).Name)
-			end
 		end
 	end
 end)
