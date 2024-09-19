@@ -471,6 +471,7 @@ Cmd[#Cmd + 1] = {Text = "antiarrest [on,off]",Title = "Activate anti arrest"}
 Cmd[#Cmd + 1] = {Text = "arrestaura",Title = "Activate arrest aura"}
 Cmd[#Cmd + 1] = {Text = "unarrestaura",Title = "Unctivate arrest aura"}
 Cmd[#Cmd + 1] = {Text = "forcefield / ff [on,off]",Title = "Activate forcefield"}
+Cmd[#Cmd + 1] = {Text = "car",Title = "Bring Car"}
 Cmd[#Cmd + 1] =	{Text = "!getprefix",Title = "If you for get prefix you can type this in chat"}
 
 local Players = game.Players
@@ -557,6 +558,21 @@ local function GetPlayer(String)
 	end
 end
 
+function Notify(Message, Color, Text)
+	Notify6.Text = Notify5.Text
+	Notify6.TextColor3 = Notify5.TextColor3
+	Notify5.Text = Notify4.Text
+	Notify5.TextColor3 = Notify4.TextColor3
+	Notify4.Text = Notify3.Text
+	Notify4.TextColor3 = Notify3.TextColor3
+	Notify3.Text = Notify2.Text
+	Notify3.TextColor3 = Notify2.TextColor3
+	Notify2.Text = Notify1.Text
+	Notify2.TextColor3 = Notify1.TextColor3
+	Notify1.Text = "["..Text.."] "..Message
+	Notify1.TextColor3 = Color or Color3.fromRGB(255, 255, 255)
+end
+
 local function GetPos()
 	return plr.Character.HumanoidRootPart.CFrame
 end
@@ -615,7 +631,7 @@ end
 function GuardsFull(a)
 	if #game:GetService("Teams").Guards:GetPlayers()==8 then
 		if a then
-			if Player.Team == game.Teams.Guards then
+			if plr.TeamColor.Name == "Bright blue" then
 				return false
 			end
 		end
@@ -657,7 +673,7 @@ function ChangeTeam(Team, Position, NoForce)
 		task.spawn(function()
 			c:WaitForChild("ForceField"):Destroy()
 		end)
-		for i =1,10 do
+		for i =1,7 do
 			c:WaitForChild("HumanoidRootPart").CFrame = LastPosition
 			game:GetService("RunService").Stepped:Wait()
 		end
@@ -1050,6 +1066,100 @@ function Arrest(Player, Time)
 	end
 end
 
+function GetCar(To)
+	if not To then To = GetPos() end
+	local Car = nil
+	local L = GetPos()
+	for i,v in pairs(game:GetService("Workspace").CarContainer:GetChildren()) do
+		if v and v:IsA("Model") then
+			if v:WaitForChild("Body"):WaitForChild("VehicleSeat").Occupant == nil then
+				Car = v
+			end
+		end
+	end
+	if not Car then
+		coroutine.wrap(function()
+			if not Car then
+				Car = game:GetService("Workspace").CarContainer.ChildAdded:Wait()
+			end
+		end)()
+		for i = 1,3 do
+		task.wait()
+		TPCFrame(game:GetService("Workspace").Prison_ITEMS.buttons:GetChildren()[7]["Car Spawner"].CFrame*CFrame.new(0,2.5,0))
+		end
+		wait(.23)
+		repeat task.wait()
+			task.spawn(function()
+				workspace.Remote.ItemHandler:InvokeServer(game:GetService("Workspace").Prison_ITEMS.buttons:GetChildren()[7]["Car Spawner"])
+			end)
+		until Car
+	end
+	repeat task.wait() until Car
+	Car:WaitForChild("Body"):WaitForChild("VehicleSeat")
+	Car.PrimaryPart = Car.Body.VehicleSeat
+	local Seat = Car.Body.VehicleSeat
+	TPCFrame(To)
+	repeat task.wait()
+		Car:SetPrimaryPartCFrame(To)
+		Seat:Sit(plr.Character:FindFirstChildOfClass("Humanoid"))
+	until plr.Character:FindFirstChildOfClass("Humanoid").Sit == true
+	Car:SetPrimaryPartCFrame(To)
+	plr.Character:FindFirstChildOfClass('Humanoid').Sit = false
+	wait()
+	TPCFrame(L)
+end
+
+function Bring(Target,TeleportTo)
+	if not TeleportTo then TeleportTo = GetPos() end
+	local CarSelected = nil
+	local Seat = nil
+	local Attempts = 0
+	for i,v in pairs(game:GetService("Workspace").CarContainer:GetChildren()) do
+		if v then
+			if v:WaitForChild("Body"):WaitForChild("VehicleSeat").Occupant == nil then
+				CarSelected = v
+			end
+		end
+	end
+	if not CarSelected then
+		coroutine.wrap(function()
+			if not CarSelected then
+				CarSelected = game:GetService("Workspace").CarContainer.ChildAdded:Wait()
+			end
+		end)()
+		for i = 1,3 do task.wait()
+		TPCFrame(game:GetService("Workspace").Prison_ITEMS.buttons:GetChildren()[7]["Car Spawner"].CFrame*CFrame.new(0,2.5,0))
+		end
+		wait(.23)
+		repeat task.wait()
+			task.spawn(function()
+				workspace.Remote.ItemHandler:InvokeServer(game:GetService("Workspace").Prison_ITEMS.buttons:GetChildren()[7]["Car Spawner"])
+			end)
+		until CarSelected
+	end
+	repeat game:GetService("RunService").RenderStepped:Wait() until CarSelected ~= nil
+	if CarSelected then
+		CarSelected:WaitForChild("Body"):WaitForChild("VehicleSeat")
+		CarSelected.PrimaryPart = CarSelected.Body.VehicleSeat
+		Seat = CarSelected.Body.VehicleSeat
+		CarSelected:SetPrimaryPartCFrame(plr.Character:GetPrimaryPartCFrame())
+		repeat task.wait()
+			Seat:Sit(plr.Character:FindFirstChildOfClass("Humanoid"))
+		until plr.Character:FindFirstChildOfClass("Humanoid").Sit == true
+		repeat game:GetService("RunService").RenderStepped:Wait()
+			Attempts = Attempts+1
+			if not Target.Character or Target.Character:FindFirstChildOfClass("Humanoid").Health <1 then
+				break
+			end
+			CarSelected:SetPrimaryPartCFrame(Target.Character:GetPrimaryPartCFrame()*CFrame.new(0,-.2,-5))
+		until Target.Character:FindFirstChildOfClass("Humanoid").Sit == true or Attempts >500
+		for i =1,5 do
+			task.wait()
+			CarSelected:SetPrimaryPartCFrame(TeleportTo)
+		end
+	end
+end
+
 function CreateBeam(Player, Distance, Position)
 	if Player then
 		pcall(function()
@@ -1229,6 +1339,43 @@ function FeGodMode()
 	game.Workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character
 end
 
+function ChangeState(Name,arg2)
+	if States[Name] == nil then
+		States[Name] = false
+	end
+	if States[Name] ~= nil then
+		if arg2 then
+			if arg2 == "on" then
+				States[Name] = true
+				Notify("Turn "..Name.." "..arg2, Color3.fromRGB(0, 255, 0), "Success")
+			elseif arg2 == "off" then
+				States[Name] = false
+				Notify("Turn "..Name.." "..arg2, Color3.fromRGB(0, 255, 0), "Success")
+			end
+			return
+		end
+		States[Name] = not States[Name]
+	end
+end
+
+function BadArea(Player)
+	local mod = require(game.ReplicatedStorage["Modules_client"]["RegionModule_client"])
+	local a = pcall(function()
+		if mod.findRegion(Player.Character) then
+			mod = mod.findRegion(Player.Character)["Name"]
+		end
+	end)
+	if not a then
+		return
+	end
+	for i, v in pairs(game:GetService("ReplicatedStorage").PermittedRegions:GetChildren()) do
+		if v and mod == v.Value then
+			return false
+		end
+	end
+	return true
+end
+
 local function GetPlayerPart(Player)
 	if not Player then return end
 	if Player:FindFirstChild("HumanoidRootPart") then
@@ -1278,21 +1425,6 @@ function PlayerPickUp(Player)
 			})
 		end
 	end)
-end
-
-local function Notify(Message, Color, Text)
-	Notify6.Text = Notify5.Text
-	Notify6.TextColor3 = Notify5.TextColor3
-	Notify5.Text = Notify4.Text
-	Notify5.TextColor3 = Notify4.TextColor3
-	Notify4.Text = Notify3.Text
-	Notify4.TextColor3 = Notify3.TextColor3
-	Notify3.Text = Notify2.Text
-	Notify3.TextColor3 = Notify2.TextColor3
-	Notify2.Text = Notify1.Text
-	Notify2.TextColor3 = Notify1.TextColor3
-	Notify1.Text = "["..Text.."] "..Message
-	Notify1.TextColor3 = Color or Color3.fromRGB(255, 255, 255)
 end
 
 local function Loadstring(Https)
@@ -1430,21 +1562,13 @@ function PlayerChatted(Message)
 	end
 	if Command("antiarrest") then
 		if not Arg2 then
-			if States.antiarrest == true then
-				States.antiarrest = false
-				Notify("Turn anti arrest off", Color3.fromRGB(0, 255, 0), "Success")
+			if ChangeState("antiarrest","on") then
+				ChangeState("antiarrest","off")
 			else
-				States.antiarrest = true
-				Notify("Turn anti arrest on", Color3.fromRGB(0, 255, 0), "Success")
+				ChangeState("antiarrest","on")
 			end
 		end
-		if Arg2 == "on" then
-			States.antiarrest = true
-			Notify("Turn anti arrest on", Color3.fromRGB(0, 255, 0), "Success")
-		elseif Arg2 == "off" then
-			States.antiarrest = false
-			Notify("Turn anti arrest off", Color3.fromRGB(0, 255, 0), "Success")
-		end
+		ChangeState("antiarrest",Arg2)
 	end
 	if Command("inmate") or Command("inmates") or Command("prisoner") or Command("prisoners") then
 		ChangeTeam(BrickColor.new("Bright orange").Name)
@@ -1463,12 +1587,15 @@ function PlayerChatted(Message)
 		Notify("Get all guns", Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("autogun") or Command("autoguns") or Command("autoallguns") or Command("aguns") then
-		States.autoguns = true
-		Notify("Turn auto guns on", Color3.fromRGB(0, 255, 0), "Success")
-	end
-	if Command("unautogun") or Command("unautoguns") or Command("unautoallguns") then
-		States.autoguns = false
-		Notify("Turn auto guns off", Color3.fromRGB(0, 255, 0), "Success")
+		local State = "autoguns"
+		if not Arg2 then
+			if States.autoguns == true then
+				ChangeState(State,"off")
+			else
+				ChangeState(State,"on")
+			end
+		end
+		ChangeState(State,Arg2)
 	end
 	if Command("loopgoto") or Command("loopto") then
 		local Player = GetPlayer(Arg2)
@@ -1569,26 +1696,22 @@ function PlayerChatted(Message)
 		States.ChatNotify = false
 		Notify("Turn chat notify off", Color3.fromRGB(0, 255, 0), "Success")
 	end
-	if Command("taserbypass") or Command("lock") or Command("antitaser") then
-		States.TaserBypass = true
+	if Command("antitase") or Command("antitaser") then
+		if not Arg2 then
+			if States.antitase == true then
+				ChangeState("antitase","on")
+				local savedteam = GetTeam()
+		                ChangeTeam(BrickColor.new(savedteam).Name)
+			else
+				ChangeState("antitase","off")
+				local savedteam = GetTeam()
+		                ChangeTeam(BrickColor.new(savedteam).Name)
+				
+			end
+		end
+		ChangeState("antitase",Arg2)
 		local savedteam = GetTeam()
 		ChangeTeam(BrickColor.new(savedteam).Name)
-		Notify("Turn taser bypass on", Color3.fromRGB(0, 255, 0), "Success")
-		game.Players.LocalPlayer.CharacterAdded:Connect(function()
-			if States.TaserBypass then
-				wait(.2)
-				game.Players.LocalPlayer.Character.ClientInputHandler.Disabled = true
-				game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 24
-				game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
-			end
-		end)
-	end
-	if Command("notaserbypass") or Command("unlock") or Command("untaserbypass") then
-		States.TaserBypass = false
-		Notify("Turn taser bypass off", Color3.fromRGB(0, 255, 0), "Success")
-		game.Players.LocalPlayer.Character.ClientInputHandler.Disabled = false
-		game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
-		game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
 	end
 	if Command("print") then
 		print(Message)
@@ -1907,6 +2030,15 @@ function PlayerChatted(Message)
 		States.SuperPunch = false
 		Notify("Turn super punch off", Color3.fromRGB(0, 255, 0), "Success")
 	end
+	if Command("bring") then
+		local Player = GetPlayer(Arg2)
+		if Player ~= nil then
+			Bring(Player)
+			Notify("Bring "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
+		else
+			Notify("No Player Found", Color3.fromRGB(255, 0, 0), "Error")
+		end
+	end
 	if Command("superknife") then
 		local Knife = game.Players.LocalPlayer.Backpack:FindFirstChild("Crude Knife") or game.Players.LocalPlayer.Character:FindFirstChild("Crude Knife")
 		if not Knife then
@@ -1996,22 +2128,25 @@ function PlayerChatted(Message)
 		end
 	end
 	if Command("autore") or Command("autorefresh") or Command("autorespawn") then
+		local State = "autorespawn"
 		if not Arg2 then
-			if States.autorespawn == true then
-				States.autorespawn = false
-				Notify("Turn auto refresh off", Color3.fromRGB(0, 255, 0), "Success")
+			if States[State] == true then
+				ChangeState(State,"off")
+				local savedteam = GetTeam()
+				ChangeTeam(BrickColor.new(savedteam).Name)
 			else
-				States.autorespawn = true
-				Notify("Turn auto refresh on", Color3.fromRGB(0, 255, 0), "Success")
+				ChangeState(State,"on")
+				local savedteam = GetTeam()
+		                ChangeTeam(BrickColor.new(savedteam).Name)
 			end
 		end
-		if Arg2 == "on" then
-			States.autorespawn = true
-			Notify("Turn auto refresh on", Color3.fromRGB(0, 255, 0), "Success")
-		elseif Arg2 == "off" then
-			States.autorespawn = false
-			Notify("Turn auto refresh off", Color3.fromRGB(0, 255, 0), "Success")
-		end
+		ChangeState(State,Arg2)
+		local savedteam = GetTeam()
+		ChangeTeam(BrickColor.new(savedteam).Name)
+	end
+	if Command("car") then
+		GetCar()
+		Notify("Teleport Car To "..plr.DisplayName, Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("prefix") or Command("newprefix") or Command("changeprefix") then
 		local NewPrefix = Arg2
@@ -2204,23 +2339,21 @@ function PlayerChatted(Message)
 		Notify("Turn god mode off", Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("arrest") or Command("handcuffs") then
-		local Player = GetPlayer(Arg2)
-		if Player ~= nil then
-			Arrest(Player, tonumber(Arg3))
-			Notify("Arrested "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
-			else
-			Notify("No player found", Color3.fromRGB(255, 0, 0), "Error")
-		end
-	end
-	if Command("arrestall") or Command("arrestother") or Command("arrestothers") then
-		for i,v in pairs(game.Players:GetPlayers()) do
-			if v ~= game.Players.LocalPlayer then
-				if v.TeamColor.Name == "Really red" then
-					Arrest(v)
-				end
+		if Arg2 == "all" then
+			for i,v in pairs(game:GetService("Players"):GetPlayers()) do
+			if v and v~= game:GetService("Players").LocalPlayer and v.TeamColor.Name == "Really red" or (BadArea(v) and v.TeamColor.Name == "Bright orange") and v.Character.PrimaryPart and v.Character:FindFirstChildOfClass("Humanoid").Health>0 then
+				Arrest(v, tonumber(Arg3))
 			end
 		end
-		Notify("Arrested all criminals", Color3.fromRGB(0, 255, 0), "Success")
+		else
+			local Player = GetPlayer(Arg2)
+			if Player ~= nil then
+				Arrest(Player, tonumber(Arg3))
+				Notify("Arrested "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
+			else
+				Notify("No player found", Color3.fromRGB(255, 0, 0), "Error")
+			end
+		end
 	end
 	if Command("opengate") then
 		workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.buttons["Prison Gate"]["Prison Gate"])
@@ -2769,7 +2902,7 @@ plr.CharacterAdded:Connect(function(NewChar)
 			if States.autorespawn == true then
 				local savedteam = GetTeam()
 				ChangeTeam(BrickColor.new(savedteam).Name)
-				task.spawn(function()
+				pcall(function()
 					if States.autoguns then
 						wait(.5)
 						Guns()
@@ -2922,6 +3055,17 @@ spawn(function()
 			end
 		end
 	end
+end)
+
+spawn(function()
+	game.Players.LocalPlayer.CharacterAdded:Connect(function()
+		if States.antitase then
+			wait(.2)
+			game.Players.LocalPlayer.Character.ClientInputHandler.Disabled = true
+			game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = 16
+			game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
+		end
+	end)
 end)
 		
 function CheckPermissions(Player)
