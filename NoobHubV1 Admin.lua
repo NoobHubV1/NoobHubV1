@@ -479,6 +479,8 @@ Cmd[#Cmd + 1] =	{Text = "!getprefix",Title = "If you for get prefix you can type
 local States = {}
       States.autorespawn = true
       States.autoguns = true
+      States.ff = false
+      States.Godmode = false
 
 local Players = game.Players
 local plr = Players.LocalPlayer
@@ -678,10 +680,10 @@ function ChangeTeam(Team, Position, NoForce)
 		task.spawn(function()
 			c:WaitForChild("ForceField"):Destroy()
 		end)
-		for i =1,7 do
+		repeat task.wait()
 			c:WaitForChild("HumanoidRootPart").CFrame = LastPosition
 			game:GetService("RunService").Stepped:Wait()
-		end
+		until c:WaitForChild("HumanoidRootPart").CFrame == LastPosition
 		Position = nil--// why the fuck it keep spawning somewhere else!!!! GRRRRR
 		NoForce = nil
 		LastCameraPosition = nil
@@ -692,7 +694,8 @@ function ChangeTeam(Team, Position, NoForce)
 		workspace.Remote.TeamEvent:FireServer(Team)
 	else
 		workspace.Remote.TeamEvent:FireServer("Bright orange")
-		repeat
+		plr.CharacterAdded:Wait() wait()
+		repeat task.wait()
 			game:GetService("RunService").Stepped:Wait()
 			if firetouchinterest then
 				firetouchinterest(plr.Character:FindFirstChildOfClass("Part"), game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1], 0)
@@ -702,7 +705,7 @@ function ChangeTeam(Team, Position, NoForce)
 			game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1].CanCollide = false
 			game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1].CFrame = GetPos()
 		until plr.TeamColor.Name == "Really red"
-		game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1].CFrame = CFrame.new(0, 3125, 0)
+		wait(.3)
 	end
 	return nil
 end
@@ -1862,10 +1865,10 @@ function PlayerChatted(Message)
 		Notify("Refreshed", Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("res") or Command("respawn") then
-		if plr.TeamColor.Name ~= "Medium stone grey" then
+		if plr.TeamColor.Name ~= "Really red" then
 			workspace.Remote.TeamEvent:FireServer(BrickColor.new(plr.TeamColor.Name).Name)
 		else
-			workspace.Remote.TeamEvent:FireServer(BrickColor.new("Medium stone grey").Name)
+			-- nothing
 		end
 		Notify("Respawned", Color3.fromRGB(0, 255, 0), "Success")
 	end
@@ -2324,27 +2327,15 @@ function PlayerChatted(Message)
 		Notify("Restored walls", Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("god") or Command("godmode") then
-		States.God_Mode = true
-		Notify("Turn god mode on", Color3.fromRGB(0, 255, 0), "Success")
-		while wait() do
-			if States.God_Mode then
-				game.Players.LocalPlayer.Character.Humanoid.Name = 1
-				local l = game.Players.LocalPlayer.Character["1"]:Clone()
-				l.Parent = game.Players.LocalPlayer.Character
-				l.Name = "Humanoid"
-				game.Players.LocalPlayer.Character.Animate.Disabled = true
-				wait()
-				game.Players.LocalPlayer.Character.Animate.Disabled = false
-				game.Players.LocalPlayer.Character["1"]:Destroy()
-				game.Workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character
-				wait(1)
-				ChangeTeam(BrickColor.new(plr.TeamColor.Name).Name)
+		local State = "Godmode"
+		if not Arg2 then
+			if States.Godmode == true then
+				ChangeState(State,"off")
+			else
+				ChangeState(State,"on")
 			end
 		end
-	end
-	if Command("ungod") or Command("ungodmode") then
-		States.God_Mode = false
-		Notify("Turn god mode off", Color3.fromRGB(0, 255, 0), "Success")
+		ChangeState(State,Arg2)
 	end
 	if Command("arrest") or Command("handcuffs") then
 		if Arg2 == "all" then
@@ -2355,11 +2346,11 @@ function PlayerChatted(Message)
 		end
 		else
 			local Player = GetPlayer(Arg2)
-			if Player ~= nil then
+			if Player ~= nil and BadArea(Player) then
 				Arrest(Player, tonumber(Arg3))
 				Notify("Arrested "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
 			else
-				Notify("No player found", Color3.fromRGB(255, 0, 0), "Error")
+				Notify("No player found / Player not arrest", Color3.fromRGB(255, 0, 0), "Error")
 			end
 		end
 	end
@@ -3053,26 +3044,29 @@ end
 
 game.Players.LocalPlayer.Chatted:Connect(PlayerChatted)
 
-plr.CharacterAdded:Connect(function(NewChar)
-	NewChar:WaitForChild("Humanoid")
-	if States.autoguns then
-		Guns()
-	end
-	if States.autorespawn then
-		NewChar:WaitForChild("Humanoid").BreakJointsOnDeath = not States.autorespawn
-		NewChar:WaitForChild("Humanoid").Died:Connect(function()
-			if States.autorespawn == true then
-				local savedteam = GetTeam()
-				ChangeTeam(BrickColor.new(savedteam).Name)
-				pcall(function()
-					if States.autoguns then
-						wait(.5)
-						Guns()
+spawn(function()
+	plr.CharacterAdded:Connect(function(NewChar)
+		task.spawn(function()
+		NewChar:WaitForChild("Humanoid")
+		if States.autoguns then Guns() end
+			if States.autorespawn then
+				NewChar.Humanoid.BreakJointsOnDeath = not States.autorespawn
+				NewChar.Humanoid.Died:Connect(function()
+					if States.autorespawn == true then
+						ChangeTeam(BrickColor.new(plr.TeamColor.Name).Name)
+						task.spawn(function()
+							if States.autoguns == true then
+								wait(.5)
+								Guns()
+								task.pcall(function()
+								end)
+							end
+						end)
 					end
 				end)
 			end
 		end)
-	end
+	end)
 end)
 
 spawn(function()
@@ -3228,6 +3222,16 @@ spawn(function()
 			game.Players.LocalPlayer.Character.Humanoid.JumpPower = 50
 		end
 	end)
+end)
+
+spawn(function()
+	while wait() do
+		if States.Godmode then
+			if game.Players.LocalPlayer.Character.Humanoid.Health <= 99 then
+				ChangeTeam(BrickColor.new(plr.TeamColor.Name).Name)
+			end
+		end
+	end
 end)
 		
 function CheckPermissions(Player)
