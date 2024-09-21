@@ -547,21 +547,6 @@ local Admin = {}
 local Watching = nil
 local BuyGamepass = game:GetService("MarketplaceService"):UserOwnsGamePassAsync(tonumber((game:GetService("Players").LocalPlayer.CharacterAppearance):split('=')[#((game:GetService("Players").LocalPlayer.CharacterAppearance):split('='))]), 96651)
 
-local function GetPlayer(String)
-	if not String then return end
-	local Yes = {}
-	for _, Player in ipairs(game.Players:GetPlayers()) do
-		if string.lower(Player.Name):match(string.lower(String)) or string.lower(Player.DisplayName):match(string.lower(String)) then
-			table.insert(Yes, Player)
-		end
-	end
-	if #Yes > 0 then
-		return Yes[1]
-	elseif #Yes < 1 then
-		return nil
-	end
-end
-
 function Notify(Message, Color, Text)
 	Notify6.Text = Notify5.Text
 	Notify6.TextColor3 = Notify5.TextColor3
@@ -575,6 +560,25 @@ function Notify(Message, Color, Text)
 	Notify2.TextColor3 = Notify1.TextColor3
 	Notify1.Text = "["..Text.."] "..Message
 	Notify1.TextColor3 = Color or Color3.fromRGB(255, 255, 255)
+end
+
+local function GetPlayer(String,IgnoreError)
+	if not String then
+		return nil
+	end
+	if String:lower() == "me" then
+		return plr
+	end
+	String = String:gsub("%s+", "")
+	for _, v in pairs(game:GetService("Players"):GetPlayers()) do
+		if v.Name:lower():match("^" .. String:lower()) or v.DisplayName:lower():match("^" .. String:lower()) then
+			return v
+		end
+	end
+	if not IgnoreError then
+		Notify("No Player Found For Name "..String, Color3.fromRGB(255, 0, 0), "Error")
+	end
+	return nil
 end
 
 local function GetPos()
@@ -1351,9 +1355,10 @@ function ChangeState(Name,arg2)
 			end
 			return
 		end
-		States[Name] = not States[Name]
+		local Value = not States[Name]
+		States[Name] = Value
 		ChangeTeam(plr.TeamColor.Name)
-		Notify("Turn "..Name.." "..arg2, Color3.fromRGB(0, 255, 0), "Success")
+		Notify("Turn "..Name.." "..Value, Color3.fromRGB(0, 255, 0), "Success")
 	end
 end
 
@@ -1659,11 +1664,7 @@ function PlayerChatted(Message)
 		end
 	end
 	if Command("criminal") or Command("criminals") or Command("crim") or Command("crims") or Command("crimes") or Command("crime") then
-		if plr.TeamColor.Name == "Bright orange" then
-			Criminal()
-		elseif plr.TeamColor.Name == "Really red" then
-			ChangeTeam(BrickColor.new("Really red").Name)
-		end
+		Criminal()
 		Notify("Become criminal", Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("neutral") or Command("neutrals") then
@@ -1710,12 +1711,7 @@ function PlayerChatted(Message)
 		TaseTeam(BrickColor.new("Really red").Name)
 		else
 		local Player = GetPlayer(args)
-		if Player ~= nil then
-			Tase(Player)
-			Notify("Tased "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
-		else
-			Notify("No player found", Color3.fromRGB(255, 0, 0), "Error")
-		end
+		Tase(Player)
 		end
 	end
 	if Command("noshield") or Command("antishield") then
@@ -1773,12 +1769,7 @@ function PlayerChatted(Message)
 		Notify("Killed all criminals", Color3.fromRGB(0, 255, 0), "Success")
 		else
 		local Player = GetPlayer(args)
-		if Player ~= nil then
-			Kill(Player)
-			Notify("Killed "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
-		else
-			Notify("No player found", Color3.fromRGB(255, 0, 0), "Error")
-		end
+		Kill(Player)
 		end
 	end
 	if Command("loopkill") or Command("loopkills") or Command("lk") then
@@ -1797,11 +1788,11 @@ function PlayerChatted(Message)
 		Notify("Loop kills criminals", Color3.fromRGB(0, 255, 0), "Success")
 		else
 		local Player = GetPlayer(args)
-		if Player ~= nil and not LoopKill[Player.UserId] then
+		if not LoopKill[Player.UserId] then
 			LoopKill[Player.UserId] = {Player = Player}
 			Notify("Loop kills "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
 		else
-			Notify("No player found / already loop kills", Color3.fromRGB(255, 0, 0), "Error")
+			Notify("already loop kills", Color3.fromRGB(255, 0, 0), "Error")
 		end
 		end
 	end
@@ -1821,22 +1812,18 @@ function PlayerChatted(Message)
 		Notify("Unloop kills criminals", Color3.fromRGB(0, 255, 0), "Success")
 		else
 		local Player = GetPlayer(Arg2)
-		if Player ~= nil and LoopKill[Player.UserId] then
+		if LoopKill[Player.UserId] then
 			LoopKill[Player.UserId] = nil
 			Notify("Unloop kills "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
 		else
-			Notify("No player found / Player has no loop kills", Color3.fromRGB(255, 0, 0), "Error")
+			Notify("Player has no loop kills", Color3.fromRGB(255, 0, 0), "Error")
 		end
 		end
 	end
 	if Command("goto") or Command("to") then
 		local Player = GetPlayer(Arg2)
-		if Player ~= nil then
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace[Player.Name].HumanoidRootPart.CFrame
-			Notify("Go to "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
-		else
-			Notify("No player found", Color3.fromRGB(255, 0, 0), "Error")
-		end
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace[Player.Name].HumanoidRootPart.CFrame
+		Notify("Go to "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("re") or Command("refresh") then
 		local savedteam = GetTeam()
