@@ -96,6 +96,9 @@ Credit.TextStrokeColor3 = Color3.new(0.196078, 0.196078, 0.196078)
 Credit.TextStrokeTransparency = 0
 Credit.TextWrapped = true
 
+local States = {}
+      States.SpamParry = false
+
 local function ParryAttempt()
 	game:GetService("ReplicatedStorage").RemoteEvent:FireServer({["name"] = "defense",["origin"] = "balltargets"},{})
 end
@@ -156,27 +159,28 @@ local function Notif(Text,Dur)
 	return
 end
 
-function U() spawn(function() while getgenv().SpamParry do for i = 1, 10 do ParryAttempt()
-end
-task.wait()
-end
-end)
-end
-
 Toggle.MouseButton1Click:connect(function()
  if Status.Text == "on" then
   Status.Text = "off"
   Status.TextColor3 = Color3.new(170,0,0)
-  getgenv().SpamParry = false 
+  States.SpamParry = false 
   U()
   Notif("Spam Parry No Cooldown Disabled",3)
  elseif Status.Text == "off" then
   Status.Text = "on"
   Status.TextColor3 = Color3.new(0,185,0)
-  getgenv().SpamParry = true
+  States.SpamParry = true
   U()
   Notif("Spam Parry No Cooldown Enabled",3)
  end
+end)
+
+spawn(function()
+	while task.wait() do
+		if States.SpamParry then
+			task.spawn(ParryAttempt)
+		end
+	end
 end)
 
 Notif("(Gun Ball) Script Loaded!",5)
