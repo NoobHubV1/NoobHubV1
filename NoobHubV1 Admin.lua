@@ -37,6 +37,7 @@ Background.Position = UDim2.new(0.368556708, 0, 0.11490047, 0)
 Background.Size = UDim2.new(0, 350, 0, 350)
 Background.Active = true
 Background.Draggable = true
+Background.Visible = false
 
 CmdName.Name = "CmdName"
 CmdName.Parent = Background
@@ -141,6 +142,7 @@ Background2.Position = UDim2.new(0.012, 0, 0.807, 0)
 Background2.Size = UDim2.new(0, 250, 0, 80)
 Background2.Active = true
 Background2.Draggable = true
+Background2.Visible = false
 
 Label.Name = "Label"
 Label.Parent = Background2
@@ -212,6 +214,7 @@ Background4.Position = UDim2.new(0.0154639352, 0, 0.519107938, 0)
 Background4.Size = UDim2.new(0, 250, 0, 119)
 Background4.Active = true
 Background4.Draggable = true
+Background4.Visible = false
 
 Notify6.Name = "Notify6"
 Notify6.Parent = Background4
@@ -319,7 +322,7 @@ OpenBar.Name = "OpenBar"
 OpenBar.Parent = CmdGui
 OpenBar.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
 OpenBar.BorderSizePixel = 0
-OpenBar.Size = UDim2.new(0, 35, 0, 35)
+OpenBar.Size = UDim2.new(0, 65, 0, 65)
 OpenBar.Visible = false
 OpenBar.Font = Enum.Font.GothamBlack
 OpenBar.Text = "Open"
@@ -399,8 +402,7 @@ Cmd[#Cmd + 1] =	{Text = "prefix / newprefix / changeprefix [prefix text]",Title 
 Cmd[#Cmd + 1] =	{Text = "red",Title = "Changes name tag color to red color"}
 Cmd[#Cmd + 1] = {Text = "antilag / boostfps",Title = "Boost a little fps"}
 Cmd[#Cmd + 1] = {Text = "unantilag",Title = "Stop boost the fps"}
-Cmd[#Cmd + 1] = {Text = "noclip / noclips",Title = "Activate no clips"}
-Cmd[#Cmd + 1] = {Text = "clip / clips",Title = "Unactivate no clips"}
+Cmd[#Cmd + 1] = {Text = "noclip / noclips [on,off]",Title = "Activate no clips"}
 Cmd[#Cmd + 1] =	{Text = "getpos",Title = "Prints positions"}
 Cmd[#Cmd + 1] =	{Text = "unload / destroygui",Title = "Unload the scripts"}
 Cmd[#Cmd + 1] =	{Text = "reload / update",Title = "Reload the script to new version"}
@@ -433,22 +435,23 @@ Cmd[#Cmd + 1] =	{Text = "anticrash / antivest",Title = "Anti crash when someone 
 Cmd[#Cmd + 1] =	{Text = "unanticrash / unantivest",Title = "Unanti crash when someone spamming armor"}
 Cmd[#Cmd + 1] =	{Text = "antishield / noshield",Title = "Anti shield users"}
 Cmd[#Cmd + 1] =	{Text = "unantishield",Title = "Unanti shield users"}
-Cmd[#Cmd + 1] =	{Text = "gatetower",Title = "Teleports to the gate tower"}
-Cmd[#Cmd + 1] =	{Text = "tower",Title = "Teleports to the yard tower"}
-Cmd[#Cmd + 1] =	{Text = "sewer",Title = "Teleports to the sewer"}
-Cmd[#Cmd + 1] = {Text = "yard",Title = "Teleports to yard"}
-Cmd[#Cmd + 1] =	{Text = "backnexus",Title = "Teleports to the back nexus"}
-Cmd[#Cmd + 1] =	{Text = "nexus",Title = "Teleports to the nexus"}
-Cmd[#Cmd + 1] =	{Text = "gate",Title = "Teleports to the gate"}
+Cmd[#Cmd + 1] =	{Text = "gatetower [plr]",Title = "Teleports to the gate tower"}
+Cmd[#Cmd + 1] =	{Text = "tower [plr]",Title = "Teleports to the yard tower"}
+Cmd[#Cmd + 1] =	{Text = "sewer [plr]",Title = "Teleports to the sewer"}
+Cmd[#Cmd + 1] = {Text = "yard [plr]",Title = "Teleports to yard"}
+Cmd[#Cmd + 1] =	{Text = "backnexus [plr]",Title = "Teleports to the back nexus"}
+Cmd[#Cmd + 1] =	{Text = "nexus [plr]",Title = "Teleports to the nexus"}
+Cmd[#Cmd + 1] =	{Text = "gate [plr]",Title = "Teleports to the gate"}
 Cmd[#Cmd + 1] = {Text = "findowner / checkscriptowner",Title = "Find a script owner in the server"}
 Cmd[#Cmd + 1] = {Text = "getplayer / getplayers",Title = "Get a players counts in the server"}
 Cmd[#Cmd + 1] = {Text = "rapidfire",Title = "Activate rapid fire"}
 Cmd[#Cmd + 1] = {Text = "autorapidfire",Title = "Auto activate rapid fire"}
 Cmd[#Cmd + 1] = {Text = "unautorapidfire",Title = "Unauto activate rapid fire"}
-Cmd[#Cmd + 1] =	{Text = "armory",Title = "Teleports to the armory"}
-Cmd[#Cmd + 1] =	{Text = "cafe - teleport to cafe",Title = "Teleports to the cafeteria"}
-Cmd[#Cmd + 1] =	{Text = "crimbase / criminalbase",Title = "Teleports to the criminals base"}
-Cmd[#Cmd + 1] =	{Text = "lunchroom",Title = "Teleports to the cafeteria room"}
+Cmd[#Cmd + 1] =	{Text = "armory [plr]",Title = "Teleports to the armory"}
+Cmd[#Cmd + 1] =	{Text = "cafe [plr]",Title = "Teleports to the cafeteria"}
+Cmd[#Cmd + 1] =	{Text = "crimbase / criminalbase / cbase [plr]",Title = "Teleports to the criminals base"}
+Cmd[#Cmd + 1] =	{Text = "lunchroom [plr]",Title = "Teleports to the cafeteria room"}
+Cmd[#Cmd + 1] =	{Text = "void [plr]",Title = "Teleports to the void"}
 Cmd[#Cmd + 1] =	{Text = "spamchat [delay]",Title = "Spam the chat"}
 Cmd[#Cmd + 1] =	{Text = "unspamchat",Title = "Unspam the chat"}
 Cmd[#Cmd + 1] =	{Text = "findposition / getposition / getpos",Title = "Find positions"}
@@ -471,6 +474,8 @@ Cmd[#Cmd + 1] = {Text = "unarrestaura",Title = "Unctivate arrest aura"}
 Cmd[#Cmd + 1] = {Text = "forcefield / ff [on,off]",Title = "Activate forcefield"}
 Cmd[#Cmd + 1] = {Text = "car",Title = "Bring Car"}
 Cmd[#Cmd + 1] = {Text = "carsto [plr]",Title = "Bring Car To Player"}
+Cmd[#Cmd + 1] = {Text = "esp [on,off]",Title = "Activate esp"}
+Cmd[#Cmd + 1] = {Text = "clickkill [on,off]",Title = "Activate click kill"}
 Cmd[#Cmd + 1] =	{Text = "!getprefix",Title = "If you for get prefix you can type this in chat"}
 
 local States = {}
@@ -478,6 +483,14 @@ local States = {}
       States.autoguns = true
       States.ff = false
       States.Godmode = false
+      States.loopkillinmates = false
+      States.loopkillguards = false
+      States.loopkillcriminals = false
+      States.loopkillall = false
+      States.antivoid = false
+      States.Noclip = false
+      States.Esp = false
+      States.Clickkill = false
 
 local Players = game.Players
 local plr = Players.LocalPlayer
@@ -562,12 +575,16 @@ function Notify(Message, Color, Text)
 	Notify1.TextColor3 = Color or Color3.fromRGB(255, 255, 255)
 end
 
-local function GetPlayer(String,IgnoreError)
+function GetPlayer(String,IgnoreError)
 	if not String then
 		return nil
 	end
 	if String:lower() == "me" then
 		return plr
+        elseif String:lower() == "random" then
+		local GetPlayers = game.Players:GetPlayers()
+		if table.find(GetPlayers,Player) then table.remove(GetPlayers,table.find(GetPlayers,Player)) end
+		return GetPlayers[math.random(#GetPlayers)]
 	end
 	String = String:gsub("%s+", "")
 	for _, v in pairs(game:GetService("Players"):GetPlayers()) do
@@ -577,6 +594,29 @@ local function GetPlayer(String,IgnoreError)
 	end
 	if not IgnoreError then
 		Notify("No Player Found For Name "..String, Color3.fromRGB(255, 0, 0), "Error")
+	end
+	return nil
+end
+
+function getPlayer(String,IgnoreError,Target)
+	if not String then
+		return nil
+	end
+	if String:lower() == "me" then
+		return plr
+        elseif String:lower() == "random" then
+		local GetPlayers = game.Players:GetPlayers()
+		if table.find(GetPlayers,Player) then table.remove(GetPlayers,table.find(GetPlayers,Player)) end
+		return GetPlayers[math.random(#GetPlayers)]
+	end
+	String = String:gsub("%s+", "")
+	for _, v in pairs(game:GetService("Players"):GetPlayers()) do
+		if v.Name:lower():match("^" .. String:lower()) or v.DisplayName:lower():match("^" .. String:lower()) then
+			return v
+		end
+	end
+	if not IgnoreError then
+		Chat("/w "..Target.Name.." No Player Found For Name "..String)
 	end
 	return nil
 end
@@ -678,13 +718,10 @@ function ChangeTeam(Team, Position, NoForce)
 			workspace.CurrentCamera.CameraSubject = plr.Character:WaitForChild("Humanoid")
 
 		end)
-		task.spawn(function()
-			c:WaitForChild("ForceField"):Destroy()
-		end)
-		for i = 1,13 do task.wait()
+		repeat task.wait()
 			c:WaitForChild("HumanoidRootPart").CFrame = LastPosition
 			game:GetService("RunService").Stepped:Wait()
-		end
+		until c:WaitForChild("HumanoidRootPart").CFrame == LastPosition
 		Position = nil--// why the fuck it keep spawning somewhere else!!!! GRRRRR
 		NoForce = nil
 		LastCameraPosition = nil
@@ -694,7 +731,7 @@ function ChangeTeam(Team, Position, NoForce)
 		Position = Position
 		workspace.Remote.TeamEvent:FireServer(Team)
 	else
-		workspace.Remote.TeamEvent:FireServer("Bright orange")
+		workspace.Remote.TeamEvent:FireServer(game.Teams.Inmates.TeamColor.Name)
 		plr.CharacterAdded:Wait() wait()
 		repeat task.wait()
 			game:GetService("RunService").Stepped:Wait()
@@ -706,7 +743,6 @@ function ChangeTeam(Team, Position, NoForce)
 			game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1].CanCollide = false
 			game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1].CFrame = GetPos()
 		until plr.TeamColor.Name == "Really red"
-		wait(.3)
 	end
 	return nil
 end
@@ -741,6 +777,7 @@ function Guns()
 end
 
 function KillPlayer(Player)
+	if not Player.Character.Humanoid.Health == 0 or not Player.Character:FindFirstChild("ForceField") then
 	local events = {}
 	local gun = plr.Character:FindFirstChild("AK-47") or plr.Backpack:FindFirstChild("AK-47")
 	GiveItem("AK-47")
@@ -764,13 +801,18 @@ function KillPlayer(Player)
 		}
 	end
 	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
+	end
 end
 
-function KillTeam(Team)
+function KillTeam(Team,Target)
+	if not Target then
+		-- nothing
+	end
 	local events = {}
 	local gun = plr.Character:FindFirstChild("AK-47") or plr.Backpack:FindFirstChild("AK-47")
 	for i,v in pairs(game.Players:GetPlayers()) do
-		if v ~= game.Players.LocalPlayer and v.TeamColor.Name == Team then
+		if v ~= game.Players.LocalPlayer and v ~= Target or plr then
+			if v.TeamColor.Name == Team then
 			for i = 1,10 do
 				events[#events + 1] = {
 					Hit = v.Character:FindFirstChild("Head") or v.Character:FindFirstChildOfClass("Part"),
@@ -778,6 +820,7 @@ function KillTeam(Team)
 					RayObject = Ray.new(Vector3.new(), Vector3.new()),
 					Distance = 0
 				}
+			end
 			end
 		end
 	end
@@ -796,11 +839,14 @@ function KillTeam(Team)
 	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
 end
 
-function Kill2Team(Team1, Team2)
+function Kill2Team(Team1, Team2, Target)
+	if not Target then
+		-- nothing
+	end
 	local events = {}
 	local gun = plr.Character:FindFirstChild("AK-47") or plr.Backpack:FindFirstChild("AK-47")
 	for i,v in pairs(game.Players:GetPlayers()) do
-		if v ~= game.Players.LocalPlayer then
+		if v ~= game.Players.LocalPlayer and v ~= Target or plr then
 			if v.TeamColor.Name == Team1 or v.TeamColor.Name == Team2 then
 			for i = 1,10 do
 				events[#events + 1] = {
@@ -877,52 +923,55 @@ function Kill(Player)
 	end
 end
 
-function CheckKillTeam(TeamPath)
+function CheckKillTeam(TeamPath,Target)
+	if not Target then
+		-- nothing
+	end
 	if TeamPath == "Bright orange" then
 	for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
-	if v ~= plr then
+	if v ~= plr and v ~= Target or plr then
 	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
 	else
 	if plr.TeamColor.Name == "Really red" then
-	KillTeam("Bright orange")
+	KillTeam("Bright orange",Target)
 	elseif plr.TeamColor.Name == "Bright orange" then
 	Criminal()
 	task.wait(0.1)
-	KillTeam("Bright orange")
+	KillTeam("Bright orange",Target)
 	elseif plr.TeamColor.Name == "Bright blue" then
 	Criminal()
 	task.wait(0.2)
-	KillTeam("Bright orange")
+	KillTeam("Bright orange",Target)
 	end
 	end
 	end
 	end
 	elseif TeamPath == "Bright blue" then
         for i,v in pairs(game.Teams.Guards:GetPlayers()) do
-	if v ~= plr then
+	if v ~= plr and v ~= Target or plr then
 	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
 	else
 	if plr.TeamColor.Name == "Really red" or plr.TeamColor.Name == "Bright orange" then
-	KillTeam("Bright blue")
+	KillTeam("Bright blue",Target)
 	elseif plr.TeamColor.Name == "Bright blue" then
 	ChangeTeam(game.Teams.Inmates)
 	task.wait(0.2)
-	KillTeam("Bright blue")
+	KillTeam("Bright blue",Target)
 	end
 	end
 	end
 	end
 	elseif TeamPath == "Really red" then
 	for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
-	if v ~= plr then
+	if v ~= plr and v ~= Target or plr then
 	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
 	else
 	if plr.TeamColor.Name == "Really red" then
 	ChangeTeam(BrickColor.new("Bright orange").Name)
 	task.wait(0.2)
-	KillTeam("Really red")
+	KillTeam("Really red",Target)
 	elseif plr.TeamColor.Name == "Bright blue" or plr.TeamColor.Name == "Bright orange" then
-	KillTeam("Really red")
+	KillTeam("Really red",Target)
 	end
 	end
 	end
@@ -930,18 +979,21 @@ function CheckKillTeam(TeamPath)
 	end
 end
 
-function KillInmatesAndGuards()
+function KillInmatesAndGuards(Target)
+	if not Target then
+		-- nothing
+	end
 	for i,v in pairs(game.Players:GetPlayers()) do
-	if v ~= plr then
+	if v ~= plr and v ~= Target then
 	if v.TeamColor.Name == "Bright blue" or v.TeamColor.Name == "Bright orange" then
 	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then
 	else
 	if plr.TeamColor.Name == "Bright orange" or plr.TeamColor.Name == "Bright blue" then
 	Criminal()
 	task.wait(0.2)
-	Kill2Team("Bright orange", "Bright blue")
+	Kill2Team("Bright orange", "Bright blue", Target)
 	elseif plr.TeamColor.Name == "Really red" then
-	Kill2Team("Bright orange", "Bright blue")
+	Kill2Team("Bright orange", "Bright blue", Target)
 	end
 	end
 	end
@@ -949,24 +1001,25 @@ function KillInmatesAndGuards()
 	end
 end
 
-function KillAll()
+function KillAll(Target)
+	if not Target then
+		-- nothing
+	end
 	for i,v in pairs(game.Players:GetPlayers()) do
-		if v ~= plr then
+		if v ~= plr and v ~= Target then
 			if v.TeamColor.Name == "Bright orange" or v.TeamColor.Name == "Bright blue" then
-				if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
-				else
-					KillInmatesAndGuards()
+				if not v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("ForceField") then
+					KillInmatesAndGuards(Target)
 				end
 			end
 		end
 	end
 	task.wait(0.1)
 	for i,v in pairs(game.Players:GetPlayers()) do
-		if v ~= plr then
+		if v ~= plr and v ~= Target then
 			if v.TeamColor.Name == "Really red" then
-				if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
-				else
-					CheckKillTeam(BrickColor.new("Really red").Name)
+				if not v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("ForceField") then
+					CheckKillTeam(BrickColor.new("Really red").Name,Target)
 				end
 			end
 		end
@@ -987,7 +1040,7 @@ function Tase(Player)
 			}
 		end
 	end
-	if not game.Players.LocalPlayer.Character:FindFirstChild("Taser") and not game.Players.LocalPlayer:FindFirstChild("Backpack"):FindFirstChild("Taser") then
+	if not game.Players.LocalPlayer.Character:FindFirstChild("Taser") or game.Players.LocalPlayer.Backpack:FindFirstChild("Taser") then
 		ChangeTeam(BrickColor.new("Bright blue").Name)
 	end
 	gun = game.Players.LocalPlayer.Character:FindFirstChild("Taser") or game.Players.LocalPlayer.Backpack:FindFirstChild("Taser")
@@ -1009,7 +1062,7 @@ function TaseTeam(Team)
 			}
 		end
 	end
-	if not game.Players.LocalPlayer.Character:FindFirstChild("Taser") and not game.Players.LocalPlayer:FindFirstChild("Backpack"):FindFirstChild("Taser") then
+	if not game.Players.LocalPlayer.Character:FindFirstChild("Taser") or game.Players.LocalPlayer.Backpack:FindFirstChild("Taser") then
 		ChangeTeam(BrickColor.new("Bright blue").Name)
 	end
 	gun = game.Players.LocalPlayer.Character:FindFirstChild("Taser") or game.Players.LocalPlayer.Backpack:FindFirstChild("Taser")
@@ -1023,6 +1076,52 @@ function TaseAll()
 	local savedteam = GetTeam()
 	for i,v in pairs(game.Players:GetPlayers()) do
 		if v ~= plr then
+			events[#events + 1] = {
+				Hit = v.Character:FindFirstChildOfClass("Part"),
+				Cframe = CFrame.new(),
+				RayObject = Ray.new(Vector3.new(), Vector3.new()),
+				Distance = 0
+			}
+		end
+	end
+	if not game.Players.LocalPlayer.Character:FindFirstChild("Taser") or game.Players.LocalPlayer.Backpack:FindFirstChild("Taser") then
+		ChangeTeam(BrickColor.new("Bright blue").Name)
+	end
+	gun = game.Players.LocalPlayer.Character:FindFirstChild("Taser") or game.Players.LocalPlayer.Backpack:FindFirstChild("Taser")
+	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
+	ChangeTeam(BrickColor.new(savedteam).Name)
+end
+
+function TaseTeamWhitelisted(Team,Target)
+	local events = {}
+	local gun = nil
+	local savedteam = GetTeam()
+	for i,v in pairs(game.Players:GetPlayers()) do
+		if v ~= plr and v ~= Target or plr then
+			if v.TeamColor.Name == Team then
+				events[#events + 1] = {
+					Hit = v.Character:FindFirstChildOfClass("Part"),
+					Cframe = CFrame.new(),
+					RayObject = Ray.new(Vector3.new(), Vector3.new()),
+					Distance = 0
+				}
+			end
+		end
+	end
+	if not game.Players.LocalPlayer.Character:FindFirstChild("Taser") and not game.Players.LocalPlayer:FindFirstChild("Backpack"):FindFirstChild("Taser") then
+		ChangeTeam(BrickColor.new("Bright blue").Name)
+	end
+	gun = game.Players.LocalPlayer.Character:FindFirstChild("Taser") or game.Players.LocalPlayer.Backpack:FindFirstChild("Taser")
+	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
+	ChangeTeam(BrickColor.new(savedteam).Name)
+end
+
+function TaseAllWhitelisted(Target)
+	local events = {}
+	local gun = nil
+	local savedteam = GetTeam()
+	for i,v in pairs(game.Players:GetPlayers()) do
+		if v ~= plr and v ~= Target or plr then
 			events[#events + 1] = {
 				Hit = v.Character:FindFirstChildOfClass("Part"),
 				Cframe = CFrame.new(),
@@ -1064,7 +1163,7 @@ function Arrest(Player, Time)
 					ArrestEvent(Player, 1)
 				end)()
 			end
-		until Player.Character.Head:FindFirstChild("handcuffedGui") or Attempts > 500
+		until Player.Character.Head:FindFirstChild("handcuffedGui") or Attempts > 150
 		task.wait()
 	end
 	game.Players.LocalPlayer.Character.Humanoid.Sit = false
@@ -1111,17 +1210,18 @@ function GetCar(To)
 		Seat:Sit(plr.Character:FindFirstChildOfClass("Humanoid"))
 	until plr.Character:FindFirstChildOfClass("Humanoid").Sit == true
 	Car:SetPrimaryPartCFrame(To)
-	plr.Character:FindFirstChildOfClass('Humanoid').Sit = false
 	wait()
+	plr.Character:FindFirstChildOfClass('Humanoid').Sit = false
+	wait(0.15)
 	TPCFrame(L)
 end
 
 function Bring(Target,TeleportTo)
 	if not TeleportTo then TeleportTo = GetPos() end
-	local LastPosition = plr.Character.HumanoidRootPart.Position
 	local CarSelected = nil
 	local Seat = nil
 	local Attempts = 0
+	local L = GetPos()
 	for i,v in pairs(game:GetService("Workspace").CarContainer:GetChildren()) do
 		if v then
 			if v:WaitForChild("Body"):WaitForChild("VehicleSeat").Occupant == nil then
@@ -1165,9 +1265,10 @@ function Bring(Target,TeleportTo)
 			task.wait()
 			CarSelected:SetPrimaryPartCFrame(TeleportTo)
 		end
+		wait()
 		plr.Character.Humanoid.Sit = false
 		wait()
-		TPCFrame(LastPosition)
+		TPCFrame(L)
 	end
 end
 
@@ -1431,6 +1532,42 @@ function PlayerPickUp(Player)
 	end)
 end
 
+function Esp(player)
+	pcall(function()
+		local Billboard = Instance.new("BillboardGui", game.Players.LocalPlayer.PlayerGui)
+		local Frame = Instance.new("Frame", Billboard)
+		local Label_Billboard = Instance.new("TextLabel", Billboard)
+
+		Billboard.Name = "ESP"
+		Billboard.Adornee = workspace:FindFirstChild(player.Name).Head
+		Billboard.AlwaysOnTop = true
+		Billboard.ExtentsOffset = Vector3.new(0, 1.25, 0)
+		Billboard.Size = UDim2.new(0, 6, 0, 6)
+
+		Frame.Name = "ESP_2"
+		Frame.BackgroundColor = BrickColor.new(player.TeamColor.Name)
+		Frame.BorderSizePixel = 0
+		Frame.BackgroundTransparency = 0.250
+		Frame.Position = UDim2.new(-0.5, 0, -0.5, 0)
+		Frame.Visible = true
+		Frame.Size = UDim2.new(2, 0, 2, 0)
+		Frame.ZIndex = 1
+
+		Label_Billboard.Name = "ESP_3"
+		Label_Billboard.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		Label_Billboard.BackgroundTransparency = 1.000
+		Label_Billboard.Text = player.DisplayName
+		Label_Billboard.Font = Enum.Font.GothamBlack
+		Label_Billboard.FontSize = Enum.FontSize.Size18
+		Label_Billboard.BorderSizePixel = 0
+		Label_Billboard.Visible = true
+		Label_Billboard.Position = UDim2.new(0, 0, 0, -40)
+		Label_Billboard.TextColor3 = Color3.fromRGB(0, 0, 0)
+		Label_Billboard.ZIndex = 2
+		Label_Billboard.Size = UDim2.new(2, 0, 10, 0)
+	end)
+end
+
 local function Loadstring(Https)
 	if not Https then return end
 	loadstring(game:HttpGet((Https), true))()
@@ -1500,6 +1637,9 @@ end]]
 
 Notify("Loaded admin commands", Color3.fromRGB(255, 0, 0), "Loads")
 ChangeTeam(plr.TeamColor.Name)
+Background.Visible = true
+Background2.Visible = true
+Background4.Visible = true
 
 function PlayerChatted(Message)
 	if ScriptDisabled then return end
@@ -1574,7 +1714,8 @@ function PlayerChatted(Message)
 		Notify("Become inmate", Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("guard") or Command("guards") or Command("cop") or Command("polices") or Command("cops") then
-		ChangeTeam(BrickColor.new("Bright blue").Name)
+		workspace.Remote.TeamEvent:FireServer("Bright blue")
+		Notify("Become guard", Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("gun") or Command("guns") or Command("allguns") then
 		Guns()
@@ -1720,52 +1861,16 @@ function PlayerChatted(Message)
 	if Command("kill") or Command("kills") then
 		local args = Arg2
 		if args == "all" or args == "everyone" or args == "others" then
-		for i,v in pairs(game.Players:GetPlayers()) do
-			if v ~= plr then
-				if v.TeamColor.Name == "Bright orange" or v.TeamColor.Name == "Bright blue" or v.TeamColor.Name == "Really red" then
-					if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
-					else
-						Kill(v)
-					end
-				end
-			end
-		end
+		KillAll()
 		Notify("Killed all players", Color3.fromRGB(0, 255, 0), "Success")
 		elseif args == "inmates" then
-		for i,v in pairs(game.Players:GetPlayers()) do
-			if v ~= plr then
-				if v.TeamColor.Name == "Bright orange" then
-					if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
-					else
-						Kill(v)
-					end
-				end
-			end
-		end
+		CheckKillTeam("Bright orange")
 		Notify("Killed all inmates", Color3.fromRGB(0, 255, 0), "Success")
 		elseif args == "guards" then
-		for i,v in pairs(game.Players:GetPlayers()) do
-			if v ~= plr then
-				if v.TeamColor.Name == "Bright blue" then
-					if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
-					else
-						Kill(v)
-					end
-				end
-			end
-		end
+		CheckKillTeam("Bright blue")
 		Notify("Killed all guards", Color3.fromRGB(0, 255, 0), "Success")
 		elseif args == "criminals" then
-		for i,v in pairs(game.Players:GetPlayers()) do
-			if v ~= plr then
-				if v.TeamColor.Name == "Really red" then
-					if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
-					else
-						Kill(v)
-					end
-				end
-			end
-		end
+		CheckKillTeam("Really red")
 		Notify("Killed all criminals", Color3.fromRGB(0, 255, 0), "Success")
 		else
 		local Player = GetPlayer(args)
@@ -1882,20 +1987,7 @@ function PlayerChatted(Message)
 		States.Statue = false
 	end
 	if Command("noclip") or Command("noclips") then
-		States.Noclips = true
-		Notify("Turn no clips on", Color3.fromRGB(0, 255, 0), "Success")
-		game:GetService("RunService").Stepped:Connect(function()
-			if States.Noclips then
-				pcall(function()
-					game.Players.LocalPlayer.Character:FindFirstChild("Head").CanCollide = false
-					game.Players.LocalPlayer.Character:FindFirstChild("Torso").CanCollide = false
-				end)
-			end
-		end)
-	end
-	if Command("clip") or Command("clips") then
-		States.Noclips = false
-		Notify("Turn no clips off", Color3.fromRGB(0, 255, 0), "Success")
+		ChangeState("Noclip",Arg2)
 	end
 	if Command("unantifling") then
 		States.Anti_Fling = false
@@ -1915,6 +2007,9 @@ function PlayerChatted(Message)
 				end
 			end
 		end)()
+	end
+	if Command("clickkill") then
+		ChangeState("Clickkill",Arg2)
 	end
 	if Command("unantivest") or Command("unanticrash") then
 		States.Anti_Crash = false
@@ -2002,14 +2097,10 @@ function PlayerChatted(Message)
 	end
 	if Command("bring") then
 		local Player = GetPlayer(Arg2)
-		if Player ~= nil then
-			local LastPosition = GetPos()
-			Bring(Player)
-			TPCFrame(LastPosition)
-			Notify("Bring "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
-		else
-			Notify("No Player Found", Color3.fromRGB(255, 0, 0), "Error")
-		end
+		local LastPosition = GetPos()
+		Bring(Player)
+		TPCFrame(LastPosition)
+		Notify("Bring "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("superknife") then
 		local Knife = game.Players.LocalPlayer.Backpack:FindFirstChild("Crude Knife") or game.Players.LocalPlayer.Character:FindFirstChild("Crude Knife")
@@ -2277,9 +2368,20 @@ function PlayerChatted(Message)
 		end)
 		Notify("Restored walls", Color3.fromRGB(0, 255, 0), "Success")
 	end
+	if Command("void") then
+		local Pos = CFrame.new(8^8, 8^8, 8^8)
+		local Player = GetPlayer(Arg2)
+		if not Player then
+			TPCFrame(Pos)
+			Notify("Bring "..plr.DisplayName.." To Void", Color3.fromRGB(0, 255, 0), "Success")
+		end
+		if Player then
+			Bring(Player, Pos)
+			Notify("Bring "..Player.DisplayName.." To Void", Color3.fromRGB(0, 255, 0), "Success")
+		end
+	end
 	if Command("god") or Command("godmode") then
-		local State = "Godmode"
-		ChangeState(State,Arg2)
+		ChangeState("Godmode",Arg2)
 	end
 	if Command("arrest") or Command("handcuffs") then
 		if Arg2 == "all" then
@@ -2290,17 +2392,19 @@ function PlayerChatted(Message)
 		end
 		else
 			local Player = GetPlayer(Arg2)
-			if Player ~= nil then
-				Arrest(Player, tonumber(Arg3))
-				Notify("Arrested "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
-			else
-				Notify("No player found / Player not arrest", Color3.fromRGB(255, 0, 0), "Error")
+			if Target.TeamColor.Name == "Bright blue" or not BadArea(Player) then
+				return Notify("Can't arrest this player!", Color3.fromRGB(255, 0, 0), "Error")
 			end
+			Arrest(Player)
+			Notify("Arrested "..Player.DisplayName, Color3.fromRGB(0, 255, 0), "Success")
 		end
 	end
 	if Command("opengate") then
 		workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.buttons["Prison Gate"]["Prison Gate"])
 		Notify("Opened gate", Color3.fromRGB(0, 255, 0), "Success")
+	end
+	if Command("esp") then
+		ChangeState("Esp",Arg2)
 	end
 	if Command("findposition") or Command("getposition") or Command("getpos") or Command("findpos") then
 		local CFrame = tostring(GetPos())
@@ -2616,13 +2720,9 @@ function PlayerChatted(Message)
 			TPCFrame(Pos)
 			Notify("Bring "..plr.DisplayName.." To Nexus", Color3.fromRGB(0, 255, 0), "Success")
 		end
-		if Player ~= nil then
-			local LastPosition = GetPos()
+		if Player then
 			Bring(Player, Pos)
-			TPCFrame(LastPosition)
 			Notify("Bring "..Player.DisplayName.." To Nexus", Color3.fromRGB(0, 255, 0), "Success")
-		else
-			Notify("No Player Found", Color3.fromRGB(255, 0, 0), "Error")
 		end
 	end
 	if Command("cafe") then
@@ -2632,13 +2732,9 @@ function PlayerChatted(Message)
 			TPCFrame(Pos)
 			Notify("Bring "..plr.DisplayName.." To Cafe", Color3.fromRGB(0, 255, 0), "Success")
 		end
-		if Player ~= nil then
-			local LastPosition = GetPos()
+		if Player then
 			Bring(Player, Pos)
-			TPCFrame(LastPosition)
 			Notify("Bring "..Player.DisplayName.." To Cafe", Color3.fromRGB(0, 255, 0), "Success")
-		else
-			Notify("No Player Found", Color3.fromRGB(255, 0, 0), "Error")
 		end
 	end
 	if Command("backnexus") then
@@ -2648,13 +2744,9 @@ function PlayerChatted(Message)
 			TPCFrame(Pos)
 			Notify("Bring "..plr.DisplayName.." To Backnexus", Color3.fromRGB(0, 255, 0), "Success")
 		end
-		if Player ~= nil then
-			local LastPosition = GetPos()
+		if Player then
 			Bring(Player, Pos)
-			TPCFrame(LastPosition)
 			Notify("Bring "..Player.DisplayName.." To Backnexus", Color3.fromRGB(0, 255, 0), "Success")
-		else
-			Notify("No Player Found", Color3.fromRGB(255, 0, 0), "Error")
 		end
 	end
 	if Command("yard") then
@@ -2664,13 +2756,9 @@ function PlayerChatted(Message)
 			TPCFrame(Pos)
 			Notify("Bring "..plr.DisplayName.." To Yard", Color3.fromRGB(0, 255, 0), "Success")
 		end
-		if Player ~= nil then
-			local LastPosition = GetPos()
+		if Player then
 			Bring(Player, Pos)
-			TPCFrame(LastPosition)
 			Notify("Bring "..Player.DisplayName.." To Yard", Color3.fromRGB(0, 255, 0), "Success")
-		else
-			Notify("No Player Found", Color3.fromRGB(255, 0, 0), "Error")
 		end
 	end
 	if Command("crimbase") or Command("criminalbase") or Command("cbase") then
@@ -2680,13 +2768,9 @@ function PlayerChatted(Message)
 			TPCFrame(Pos)
 			Notify("Bring "..plr.DisplayName.." To Crimbase", Color3.fromRGB(0, 255, 0), "Success")
 		end
-		if Player ~= nil then
-			local LastPosition = GetPos()
+		if Player then
 			Bring(Player, Pos)
-			TPCFrame(LastPosition)
 			Notify("Bring "..Player.DisplayName.." To Crimbase", Color3.fromRGB(0, 255, 0), "Success")
-		else
-			Notify("No Player Found", Color3.fromRGB(255, 0, 0), "Error")
 		end
 	end
 	if Command("armory") or Command("arm") then
@@ -2696,13 +2780,9 @@ function PlayerChatted(Message)
 			TPCFrame(Pos)
 			Notify("Bring "..plr.DisplayName.." To Armory", Color3.fromRGB(0, 255, 0), "Success")
 		end
-		if Player ~= nil then
-			local LastPosition = GetPos()
+		if Player then
 			Bring(Player, Pos)
-			TPCFrame(LastPosition)
 			Notify("Bring "..Player.DisplayName.." To Armory", Color3.fromRGB(0, 255, 0), "Success")
-		else
-			Notify("No Player Found", Color3.fromRGB(255, 0, 0), "Error")
 		end
 	end
 	if Command("lunchroom") then
@@ -2712,13 +2792,9 @@ function PlayerChatted(Message)
 			TPCFrame(Pos)
 			Notify("Bring "..plr.DisplayName.." To Lunchroom", Color3.fromRGB(0, 255, 0), "Success")
 		end
-		if Player ~= nil then
-			local LastPosition = GetPos()
+		if Player then
 			Bring(Player, Pos)
-			TPCFrame(LastPosition)
 			Notify("Bring "..Player.DisplayName.." To Lunchroom", Color3.fromRGB(0, 255, 0), "Success")
-		else
-			Notify("No Player Found", Color3.fromRGB(255, 0, 0), "Error")
 		end
 	end
 	if Command("gate") then
@@ -2728,13 +2804,9 @@ function PlayerChatted(Message)
 			TPCFrame(Pos)
 			Notify("Bring "..plr.DisplayName.." To Gate", Color3.fromRGB(0, 255, 0), "Success")
 		end
-		if Player ~= nil then
-			local LastPosition = GetPos()
+		if Player then
 			Bring(Player, Pos)
-			TPCFrame(LastPosition)
 			Notify("Bring "..Player.DisplayName.." To Gate", Color3.fromRGB(0, 255, 0), "Success")
-		else
-			Notify("No Player Found", Color3.fromRGB(255, 0, 0), "Error")
 		end
 	end
 	if Command("tower") or Command("ytower") then
@@ -2744,13 +2816,9 @@ function PlayerChatted(Message)
 			TPCFrame(Pos)
 			Notify("Bring "..plr.DisplayName.." To Tower", Color3.fromRGB(0, 255, 0), "Success")
 		end
-		if Player ~= nil then
-			local LastPosition = GetPos()
+		if Player then
 			Bring(Player, Pos)
-			TPCFrame(LastPosition)
 			Notify("Bring "..Player.DisplayName.." To Tower", Color3.fromRGB(0, 255, 0), "Success")
-		else
-			Notify("No Player Found", Color3.fromRGB(255, 0, 0), "Error")
 		end
 	end
 	if Command("gatetower") or Command("gtower") then
@@ -2760,13 +2828,9 @@ function PlayerChatted(Message)
 			TPCFrame(Pos)
 			Notify("Bring "..plr.DisplayName.." To Gatetower", Color3.fromRGB(0, 255, 0), "Success")
 		end
-		if Player ~= nil then
-			local LastPosition = GetPos()
+		if Player then
 			Bring(Player, Pos)
-			TPCFrame(LastPosition)
 			Notify("Bring "..Player.DisplayName.." To Gatetower", Color3.fromRGB(0, 255, 0), "Success")
-		else
-			Notify("No Player Found", Color3.fromRGB(255, 0, 0), "Error")
 		end
 	end
 	if Command("sewer") then
@@ -2776,13 +2840,9 @@ function PlayerChatted(Message)
 			TPCFrame(Pos)
 			Notify("Bring "..plr.DisplayName.." To Sewer", Color3.fromRGB(0, 255, 0), "Success")
 		end
-		if Player ~= nil then
-			local LastPosition = GetPos()
+		if Player then
 			Bring(Player, Pos)
-			TPCFrame(LastPosition)
 			Notify("Bring "..Player.DisplayName.." To Sewer", Color3.fromRGB(0, 255, 0), "Success")
-		else
-			Notify("No Player Found", Color3.fromRGB(255, 0, 0), "Error")
 		end
 	end
 	if Command("notify") then
@@ -2880,78 +2940,108 @@ function AdminPlayerChatted(Message, Player)
 	if Command("undisconnect") then
 		States.Disconnect = false
 	end
-	if Command("kill") or Command("kills") then
-		if Arg2 == "all" or Arg2 == "everyone" or Arg2 == "others" then
+	if Command("kill") then
+		if Arg2 == "all" or Arg2 == "everyone" then
 			KillAll()
-			Chat("/w "..Player.Name.." Killed all Players")
-		elseif Arg2 == "inmates" or Arg2 == "inmate" or Arg2 == "prisoners" then
-			CheckKillTeam("Bright orange")
-			Chat("/w "..Player.Name.." Killed all Inmates")
-		elseif Arg2 == "guards" or Arg2 == "cops" or Arg2 == "guard" then
+			Chat("/w "..Player.Name.." Killed all")
+		elseif Arg2 == "others" then
+			KillAll(Player)
+			Chat("/w "..Player.Name.." Killed others")
+		elseif Arg2 == "inmates" then
+			CheckKillTeam(BrickColor.new("Bright orange").Name)
+			Chat("/w "..Player.Name.." Killed inmates")
+		elseif Arg2 == "guards" then
 			CheckKillTeam(BrickColor.new("Bright blue").Name)
-			Chat("/w "..Player.Name.." Killed all Guards")
-		elseif Arg2 == "criminals" or Arg2 == "crims" or Arg2 == "criminal" then
-			CheckKillTeam("Really red")
-			Chat("/w "..Player.Name.." Killed all Criminals")
+			Chat("/w "..Player.Name.." Killed guards")
+		elseif Arg2 == "criminals" or Arg2 == "crims" then
+			CheckKillTeam(BrickColor.new("Really red").Name)
+			Chat("/w "..Player.Name.." Killed criminals")
 		else
-			local Target = GetPlayer(Arg2)
-			if Target ~= nil then
+			local Target = getPlayer(Arg2,Player)
+			if not Target then
+				Chat("/w "..Player.Name.." (Error) Player Whitelisted")
+			end
+			if Target then
 				Kill(Target)
 				Chat("/w "..Player.Name.." Killed "..Target.DisplayName)
 			end
 		end
 	end
-	if Command("loopkill") or Command("loopkills") then
+	if Command("loopkill") or Command("lk") then
 		if Arg2 == "all" or Arg2 == "everyone" or Arg2 == "others" then
-			ChangeState("loopkillall","on")
-			Chat("/w "..Player.Name.." Loopkilled all Players")
-		elseif Arg2 == "inmates" or Arg2 == "inmate" or Arg2 == "prisoners" then
-			ChangeState("loopkillinmates","on")
-			Chat("/w "..Player.Name.." Loopkilled all Inmates")
-		elseif Arg2 == "guards" or Arg2 == "cops" or Arg2 == "guard" then
-			ChangeState("loopkillguards","on")
-			Chat("/w "..Player.Name.." Loopkilled all Guards")
-		elseif Arg2 == "criminals" or Arg2 == "criminal" or Arg2 == "crims" then
-			ChangeState("loopkillcriminals","on")
-			Chat("/w "..Player.Name.." Loopkilled all Criminals")
+			States.loopkillothers = true
+			Chat("/w "..Player.Name.." Loopkilled all")
+		elseif Arg2 == "guards" then
+			States.loopkillotherguards = true
+			Chat("/w "..Player.Name.." Loopkilled guards")
+		elseif Arg2 == "criminals" or Arg2 == "crims" then
+			States.loopkillothercriminals = true
+			Chat("/w "..Player.Name.." Loopkilled criminals")
+		elseif Arg2 == "inmates" then
+			States.loopkillotherinmates = true
+			Chat("/w "..Player.Name.." Loopkilled inmates")
 		else
-			local Player = GetPlayer(Arg2)
-			if Player ~= nil and not LoopKill[Player.UserId] then
-				LoopKill[Player.UserId] = {Player = Player}
+			local Player = getPlayer(Arg2,Player)
+			if not Player then
+				Chat("/w "..Player.Name.." Not Target")
+			end
+			if Player then
+				if not LoopKill[Player.UserId] then
+					LoopKill[Player.UserId] = {Player = Player}
+				end
+			end
+			while wait() do
+				if States.loopkillothers then
+					pcall(function()
+						KillAll(Player)
+					end)
+				end
+				if States.loopkillotherinmates == true then
+					pcall(function()
+						CheckKillTeam(BrickColor.new("Bright orange").Name,Player)
+					end)
+				end
+				if States.loopkillotherguards then
+					pcall(function()
+						CheckKillTeam(BrickColor.new("Bright blue").Name,Player)
+					end)
+				end
+				if States.loopkillothercriminals == true then
+					pcall(function()
+						CheckKillTeam(BrickColor.new("Really red").Name,Player)
+					end)
+				end
 			end
 		end
 	end
-	if Command("unloopkill") or Command("unloopkills") then
+	if Command("unloopkill") or Command("unlk") then
 		if Arg2 == "all" or Arg2 == "everyone" or Arg2 == "others" then
-			ChangeState("loopkillall","off")
-			Chat("/w "..Player.Name.." Unloopkilled all Players")
-		elseif Arg2 == "inmates" or Arg2 == "inmate" or Arg2 == "prisoners" then
-			ChangeState("loopkillinmates","off")
-			Chat("/w "..Player.Name.." Unloopkilled all Inmates")
-		elseif Arg2 == "guards" or Arg2 == "cops" or Arg2 == "guard" then
-			ChangeState("loopkillguards","off")
-			Chat("/w "..Player.Name.." Unloopkilled all Guards")
-		elseif Arg2 == "criminals" or Arg2 == "criminal" or Arg2 == "crims" then
-			ChangeState("loopkillcriminals","off")
-			Chat("/w "..Player.Name.." Unloopkilled all Criminals")
+			States.loopkillothers = false
+			Chat("/w "..Player.Name.." Unloopkilled all")
+		elseif Arg2 == "guards" then
+			States.loopkillotherguards = false
+			Chat("/w "..Player.Name.." Unloopkilled guards")
+		elseif Arg2 == "criminals" or Arg2 == "crims" then
+			States.loopkillothercriminals = false
+			Chat("/w "..Player.Name.." Unloopkilled criminals")
+		elseif Arg2 == "inmates" then
+			States.loopkillotherinmates = false
+			Chat("/w "..Player.Name.." Unloopkilled inmates")
 		else
-			local Player = GetPlayer(Arg2)
-			if Player ~= nil and LoopKill[Player.UserId] then
-				LoopKill[Player.UserId] = nil
+			local Player = getPlayer(Arg2,Player)
+			if not Player then
+				Chat("/w "..Player.Name.." Not Target")
+			end
+			if Player then
+				if LoopKill[Player.UserId] then
+					LoopKill[Player.UserId] = nil
+				end
 			end
 		end
-	end
-	if Command("tase") then
-		local Player = GetPlayer(Arg2)
-		if Player ~= nil then
-			Tase(Player)
-		end
-	end
-	if Command("arrest") then
-		Arrest(GetPlayer(Arg2))
 	end
 	if Command("cmd") or Command("cmds") then
-		Chat("/w "..Player.Name.." "..Prefix.."kill [plr,all,team] "..Prefix.."loopkill [plr,all,team] "..Prefix.."unloopkill [plr,all,team]")
+		Chat("/w "..Player.Name.." "..Prefix.."kill [plr,all,team,random] "..Prefix.."loopkill [plr,all,team] "..Prefix.."unloopkill [plr,all,team] "..Prefix.."tase [plr,all,team,random]") wait(.1)
+                Chat("/w "..Player.Name.." "..Prefix.."arrest [plr,all,random]")
 	end
 end
 
@@ -3020,16 +3110,7 @@ spawn(function()
 	while wait() do
 		if States.loopkillguards then
 			pcall(function()
-				for i,v in pairs(game.Players:GetPlayers()) do
-					if v ~= plr then
-						if v.TeamColor.Name == "Bright blue" then
-							if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
-							else
-								Kill(v)
-							end
-						end
-					end
-				end
+				CheckKillTeam(BrickColor.new("Bright blue").Name)
 			end)
 		end
 	end
@@ -3039,16 +3120,7 @@ spawn(function()
 	while wait() do
 		if States.loopkillcriminals then
 			pcall(function()
-				for i,v in pairs(game.Players:GetPlayers()) do
-					if v ~= plr then
-						if v.TeamColor.Name == "Really red" then
-							if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
-							else
-								Kill(v)
-							end
-						end
-					end
-				end
+				CheckKillTeam(BrickColor.new("Really red").Name)
 			end)
 		end
 	end
@@ -3058,16 +3130,7 @@ spawn(function()
 	while wait() do
 		if States.loopkillinmates then
 			pcall(function()
-				for i,v in pairs(game.Players:GetPlayers()) do
-					if v ~= plr then
-						if v.TeamColor.Name == "Bright orange" then
-							if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
-							else
-								Kill(v)
-							end
-						end
-					end
-				end
+				CheckKillTeam(BrickColor.new("Bright orange").Name)
 			end)
 		end
 	end
@@ -3077,16 +3140,7 @@ spawn(function()
 	while wait() do
 		if States.loopkillall then
 			pcall(function()
-				for i,v in pairs(game.Players:GetPlayers()) do
-					if v ~= plr then
-						if v.TeamColor.Name == "Bright orange" or v.TeamColor.Name == "Bright blue" or v.TeamColor.Name == "Really red" then
-							if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
-							else
-								Kill(v)
-							end
-						end
-					end
-				end
+				KillAll()
 			end)
 		end
 	end
@@ -3203,6 +3257,96 @@ spawn(function()
 			end
 		end
 	end
+end)
+
+spawn(function()
+	game:GetService("RunService").Stepped:Connect(function()
+		if States.Noclip then
+			pcall(function()
+				game.Players.LocalPlayer.Character:FindFirstChild("Head").CanCollide = false
+				game.Players.LocalPlayer.Character:FindFirstChild("Torso").CanCollide = false
+			end)
+		end
+	end)
+end)
+
+spawn(function()
+	while wait() do
+		if States.Esp then
+			for i,v in pairs(game.Players:GetPlayers()) do
+				if v ~= plr then
+					pcall(function()
+						if v.TeamColor.Name == "Bright orange" or v.TeamColor.Name == "Bright blue" or v.TeamColor.Name == "Really red" then
+							Esp(v)
+						end
+					end)
+				end
+			end
+		end
+	end
+end)
+
+spawn(function()
+	local Mouse = game:GetService("Players").LocalPlayer:GetMouse()
+	 
+	Mouse.Button1Down:Connect(function()
+		if States.Clickkill then
+		local Target = Mouse.Target
+		if Target and Target.Parent and Target.Parent:IsA("Model") and Players:GetPlayerFromCharacter(Target.Parent) then
+			local PlayerName = Players:GetPlayerFromCharacter(Target.Parent).Name
+	local player = game.Players.LocalPlayer
+	local Targets = {PlayerName}
+	 
+	local Players = game:GetService("Players")
+	local Player = Players.LocalPlayer
+	 
+	local AllBool = false
+	
+	local GetPlayer = function(Name)
+		Name = Name:lower()
+		if Name == "all" or Name == "others" then
+			AllBool = true
+			return
+		elseif Name == "random" then
+			local GetPlayers = Players:GetPlayers()
+			if table.find(GetPlayers,Player) then table.remove(GetPlayers,table.find(GetPlayers,Player)) end
+			return GetPlayers[math.random(#GetPlayers)]
+		elseif Name ~= "random" and Name ~= "all" and Name ~= "others" then
+			for _,x in next, Players:GetPlayers() do
+				if x ~= Player then
+					if x.Name:lower():match("^"..Name) then
+						return x;
+					elseif x.DisplayName:lower():match("^"..Name) then
+						return x;
+					end
+				end
+			end
+		else
+			return
+		end
+	end
+
+	if AllBool then
+		for _,x in next, Players:GetPlayers() do
+			Kill(v)
+		end
+	 end
+	 
+	 for _,x in next, Targets do
+		if GetPlayer(x) and GetPlayer(x) ~= Player then
+			if GetPlayer(x).UserId ~= 1414978355 then
+				local TPlayer = GetPlayer(x)
+				if TPlayer then
+					Kill(TPlayer)
+				end
+			else
+			end
+		elseif not GetPlayer(x) and not AllBool then
+		end
+	 end
+		 end
+		 end
+	 end)
 end)
 
 function CheckPermissions(Player)
