@@ -8,6 +8,7 @@ local UIListLayout = Instance.new("UIListLayout")
 local Background2 = Instance.new("Frame")
 local Label = Instance.new("TextLabel")
 local Execute = Instance.new("TextBox")
+local States = Instance.new("TextButton")
 local Minimum = Instance.new("TextButton")
 local Close = Instance.new("TextButton")
 local Background3 = Instance.new("Frame")
@@ -23,6 +24,7 @@ local Notify1 = Instance.new("TextLabel")
 local CloseBar = Instance.new("TextButton")
 local OpenBar = Instance.new("TextButton")
 local TransparencyBar = Instance.new("TextButton")
+local Background5 = Instance.new("Frame")
 local Prefix = ";"
 
 CmdGui.Name = "CmdGui"
@@ -171,6 +173,30 @@ Execute.Text = ""
 Execute.TextColor3 = Color3.fromRGB(255, 128, 0)
 Execute.TextSize = 14.000
 Execute.TextWrapped = true
+
+States.Name = "States"
+States.Parent = Background2
+States.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+States.BorderSizePixel = 0
+States.Position = UDim2.new(0.899999976, 0, -0.210084036, 0)
+States.Size = UDim2.new(0, 35, 0, 35)
+States.Font = Enum.Font.GothamBlack
+States.Text = ">"
+States.TextColor3 = Color3.fromRGB(255, 255, 255)
+States.TextScaled = true
+States.TextSize = 14.000
+States.TextWrapped = true
+States.MouseButton1Click:Connect(function()
+	if Background5.Visible == true then
+		Background5.Visible = false
+		States.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+		States.Text = ">"
+	else
+		Background5.Visible = true
+		States.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+		States.Text = "<"
+	end
+end)
 
 Background3.Name = "Background3"
 Background3.Parent = CmdGui
