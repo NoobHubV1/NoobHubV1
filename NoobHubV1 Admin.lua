@@ -378,7 +378,8 @@ Cmd[#Cmd + 1] =	{Text = "loopkill / loopkills / lk [plr,team,all]",Title = "Loop
 Cmd[#Cmd + 1] =	{Text = "unloopkill / unloopkills / unlk [plr,team,all]",Title = "Unloop kills player"}
 Cmd[#Cmd + 1] =	{Text = "inmate / inmates / prisoner / prisoners",Title = "Become inmate team"}
 Cmd[#Cmd + 1] =	{Text = "guard / guards / cop / polices",Title = "Become guard team"}
-Cmd[#Cmd + 1] =	{Text = "crim / criminals / criminal",Title = "Become criminal team"}
+Cmd[#Cmd + 1] =	{Text = "crim / criminals / criminal / makecrim [plr]",Title = "Become criminal player team"}
+Cmd[#Cmd + 1] =	{Text = "loopcrim / loopcriminals / loopcriminal",Title = "loop criminal team player"}
 Cmd[#Cmd + 1] =	{Text = "neutral / neutrals",Title = "Become neutral team"}
 Cmd[#Cmd + 1] =	{Text = "re / refresh",Title = "Respawn on old position"}
 Cmd[#Cmd + 1] =	{Text = "res / respawn",Title = "Respawn on respawn pads"}
@@ -426,6 +427,7 @@ Cmd[#Cmd + 1] =	{Text = "reloadtime / reloadtimes [count]",Title = "Changes relo
 Cmd[#Cmd + 1] =	{Text = "gun / guns / allguns",Title = "Obtains all guns"}
 Cmd[#Cmd + 1] =	{Text = "autogun / autoguns / autoallguns / aguns [on,off]",Title = "Activate auto gun when respawned"}
 Cmd[#Cmd + 1] =	{Text = "antitase [on,off]",Title = "Bypass taser when got tased"}
+Cmd[#Cmd + 1] =	{Text = "infjump [on,off]",Title = "Activate inf jump"}
 Cmd[#Cmd + 1] =	{Text = "nodoors / deletedoors",Title = "Deletes all doors"}
 Cmd[#Cmd + 1] =	{Text = "restoredoors / doors",Title = "Restores all doors"}
 Cmd[#Cmd + 1] =	{Text = "nowalls / deletewalls - delete walls",Title = "Deletes all walls"}
@@ -489,8 +491,9 @@ local States = {}
       States.Noclip = false
       States.Esp = false
       States.Clickkill = false
-      States.antifling = true
+      States.antifling = false
       States.antibring = false
+      States.infjump = false
 
 local Players = game.Players
 local plr = Players.LocalPlayer
@@ -1817,9 +1820,16 @@ function PlayerChatted(Message)
 			Notify("Equip a gun", Color3.fromRGB(255, 0, 0), "Error")
 		end
 	end
-	if Command("criminal") or Command("criminals") or Command("crim") or Command("crims") or Command("crimes") or Command("crime") then
+	if Command("criminal") or Command("criminals") or Command("crim") or Command("crims") or Command("crimes") or Command("crime") or Command("makecrim") then
+		local Target = GetPlayer(Arg2)
+		if not Target then
 		Criminal()
 		Notify("Become criminal", Color3.fromRGB(0, 255, 0), "Success")
+		end
+		if Target then
+			Bring(Target,CFrame.new(-920.4323120117188, 102.50407409667969, 2134.524658203125))
+			Notify("Make Crim "..Target.Name, Color3.fromRGB(0, 255, 0), "Success")
+		end
 	end
 	if Command("neutral") or Command("neutrals") then
 		ChangeTeam(BrickColor.new("Medium stone grey").Name)
@@ -2130,6 +2140,9 @@ function PlayerChatted(Message)
 	if Command("antivoid") or Command("antifell") then
 		ChangeState("antivoid",Arg2)
 	end
+	if Command("infjump") then
+		ChangeState("infjump",Arg2)
+	end
 	if Command("antibring") then
 		ChangeState("antibring",Arg2)
 	end
@@ -2378,7 +2391,7 @@ function PlayerChatted(Message)
 		else
 			local Player = GetPlayer(Arg2)
 			if Target.TeamColor.Name == "Bright blue" or not BadArea(Player) then
-				return Notify("Can't arrest this player!", Color3.fromRGB(255, 0, 0), "Error")
+				Notify("Can't arrest this player!", Color3.fromRGB(255, 0, 0), "Error")
 			end
 			Arrest(Player)
 			Notify("Arrested "..Player.DisplayName, Color3.fromRGB(0, 255, 0), "Success")
@@ -3024,6 +3037,11 @@ function AdminPlayerChatted(Message, Player)
 			end
 		end
 	end
+	if Command("bring") then
+		local Target = getPlayer(Arg2,Player)
+		Bring(Target,Player.Character.HumanoidRootPart.CFrame)
+		Chat("/w "..Player.Name.." Bringing "..Target.DisplayName)
+	end
 	if Command("cmd") or Command("cmds") then
 		Chat("/w "..Player.Name.." "..Prefix.."kill [plr,all,team,random] "..Prefix.."loopkill [plr,all,team] "..Prefix.."unloopkill [plr,all,team] "..Prefix.."tase [plr,all,team,random]") wait(.1)
                 Chat("/w "..Player.Name.." "..Prefix.."arrest [plr,all,random]")
@@ -3350,10 +3368,18 @@ spawn(function()
 	while wait() do
 		if States.antibring then
 			if game.Players.LocalPlayer.Character.Humanoid.Sit == true then
-				game.Players.LocalPlayer.Character.Humanoid.Sit = false
+				game.Players.LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
 			end
 		end
 	end
+end)
+
+spawn(function()
+	game:GetService("UserInputService").JumpRequest:Connect(function()
+		if States.infjump then
+			game.Players.LocalPlayer.Character.Humanoid:ChangeState("Jumping")
+		end
+	end)
 end)
 
 function CheckPermissions(Player)
