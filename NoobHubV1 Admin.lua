@@ -362,7 +362,7 @@ TransparencyBar.MouseButton1Click:Connect(function()
 	end
 end)
 
-local Versions = "1.5"
+local Versions = "2.0"
 local Cmd = {}
 
 Cmd[#Cmd + 1] = {Text = "versions "..Versions,Title = "Script Made NoobHubV1"}
@@ -388,8 +388,7 @@ Cmd[#Cmd + 1] =	{Text = "arrestall / arrestothers",Title = "Arrest all criminals
 Cmd[#Cmd + 1] =	{Text = "auto / autore / autorefresh / autorespawn [on,off]",Title = "Auto respawn on old position when died"}
 Cmd[#Cmd + 1] =	{Text = "killaura [plr]",Title = "Activate kill aura Player"}
 Cmd[#Cmd + 1] =	{Text = "nokillaura / unkillaura [plr]",Title = "Unactivate kill aura Player"}
-Cmd[#Cmd + 1] = {Text = "antifling",Title = "Activate anti fling"}
-Cmd[#Cmd + 1] = {Text = "unantifling",Title = "Unactivate anti fling"}
+Cmd[#Cmd + 1] = {Text = "antifling [on,off]",Title = "Activate anti fling"}
 Cmd[#Cmd + 1] = {Text = "god",Title = "Become a god mode"}
 Cmd[#Cmd + 1] = {Text = "ungod",Title = "Unbecome a god mode"}
 Cmd[#Cmd + 1] =	{Text = "view / spectate / watch [plr]",Title = "Spectates the player"}
@@ -431,10 +430,8 @@ Cmd[#Cmd + 1] =	{Text = "nodoors / deletedoors",Title = "Deletes all doors"}
 Cmd[#Cmd + 1] =	{Text = "restoredoors / doors",Title = "Restores all doors"}
 Cmd[#Cmd + 1] =	{Text = "nowalls / deletewalls - delete walls",Title = "Deletes all walls"}
 Cmd[#Cmd + 1] =	{Text = "walls / restorewalls - restore walls",Title = "Restore all walls"}
-Cmd[#Cmd + 1] =	{Text = "anticrash / antivest",Title = "Anti crash when someone spamming armor"}
-Cmd[#Cmd + 1] =	{Text = "unanticrash / unantivest",Title = "Unanti crash when someone spamming armor"}
-Cmd[#Cmd + 1] =	{Text = "antishield / noshield",Title = "Anti shield users"}
-Cmd[#Cmd + 1] =	{Text = "unantishield",Title = "Unanti shield users"}
+Cmd[#Cmd + 1] =	{Text = "anticrash / antivest [on,off]",Title = "Anti crash when someone spamming armor"}
+Cmd[#Cmd + 1] =	{Text = "antishield / noshield [on,off]",Title = "Anti shield users"}
 Cmd[#Cmd + 1] =	{Text = "gatetower [plr]",Title = "Teleports to the gate tower"}
 Cmd[#Cmd + 1] =	{Text = "tower [plr]",Title = "Teleports to the yard tower"}
 Cmd[#Cmd + 1] =	{Text = "sewer [plr]",Title = "Teleports to the sewer"}
@@ -476,6 +473,7 @@ Cmd[#Cmd + 1] = {Text = "car",Title = "Bring Car"}
 Cmd[#Cmd + 1] = {Text = "carsto [plr]",Title = "Bring Car To Player"}
 Cmd[#Cmd + 1] = {Text = "esp [on,off]",Title = "Activate esp"}
 Cmd[#Cmd + 1] = {Text = "clickkill [on,off]",Title = "Activate click kill"}
+Cmd[#Cmd + 1] = {Text = "antibring [on,off]",Title = "Activate anti bring"}
 Cmd[#Cmd + 1] =	{Text = "!getprefix",Title = "If you for get prefix you can type this in chat"}
 
 local States = {}
@@ -491,6 +489,8 @@ local States = {}
       States.Noclip = false
       States.Esp = false
       States.Clickkill = false
+      States.antifling = true
+      States.antibring = false
 
 local Players = game.Players
 local plr = Players.LocalPlayer
@@ -1568,6 +1568,19 @@ function Esp(player)
 	end)
 end
 
+local function Collide(player)
+	if player and player.Character then
+	for i,v in pairs (player.Character:GetDescendants()) do
+	if v:IsA"BasePart" and States.antifling then
+	v.CanCollide = false
+     v.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
+    v.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
+    v.CustomPhysicalProperties = PhysicalProperties.new(0, 0, 0)
+	end
+	end
+	end
+end
+
 local function Loadstring(Https)
 	if not Https then return end
 	loadstring(game:HttpGet((Https), true))()
@@ -1964,16 +1977,7 @@ function PlayerChatted(Message)
 		end
 	end
 	if Command("antifling") then
-		States.Anti_Fling = true
-		Notify("Turn anti fling on", Color3.fromRGB(0, 255, 0), "Success")
-		game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Size = Vector3.new(math.huge, game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Size.Y, math.huge)
-		game.Players.LocalPlayer.CharacterAdded:Connect(function(Character)
-			if States.Anti_Fling then
-				pcall(function()
-					game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Size = Vector3.new(math.huge, game.Players.LocalPlayer.Character:FindFirstChild("HumanoidRootPart").Size.Y, math.huge)
-				end)
-			end
-		end)
+		ChangeState("antifling",Arg2)
 	end
 	if Command("statue") then
 		States.Statue = true
@@ -1989,31 +1993,11 @@ function PlayerChatted(Message)
 	if Command("noclip") or Command("noclips") then
 		ChangeState("Noclip",Arg2)
 	end
-	if Command("unantifling") then
-		States.Anti_Fling = false
-		Notify("Turn anti fling off", Color3.fromRGB(0, 255, 0), "Success")
-	end
 	if Command("antivest") or Command("anticrash") then
-		States.Anti_Crash = true
-		Notify("Turn anti armor spammer on", Color3.fromRGB(0, 255, 0), "Success")
-		coroutine.wrap(function()
-			while wait() do
-				if States.Anti_Crash then
-					for i,v in pairs(game.Players:GetPlayers()) do
-						pcall(function()
-							v.Character.vest:Destroy()
-						end)
-					end
-				end
-			end
-		end)()
+		ChangeState("anticrash",Arg2)
 	end
 	if Command("clickkill") then
 		ChangeState("Clickkill",Arg2)
-	end
-	if Command("unantivest") or Command("unanticrash") then
-		States.Anti_Crash = false
-		Notify("Turn anti armor spammer off", Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("fastpunch") or Command("speedpunch") or Command("speedlypunch") or Command("superspeedpunch") then
 		States.Fast_Punch = true
@@ -2097,9 +2081,7 @@ function PlayerChatted(Message)
 	end
 	if Command("bring") then
 		local Player = GetPlayer(Arg2)
-		local LastPosition = GetPos()
 		Bring(Player)
-		TPCFrame(LastPosition)
 		Notify("Bring "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("superknife") then
@@ -2147,6 +2129,9 @@ function PlayerChatted(Message)
 	end
 	if Command("antivoid") or Command("antifell") then
 		ChangeState("antivoid",Arg2)
+	end
+	if Command("antibring") then
+		ChangeState("antibring",Arg2)
 	end
 	if Command("killaura") then
 		if not Arg2 then
@@ -3349,6 +3334,28 @@ spawn(function()
 	 end)
 end)
 
+spawn(function()
+	while wait() do
+		if States.anticrash then
+			for i,v in pairs(game.Players:GetPlayers()) do
+				pcall(function()
+					v.Character.vest:Destroy()
+				end)
+			end
+		end
+	end
+end)
+
+spawn(function()
+	while wait() do
+		if States.antibring then
+			if game.Players.LocalPlayer.Character.Humanoid.Sit == true then
+				game.Players.LocalPlayer.Character.Humanoid.Sit = false
+			end
+		end
+	end
+end)
+
 function CheckPermissions(Player)
 	Player.Chatted:Connect(function(Message)
 		if Admin[Player.UserId] then
@@ -3385,6 +3392,7 @@ game.Players.PlayerAdded:Connect(function(Player)
 	CopyChat(Player)
 	Died(Player)
 	PlayerPickUp(Player)
+	Collide(Player)
 end)
 
 for i,v in pairs(game.Players:GetPlayers()) do
@@ -3393,6 +3401,7 @@ for i,v in pairs(game.Players:GetPlayers()) do
 		CopyChat(v)
 		Died(v)
 		PlayerPickUp(v)
+		Collide(v)
 	end
 end
 
