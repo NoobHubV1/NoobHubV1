@@ -1,5 +1,7 @@
 local CmdGui = Instance.new("ScreenGui")
+local LoadingScreen = Instance.new("Frame")
 local Background = Instance.new("Frame")
+local LoadingLabel = Instance.new("TextLabel")
 local CmdName = Instance.new("TextLabel")
 local FindCmd = Instance.new("TextBox")
 local CmdHandler = Instance.new("ScrollingFrame")
@@ -37,6 +39,40 @@ local Prefix = ";"
 CmdGui.Name = "CmdGui"
 CmdGui.Parent = game:GetService("CoreGui")
 CmdGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+LoadingScreen.Name = "LoadingScreen"
+LoadingScreen.Parent = CmdGui
+LoadingScreen.BackgroundColor3 = Color3.fromRGB(25, 25, 25)
+LoadingScreen.BorderSizePixel = 0
+LoadingScreen.Position = UDim2.new(0.402142167, 0, 0.415692836, 0)
+LoadingScreen.Size = UDim2.new(0, 200, 0, 100)
+
+LoadingLabel.Name = "LoadingLabel"
+LoadingLabel.Parent = LoadingScreen
+LoadingLabel.BackgroundColor3 = Color3.fromRGB(255, 128, 0)
+LoadingLabel.BorderSizePixel = 0
+LoadingLabel.Position = UDim2.new(0.125, 0, 0.25, 0)
+LoadingLabel.Size = UDim2.new(0, 150, 0, 50)
+LoadingLabel.Font = Enum.Font.GothamBlack
+LoadingLabel.Text = "Waiting"
+LoadingLabel.TextColor3 = Color3.fromRGB(255, 255, 0)
+LoadingLabel.TextScaled = true
+LoadingLabel.TextSize = 14.000
+LoadingLabel.TextWrapped = true
+coroutine.wrap(function()
+	while wait() do
+		if Background.Visible == false or Background2.Visible == false or Background4.Visible == false then
+			LoadingLabel.Text = "Loading."
+			wait(.1)
+			LoadingLabel.Text = "Loading.."
+			wait(.1)
+			LoadingLabel.Text = "Loading..."
+			wait(.1)
+		else
+			LoadingLabel.Text = "Loaded"
+		end
+	end
+end)()
 
 Background.Name = "Background"
 Background.Parent = CmdGui
@@ -175,7 +211,7 @@ Execute.ClearTextOnFocus = false
 Execute.Size = UDim2.new(0, 190, 0, 30)
 Execute.Font = Enum.Font.SourceSans
 Execute.PlaceholderColor3 = Color3.fromRGB(255, 255, 255)
-Execute.PlaceholderText = "Press "..Prefix.." To Execute!"
+Execute.PlaceholderText = "Loading..."
 Execute.Text = ""
 Execute.TextColor3 = Color3.fromRGB(255, 128, 0)
 Execute.TextSize = 14.000
@@ -1754,10 +1790,7 @@ else
 end]]
 
 Notify("Loaded admin commands", Color3.fromRGB(255, 0, 0), "Loads")
-ChangeTeam(plr.TeamColor.Name)
-Background.Visible = true
-Background2.Visible = true
-Background4.Visible = true
+Execute.PlaceholderText = "Press "..Prefix.." To Execute!"
 
 function PlayerChatted(Message)
 	if ScriptDisabled then return end
@@ -3795,3 +3828,13 @@ getgenv().DisableScript = function()
 		end
 	end)
 end
+
+Background.Visible = true
+Background2.Visible = true
+Background4.Visible = true
+
+ChangeTeam(plr.TeamColor.Name)
+
+wait(1)
+
+LoadingScreen.Visible = false
