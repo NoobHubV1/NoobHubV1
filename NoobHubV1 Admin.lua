@@ -928,7 +928,7 @@ function KillPlayer(Player)
 		end
 	end
 	coroutine.wrap(function()
-		for i = 1,50 do
+		for i = 1,30 do
 			game.ReplicatedStorage.ReloadEvent:FireServer(gun)
 			task.wait()
 		end
@@ -972,7 +972,7 @@ function KillTeam(Team,Target)
 		end
 	end
 	coroutine.wrap(function()
-		for i = 1,50 do
+		for i = 1,30 do
 			game.ReplicatedStorage.ReloadEvent:FireServer(gun)
 			task.wait()
 		end
@@ -1007,7 +1007,7 @@ function Kill2Team(Team1, Team2, Target)
 		end
 	end
 	coroutine.wrap(function()
-		for i = 1,50 do
+		for i = 1,30 do
 			game.ReplicatedStorage.ReloadEvent:FireServer(gun)
 			task.wait()
 		end
@@ -1876,6 +1876,23 @@ function PlayerChatted(Message)
 		local State = "autoguns"
 		ChangeState(State,Arg2)
 	end
+	if Command("keycard") then
+		local savedteam = GetTeam()
+		ChangeTeam(BrickColor.new("Bright blue").Name)
+		task.wait(0.2)
+		if States.autorespawn == true then
+			-- nothing
+		else
+			States.autorespawn = true
+		end
+		repeat wait()
+			plr.Character.Humanoid.Health = 0
+		until workspace.Prison_ITEMS.single["Key card"]
+		task.wait(0.2)
+		ChangeTeam(BrickColor.new(savedteam).Name)
+		task.wait(0.15)
+		workspace.Remote.ItemHandler:InvokeServer({Position = game.Players.LocalPlayer.Character.Head.Position, Parent = workspace.Prison_ITEMS.single["Key card"]})
+	end
 	if Command("loopgoto") or Command("loopto") then
 		local Player = GetPlayer(Arg2)
 		if Player then
@@ -2068,16 +2085,48 @@ function PlayerChatted(Message)
 	if Command("kill") or Command("kills") then
 		local args = Arg2
 		if args == "all" or args == "everyone" or args == "others" then
-		KillAll()
+		for i,v in pairs(game.Players:GetPlayers()) do
+			if v ~= plr then
+				if v.TeamColor.Name == "Really red" or v.TeamColor.Name == "Bright blue" or v.TeamColor.Name == "Bright orange" then
+					if not v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("ForceField") then
+						Kill(v)
+					end
+				end
+			end
+		end
 		Notify("Killed all players", Color3.fromRGB(0, 255, 0), "Success")
 		elseif args == "inmates" then
-		CheckKillTeam("Bright orange")
+		for i,v in pairs(game.Players:GetPlayers()) do
+			if v ~= plr then
+				if v.TeamColor.Name == "Bright orange" then
+					if not v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("ForceField") then
+						Kill(v)
+					end
+				end
+			end
+		end
 		Notify("Killed all inmates", Color3.fromRGB(0, 255, 0), "Success")
 		elseif args == "guards" then
-		CheckKillTeam("Bright blue")
+		for i,v in pairs(game.Players:GetPlayers()) do
+			if v ~= plr then
+				if v.TeamColor.Name == "Bright blue" then
+					if not v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("ForceField") then
+						Kill(v)
+					end
+				end
+			end
+		end
 		Notify("Killed all guards", Color3.fromRGB(0, 255, 0), "Success")
 		elseif args == "criminals" then
-		CheckKillTeam("Really red")
+		for i,v in pairs(game.Players:GetPlayers()) do
+			if v ~= plr then
+				if v.TeamColor.Name == "Really red" then
+					if not v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("ForceField") then
+						Kill(v)
+					end
+				end
+			end
+		end
 		Notify("Killed all criminals", Color3.fromRGB(0, 255, 0), "Success")
 		else
 		local Player = GetPlayer(args)
@@ -3337,10 +3386,10 @@ spawn(function()
 		if States.loopkillguards then
 			pcall(function()
 				for i,v in pairs(game.Players:GetPlayers()) do
-					if v ~= game.Players.LocalPlayer then
+					if v ~= plr then
 						if v.TeamColor.Name == "Bright blue" then
 							if not v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("ForceField") then
-								CheckKillTeam(BrickColor.new("Bright blue").Name)
+								Kill(v)
 							end
 						end
 					end
@@ -3355,10 +3404,10 @@ spawn(function()
 		if States.loopkillcriminals then
 			pcall(function()
 				for i,v in pairs(game.Players:GetPlayers()) do
-					if v ~= game.Players.LocalPlayer then
+					if v ~= plr then
 						if v.TeamColor.Name == "Really red" then
 							if not v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("ForceField") then
-								CheckKillTeam(BrickColor.new("Really red").Name)
+								Kill(v)
 							end
 						end
 					end
@@ -3373,10 +3422,10 @@ spawn(function()
 		if States.loopkillinmates then
 			pcall(function()
 				for i,v in pairs(game.Players:GetPlayers()) do
-					if v ~= game.Players.LocalPlayer then
+					if v ~= plr then
 						if v.TeamColor.Name == "Bright orange" then
 							if not v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("ForceField") then
-								CheckKillTeam(BrickColor.new("Bright orange").Name)
+								Kill(v)
 							end
 						end
 					end
@@ -3391,10 +3440,10 @@ spawn(function()
 		if States.loopkillall then
 			pcall(function()
 				for i,v in pairs(game.Players:GetPlayers()) do
-					if v ~= game.Players.LocalPlayer then
-						if v.TeamColor.Name == "Bright blue" or v.TeamColor.Name == "Bright orange" or v.TeamColor.Name == "Really red" then
+					if v ~= plr then
+						if v.TeamColor.Name == "Really red" or v.TeamColor.Name == "Bright blue" or v.TeamColor.Name == "Bright orange" then
 							if not v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("ForceField") then
-								KillAll()
+								Kill(v)
 							end
 						end
 					end
