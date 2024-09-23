@@ -25,6 +25,11 @@ local CloseBar = Instance.new("TextButton")
 local OpenBar = Instance.new("TextButton")
 local TransparencyBar = Instance.new("TextButton")
 local Background5 = Instance.new("Frame")
+local line = Instance.new("Frame")
+local scripts = Instance.new("ScrollingFrame")
+local AutoRespawn = Instance.new("TextButton")
+local AutoGuns = Instance.new("TextButton")
+local UIGridLayout = Instance.new("UIGridLayout")
 local Prefix = ";"
 
 CmdGui.Name = "CmdGui"
@@ -387,6 +392,57 @@ TransparencyBar.MouseButton1Click:Connect(function()
 		TransparencyBar.Text = "="
 	end
 end)
+
+Background5.Name = "Background5"
+Background5.Parent = CmdGui
+Background5.BackgroundColor3 = Color3.fromRGB(255, 128, 0)
+Background5.BorderSizePixel = 0
+Background5.Position = UDim2.new(0.368556708, 0, 0.11490047, 0)
+Background5.Size = UDim2.new(0, 425, 0, 339)
+Background5.Active = true
+Background5.Draggable = true
+Background5.Visible = false
+
+line.Name = "line"
+line.Parent = Background5
+line.BackgroundColor3 = Color3.fromRGB(84, 84, 84)
+line.BorderSizePixel = 0
+line.Position = UDim2.new(0, 0, 0.106986806, 0)
+line.Size = UDim2.new(0, 325, 0, 6)
+
+scripts.Name = "scripts"
+scripts.Parent = Background5
+scripts.Active = true
+scripts.BackgroundColor3 = Color3.fromRGB(63, 63, 63)
+scripts.BackgroundTransparency = 1
+scripts.BorderSizePixel = 0
+scripts.Position = UDim2.new(0, 0, 0.134782612, 0)
+scripts.Size = UDim2.new(0, 425, 0, 273)
+scripts.CanvasSize = UDim2.new(0, 0, 1.150, 0)
+
+UIGridLayout.Parent = scripts
+UIGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIGridLayout.CellSize = UDim2.new(0, 100, 0, 30)
+
+AutoRespawn.Name = "AutoRespawn"
+AutoRespawn.Parent = scripts
+AutoRespawn.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+AutoRespawn.BorderSizePixel = 0
+AutoRespawn.Size = UDim2.new(0, 200, 0, 50)
+AutoRespawn.Font = Enum.Font.Roboto
+AutoRespawn.Text = "Auto Respawn: On"
+AutoRespawn.TextColor3 = Color3.fromRGB(255, 255, 255)
+AutoRespawn.TextSize = 14.000
+
+AutoGuns.Name = "AutoGuns"
+AutoGuns.Parent = scripts
+AutoGuns.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+AutoGuns.BorderSizePixel = 0
+AutoGuns.Size = UDim2.new(0, 200, 0, 50)
+AutoGuns.Font = Enum.Font.Roboto
+AutoGuns.Text = "Auto Guns: On"
+AutoGuns.TextColor3 = Color3.fromRGB(255, 255, 255)
+AutoGuns.TextSize = 14.000
 
 local Versions = "2.0"
 local Cmd = {}
@@ -779,19 +835,7 @@ function ChangeTeam(Team, Position, NoForce)
 end
 
 function GiveItem(Item)
-        if Item == "Remington 870" then
-                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["Remington 870"]})
-        elseif Item == "Hammer" then
-                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.single["Hammer"]})
-        elseif Item == "Knife" then
-                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.single["Crude Knife"]})
-        elseif Item == "AK-47" then
-                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["AK-47"]})
-        elseif Item == "M9" then
-                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["M9"]})
-        elseif Item == "M4A1" then
-                Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.giver["M4A1"]})
-	end
+        Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS:FindFirstChild(Item, true)})
 end
 
 function Guns()
@@ -2447,11 +2491,14 @@ function PlayerChatted(Message)
 		end
 		else
 			local Player = GetPlayer(Arg2)
-			if Target.TeamColor.Name == "Bright blue" or not BadArea(Player) then
-				Notify("Can't arrest this player!", Color3.fromRGB(255, 0, 0), "Error")
+			for i,v in pairs(game:GetService("Players"):GetPlayers()) do
+			        if v and v== Player and v.TeamColor.Name == "Really red" or (BadArea(v) and v.TeamColor.Name == "Bright orange") and v.Character.PrimaryPart and v.Character:FindFirstChildOfClass("Humanoid").Health>0 then
+				        Arrest(v, tonumber(Arg3))
+					Notify("Arrested "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
+				else
+					Notify("Can't not arrest this player", Color3.fromRGB(255, 0, 0), "Error")
+			        end
 			end
-			Arrest(Player)
-			Notify("Arrested "..Player.DisplayName, Color3.fromRGB(0, 255, 0), "Success")
 		end
 	end
 	if Command("opengate") then
@@ -3590,6 +3637,30 @@ Execute.FocusLost:Connect(function(FocusLost)
 		else
 			PlayerChatted(Execute.Text)
 		end
+	end
+end)
+
+AutoRespawn.MouseButton1Click:Connect(function()
+	if States.autorespawn == true then
+		States.autorespawn = false
+		ChangeTeam(plr.TeamColor.Name)
+		AutoRespawn.Text = "Auto Respawn: Off"
+	else
+		States.autorespawn = true
+		ChangeTeam(plr.TeamColor.Name)
+		AutoRespawn.Text = "Auto Respawn: On"
+	end
+end)
+
+AutoGuns.MouseButton1Click:Connect(function()
+	if States.autoguns == true then
+		States.autoguns = false
+		ChangeTeam(plr.TeamColor.Name)
+		AutoGuns.Text = "Auto Guns: Off"
+	else
+		States.autoguns = true
+		ChangeTeam(plr.TeamColor.Name)
+		AutoGuns.Text = "Auto Guns: On"
 	end
 end)
 
