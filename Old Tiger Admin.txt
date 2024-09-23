@@ -1,0 +1,1 @@
+loadstring(Game:HttpGet('https://gist.githubusercontent.com/NoobHubV1/bf75dbbabd45272e3154c881a7e00f1b/raw/a3426e5da330ae3a508d8c45183b7fa9beefc0c8/Old%20Tiger%20Admin.lua'))()
