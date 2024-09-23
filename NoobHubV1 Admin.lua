@@ -405,7 +405,8 @@ Cmd[#Cmd + 1] =	{Text = "unloopkill / unloopkills / unlk [plr,team,all]",Title =
 Cmd[#Cmd + 1] =	{Text = "inmate / inmates / prisoner / prisoners",Title = "Become inmate team"}
 Cmd[#Cmd + 1] =	{Text = "guard / guards / cop / polices",Title = "Become guard team"}
 Cmd[#Cmd + 1] =	{Text = "crim / criminals / criminal / makecrim [plr]",Title = "Become criminal player team"}
-Cmd[#Cmd + 1] =	{Text = "loopcrim / loopcriminals / loopcriminal",Title = "loop criminal team player"}
+Cmd[#Cmd + 1] =	{Text = "loopcrim / loopcriminals / loopcriminal [plr]",Title = "loop criminal team player"}
+Cmd[#Cmd + 1] =	{Text = "unloopcrim / unloopcriminals / unloopcriminal [plr]",Title = "unloop criminal team player"}
 Cmd[#Cmd + 1] =	{Text = "neutral / neutrals",Title = "Become neutral team"}
 Cmd[#Cmd + 1] =	{Text = "re / refresh",Title = "Respawn on old position"}
 Cmd[#Cmd + 1] =	{Text = "res / respawn",Title = "Respawn on respawn pads"}
@@ -585,6 +586,7 @@ local ScriptDisabled = false
 local LoopBeam = {}
 local LoopKill = {}
 local LoopTase = {}
+local LoopCrim = {}
 local Admin = {}
 local Watching = nil
 local BuyGamepass = game:GetService("MarketplaceService"):UserOwnsGamePassAsync(tonumber((game:GetService("Players").LocalPlayer.CharacterAppearance):split('=')[#((game:GetService("Players").LocalPlayer.CharacterAppearance):split('='))]), 96651)
@@ -1192,7 +1194,7 @@ function Arrest(Player, Time)
 					ArrestEvent(Player, 1)
 				end)()
 			end
-		until Player.Character.Head:FindFirstChild("handcuffedGui") or Attempts > 150
+		until Player.Character.Head:FindFirstChild("handcuffedGui") or Attempts > 120
 		task.wait()
 	end
 	game.Players.LocalPlayer.Character.Humanoid.Sit = false
@@ -1289,7 +1291,7 @@ function Bring(Target,TeleportTo)
 				break
 			end
 			CarSelected:SetPrimaryPartCFrame(Target.Character:GetPrimaryPartCFrame()*CFrame.new(0,-.2,-5))
-		until Target.Character:FindFirstChildOfClass("Humanoid").Sit == true or Attempts >500
+		until Target.Character:FindFirstChildOfClass("Humanoid").Sit == true or Attempts >300
 		for i =1,5 do
 			task.wait()
 			CarSelected:SetPrimaryPartCFrame(TeleportTo)
@@ -1853,8 +1855,37 @@ function PlayerChatted(Message)
 		Notify("Become criminal", Color3.fromRGB(0, 255, 0), "Success")
 		end
 		if Target then
-			Bring(Target,CFrame.new(-920.4323120117188, 102.50407409667969, 2134.524658203125))
+			Bring(Target,CFrame.new(-919.4981689453125, 95.32719421386719, 2142.78271484375))
 			Notify("Make Crim "..Target.Name, Color3.fromRGB(0, 255, 0), "Success")
+		end
+	end
+	if Command("loopcriminal") or Command("loopcriminals") or Command("loopcrim") then
+		local Player = GetPlayer(Arg2)
+		if not Player then
+			States.loopcrim = true
+			Notify("Loop become criminal", Color3.fromRGB(0, 255, 0), "Success")
+		end
+		if Player then
+			States.loopcrimplayer = true
+			Notify("Loop make Crim "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
+		end
+		while wait() do
+			if States.loopcrimplayer then
+				if game.Players.LocalPlayer.TeamColor.Name ~= "Really red" then
+					Bring(Player,CFrame.new(-919.4981689453125, 95.32719421386719, 2142.78271484375))
+				end
+			end
+		end
+	end
+	if Command("unloopcriminal") or Command("unloopcriminals") or Command("unloopcrim") then
+		local Player = GetPlayer(Arg2)
+		if not Player then
+			States.loopcrim = false
+			Notify("Unloop become criminal", Color3.fromRGB(0, 255, 0), "Success")
+		end
+		if Player then
+			States.loopcrimplayer = false
+			Notify("Unloop make Crim "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
 		end
 	end
 	if Command("neutral") or Command("neutrals") then
@@ -3068,9 +3099,31 @@ function AdminPlayerChatted(Message, Player)
 		Bring(Target,Player.Character.HumanoidRootPart.CFrame)
 		Chat("/w "..Player.Name.." Bringing "..Target.DisplayName)
 	end
+	if Command("crim") or Command("criminal") or Command("makecrim") then
+		local Target = getPlayer(Arg2,Player)
+		if not Target then
+			Bring(Player,CFrame.new(-919.4981689453125, 95.32719421386719, 2142.78271484375))
+			Chat("/w "..Player.Name.." Make "..Player.DisplayName.." Crim")
+		end
+		if Target then
+			Bring(Target,CFrame.new(-919.4981689453125, 95.32719421386719, 2142.78271484375))
+			Chat("/w "..Player.Name.." Make "..Target.DisplayName.." Crim")
+		end
+	end
+	if Command("void") then
+		local Target = getPlayer(Arg2,Player)
+		if not Target then
+			Bring(Player,CFrame.new(8^8, 8^8, 8^8))
+			Chat("/w "..Player.Name.." Teleport "..Player.DisplayName.." To The Void")
+		end
+		if Target then
+			Bring(Target,CFrame.new(8^8, 8^8, 8^8))
+			Chat("/w "..Player.Name.." Teleport "..Target.DisplayName.." To The Void")
+		end
+	end
 	if Command("cmd") or Command("cmds") then
 		Chat("/w "..Player.Name.." "..Prefix.."kill [plr,all,team,random] "..Prefix.."loopkill [plr,all,team] "..Prefix.."unloopkill [plr,all,team] "..Prefix.."tase [plr,all,team,random]") wait(.1)
-                Chat("/w "..Player.Name.." "..Prefix.."arrest [plr,all,random]")
+                Chat("/w "..Player.Name.." "..Prefix.."arrest [plr,all] "..Prefix.."crim / makecrim / criminal [plr] "..Prefix.."void [plr]")
 	end
 end
 
@@ -3406,6 +3459,18 @@ spawn(function()
 			game.Players.LocalPlayer.Character.Humanoid:ChangeState("Jumping")
 		end
 	end)
+end)
+
+spawn(function()
+	while wait() do
+		if States.loopcrim then
+			if game.Players.LocalPlayer.TeamColor.Name ~= "Really red" then
+				Criminal()
+			else
+				-- nothing
+			end
+		end
+	end
 end)
 
 function CheckPermissions(Player)
