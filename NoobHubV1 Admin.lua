@@ -644,6 +644,7 @@ local States = {}
       States.infjump = false
       States.loopcrim = false
       States.antitase = false
+      States.AutoItems = false
 
 local Players = game.Players
 local plr = Players.LocalPlayer
@@ -881,25 +882,14 @@ function ChangeTeam(Team, Position, NoForce)
 		LastCameraPosition = nil
 		Team = nil
 	end)
-	if Team == "Bright orange" then
-		Position = Position
-		workspace.Remote.TeamEvent:FireServer("Bright orange")
-	elseif Team == "Bright blue" then
-		Position = Position
-		workspace.Remote.TeamEvent:FireServer(game.Teams.Guards.TeamColor.Name)
-	elseif Team == "Really red" then
+	if Team ~= "Really red" then
+		workspace.Remote.TeamEvent:FireServer(Team)
+	else
 		workspace.Remote.TeamEvent:FireServer(game.Teams.Inmates.TeamColor.Name)
 		plr.CharacterAdded:Wait() wait()
 		repeat task.wait()
-			game:GetService("RunService").Stepped:Wait()
-			if firetouchinterest then
-				firetouchinterest(plr.Character:FindFirstChildOfClass("Part"), game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1], 0)
-				firetouchinterest(plr.Character:FindFirstChildOfClass("Part"), game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1], 1)
-			end
-			game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1].Transparency = 1
-			game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1].CanCollide = false
-			game:GetService("Workspace")["Criminals Spawn"]:GetChildren()[1].CFrame = GetPos()
-		until plr.TeamColor.Name == "Really red"
+			Criminal()
+		until game.Players.LocalPlayer.TeamColor.Name == "Really red"
 	end
 	return nil
 end
@@ -1879,6 +1869,9 @@ function PlayerChatted(Message)
 	if Command("autogun") or Command("autoguns") or Command("autoallguns") or Command("aguns") then
 		local State = "autoguns"
 		ChangeState(State,Arg2)
+	end
+	if Command("autoitems") then
+		ChangeState("AutoItems",Arg2)
 	end
 	if Command("loopgoto") or Command("loopto") then
 		local Player = GetPlayer(Arg2)
@@ -3313,7 +3306,25 @@ spawn(function()
 	plr.CharacterAdded:Connect(function(NewChar)
 		task.spawn(function()
 		NewChar:WaitForChild("Humanoid")
-		if States.autoguns then Guns() end
+		if States.autoguns then
+			Guns() 
+		end
+		if States.AutoItems then
+			if BuyGamepass then
+				GiveItem("Remington 870")
+				GiveItem("AK-47")
+				GiveItem("M9")
+				GiveItem("M4A1")
+				GiveItem("Hammer")
+				GiveItem("Crude Knife")
+			else
+				GiveItem("Remington 870")
+				GiveItem("AK-47")
+				GiveItem("M9")
+				GiveItem("Hammer")
+				GiveItem("Crude Knife")
+			end
+		end
 			if States.autorespawn then
 				NewChar.Humanoid.BreakJointsOnDeath = not States.autorespawn
 				NewChar.Humanoid.Died:Connect(function()
@@ -3325,6 +3336,23 @@ spawn(function()
 								Guns()
 								task.pcall(function()
 								end)
+							end
+							if States.AutoItems == true then
+								wait(.5)
+								if BuyGamepass then
+									GiveItem("Remington 870")
+				                                        GiveItem("AK-47")
+									GiveItem("M9")
+									GiveItem("M4A1")
+									GiveItem("Hammer")
+									GiveItem("Crude Knife")
+								else
+									GiveItem("Remington 870")
+									GiveItem("AK-47")
+									GiveItem("M9")
+									GiveItem("Hammer")
+									GiveItem("Crude Knife")
+							        end
 							end
 						end)
 					end
