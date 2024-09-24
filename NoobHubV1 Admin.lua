@@ -61,7 +61,7 @@ LoadingLabel.TextSize = 14.000
 LoadingLabel.TextWrapped = true
 coroutine.wrap(function()
 	while wait() do
-		if Background.Visible == false or Background2.Visible == false or Background4.Visible == false then
+		if Background2.Visible == false then
 			LoadingLabel.Text = "Loading."
 			wait(.1)
 			LoadingLabel.Text = "Loading.."
@@ -179,7 +179,7 @@ end)
 
 -- New
 
-Background2.Name = "Background"
+Background2.Name = "Background2"
 Background2.Parent = CmdGui
 Background2.BackgroundColor3 = Color3.fromRGB(255, 128, 0)
 Background2.BorderSizePixel = 0
@@ -376,6 +376,7 @@ CloseBar.BorderSizePixel = 0
 CloseBar.Position = UDim2.new(0.899999976, 0, -0.210084036, 0)
 CloseBar.Size = UDim2.new(0, 25, 0, 25)
 CloseBar.Font = Enum.Font.GothamBlack
+CloseBar.Visible = false
 CloseBar.Text = "X"
 CloseBar.TextColor3 = Color3.fromRGB(255, 255, 255)
 CloseBar.TextScaled = true
@@ -392,7 +393,7 @@ OpenBar.Parent = CmdGui
 OpenBar.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
 OpenBar.BorderSizePixel = 0
 OpenBar.Size = UDim2.new(0, 65, 0, 65)
-OpenBar.Visible = false
+OpenBar.Visible = true
 OpenBar.Font = Enum.Font.GothamBlack
 OpenBar.Text = "Open"
 OpenBar.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -871,19 +872,22 @@ function ChangeTeam(Team, Position, NoForce)
 			workspace.CurrentCamera.CameraSubject = plr.Character:WaitForChild("Humanoid")
 
 		end)
-		repeat task.wait()
+		for i = 1,15 do task.wait()
 			c:WaitForChild("HumanoidRootPart").CFrame = LastPosition
 			game:GetService("RunService").Stepped:Wait()
-		until c:WaitForChild("HumanoidRootPart").CFrame == LastPosition
+		end
 		Position = nil--// why the fuck it keep spawning somewhere else!!!! GRRRRR
 		NoForce = nil
 		LastCameraPosition = nil
 		Team = nil
 	end)
-	if Team ~= "Really red" then
+	if Team == "Bright orange" then
 		Position = Position
-		workspace.Remote.TeamEvent:FireServer(Team)
-	else
+		workspace.Remote.TeamEvent:FireServer("Bright orange")
+	elseif Team == "Bright blue" then
+		Position = Position
+		workspace.Remote.TeamEvent:FireServer(game.Teams.Guards.TeamColor.Name)
+	elseif Team == "Really red" then
 		workspace.Remote.TeamEvent:FireServer(game.Teams.Inmates.TeamColor.Name)
 		plr.CharacterAdded:Wait() wait()
 		repeat task.wait()
@@ -1865,7 +1869,7 @@ function PlayerChatted(Message)
 		Notify("Become inmate", Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("guard") or Command("guards") or Command("cop") or Command("polices") or Command("cops") then
-		workspace.Remote.TeamEvent:FireServer("Bright blue")
+		ChangeTeam(BrickColor.new("Bright blue").Name)
 		Notify("Become guard", Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("gun") or Command("guns") or Command("allguns") then
@@ -1875,23 +1879,6 @@ function PlayerChatted(Message)
 	if Command("autogun") or Command("autoguns") or Command("autoallguns") or Command("aguns") then
 		local State = "autoguns"
 		ChangeState(State,Arg2)
-	end
-	if Command("keycard") then
-		local savedteam = GetTeam()
-		ChangeTeam(BrickColor.new("Bright blue").Name)
-		task.wait(0.2)
-		if States.autorespawn == true then
-			-- nothing
-		else
-			States.autorespawn = true
-		end
-		repeat wait()
-			plr.Character.Humanoid.Health = 0
-		until workspace.Prison_ITEMS.single["Key card"]
-		task.wait(0.2)
-		ChangeTeam(BrickColor.new(savedteam).Name)
-		task.wait(0.15)
-		workspace.Remote.ItemHandler:InvokeServer({Position = game.Players.LocalPlayer.Character.Head.Position, Parent = workspace.Prison_ITEMS.single["Key card"]})
 	end
 	if Command("loopgoto") or Command("loopto") then
 		local Player = GetPlayer(Arg2)
@@ -3878,9 +3865,7 @@ getgenv().DisableScript = function()
 	end)
 end
 
-Background.Visible = true
 Background2.Visible = true
-Background4.Visible = true
 
 ChangeTeam(plr.TeamColor.Name)
 
