@@ -2310,7 +2310,7 @@ function PlayerChatted(Message)
 	if Command("superknife") then
 		local Knife = game.Players.LocalPlayer.Backpack:FindFirstChild("Crude Knife") or game.Players.LocalPlayer.Character:FindFirstChild("Crude Knife")
 		if not Knife then
-			GiveItem("Knife")
+			GiveItem("Crude Knife")
 		end
 		wait()
 		Knife = game.Players.LocalPlayer.Backpack:FindFirstChild("Crude Knife") or game.Players.LocalPlayer.Character:FindFirstChild("Crude Knife")
