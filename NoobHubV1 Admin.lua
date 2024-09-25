@@ -573,6 +573,8 @@ Cmd[#Cmd + 1] =	{Text = "ak",Title = "Obtains ak-47"}
 Cmd[#Cmd + 1] =	{Text = "shotgun",Title = "Obtains remington 870"}
 Cmd[#Cmd + 1] =	{Text = "m9",Title = "Obtains m9"}
 Cmd[#Cmd + 1] =	{Text = "m4a1",Title = "Obtains m4a1"}
+Cmd[#Cmd + 1] =	{Text = "hammer",Title = "Obtains Hammer"}
+Cmd[#Cmd + 1] =	{Text = "knife",Title = "Obtains Cure Knife"}
 Cmd[#Cmd + 1] =	{Text = "autogun / autoguns / autoallguns / aguns [on,off]",Title = "Activate auto gun when respawned"}
 Cmd[#Cmd + 1] =	{Text = "antitase [on,off]",Title = "Bypass taser when got tased"}
 Cmd[#Cmd + 1] =	{Text = "infjump [on,off]",Title = "Activate inf jump"}
@@ -873,10 +875,10 @@ function ChangeTeam(Team, Position, NoForce)
 			workspace.CurrentCamera.CameraSubject = plr.Character:WaitForChild("Humanoid")
 
 		end)
-		for i = 1,15 do task.wait()
+		repeat
 			c:WaitForChild("HumanoidRootPart").CFrame = LastPosition
 			game:GetService("RunService").Stepped:Wait()
-		end
+		until c:WaitForChild("HumanoidRootPart").CFrame == LastPosition
 		Position = nil--// why the fuck it keep spawning somewhere else!!!! GRRRRR
 		NoForce = nil
 		LastCameraPosition = nil
@@ -939,7 +941,7 @@ function KillPlayer(Player)
 	end
 end
 
-function KillTeam(Team,Target)
+function KillTeamTeam(Team,Target)
 	if not Target then
 		-- nothing
 	end
@@ -1037,11 +1039,11 @@ function Kill(Player)
         elseif Player.TeamColor.Name == "Really red" then
         if plr.TeamColor.Name == "Bright blue" then
         ChangeTeam(BrickColor.new("Bright orange").Name)
-        task.wait(0.2)
+        char:Wait() task.wait(0.15)
         KillPlayer(Player)
         elseif plr.TeamColor.Name == "Really red" then
         ChangeTeam(BrickColor.new("Bright orange").Name)
-        task.wait(0.15)
+        char:Wait() task.wait(0.1)
         KillPlayer(Player)
         elseif plr.TeamColor.Name == "Bright orange" then
         KillPlayer(Player)
@@ -1055,62 +1057,6 @@ function Kill(Player)
         KillPlayer(Player)
 	end
         end
-	end
-end
-
-function CheckKillTeam(TeamPath,Target)
-	if not Target then
-		-- nothing
-	end
-	if TeamPath == "Bright orange" then
-	for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
-	if v ~= plr and v ~= Target or plr then
-	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
-	else
-	if plr.TeamColor.Name == "Really red" then
-	KillTeam("Bright orange",Target)
-	elseif plr.TeamColor.Name == "Bright orange" then
-	Criminal()
-	task.wait(0.1)
-	KillTeam("Bright orange",Target)
-	elseif plr.TeamColor.Name == "Bright blue" then
-	Criminal()
-	task.wait(0.2)
-	KillTeam("Bright orange",Target)
-	end
-	end
-	end
-	end
-	elseif TeamPath == "Bright blue" then
-        for i,v in pairs(game.Teams.Guards:GetPlayers()) do
-	if v ~= plr and v ~= Target or plr then
-	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
-	else
-	if plr.TeamColor.Name == "Really red" or plr.TeamColor.Name == "Bright orange" then
-	KillTeam("Bright blue",Target)
-	elseif plr.TeamColor.Name == "Bright blue" then
-	ChangeTeam(game.Teams.Inmates)
-	task.wait(0.2)
-	KillTeam("Bright blue",Target)
-	end
-	end
-	end
-	end
-	elseif TeamPath == "Really red" then
-	for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
-	if v ~= plr and v ~= Target or plr then
-	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
-	else
-	if plr.TeamColor.Name == "Really red" then
-	ChangeTeam(BrickColor.new("Bright orange").Name)
-	task.wait(0.2)
-	KillTeam("Really red",Target)
-	elseif plr.TeamColor.Name == "Bright blue" or plr.TeamColor.Name == "Bright orange" then
-	KillTeam("Really red",Target)
-	end
-	end
-	end
-	end
 	end
 end
 
@@ -1136,12 +1082,62 @@ function KillInmatesAndGuards(Target)
 	end
 end
 
-function KillAll(Target)
+function KillTeam(TeamPath,Target)
 	if not Target then
 		-- nothing
 	end
+	if TeamPath == "Bright orange" then
+	for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
+	if v ~= plr and v ~= Target or plr then
+	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
+	else
+	if plr.TeamColor.Name == "Really red" then
+	KillTeamTeam("Bright orange",Target)
+	elseif plr.TeamColor.Name == "Bright orange" then
+	Criminal()
+	task.wait(0.1)
+	KillTeamTeam("Bright orange",Target)
+	elseif plr.TeamColor.Name == "Bright blue" then
+	Criminal()
+	task.wait(0.2)
+	KillTeamTeam("Bright orange",Target)
+	end
+	end
+	end
+	end
+	elseif TeamPath == "Bright blue" then
+        for i,v in pairs(game.Teams.Guards:GetPlayers()) do
+	if v ~= plr and v ~= Target or plr then
+	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
+	else
+	if plr.TeamColor.Name == "Really red" or plr.TeamColor.Name == "Bright orange" then
+	KillTeamTeam("Bright blue",Target)
+	elseif plr.TeamColor.Name == "Bright blue" then
+	ChangeTeam(game.Teams.Inmates)
+	char:Wait() task.wait(0.15)
+	KillTeamTeam("Bright blue",Target)
+	end
+	end
+	end
+	end
+	elseif TeamPath == "Really red" then
+	for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
+	if v ~= plr and v ~= Target or plr then
+	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
+	else
+	if plr.TeamColor.Name == "Really red" then
+	ChangeTeam(BrickColor.new("Bright orange").Name)
+	char:Wait() task.wait(0.15)
+	KillTeamTeam("Really red",Target)
+	elseif plr.TeamColor.Name == "Bright blue" or plr.TeamColor.Name == "Bright orange" then
+	KillTeamTeam("Really red",Target)
+	end
+	end
+	end
+	end
+	elseif TeamPath == "Medium stone grey" then
 	for i,v in pairs(game.Players:GetPlayers()) do
-		if v ~= plr and v ~= Target then
+		if v ~= plr and v ~= Target or plr then
 			if v.TeamColor.Name == "Bright orange" or v.TeamColor.Name == "Bright blue" then
 				if not v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("ForceField") then
 					KillInmatesAndGuards(Target)
@@ -1151,13 +1147,20 @@ function KillAll(Target)
 	end
 	task.wait(0.1)
 	for i,v in pairs(game.Players:GetPlayers()) do
-		if v ~= plr and v ~= Target then
+		if v ~= plr and v ~= Target or plr then
 			if v.TeamColor.Name == "Really red" then
 				if not v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("ForceField") then
-					CheckKillTeam(BrickColor.new("Really red").Name,Target)
+					if plr.TeamColor.Name == "Really red" then
+	ChangeTeam(BrickColor.new("Bright orange").Name)
+	char:Wait() task.wait(0.15)
+	KillTeamTeam("Really red",Target)
+	elseif plr.TeamColor.Name == "Bright blue" or plr.TeamColor.Name == "Bright orange" then
+	KillTeamTeam("Really red",Target)
+					end
 				end
 			end
 		end
+	end
 	end
 end
 
@@ -1345,9 +1348,9 @@ function GetCar(To)
 		Seat:Sit(plr.Character:FindFirstChildOfClass("Humanoid"))
 	until plr.Character:FindFirstChildOfClass("Humanoid").Sit == true
 	Car:SetPrimaryPartCFrame(To)
-	wait()
+	wait(0.25)
 	plr.Character:FindFirstChildOfClass('Humanoid').Sit = false
-	wait(0.15)
+	wait()
 	TPCFrame(L)
 end
 
@@ -1400,7 +1403,7 @@ function Bring(Target,TeleportTo)
 			task.wait()
 			CarSelected:SetPrimaryPartCFrame(TeleportTo)
 		end
-		wait()
+		wait(0.25)
 		plr.Character.Humanoid.Sit = false
 		wait()
 		TPCFrame(L)
@@ -2018,6 +2021,28 @@ function PlayerChatted(Message)
 		Chat(Message)
 		Notify("Chatted", Color3.fromRGB(0, 255, 0), "Success")
 	end
+	if Command("removecars") or Command("dumpcars") or Command("nocars") then
+		local p = GetPos()
+		for i,v in pairs(workspace.CarContainer:GetChildren()) do
+		        if v:WaitForChild("Body"):WaitForChild("VehicleSeat").Occupant == nil then
+				for i= 1,3 do
+				task.wait()
+					v:WaitForChild("Body"):WaitForChild("VehicleSeat"):Sit(plr.Character:FindFirstChildOfClass("Humanoid"))
+				end
+			repeat task.wait() until plr.Character:FindFirstChildOfClass("Humanoid").Sit == true
+				v:WaitForChild("Body"):WaitForChild("VehicleSeat")
+				v.PrimaryPart = v.Body.VehicleSeat
+			        for i =1,3 do
+				task.wait()
+					v:SetPrimaryPartCFrame(CFrame.new(-658.901123046875, 51.501502990722656, 3033.045166015625))
+				end
+					wait(.25)
+				plr.Character:FindFirstChildOfClass("Humanoid").Sit = false
+			end
+		end
+		wait()
+		TPCFrame(p)
+	end
 	if Command("copychat") then
 		States.CopyChat = true
 		Notify("Turn copy chat on", Color3.fromRGB(0, 255, 0), "Success")
@@ -2046,6 +2071,14 @@ function PlayerChatted(Message)
 			Notify("Player not BuyGamepass", Color3.fromRGB(255, 0, 0), "Error")
 		end
 	end
+	if Command("hammer") then
+		GiveItem("Hammer")
+		Notify("Obtains Hammer", Color3.fromRGB(0, 255, 0), "Success")
+	end
+	if Command("knife") then
+		GiveItem("Crude Knife")
+		Notify("Obtains Knife", Color3.fromRGB(0, 255, 0), "Success")
+	end
 	if Command("tase") then
 		local args = Arg2
 		if args == "all" or args == "everyone" or args == "others" then
@@ -2065,48 +2098,16 @@ function PlayerChatted(Message)
 	if Command("kill") or Command("kills") then
 		local args = Arg2
 		if args == "all" or args == "everyone" or args == "others" then
-		for i,v in pairs(game.Players:GetPlayers()) do
-			if v ~= plr then
-				if v.TeamColor.Name == "Really red" or v.TeamColor.Name == "Bright blue" or v.TeamColor.Name == "Bright orange" then
-					if not v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("ForceField") then
-						Kill(v)
-					end
-				end
-			end
-		end
+		KillTeam(BrickColor.new("Medium stone grey").Name)
 		Notify("Killed all players", Color3.fromRGB(0, 255, 0), "Success")
 		elseif args == "inmates" then
-		for i,v in pairs(game.Players:GetPlayers()) do
-			if v ~= plr then
-				if v.TeamColor.Name == "Bright orange" then
-					if not v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("ForceField") then
-						Kill(v)
-					end
-				end
-			end
-		end
+		KillTeam(BrickColor.new("Bright orange").Name)
 		Notify("Killed all inmates", Color3.fromRGB(0, 255, 0), "Success")
 		elseif args == "guards" then
-		for i,v in pairs(game.Players:GetPlayers()) do
-			if v ~= plr then
-				if v.TeamColor.Name == "Bright blue" then
-					if not v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("ForceField") then
-						Kill(v)
-					end
-				end
-			end
-		end
+		KillTeam(BrickColor.new("Bright blue").Name)
 		Notify("Killed all guards", Color3.fromRGB(0, 255, 0), "Success")
 		elseif args == "criminals" then
-		for i,v in pairs(game.Players:GetPlayers()) do
-			if v ~= plr then
-				if v.TeamColor.Name == "Really red" then
-					if not v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("ForceField") then
-						Kill(v)
-					end
-				end
-			end
-		end
+		KillTeam(BrickColor.new("Really red").Name)
 		Notify("Killed all criminals", Color3.fromRGB(0, 255, 0), "Success")
 		else
 		local Player = GetPlayer(args)
@@ -2352,6 +2353,7 @@ function PlayerChatted(Message)
 	end
 	if Command("antivoid") or Command("antifell") then
 		ChangeState("antivoid",Arg2)
+		Refresh()
 	end
 	if Command("infjump") then
 		ChangeState("infjump",Arg2)
@@ -3404,7 +3406,7 @@ spawn(function()
 					if v ~= plr then
 						if v.TeamColor.Name == "Bright blue" then
 							if not v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("ForceField") then
-								Kill(v)
+								KillTeam(BrickColor.new("Bright blue").Name)
 							end
 						end
 					end
@@ -3422,7 +3424,7 @@ spawn(function()
 					if v ~= plr then
 						if v.TeamColor.Name == "Really red" then
 							if not v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("ForceField") then
-								Kill(v)
+								KillTeam(BrickColor.new("Really red").Name)
 							end
 						end
 					end
@@ -3440,7 +3442,7 @@ spawn(function()
 					if v ~= plr then
 						if v.TeamColor.Name == "Bright orange" then
 							if not v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("ForceField") then
-								Kill(v)
+								KillTeam(BrickColor.new("Bright orange").Name)
 							end
 						end
 					end
@@ -3458,7 +3460,7 @@ spawn(function()
 					if v ~= plr then
 						if v.TeamColor.Name == "Really red" or v.TeamColor.Name == "Bright blue" or v.TeamColor.Name == "Bright orange" then
 							if not v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("ForceField") then
-								Kill(v)
+								KillTeam(BrickColor.new("Medium stone grey").Name)
 							end
 						end
 					end
