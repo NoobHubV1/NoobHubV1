@@ -957,8 +957,10 @@ function ChangeTeam(Team,Position,NoForce)
 			until plr.TeamColor.Name == "Really red"
 		else
 			workspace.Remote.TeamEvent:FireServer("Bright blue")
-			plr.CharacterAdded:Wait() wait(.15)
-			Criminal()
+			plr.CharacterAdded:Wait() wait(.055)
+			repeat wait(.1)
+				Criminal()
+			until game.Players.LocalPlayer.TeamColor.Name == game.Teams.Criminals.TeamColor.Name
 		end
 	end
 	return nil
@@ -983,8 +985,7 @@ end
 
 function KillPlayer(Player)
 	if not Player.Character.Humanoid.Health == 0 or not Player.Character:FindFirstChild("ForceField") then
-	local events = {}
-	local gun = plr.Character:FindFirstChild("AK-47") or plr.Backpack:FindFirstChild("AK-47")
+	local events, gun = {}, plr.Character:FindFirstChild("AK-47") or plr.Backpack:FindFirstChild("AK-47")
 	GiveItem("AK-47")
 	for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
 		if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
@@ -1013,10 +1014,9 @@ function KillTeamTeam(Team,Target)
 	if not Target then
 		-- nothing
 	end
-	local events = {}
-	local gun = plr.Character:FindFirstChild("AK-47") or plr.Backpack:FindFirstChild("AK-47")
+	local events, gun = {}, plr.Character:FindFirstChild("AK-47") or plr.Backpack:FindFirstChild("AK-47")
 	for i,v in pairs(game.Players:GetPlayers()) do
-		if v ~= game.Players.LocalPlayer and v ~= Target or plr then
+		if v ~= game.Players.LocalPlayer and v ~= Target then
 			if v.TeamColor.Name == Team then
 			for i = 1,10 do
 				events[#events + 1] = {
@@ -1048,10 +1048,9 @@ function Kill2Team(Team1, Team2, Target)
 	if not Target then
 		-- nothing
 	end
-	local events = {}
-	local gun = plr.Character:FindFirstChild("AK-47") or plr.Backpack:FindFirstChild("AK-47")
+	local events, gun = {}, plr.Character:FindFirstChild("AK-47") or plr.Backpack:FindFirstChild("AK-47")
 	for i,v in pairs(game.Players:GetPlayers()) do
-		if v ~= game.Players.LocalPlayer and v ~= Target or plr then
+		if v ~= game.Players.LocalPlayer and v ~= Target then
 			if v.TeamColor.Name == Team1 or v.TeamColor.Name == Team2 then
 			for i = 1,10 do
 				events[#events + 1] = {
@@ -1156,7 +1155,7 @@ function KillTeam(TeamPath,Target)
 	end
 	if TeamPath == "Bright orange" then
 	for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
-	if v ~= plr and v ~= Target or plr then
+	if v ~= plr and v ~= Target then
 	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
 	else
 	if plr.TeamColor.Name == "Really red" then
@@ -1175,7 +1174,7 @@ function KillTeam(TeamPath,Target)
 	end
 	elseif TeamPath == "Bright blue" then
         for i,v in pairs(game.Teams.Guards:GetPlayers()) do
-	if v ~= plr and v ~= Target or plr then
+	if v ~= plr and v ~= Target then
 	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
 	else
 	if plr.TeamColor.Name == "Really red" or plr.TeamColor.Name == "Bright orange" then
@@ -1190,7 +1189,7 @@ function KillTeam(TeamPath,Target)
 	end
 	elseif TeamPath == "Really red" then
 	for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
-	if v ~= plr and v ~= Target or plr then
+	if v ~= plr and v ~= Target then
 	if v.Character.Humanoid.Health == 0 or v.Character:FindFirstChild("ForceField") then -- nothing
 	else
 	if plr.TeamColor.Name == "Really red" then
@@ -1205,7 +1204,7 @@ function KillTeam(TeamPath,Target)
 	end
 	elseif TeamPath == "Medium stone grey" then
 	for i,v in pairs(game.Players:GetPlayers()) do
-		if v ~= plr and v ~= Target or plr then
+		if v ~= plr and v ~= Target then
 			if v.TeamColor.Name == "Bright orange" or v.TeamColor.Name == "Bright blue" then
 				if not v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("ForceField") then
 					KillInmatesAndGuards(Target)
@@ -1215,7 +1214,7 @@ function KillTeam(TeamPath,Target)
 	end
 	task.wait(0.1)
 	for i,v in pairs(game.Players:GetPlayers()) do
-		if v ~= plr and v ~= Target or plr then
+		if v ~= plr and v ~= Target then
 			if v.TeamColor.Name == "Really red" then
 				if not v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("ForceField") then
 					if plr.TeamColor.Name == "Really red" then
