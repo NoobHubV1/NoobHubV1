@@ -33,6 +33,7 @@ local scripts = Instance.new("ScrollingFrame")
 local AutoRespawn = Instance.new("TextButton")
 local AutoGuns = Instance.new("TextButton")
 local AntiBring = Instance.new("TextButton")
+local AutoItems = Instance.new("TextButton")
 local UIGridLayout = Instance.new("UIGridLayout")
 local Prefix = ";"
 
@@ -61,7 +62,7 @@ LoadingLabel.TextSize = 14.000
 LoadingLabel.TextWrapped = true
 coroutine.wrap(function()
 	while wait() do
-		if Background2.Visible == false then
+		if Background2.Visible == false or OpenBar.Visible == false then
 			LoadingLabel.Text = "Loading."
 			wait(.1)
 			LoadingLabel.Text = "Loading.."
@@ -207,7 +208,7 @@ Execute.Parent = Background2
 Execute.BackgroundColor3 = Color3.fromRGB(50, 50, 50)
 Execute.BorderColor3 = Color3.fromRGB(255, 128, 0)
 Execute.Position = UDim2.new(0.097, 0, 0.436, 0)
-Execute.ClearTextOnFocus = false
+Execute.ClearTextOnFocus = true
 Execute.Size = UDim2.new(0, 190, 0, 30)
 Execute.Font = Enum.Font.SourceSans
 Execute.PlaceholderColor3 = Color3.fromRGB(255, 255, 255)
@@ -393,7 +394,7 @@ OpenBar.Parent = CmdGui
 OpenBar.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
 OpenBar.BorderSizePixel = 0
 OpenBar.Size = UDim2.new(0, 65, 0, 65)
-OpenBar.Visible = true
+OpenBar.Visible = false
 OpenBar.Font = Enum.Font.GothamBlack
 OpenBar.Text = "Open"
 OpenBar.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -505,6 +506,16 @@ AntiBring.Font = Enum.Font.Roboto
 AntiBring.Text = "Anti Bring: Off"
 AntiBring.TextColor3 = Color3.fromRGB(255, 255, 255)
 AntiBring.TextSize = 14.000
+
+AutoItems.Name = "AutoItems"
+AutoItems.Parent = scripts
+AutoItems.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+AutoItems.BorderSizePixel = 0
+AutoItems.Size = UDim2.new(0, 200, 0, 50)
+AutoItems.Font = Enum.Font.Roboto
+AutoItems.Text = "Auto Items: Off"
+AutoItems.TextColor3 = Color3.fromRGB(255, 255, 255)
+AutoItems.TextSize = 14.000
 
 local Versions = "2.0"
 local Cmd = {}
@@ -833,32 +844,71 @@ function TPCFrame(Arg2)
 	plr.Character.HumanoidRootPart.CFrame = Arg2
 end
 
-function GuardsFull(a)
-	if #game:GetService("Teams").Guards:GetPlayers() == 8 then
-		if a then
-			if plr.TeamColor.Name == "Bright blue" then
-				return false
-			end
-		end
-		return false
-	end
-	return true
+function GuardsFull()
+	return #game.Teams.Guards:GetPlayers() == 9
 end
 
-function Criminal()
-	local savedcf = GetPos()
-	local savedcamcf = GetCamPos()
-	if plr.TeamColor.Name == "Bright blue" then
-	TPCFrame(CFrame.new(-919.958, 95.327, 2138.189))
-	char:Wait() task.wait(0.065)
-	TPCFrame(savedcf)
-	workspace["CurrentCamera"].CFrame = savedcamcf
-	elseif plr.TeamColor.Name == "Bright orange" then
-	firetouchinterest(plr.Character.HumanoidRootPart, game.Workspace["Criminals Spawn"].SpawnLocation, 0)
-	end
+function Criminal(Position)
+	if not Position then Position = GetPos() end
+	if typeof(Position):lower() == "position" then Position = CFrame.new(Position) end
+	local LastPosition = GetPos()
+	local LastCameraPosition = workspace.CurrentCamera.CFrame
+	local done = false
+	Respawned = plr.CharacterAdded:Connect(function(c)
+		if done then return end
+		done = true
+		task.spawn(function()
+			workspace.CurrentCamera.CameraType = Enum.CameraType.Scriptable
+			wait(.1)
+			workspace.CurrentCamera.CameraType = Enum.CameraType.Custom
+			workspace.CurrentCamera.CameraSubject = plr.Character:WaitForChild("Humanoid")
+
+		end)
+		wait(0.025)
+		repeat task.wait()
+			c:WaitForChild("HumanoidRootPart").CFrame = LastPosition
+			game:GetService("RunService").Stepped:Wait()
+		until c:FindFirstChild("HumanoidRootPart").CFrame == LastPosition
+		Position = nil--// why the fuck it keep spawning somewhere else!!!! GRRRRR
+		NoForce = nil
+		LastCameraPosition = nil
+		Team = nil
+	end)
+	firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, game.Workspace["Criminals Spawn"].SpawnLocation, 0)
+	return nil
 end
 
-function ChangeTeam(Team, Position, NoForce)
+function Guard(Position)
+	if not Position then Position = GetPos() end
+	if typeof(Position):lower() == "position" then Position = CFrame.new(Position) end
+	local LastPosition = GetPos()
+	local LastCameraPosition = workspace.CurrentCamera.CFrame
+	local done = false
+	Respawned = plr.CharacterAdded:Connect(function(c)
+		if done then return end
+		done = true
+		task.spawn(function()
+			workspace.CurrentCamera.CameraType = Enum.CameraType.Scriptable
+			wait(.1)
+			workspace.CurrentCamera.CameraType = Enum.CameraType.Custom
+			workspace.CurrentCamera.CameraSubject = plr.Character:WaitForChild("Humanoid")
+
+		end)
+		wait(0.025)
+		repeat task.wait()
+			c:WaitForChild("HumanoidRootPart").CFrame = LastPosition
+			game:GetService("RunService").Stepped:Wait()
+		until c:FindFirstChild("HumanoidRootPart").CFrame == LastPosition
+		Position = nil--// why the fuck it keep spawning somewhere else!!!! GRRRRR
+		NoForce = nil
+		LastCameraPosition = nil
+		Team = nil
+	end)
+	workspace.Remote.TeamEvent:FireServer("Bright blue")
+	return nil
+end
+
+function ChangeTeam(Team,Position,NoForce)
 	if not Position then Position = GetPos() end
 	if typeof(Position):lower() == "position" then Position = CFrame.new(Position) end
 	local LastPosition = GetPos()
@@ -884,14 +934,32 @@ function ChangeTeam(Team, Position, NoForce)
 		LastCameraPosition = nil
 		Team = nil
 	end)
-	if Team ~= "Really red" then
-		workspace.Remote.TeamEvent:FireServer(Team)
-	else
-		workspace.Remote.TeamEvent:FireServer(game.Teams.Inmates.TeamColor.Name)
-		plr.CharacterAdded:Wait() wait()
-		repeat task.wait()
+	if Team == "Bright blue" then
+		if GuardsFull() then
+			workspace.Remote.TeamEvent:FireServer("Bright orange")
+			char:Wait() wait()
+			repeat wait()
+				Guard()
+			until plr.TeamColor.Name == game.Teams.Guards.TeamColor.Name
+		else
+			workspace.Remote.TeamEvent:FireServer("Bright blue")
+		end
+	elseif Team == "Bright orange" then
+		workspace.Remote.TeamEvent:FireServer("Bright orange")
+	elseif Team == game.Teams.Neutral.TeamColor.Name then
+		workspace.Remote.TeamEvent:FireServer("Medium stone grey")
+	elseif Team == "Really red" then
+		if GuardsFull() then
+			workspace.Remote.TeamEvent:FireServer("Bright orange")
+			plr.CharacterAdded:Wait() wait()
+			repeat wait()
+				Criminal()
+			until plr.TeamColor.Name == "Really red"
+		else
+			workspace.Remote.TeamEvent:FireServer("Bright blue")
+			plr.CharacterAdded:Wait() wait(.15)
 			Criminal()
-		until game.Players.LocalPlayer.TeamColor.Name == "Really red"
+		end
 	end
 	return nil
 end
@@ -1039,11 +1107,11 @@ function Kill(Player)
         elseif Player.TeamColor.Name == "Really red" then
         if plr.TeamColor.Name == "Bright blue" then
         ChangeTeam(BrickColor.new("Bright orange").Name)
-        char:Wait() task.wait(0.15)
+        char:Wait() task.wait(0.1)
         KillPlayer(Player)
         elseif plr.TeamColor.Name == "Really red" then
         ChangeTeam(BrickColor.new("Bright orange").Name)
-        char:Wait() task.wait(0.1)
+        char:Wait() task.wait(0.05)
         KillPlayer(Player)
         elseif plr.TeamColor.Name == "Bright orange" then
         KillPlayer(Player)
@@ -1071,7 +1139,7 @@ function KillInmatesAndGuards(Target)
 	else
 	if plr.TeamColor.Name == "Bright orange" or plr.TeamColor.Name == "Bright blue" then
 	Criminal()
-	task.wait(0.2)
+	task.wait(0.15)
 	Kill2Team("Bright orange", "Bright blue", Target)
 	elseif plr.TeamColor.Name == "Really red" then
 	Kill2Team("Bright orange", "Bright blue", Target)
@@ -1114,7 +1182,7 @@ function KillTeam(TeamPath,Target)
 	KillTeamTeam("Bright blue",Target)
 	elseif plr.TeamColor.Name == "Bright blue" then
 	ChangeTeam(game.Teams.Inmates)
-	char:Wait() task.wait(0.15)
+	char:Wait() task.wait(0.1)
 	KillTeamTeam("Bright blue",Target)
 	end
 	end
@@ -1127,7 +1195,7 @@ function KillTeam(TeamPath,Target)
 	else
 	if plr.TeamColor.Name == "Really red" then
 	ChangeTeam(BrickColor.new("Bright orange").Name)
-	char:Wait() task.wait(0.15)
+	char:Wait() task.wait(0.1)
 	KillTeamTeam("Really red",Target)
 	elseif plr.TeamColor.Name == "Bright blue" or plr.TeamColor.Name == "Bright orange" then
 	KillTeamTeam("Really red",Target)
@@ -1862,8 +1930,12 @@ function PlayerChatted(Message)
 		Notify("Become inmate", Color3.fromRGB(0, 255, 0), "Success")
 	end
 	if Command("guard") or Command("guards") or Command("cop") or Command("polices") or Command("cops") then
-		ChangeTeam(BrickColor.new("Bright blue").Name)
-		Notify("Become guard", Color3.fromRGB(0, 255, 0), "Success")
+		if GuardsFull() then
+			Notify("Guards Full", Color3.fromRGB(255, 0, 0), "Error")
+		else
+			ChangeTeam(BrickColor.new("Bright blue").Name)
+			Notify("Become guard", Color3.fromRGB(0, 255, 0), "Success")
+		end
 	end
 	if Command("gun") or Command("guns") or Command("allguns") then
 		Guns()
@@ -3881,6 +3953,18 @@ AntiBring.MouseButton1Click:Connect(function()
 	end
 end)
 
+AutoItems.MouseButton1Click:Connect(function()
+	if States.AutoItems == true then
+		States.AutoItems = false
+		ChangeTeam(plr.TeamColor.Name)
+		AutoItems.Text = "Auto Items: Off"
+	else
+		States.AutoItems = true
+		ChangeTeam(plr.TeamColor.Name)
+		AutoItems.Text = "Auto Items: On"
+	end
+end)
+
 getgenv().DisableScript = function()
 	pcall(function()
 		CmdGui:Destroy()
@@ -3896,6 +3980,7 @@ getgenv().DisableScript = function()
 end
 
 Background2.Visible = true
+OpenBar.Visible = true
 
 ChangeTeam(plr.TeamColor.Name)
 
