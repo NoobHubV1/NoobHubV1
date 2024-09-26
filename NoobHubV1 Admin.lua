@@ -869,12 +869,13 @@ function GuardsFull()
 	return #game.Teams.Guards:GetPlayers() == 9
 end
 
-function Criminal(Position)
+function WaitForRespawn(Position,NoForce)
 	if not Position then Position = GetPos() end
 	if typeof(Position):lower() == "position" then Position = CFrame.new(Position) end
 	local LastPosition = GetPos()
 	local LastCameraPosition = workspace.CurrentCamera.CFrame
 	local done = false
+	local i = NoForce
 	Respawned = plr.CharacterAdded:Connect(function(c)
 		if done then return end
 		done = true
@@ -885,67 +886,9 @@ function Criminal(Position)
 			workspace.CurrentCamera.CameraSubject = plr.Character:WaitForChild("Humanoid")
 
 		end)
-		wait(0.025)
-		repeat task.wait()
-			c:WaitForChild("HumanoidRootPart").CFrame = LastPosition
-			game:GetService("RunService").Stepped:Wait()
-		until c:FindFirstChild("HumanoidRootPart").CFrame == LastPosition
-		Position = nil--// why the fuck it keep spawning somewhere else!!!! GRRRRR
-		NoForce = nil
-		LastCameraPosition = nil
-		Team = nil
-	end)
-	firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, game.Workspace["Criminals Spawn"].SpawnLocation, 0)
-	return nil
-end
-
-function Guard(Position)
-	if not Position then Position = GetPos() end
-	if typeof(Position):lower() == "position" then Position = CFrame.new(Position) end
-	local LastPosition = GetPos()
-	local LastCameraPosition = workspace.CurrentCamera.CFrame
-	local done = false
-	Respawned = plr.CharacterAdded:Connect(function(c)
-		if done then return end
-		done = true
-		task.spawn(function()
-			workspace.CurrentCamera.CameraType = Enum.CameraType.Scriptable
-			wait(.1)
-			workspace.CurrentCamera.CameraType = Enum.CameraType.Custom
-			workspace.CurrentCamera.CameraSubject = plr.Character:WaitForChild("Humanoid")
-
-		end)
-		wait(0.025)
-		repeat task.wait()
-			c:WaitForChild("HumanoidRootPart").CFrame = LastPosition
-			game:GetService("RunService").Stepped:Wait()
-		until c:FindFirstChild("HumanoidRootPart").CFrame == LastPosition
-		Position = nil--// why the fuck it keep spawning somewhere else!!!! GRRRRR
-		NoForce = nil
-		LastCameraPosition = nil
-		Team = nil
-	end)
-	workspace.Remote.TeamEvent:FireServer("Bright blue")
-	return nil
-end
-
-function ChangeTeam(Team,Position,NoForce)
-	if not Position then Position = GetPos() end
-	if typeof(Position):lower() == "position" then Position = CFrame.new(Position) end
-	local LastPosition = GetPos()
-	local LastCameraPosition = workspace.CurrentCamera.CFrame
-	if not Team then Team = plr.TeamColor.Name end
-	local done = false
-	Respawned = plr.CharacterAdded:Connect(function(c)
-		if done then return end
-		done = true
-		task.spawn(function()
-			workspace.CurrentCamera.CameraType = Enum.CameraType.Scriptable
-			wait(.1)
-			workspace.CurrentCamera.CameraType = Enum.CameraType.Custom
-			workspace.CurrentCamera.CameraSubject = plr.Character:WaitForChild("Humanoid")
-
-		end)
+		if i == true then
+			c:WaitForChild("ForceField"):Destroy()
+		end
 		repeat
 			c:WaitForChild("HumanoidRootPart").CFrame = LastPosition
 			game:GetService("RunService").Stepped:Wait()
@@ -955,6 +898,20 @@ function ChangeTeam(Team,Position,NoForce)
 		LastCameraPosition = nil
 		Team = nil
 	end)
+end
+
+function Criminal(Pos)
+	WaitForRespawn(Pos or GetPos(),true)
+	firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, game.Workspace["Criminals Spawn"].SpawnLocation, 0)
+end
+
+function Guard(Pos)
+	WaitForRespawn(Pos or GetPos(),true)
+	workspace.Remote.TeamEvent:FireServer("Bright blue")
+end
+
+function ChangeTeam(Team)
+	WaitForRespawn(Pos or GetPos(),true)
 	if Team == "Bright blue" then
 		if GuardsFull() then
 			workspace.Remote.TeamEvent:FireServer("Bright orange")
@@ -984,7 +941,6 @@ function ChangeTeam(Team,Position,NoForce)
 			until game.Players.LocalPlayer.TeamColor.Name == game.Teams.Criminals.TeamColor.Name
 		end
 	end
-	return nil
 end
 
 function GiveItem(Item,Ignore)
