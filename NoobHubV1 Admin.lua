@@ -548,6 +548,8 @@ Cmd[#Cmd + 1] =	{Text = "nokillaura / unkillaura [plr]",Title = "Unactivate kill
 Cmd[#Cmd + 1] = {Text = "antifling [on,off]",Title = "Activate anti fling"}
 Cmd[#Cmd + 1] = {Text = "god",Title = "Become a god mode"}
 Cmd[#Cmd + 1] = {Text = "ungod",Title = "Unbecome a god mode"}
+Cmd[#Cmd + 1] = {Text = "opendoors",Title = "Open all Doors"}
+Cmd[#Cmd + 1] = {Text = "loopopendoors [on,off]",Title = "Loop open all Doors"}
 Cmd[#Cmd + 1] =	{Text = "view / spectate / watch [plr]",Title = "Spectates the player"}
 Cmd[#Cmd + 1] =	{Text = "unview / unspectate / stopwatch",Title = "Unspectates the player"}
 Cmd[#Cmd + 1] =	{Text = "fastpunch / speedpunchh",Title = "Activate fast punch"}
@@ -612,6 +614,7 @@ Cmd[#Cmd + 1] =	{Text = "cafe [plr]",Title = "Teleports to the cafeteria"}
 Cmd[#Cmd + 1] =	{Text = "crimbase / criminalbase / cbase [plr]",Title = "Teleports to the criminals base"}
 Cmd[#Cmd + 1] =	{Text = "lunchroom [plr]",Title = "Teleports to the cafeteria room"}
 Cmd[#Cmd + 1] =	{Text = "void [plr]",Title = "Teleports to the void"}
+Cmd[#Cmd + 1] = {Text = "removecars / dumpcars / nocars",Title = "Remove all cars"}
 Cmd[#Cmd + 1] =	{Text = "spamchat [delay]",Title = "Spam the chat"}
 Cmd[#Cmd + 1] =	{Text = "unspamchat",Title = "Unspam the chat"}
 Cmd[#Cmd + 1] =	{Text = "findposition / getposition / getpos",Title = "Find positions"}
@@ -660,7 +663,7 @@ local States = {}
       States.AutoItems = false
 
 local Players = game.Players
-local plr = Players.LocalPlayer
+local plr, Player = Players.LocalPlayer, Players.LocalPlayer
 local char = plr.CharacterAdded
 local Mouse = plr:GetMouse()
 
@@ -968,6 +971,10 @@ end
 
 function GiveItem(Item)
         Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS:FindFirstChild(Item, true)})
+end
+
+function Refresh()
+	ChangeTeam(BrickColor.new(game.Players.LocalPlayer.TeamColor.Name).Name)
 end
 
 function Guns()
@@ -1644,28 +1651,20 @@ function DetectMove(Player)
 	return Move
 end
 
-function ChangeState(Name,arg2)
-	if States[Name] == nil then
-		States[Name] = false
+local ChangeState = function(StateType,Type)
+	local Value = nil
+	if Type and typeof(Type):lower() == "string" and (Type):lower() == "on" then
+		Value = true
+	elseif Type and typeof(Type):lower() == "string" and (Type):lower() == "off" then
+		Value = false
+	elseif typeof(Type):lower() == "boolean" then
+		Value = Type
+	else
+		Value = not States[StateType]
 	end
-	if States[Name] ~= nil then
-		if arg2 then
-			if arg2 == "on" then
-				States[Name] = true
-				ChangeTeam(plr.TeamColor.Name)
-				Notify("Turn "..Name.." on", Color3.fromRGB(0, 255, 0), "Success")
-			elseif arg2 == "off" then
-				States[Name] = false
-				ChangeTeam(plr.TeamColor.Name)
-				Notify("Turn "..Name.." off", Color3.fromRGB(0, 255, 0), "Success")
-			end
-			return
-		end
-		local Value = not States[Name]
-		States[Name] = Value
-		ChangeTeam(plr.TeamColor.Name)
-		Notify("Turn "..Name.." "..Value, Color3.fromRGB(0, 255, 0), "Success")
-	end
+	States[StateType] = Value
+	Notify(StateType.." has been changed to "..tostring(Value), Color3.fromRGB(0, 255, 0), "Success")
+	return Value
 end
 
 function BadArea(Player)
@@ -2036,6 +2035,36 @@ function PlayerChatted(Message)
 			Bring(Target,CFrame.new(-919.4981689453125, 95.32719421386719, 2142.78271484375))
 			Notify("Make Crim "..Target.Name, Color3.fromRGB(0, 255, 0), "Success")
 		end
+	end
+	if Command("opendoors") then
+		if not firetouchinterest then
+			return Notify("Your exploit doesnt support this command!", Color3.fromRGB(255, 0, 0), "Error")
+		end
+		local LastTeam = GetTeam()
+		if plr.TeamColor.Name ~= "Bright blue" then
+		ChangeTeam("Bright blue")
+		else
+		-- nothing
+		end
+		plr.CharacterAdded:Wait() wait(0.1)
+		task.spawn(function()
+			local A_1 = game:GetService("Workspace")["Prison_ITEMS"].buttons["Prison Gate"]["Prison Gate"]
+			local Event = game:GetService("Workspace").Remote.ItemHandler
+			Event:InvokeServer(A_1)
+		end)
+		for i,v in pairs(game:GetService("Workspace").Doors:GetChildren()) do
+			if v then
+				if v:FindFirstChild("block") and v:FindFirstChild("block"):FindFirstChild("hitbox") then
+					firetouchinterest(Player.Character.HumanoidRootPart,v.block.hitbox,0)
+					firetouchinterest(Player.Character.HumanoidRootPart,v.block.hitbox,1)
+				end
+			end
+		end
+		wait(0.5)
+		ChangeTeam(BrickColor.new(LastTeam).Name)
+	end
+	if Command("loopopendoors") then
+		ChangeState("loopopendoors",Arg2)
 	end
 	if Command("loopcriminal") or Command("loopcriminals") or Command("loopcrim") then
 		local Player = GetPlayer(Arg2)
@@ -3795,6 +3824,36 @@ spawn(function()
 		end
 	end
 end)
+
+spawn(function()
+	while wait(1) do
+		if States.loopopendoors then
+		local LastTeam = GetTeam()
+		if plr.TeamColor.Name ~= "Bright blue" then
+			ChangeTeam("Bright blue")
+		else
+			-- nothing
+		end
+		plr.CharacterAdded:Wait() wait(0.1)
+		task.spawn(function()
+			local A_1 = game:GetService("Workspace")["Prison_ITEMS"].buttons["Prison Gate"]["Prison Gate"]
+			local Event = game:GetService("Workspace").Remote.ItemHandler
+			Event:InvokeServer(A_1)
+		end)
+		for i,v in pairs(game:GetService("Workspace").Doors:GetChildren()) do
+			if v then
+				if v:FindFirstChild("block") and v:FindFirstChild("block"):FindFirstChild("hitbox") then
+					firetouchinterest(Player.Character.HumanoidRootPart,v.block.hitbox,0)
+					firetouchinterest(Player.Character.HumanoidRootPart,v.block.hitbox,1)
+				end
+			end
+		end
+		wait(.5)
+		ChangeTeam(BrickColor.new(LastTeam).Name)
+		end
+	end
+end)
+		
 
 function CheckPermissions(Player)
 	Player.Chatted:Connect(function(Message)
