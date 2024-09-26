@@ -902,7 +902,7 @@ do
 			Item =workspace.Prison_ITEMS.giver:FindFirstChild(Item)
 			local ohInstance1 = Item:FindFirstChildOfClass("Part")
 			MoveTo(CFrame.new(ohInstance1.Position))
-			repeat wait()
+			repeat task.wait()
 				local ohInstance1 = Item:FindFirstChildOfClass("Part")
 				MoveTo(CFrame.new(ohInstance1.Position))
 				task.spawn(function()
@@ -1188,9 +1188,9 @@ do
 		if not TeamS then
 			ChangeTeam(game.Teams.Inmates)
 		end
-		GetGun("M9")
-		repeat task.wait() until plr.Backpack:FindFirstChild("M9")
-		local Gun = plr.Backpack:FindFirstChild("M9")
+		GetGun("AK-47")
+		repeat task.wait() until plr.Backpack:FindFirstChild("AK-47")
+		local Gun = plr.Backpack:FindFirstChild("AK-47") or plr.Character:FindFirstChild("AK-47")
 		local Gen = {}
 		if TeamS then
 			if TeamS == game.Teams.Guards then
@@ -1313,8 +1313,10 @@ do
 				return
 			end
 		end
-		if player == plr or player == plr.Name then
-			return Notif("Can't kill yourself????")
+		if player == plr or player == plr.Name then Notif("Can't kill yourself????",0.5) task.wait(1)
+                Notif("Wait To Kill yourself",1)
+                task.wait(0.4)
+                plr.Character.Humanoid.Health = 0
 		end
 		local Gun = ReturnGun()
 		if table.find(Whitelisted,player.Name) then
