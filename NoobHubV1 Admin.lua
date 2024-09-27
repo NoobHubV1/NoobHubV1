@@ -34,6 +34,7 @@ local AutoRespawn = Instance.new("TextButton")
 local AutoGuns = Instance.new("TextButton")
 local AntiBring = Instance.new("TextButton")
 local AutoItems = Instance.new("TextButton")
+local AutoWhitelist = Instance.new("TextButton")
 local UIGridLayout = Instance.new("UIGridLayout")
 local API = {}
 local Prefix = ";"
@@ -518,6 +519,16 @@ AutoItems.Text = "Auto Items: Off"
 AutoItems.TextColor3 = Color3.fromRGB(255, 255, 255)
 AutoItems.TextSize = 14.000
 
+AutoWhitelist.Name = "AutoWhitelist"
+AutoWhitelist.Parent = scripts
+AutoWhitelist.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
+AutoWhitelist.BorderSizePixel = 0
+AutoWhitelist.Size = UDim2.new(0, 200, 0, 50)
+AutoWhitelist.Font = Enum.Font.Roboto
+AutoWhitelist.Text = "Auto White list: Off"
+AutoWhitelist.TextColor3 = Color3.fromRGB(255, 255, 255)
+AutoWhitelist.TextSize = 14.000
+
 local Versions = "2.0"
 local Cmd = {}
 
@@ -665,7 +676,6 @@ local States = {}
       States.antitase = false
       States.AutoItems = false
       States.AutoWhitelist = false
-      States.OldItemMethod = false
 local Temp = {}
       Temp.Whitelisted = {}
 
@@ -1276,33 +1286,6 @@ function KillInmatesAndGuards()
 end
 
 function KillTeam(TeamPath)
-	if not TeamPath then
-	for i,v in pairs(game.Players:GetPlayers()) do
-		if v ~= plr and not table.find(Temp.Whitelisted,v) then
-			if v.TeamColor.Name == "Bright orange" or v.TeamColor.Name == "Bright blue" then
-				if not v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("ForceField") then
-					KillInmatesAndGuards()
-				end
-			end
-		end
-	end
-	task.wait(0.1)
-	for i,v in pairs(game.Players:GetPlayers()) do
-		if v ~= plr and not table.find(Temp.Whitelisted,v) then
-			if v.TeamColor.Name == "Really red" then
-				if not v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("ForceField") then
-					if plr.TeamColor.Name == "Really red" then
-	ChangeTeam(BrickColor.new("Bright orange").Name)
-	char:Wait() task.wait(0.15)
-	KillTeamTeam("Really red")
-	elseif plr.TeamColor.Name == "Bright blue" or plr.TeamColor.Name == "Bright orange" then
-	KillTeamTeam("Really red")
-					end
-				end
-			end
-		end
-	end
-	end
 	if TeamPath == "Bright orange" then
 	for i,v in pairs(game.Teams.Inmates:GetPlayers()) do
 	if v ~= plr and not table.find(Temp.Whitelisted,v) then
@@ -1355,13 +1338,32 @@ function KillTeam(TeamPath)
 	end
 end
 
+local KillAll = function()
+	for i,v in pairs(game.Players:GetPlayers()) do
+		if v ~= plr and not table.find(Temp.Whitelisted,v) then
+			if v.TeamColor.Name == "Really red" then
+				if not v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("ForceField") then
+					KillTeam(BrickColor.new(game.Teams.Criminals.TeamColor.Name).Name)
+				end
+			end
+		end
+	end
+	task.wait(0.05)
+	for i,v in pairs(game.Players:GetPlayers()) do
+		if v ~= plr and not table.find(Temp.Whitelisted,v) then
+			if v.TeamColor.Name == "Bright orange" or v.TeamColor.Name == "Bright blue" then
+				if not v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("ForceField") then
+					KillInmatesAndGuards()
+				end
+			end
+		end
+	end
+end
+
 function Tase(Player)
         local events = {}
 	local gun = nil
 	local savedteam = GetTeam()
-	if not game.Players.LocalPlayer.Character:FindFirstChild("Taser") or game.Players.LocalPlayer.Backpack:FindFirstChild("Taser") then
-		ChangeTeam(BrickColor.new("Bright blue").Name)
-	end
 	for i,v in pairs(game.Players:GetPlayers()) do
 		if v ~= plr and v == Player then
 			events[#events + 1] = {
@@ -1372,8 +1374,12 @@ function Tase(Player)
 			}
 		end
 	end
+	if not game.Players.LocalPlayer.Character:FindFirstChild("Taser") or game.Players.LocalPlayer.Backpack:FindFirstChild("Taser") then
+		ChangeTeam(BrickColor.new("Bright blue").Name)
+	end
 	gun = game.Players.LocalPlayer.Character:FindFirstChild("Taser") or game.Players.LocalPlayer.Backpack:FindFirstChild("Taser")
 	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
+	task.wait(0.5)
 	ChangeTeam(BrickColor.new(savedteam).Name)
 end
 
@@ -1381,9 +1387,6 @@ function TaseTeam(Team)
 	local events = {}
 	local gun = nil
 	local savedteam = GetTeam()
-	if not game.Players.LocalPlayer.Character:FindFirstChild("Taser") or game.Players.LocalPlayer.Backpack:FindFirstChild("Taser") then
-		ChangeTeam(BrickColor.new("Bright blue").Name)
-	end
 	for i,v in pairs(game.Players:GetPlayers()) do
 		if v ~= plr and not table.find(Temp.Whitelisted,v) and v.TeamColor.Name == Team then
 			events[#events + 1] = {
@@ -1394,8 +1397,12 @@ function TaseTeam(Team)
 			}
 		end
 	end
+	if not game.Players.LocalPlayer.Character:FindFirstChild("Taser") or game.Players.LocalPlayer.Backpack:FindFirstChild("Taser") then
+		ChangeTeam(BrickColor.new("Bright blue").Name)
+	end
 	gun = game.Players.LocalPlayer.Character:FindFirstChild("Taser") or game.Players.LocalPlayer.Backpack:FindFirstChild("Taser")
 	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
+	task.wait(0.5)
 	ChangeTeam(BrickColor.new(savedteam).Name)
 end
 
@@ -1403,9 +1410,6 @@ function TaseAll()
 	local events = {}
 	local gun = nil
 	local savedteam = GetTeam()
-	if not game.Players.LocalPlayer.Character:FindFirstChild("Taser") or game.Players.LocalPlayer.Backpack:FindFirstChild("Taser") then
-		ChangeTeam(BrickColor.new("Bright blue").Name)
-	end
 	for i,v in pairs(game.Players:GetPlayers()) do
 		if v ~= plr and not table.find(Temp.Whitelisted,v) then
 			events[#events + 1] = {
@@ -1416,8 +1420,12 @@ function TaseAll()
 			}
 		end
 	end
+	if not game.Players.LocalPlayer.Character:FindFirstChild("Taser") or game.Players.LocalPlayer.Backpack:FindFirstChild("Taser") then
+		ChangeTeam(BrickColor.new("Bright blue").Name)
+	end
 	gun = game.Players.LocalPlayer.Character:FindFirstChild("Taser") or game.Players.LocalPlayer.Backpack:FindFirstChild("Taser")
 	game.ReplicatedStorage.ShootEvent:FireServer(events, gun)
+	task.wait(0.5)
 	ChangeTeam(BrickColor.new(savedteam).Name)
 end
 
@@ -2271,7 +2279,7 @@ function PlayerChatted(Message)
 	if Command("kill") or Command("kills") then
 		local args = Arg2
 		if args == "all" or args == "everyone" or args == "others" then
-		KillTeam()
+		KillAll()
 		Notify("Killed all players", Color3.fromRGB(0, 255, 0), "Success")
 		elseif args == "inmates" then
 		KillTeam(BrickColor.new("Bright orange").Name)
@@ -3384,17 +3392,14 @@ function AdminPlayerChatted(Message, Player)
 		if Arg2 == "all" or Arg2 == "everyone" then
 			KillAll()
 			Chat("/w "..Player.Name.." Killed all")
-		elseif Arg2 == "others" then
-			KillAll(Player)
-			Chat("/w "..Player.Name.." Killed others")
 		elseif Arg2 == "inmates" then
-			CheckKillTeam(BrickColor.new("Bright orange").Name)
+			KillTeam(BrickColor.new("Bright orange").Name)
 			Chat("/w "..Player.Name.." Killed inmates")
 		elseif Arg2 == "guards" then
-			CheckKillTeam(BrickColor.new("Bright blue").Name)
+			KillTeam(BrickColor.new("Bright blue").Name)
 			Chat("/w "..Player.Name.." Killed guards")
 		elseif Arg2 == "criminals" or Arg2 == "crims" then
-			CheckKillTeam(BrickColor.new("Really red").Name)
+			KillTeam(BrickColor.new("Really red").Name)
 			Chat("/w "..Player.Name.." Killed criminals")
 		else
 			local Target = GetPlayer(Arg2,Player)
@@ -3474,7 +3479,7 @@ function AdminPlayerChatted(Message, Player)
 		end
 	end
 	if Command("void") then
-		local Target = HetPlayer(Arg2,Player)
+		local Target = GetPlayer(Arg2,Player)
 		if not Target then
 			Bring(Player,CFrame.new(8^8, 8^8, 8^8))
 			Chat("/w "..Player.Name.." Teleport "..Player.DisplayName.." To The Void")
@@ -3487,14 +3492,44 @@ function AdminPlayerChatted(Message, Player)
 	if Command("tp") or Command("teleport") then
 		local Player1 = GetPlayer(Arg2,Player)
 		local Player2 = GetPlayer(Arg3,Player)
-		if Player1 and Player2 then
-			Bring(Player1,Player2.Character.HumanoidRootPart.CFrame)
-			Chat("/w "..Player.Name.." Teleport "..Player1.DisplayName.." To "..Player2.DisplayName)
+		Bring(Player1,Player2.Character.HumanoidRootPart.CFrame)
+		Chat("/w "..Player.Name.." Teleport "..Player1.DisplayName.." To "..Player2.DisplayName)
+	end
+	if Command("car") then
+		GetCar(Player.Character.HumanoidRootPart.CFrame)
+		Chat("/w "..Player.Name.." Bring Car To "..Player.DisplayName)
+	end
+	if Command("carsto") then
+		local Target = GetPlayer(Ar2,Player)
+		if not Target then
+			GetCar(Player.Character.HumanoidRootPart.CFrame)
+			Chat("/w "..Player.Name.." Bring Car To "..Player.DisplayName)
+		end
+		if Target then
+			GetCar(Target.Character.HumanoidRootPart.CFrame)
+			Chat("/w "..Player.Name.." Bring Car To "..Target.DisplayName)
+		end
+	end
+	if Command("arrest") then
+		if Arg2 == "all" then
+			for i,v in pairs(game:GetService("Players"):GetPlayers()) do
+			if v and v~= game:GetService("Players").LocalPlayer and not table.find(Temp.Whitelisted,v) and v.TeamColor.Name == "Really red" or (BadArea(v) and v.TeamColor.Name == "Bright orange") and v.Character.PrimaryPart and v.Character:FindFirstChildOfClass("Humanoid").Health>0 then
+				Arrest(v, tonumber(Arg3))
+			end
+			Chat("/w "..Player.Name.." Arrested all")
+		end
+		else
+			local Target = GetPlayer(Arg2,Player)
+			if Target.TeamColor.Name == game.Teams.Guards.TeamColor.Name or not BadArea(Target) then
+				return Chat("/w "..Player.Name.." Can't arrest this player!")
+			end
+			Arrest(Target, tonumber(Arg3))
+			Chat("/w "..Player.Name.." Arrested "..Target.DisplayName)
 		end
 	end
 	if Command("cmd") or Command("cmds") then
 		Chat("/w "..Player.Name.." "..Prefix.."kill [plr,all,team,random] "..Prefix.."loopkill [plr,all,team] "..Prefix.."unloopkill [plr,all,team] "..Prefix.."tase [plr,all,team,random]") wait(.1)
-                Chat("/w "..Player.Name.." "..Prefix.."arrest [plr,all] "..Prefix.."crim / makecrim / criminal [plr] "..Prefix.."void [plr] "..Prefix.."tp [plr1,plr2]")
+                Chat("/w "..Player.Name.." "..Prefix.."arrest [plr,all] "..Prefix.."crim / makecrim / criminal [plr] "..Prefix.."void [plr] "..Prefix.."tp [plr1,plr2] "..Prefix.."car "..Prefix.."carsto [plr]")
 	end
 end
 
@@ -3656,7 +3691,7 @@ spawn(function()
 					if v ~= plr then
 						if v.TeamColor.Name == "Really red" or v.TeamColor.Name == "Bright blue" or v.TeamColor.Name == "Bright orange" then
 							if not v.Character.Humanoid.Health == 0 or not v.Character:FindFirstChild("ForceField") then
-								KillTeam()
+								KillAll()
 							end
 						end
 					end
@@ -3759,8 +3794,8 @@ spawn(function()
 			game.Players.LocalPlayer.Character.Animate.Disabled = false
 			game.Players.LocalPlayer.Character["1"]:Destroy()
 			game.Workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character
-			wait(1)
-			ChangeTeam(BrickColor.new(plr.TeamColor.Name).Name)
+			wait(1.5)
+			Refresh()
 		end
 	end
 end)
@@ -3912,9 +3947,9 @@ spawn(function()
 end)
 
 spawn(function()
-	while wait(0.15) do
+	while wait(0.2) do
 		if States.autoguard then
-			if game.Players.LocalPlayer.TeamColor.Name == "Bright orange" or game.Players.LocalPlayer.TeamColor.Name == "Really red" then
+			if game.Players.LocalPlayer.TeamColor.Name ~= "Bright blue" then
 				ChangeTeam(BrickColor.new("Bright blue").Name)
 			end
 		end
@@ -4117,6 +4152,16 @@ AutoItems.MouseButton1Click:Connect(function()
 		ChangeTeam(plr.TeamColor.Name)
 		AutoItems.Text = "Auto Items: On"
 	end
+end)
+
+AutoWhitelist.MouseButton1Click:Connect(function()
+        if States.AutoWhitelist == true then
+                States.AutoWhitelist = false
+                AutoWhitelist.Text = "Auto White list: Off"
+        else
+                States.AutoWhitelist = true
+                AutoWhitelist.Text = "Auto White list: On"
+        end
 end)
 
 getgenv().DisableScript = function()
