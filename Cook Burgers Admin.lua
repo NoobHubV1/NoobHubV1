@@ -360,6 +360,9 @@ TransparencyBar.MouseButton1Click:Connect(function()
 	end
 end)
 
+local States = {}
+      States.AutoRespawn = true
+
 local Versions = "1.0"
 local Cmd = {}
 
@@ -456,7 +459,6 @@ local Remote = game:GetService("ReplicatedStorage").Events.Network.SetNetworkOwn
 local ScriptDisabled = false
 local LoopKill = {}
 local Admin = {}
-local States = {}
 
 local function GetPlayer(String)
 	if not String then return end
@@ -585,14 +587,32 @@ function Control(player)
 	player.Character.Animate.Disabled = false
 end
 
-function Refresh()
-	local savedcf = GetPos()
-	local savedcamcf = GetCamPos()
+function Refresh(Position,NoForce)
+	if not Position then Position = GetPos() end
+	if typeof(Position):lower() == "position" then Position = CFrame.new(Position) end
+	local LastPosition = GetPos()
+	local LastCameraPosition = workspace.CurrentCamera.CFrame
+	local done = false
+	Respawned = plr.CharacterAdded:Connect(function(c)
+		if done then return end
+		done = true
+		task.spawn(function()
+			workspace.CurrentCamera.CameraType = Enum.CameraType.Scriptable
+			wait(.1)
+			workspace.CurrentCamera.CameraType = Enum.CameraType.Custom
+			workspace.CurrentCamera.CameraSubject = plr.Character:WaitForChild("Humanoid")
+
+		end)
+		repeat task.wait()
+			c:WaitForChild("HumanoidRootPart").CFrame = LastPosition
+			game:GetService("RunService").Stepped:Wait()
+		until c:WaitForChild("HumanoidRootPart").CFrame == LastPosition
+		Position = nil--// why the fuck it keep spawning somewhere else!!!! GRRRRR
+		NoForce = nil
+		LastCameraPosition = nil
+	end)
 	game.ReplicatedStorage.Events.Player.SpawnRequestEvent:FireServer()
-	char:Wait() task.wait(0.065)
-	TPCFrame(savedcf)
-	task.wait(0.065)
-	workspace.CurrentCamera.CFrame = savedcamcf
+	return nil
 end
 
 function Speed(player, speed)
@@ -652,6 +672,7 @@ else
 	Chat("V "..Versions)
 end]]
 
+Refresh()
 Notify("Loaded admin commands", Color3.fromRGB(255, 0, 0), "Loads")
 
 function PlayerChatted(Message)
@@ -666,7 +687,7 @@ function PlayerChatted(Message)
 		wait(.1)
 		pcall(function()
 			CmdGui:Destroy()
-			States = {}
+			Toggle = {}
 			LoopKill = {}
 			Admin = {}
 			ScriptDisabled = true
@@ -679,7 +700,7 @@ function PlayerChatted(Message)
 		Notify("Reload Script...", Color3.fromRGB(0, 255, 255), "Reload")
 		pcall(function()
 			CmdGui:Destroy()
-			States = {}
+			Toggle = {}
 			LoopKill = {}
 			Admin = {}
 			ScriptDisabled = true
@@ -1430,7 +1451,7 @@ end
 game.Players.LocalPlayer.Chatted:Connect(PlayerChatted)
 
 spawn(function()
-	while wait() do
+	while task.wait(0.5) do
 		for i,v in pairs(LoopKill) do
 			pcall(function()
 				if v.Player and v.Player.Character and v.Player.Character.Head and v.Player.Character.Humanoid.Health ~= 0 then
@@ -1438,6 +1459,20 @@ spawn(function()
 				end
 			end)
 		end
+	end
+end)
+
+plr.CharacterAdded:Connect(function(NewChar)
+	NewChar:WaitForChild("Humanoid")
+	if States.AutoRespawn then
+		NewChar:WaitForChild("Humanoid").BreakJointsOnDeath = not States.AutoRespawn
+		NewChar:WaitForChild("Humanoid").Died:Connect(function()
+			if States.AutoRespawn == true then
+				Refresh()
+				task.spawn(function()
+				end)
+			end
+		end)
 	end
 end)
 
@@ -1561,7 +1596,7 @@ end)
 getgenv().DisableScript = function()
 	pcall(function()
 		CmdGui:Destroy()
-		States = {}
+		Toggle = {}
 		LoopKill = {}
 		Admin = {}
 		ScriptDisabled = true
