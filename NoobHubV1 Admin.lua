@@ -34,8 +34,8 @@ local AutoRespawn = Instance.new("TextButton")
 local AutoGuns = Instance.new("TextButton")
 local AntiBring = Instance.new("TextButton")
 local AutoItems = Instance.new("TextButton")
-local OldItemMethod = Instance.new("TextButton")
 local UIGridLayout = Instance.new("UIGridLayout")
+local API = {}
 local Prefix = ";"
 
 CmdGui.Name = "CmdGui"
@@ -518,16 +518,6 @@ AutoItems.Text = "Auto Items: Off"
 AutoItems.TextColor3 = Color3.fromRGB(255, 255, 255)
 AutoItems.TextSize = 14.000
 
-OldItemMethod.Name = "OldItemMethod"
-OldItemMethod.Parent = scripts
-OldItemMethod.BackgroundColor3 = Color3.fromRGB(53, 53, 53)
-OldItemMethod.BorderSizePixel = 0
-OldItemMethod.Size = UDim2.new(0, 200, 0, 50)
-OldItemMethod.Font = Enum.Font.Roboto
-OldItemMethod.Text = "Old Item Method: Off"
-OldItemMethod.TextColor3 = Color3.fromRGB(255, 255, 255)
-OldItemMethod.TextSize = 14.000
-
 local Versions = "2.0"
 local Cmd = {}
 
@@ -547,8 +537,8 @@ Cmd[#Cmd + 1] =	{Text = "guard / guards / cop / polices",Title = "Become guard t
 Cmd[#Cmd + 1] =	{Text = "crim / criminals / criminal / makecrim [plr]",Title = "Become criminal player team"}
 Cmd[#Cmd + 1] =	{Text = "loopcrim / loopcriminals / loopcriminal [plr]",Title = "loop criminal team player"}
 Cmd[#Cmd + 1] =	{Text = "unloopcrim / unloopcriminals / unloopcriminal [plr]",Title = "unloop criminal team player"}
-Cmd[#Cmd + 1] = {Text = "whitelist [plr]",Title = "Whitelist Player"}
-Cmd[#Cmd + 1] = {Text = "unwhitelist [plr]",Title = "Blacklist Player"}
+Cmd[#Cmd + 1] = {Text = "whitelist / wl [plr]",Title = "Whitelist Player"}
+Cmd[#Cmd + 1] = {Text = "unwhitelist / unwl [plr]",Title = "Blacklist Player"}
 Cmd[#Cmd + 1] =	{Text = "neutral / neutrals",Title = "Become neutral team"}
 Cmd[#Cmd + 1] =	{Text = "re / refresh",Title = "Respawn on old position"}
 Cmd[#Cmd + 1] =	{Text = "res / respawn",Title = "Respawn on respawn pads"}
@@ -869,49 +859,214 @@ function GuardsFull()
 	return #game.Teams.Guards:GetPlayers() == 9
 end
 
-function WaitForRespawn(Position,NoForce)
-	if not Position then Position = GetPos() end
-	if typeof(Position):lower() == "position" then Position = CFrame.new(Position) end
-	local LastPosition = GetPos()
-	local LastCameraPosition = workspace.CurrentCamera.CFrame
-	local done = false
-	local i = NoForce
-	Respawned = plr.CharacterAdded:Connect(function(c)
-		if done then return end
-		done = true
-		task.spawn(function()
-			workspace.CurrentCamera.CameraType = Enum.CameraType.Scriptable
-			wait(.1)
-			workspace.CurrentCamera.CameraType = Enum.CameraType.Custom
-			workspace.CurrentCamera.CameraSubject = plr.Character:WaitForChild("Humanoid")
+function API:UnSit()
+	Player.Character.Humanoid.Sit = false
+end
+
+function API:swait()
+
+	game:GetService("RunService").Stepped:Wait()
+
+end
+
+function API:ConvertPosition(Position)
+
+	if typeof(Position):lower() == "position" then
+
+		return CFrame.new(Position)
+
+	else
+
+		return Position
+
+	end
+
+end
+
+
+
+function API:GetPart(Target)
+
+	game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+
+
+
+	return Target.Character:FindFirstChild("HumanoidRootPart") or Target.Character:FindFirstChild("Head")
+
+end
+
+function API:GetPosition(Player)
+
+	game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+
+
+
+	if Player then
+
+		return API:GetPart(Player).CFrame
+
+	elseif not Player then
+
+		return API:GetPart(plr).CFrame
+
+	end
+
+end
+
+function API:GetCameraPosition(Player)
+
+	return workspace["CurrentCamera"].CFrame
+
+end
+
+function API:Loop(Times, calling)
+
+	for i = 1, tonumber(Times) do
+
+		calling()
+
+	end
+
+end
+
+function API:MoveTo(Cframe)
+
+	Cframe = API:ConvertPosition(Cframe)
+
+	local Amount = 5
+
+	if Player.PlayerGui['Home']['hud']['Topbar']['titleBar'].Title.Text:lower() == "lights out" or Player.PlayerGui.Home.hud.Topbar.titleBar.Title.Text:lower() == "lightsout" then
+
+		Amount = 11
+
+	end
+
+	for i = 1, Amount do
+
+		API:UnSit()
+
+		Player.Character:WaitForChild("HumanoidRootPart").CFrame = Cframe
+
+		API:swait()
+
+	end
+
+end
+
+function API:WaitForRespawn(Cframe,NoForce)
+	game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+
+
+
+	local Cframe = API:ConvertPosition(Cframe)
+
+	local CameraCframe = API:GetCameraPosition()
+
+	coroutine.wrap(function()
+
+		local a
+
+		a = Player.CharacterAdded:Connect(function(NewCharacter)
+
+			pcall(function()
+
+				coroutine.wrap(function()
+
+					workspace.CurrentCamera:GetPropertyChangedSignal("CFrame"):Wait()
+
+					API:Loop(5, function()
+
+						workspace["CurrentCamera"].CFrame = CameraCframe
+
+					end)
+
+				end)()
+
+				NewCharacter:WaitForChild("HumanoidRootPart")
+
+				API:MoveTo(Cframe)
+
+				if NoForce then
+
+					task.spawn(function()
+
+						NewCharacter:WaitForChild("ForceField"):Destroy()
+
+					end)
+
+				end
+
+			end)
+
+			a:Disconnect()
+
+			Cframe = nil
 
 		end)
-		if i == true then
-			c:WaitForChild("ForceField"):Destroy()
-		end
-		repeat
-			c:WaitForChild("HumanoidRootPart").CFrame = LastPosition
-			game:GetService("RunService").Stepped:Wait()
-		until c:WaitForChild("HumanoidRootPart").CFrame == LastPosition
-		Position = nil--// why the fuck it keep spawning somewhere else!!!! GRRRRR
-		NoForce = nil
-		LastCameraPosition = nil
-		Team = nil
+
+		task.spawn(function()
+
+			wait(2)
+
+			if a then
+
+				a:Disconnect()
+
+			end
+
+		end)
+
+	end)()
+
+end
+
+function Criminal(Pos,NoForce)
+	if plr.TeamColor.Name == "Bright blue" then
+	pcall(function()
+
+		repeat task.wait() until game:GetService("Players").LocalPlayer.Character
+
+		game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+
+
+
+		API:WaitForRespawn(Pos or API:GetPosition(),NoForce)
+
 	end)
-end
-
-function Criminal(Pos)
-	WaitForRespawn(Pos or GetPos(),true)
 	firetouchinterest(game.Players.LocalPlayer.Character.HumanoidRootPart, game.Workspace["Criminals Spawn"].SpawnLocation, 0)
+	elseif plr.TeamColor.Name == "Really red" then -- nothing
+	elseif plr.TeamColor.Name == "Bright orange" then
+	firetouchinterest(Player.Character.HumanoidRootPart, game.Workspace["Criminals Spawn"].SpawnLocation, 0)
+	end
 end
 
-function Guard(Pos)
-	WaitForRespawn(Pos or GetPos(),true)
+function Guard(Pos,NoForce)
+	pcall(function()
+
+		repeat task.wait() until game:GetService("Players").LocalPlayer.Character
+
+		game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+
+
+
+		API:WaitForRespawn(Pos or API:GetPosition(),NoForce)
+
+	end)
 	workspace.Remote.TeamEvent:FireServer("Bright blue")
 end
 
-function ChangeTeam(Team)
-	WaitForRespawn(Pos or GetPos(),true)
+function ChangeTeam(Team,NoForce,Pos)
+	pcall(function()
+
+		repeat task.wait() until game:GetService("Players").LocalPlayer.Character
+
+		game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+
+
+
+		API:WaitForRespawn(Pos or API:GetPosition(),NoForce)
+
+	end)
 	if Team == "Bright blue" then
 		if GuardsFull() then
 			workspace.Remote.TeamEvent:FireServer("Bright orange")
@@ -935,8 +1090,8 @@ function ChangeTeam(Team)
 			until plr.TeamColor.Name == "Really red"
 		else
 			workspace.Remote.TeamEvent:FireServer("Bright blue")
-			plr.CharacterAdded:Wait() wait(.055)
-			repeat wait(.1)
+			plr.CharacterAdded:Wait() wait(.1)
+			repeat API:swait()
 				Criminal()
 			until game.Players.LocalPlayer.TeamColor.Name == game.Teams.Criminals.TeamColor.Name
 		end
@@ -944,27 +1099,7 @@ function ChangeTeam(Team)
 end
 
 function GiveItem(Item,Ignore)
-	if States.OldItemMethod == false then
-		Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS:FindFirstChild(Item, true)})
-	else
-		local saved = GetPos()
-		if workspace.Prison_ITEMS.giver:FindFirstChild(Item) and workspace.Prison_ITEMS.giver:FindFirstChild(Item):FindFirstChild("ITEMPICKUP") then
-			Item =workspace.Prison_ITEMS.giver:FindFirstChild(Item)
-			local ohInstance1 = Item:FindFirstChildOfClass("Part")
-			TPCFrame(CFrame.new(ohInstance1.Position))
-			repeat wait()
-				local ohInstance1 = Item:FindFirstChildOfClass("Part")
-				TPCFrame(CFrame.new(ohInstance1.Position))
-				task.spawn(function()
-					workspace.Remote.ItemHandler:InvokeServer(ohInstance1)
-				end)
-				wait()
-			until plr.Backpack:FindFirstChild(Item.Name) or plr.Character:FindFirstChild(Item.Name)
-		end
-		if Ignore ~= true then
-			TPCFrame(Ignore or saved)
-		end
-	end
+	Workspace.Remote.ItemHandler:InvokeServer({Position=game.Players.LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS:FindFirstChild(Item, true)})
 end
 
 function Refresh()
@@ -972,47 +1107,22 @@ function Refresh()
 end
 
 function Guns()
-	if States.OldItemMethod == false then
-		if BuyGamepass then
-			GiveItem("Remington 870")
-			GiveItem("AK-47")
-			GiveItem("M9")
-			GiveItem("M4A1")
-		else
-			GiveItem("Remington 870")
-			GiveItem("AK-47")
-			GiveItem("M9")
-		end
-	else
-		local saved = GetPos()
-
-	if game:GetService("MarketplaceService"):UserOwnsGamePassAsync(plr.UserId, 96651) then
-
-		GiveItem("M4A1")
-
-	end
-
-	GiveItem("AK-47")
-
-	task.spawn(function()
-
+	if BuyGamepass then
 		GiveItem("Remington 870")
-
-	end)
-
-	GiveItem("M9") wait(0.1)
-
-	TPCFrame(saved)
+		GiveItem("AK-47")
+		GiveItem("M9")
+		GiveItem("M4A1")
+	else
+		GiveItem("Remington 870")
+		GiveItem("AK-47")
+		GiveItem("M9")
 	end
 end
 
 function KillPlayer(Player)
 	if not Player.Character.Humanoid.Health == 0 or not Player.Character:FindFirstChild("ForceField") then
 	local events, gun = {}, plr.Character:FindFirstChild("AK-47") or plr.Backpack:FindFirstChild("AK-47")
-	if gun then -- nothing
-	else
 	GiveItem("AK-47")
-	end
 	for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
 		if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
 			gun = v
@@ -1052,10 +1162,7 @@ function KillTeamTeam(Team)
 			end
 		end
 	end
-	if gun then -- nothing
-	else
 	GiveItem("AK-47")
-	end
 	for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
 		if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
 			gun = v
@@ -1086,10 +1193,7 @@ function Kill2Team(Team1, Team2)
 			end
 		end
 	end
-	if gun then -- nothing
-	else
 	GiveItem("AK-47")
-	end
 	for i,v in pairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
 		if v.Name ~= "Taser" and v:FindFirstChild("GunStates") then
 			gun = v
@@ -1909,9 +2013,11 @@ function PlayerChatted(Message)
 	if Command("autogun") or Command("autoguns") or Command("autoallguns") or Command("aguns") then
 		local State = "autoguns"
 		ChangeState(State,Arg2)
+		Refresh()
 	end
 	if Command("autoitems") then
 		ChangeState("AutoItems",Arg2)
+		Refresh()
 	end
 	if Command("loopgoto") or Command("loopto") then
 		local Player = GetPlayer(Arg2)
@@ -2181,7 +2287,7 @@ function PlayerChatted(Message)
 		Kill(Player)
 		end
 	end
-	if Command("whitelist") then
+	if Command("whitelist") or Command("wl") then
 		local Player = GetPlayer(Arg2)
 
 		if Player then
@@ -2190,13 +2296,13 @@ function PlayerChatted(Message)
 
 				table.insert(Temp.Whitelisted, Player)
 
-				Notify("Target has been whitelisted", Color3.fromRGB(0, 255, 0), "Success")
+				Notify("Whitelisted "..Player.DisplayName, Color3.fromRGB(0, 255, 0), "Success")
 
 			end
 
 		end
 	end
-	if Command("unwhitelist") then
+	if Command("unwhitelist") or Command("unwl") then
 		local Player = GetPlayer(Arg2)
 
 		if Player then
@@ -2205,7 +2311,7 @@ function PlayerChatted(Message)
 
 				table.remove(Temp.Whitelisted,table.find(Temp.Whitelisted,Player))
 
-				Notify("Target has been unwhitelisted", Color3.fromRGB(0, 255, 0), "Success")
+				Notify("Blacklisted "..Player.DisplayName, Color3.fromRGB(0, 255, 0), "Success")
 
 			end
 
@@ -2497,6 +2603,7 @@ function PlayerChatted(Message)
 	end
 	if Command("autore") or Command("autorefresh") or Command("autorespawn") then
 		ChangeState("autorespawn",Arg2)
+		Refresh()
 	end
 	if Command("car") then
 		GetCar()
@@ -2704,13 +2811,13 @@ function PlayerChatted(Message)
 			end
 		end
 		else
-			local Player = GetPlayer(Arg2)
-			for i,v in pairs(game:GetService("Players"):GetPlayers()) do
-			        if v and v== Player and v.TeamColor.Name == "Really red" or (BadArea(v) and v.TeamColor.Name == "Bright orange") and v.Character.PrimaryPart and v.Character:FindFirstChildOfClass("Humanoid").Health>0 then
-				        Arrest(v, tonumber(Arg3))
-					Notify("Arrested "..Player.Name, Color3.fromRGB(0, 255, 0), "Success")
-			        end
+			local Target = GetPlayer(Arg2)
+			if Target.TeamColor.Name == game.Teams.Guards.TeamColor.Name or not BadArea(Target) then
+
+				return Notify("Can't arrest this player!", Color3.fromRGB(255, 0, 0), "Error")
 			end
+			Arrest(Target, tonumber(Arg3))
+			Notify("Arrested "..Target.DisplayName, Color3.fromRGB(0, 255, 0), "Success")
 		end
 	end
 	if Command("opengate") then
@@ -3420,7 +3527,7 @@ spawn(function()
 				NewChar.Humanoid.BreakJointsOnDeath = not States.autorespawn
 				NewChar.Humanoid.Died:Connect(function()
 					if States.autorespawn == true then
-						ChangeTeam(BrickColor.new(plr.TeamColor.Name).Name)
+						Refresh()
 						task.spawn(function()
 							if States.autoguns == true then
 								wait(.5)
@@ -4010,16 +4117,6 @@ AutoItems.MouseButton1Click:Connect(function()
 		ChangeTeam(plr.TeamColor.Name)
 		AutoItems.Text = "Auto Items: On"
 	end
-end)
-
-OldItemMethod.MouseButton1Click:Connect(function()
-        if States.OldItemMethod == true then
-		States.OldItemMethod = false
-		OldItemMethod.Text = "Old Item Method: Off"
-	else
-		States.OldItemMethod = true
-		OldItemMethod.Text = "Old Item Method: On"
-        end
 end)
 
 getgenv().DisableScript = function()
