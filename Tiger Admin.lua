@@ -5,9 +5,6 @@ Forged by NoobHubV1
 if not getconnections or not hookmetamethod or not getnamecallmethod or not ((getgenv and getgenv()) or _G) then
 	game:GetService("StarterGui"):SetCore("SendNotification", {Title = "Tiger Admin",Text = "Executor is not supported!",Duration = 10,})
 end
-if not workspace:FindFirstChild("Criminals Spawn") or not workspace:FindFirstChild("Criminals Spawn"):FindFirstChild("SpawnLocation") then
-	game:GetService("StarterGui"):SetCore("SendNotification", {Title = "Tiger Admin",Text = "Criminals spawn not found! Please rejoin.",Duration = 10,})
-end
 game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
 if game:FindFirstChild("Tiger_revamp_loaded") then
 game:GetService("StarterGui"):SetCore("SendNotification", {Title = "Tiger Admin",Text = "Tiger admin is already executed!",Duration = 5,})
