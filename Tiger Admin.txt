@@ -9,7 +9,9 @@ if not workspace:FindFirstChild("Criminals Spawn") or not workspace:FindFirstChi
 	game:GetService("StarterGui"):SetCore("SendNotification", {Title = "Tiger Admin",Text = "Criminals spawn not found! Please rejoin.",Duration = 10,})
 end
 game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
-if not game:FindFirstChild("Tiger_revamp_loaded") then
+if game:FindFirstChild("Tiger_revamp_loaded") then
+game:GetService("StarterGui"):SetCore("SendNotification", {Title = "Tiger Admin",Text = "Tiger admin is already executed!",Duration = 5,})
+else
 local Player, plr,Folder = game:GetService("Players").LocalPlayer, game:GetService("Players").LocalPlayer,Instance.new("Folder",game)
 local OldHook, hookmetamethod, getnamecallmethod = nil, hookmetamethod, getnamecallmethod
 local HasGamepass,UserInputService = game:GetService("MarketplaceService"):UserOwnsGamePassAsync(Player.UserId, 96651),game:GetService("UserInputService")
@@ -21,6 +23,45 @@ local Temp = {}
 local API = {}
 local Reload_Guns = {}
 local Prefix = "!"
+
+States = {
+	loopkillinmates = false,
+	loopkillcriminals = false,
+	DraggableGuis = false,
+	spawnguns = false,
+	loopkillguards = false,
+	Antishield = false,
+	DoorsDestroy = false,
+	antipunch = false,
+	AutoRespawn = true,
+	AutoItems = false,
+	ClickKill = false,
+	ClickArrest = false,
+	AntiTase = false,
+	AntiArrest = false,
+	OnePunch = false,
+	killaura = false,
+	anticrash = false,
+	AntiTouch = false,
+	ShootBack = false,
+	AntiFling = false,
+	AutoInfAmmo = false,
+	joinlogs = false,
+	noclip = false,
+	Godmode = false,
+	loopopendoors = false,
+	SilentAim = false,
+	ArrestAura = false,
+	OneShot = false,
+	ff = false,
+	esp = false,
+	earrape = false,
+}
+
+TigerGuis = {}
+function AddGui(Gui)
+	TigerGuis[#TigerGuis+1]=Gui
+end
 
 --------
 Folder.Name = "Tiger_revamp_loaded"
@@ -38,6 +79,80 @@ CommandsList = Instance.new("ScrollingFrame")
 UIListLayout = Instance.new("UIListLayout")
 TEMP_CMD = Instance.new("TextLabel")
 SearchBar = Instance.new("TextBox")
+do
+        local LoadingGUI = Instance.new("ScreenGui")
+	local Loading = Instance.new("Frame")
+	local UICorner = Instance.new("UICorner")
+	local UIStroke = Instance.new("UIStroke")
+	local Darken = Instance.new("Frame")
+	local Outter = Instance.new("Frame")
+	local UICorner_2 = Instance.new("UICorner")
+	local Tweener = Instance.new("Frame")
+	local UICorner_3 = Instance.new("UICorner")
+	local Text = Instance.new("TextLabel")
+	local UIGradient = Instance.new("UIGradient")
+	LoadingGUI.Name = "LoadingGUI"
+	LoadingGUI.Parent = (game:GetService("CoreGui") or gethui())
+	LoadingGUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	Loading.Name = "Loading"
+	Loading.Parent = LoadingGUI
+	Loading.AnchorPoint = Vector2.new(0.5, 0.5)
+	Loading.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Loading.BackgroundTransparency=1
+	Loading.Position = UDim2.new(0.5, 0, 0.5, 0)
+	Loading.Size = UDim2.new(0, 404, 0, 172)
+	UICorner.CornerRadius = UDim.new(0, 3)
+	UICorner.Parent = Loading
+	Darken.Name = "Darken"
+	Darken.Parent = Loading
+	Darken.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	Darken.BackgroundTransparency = 1
+	Darken.BorderSizePixel = 0
+	Darken.Size = UDim2.new(0, 404, 0, 172)
+	Outter.Name = "Outter"
+	Outter.Parent = Darken
+	Outter.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+	Outter.Position = UDim2.new(0.297029704, 0, 0.645348847, 0)
+	Outter.Size = UDim2.new(0, 164, 0, 5)
+	UICorner_2.Parent = Outter
+	Tweener.Name = "Tweener"
+	Tweener.Parent = Outter
+	Tweener.BackgroundColor3 = Color3.fromRGB(3, 196, 255)
+	Tweener.Position = UDim2.new(-0.00175066688, 0, 0, 0)
+	Tweener.Size = UDim2.new(0, 0, 0, 5)
+	UICorner_3.Parent = Tweener
+	Text.Name = "Text"
+	Text.Parent = Loading
+	Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	Text.BackgroundTransparency = 1.000
+	Text.Position = UDim2.new(0.252475262, 0, 0.401162773, 0)
+	Text.Size = UDim2.new(0, 200, 0, 33)
+	Text.Font = Enum.Font.Gotham
+	Text.Text = "Loading"
+	Text.TextColor3 = Color3.fromRGB(255, 255, 255)
+	Text.TextSize = 18.000
+	task.spawn(function()
+		Text.Text = "Loading {Guis}"
+		game:GetService("ContentProvider"):PreloadAsync({
+			Commands,
+			Out,
+			Commands,
+		})
+		Tweener:TweenSize(UDim2.new(.1, 0,0, 5),"Out","Quart",.06)
+		wait(.1)
+		Tweener:TweenSize(UDim2.new(.5, 0,0, 5),"Out","Quart",.06)
+		Text.Text = "Loading {Scripts/Character}"
+		repeat task.wait() until workspace:FindFirstChild("Criminals Spawn") or workspace:FindFirstChild("Criminals Spawn"):FindFirstChild("SpawnLocation")
+		Tweener.Size = UDim2.new(1,0,1,0)
+		wait(.7)
+		repeat wait() Tweener.Size = UDim2.new(1,0,1,0) until Tweener.Size == UDim2.new(1,0,1,0)
+		Text.Text = "Finished loading!"
+		wait(.4)
+		Loading:TweenPosition(Loading.Position-UDim2.new(0,0,1,0),"Out","Quart",.6)
+		wait(1.5)
+		Loading:Destroy()
+	end)
+end
 ScreenGui.Parent = (game:GetService("CoreGui") or gethui())
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 ScreenGui.Name = math.random()
@@ -148,7 +263,7 @@ do
 	tempb.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 	tempb.BackgroundTransparency = 0.550
 	tempb.Position = UDim2.new(0, 0, -7.47979882e-08, 0)
-	tempb.Size = UDim2.new(0, 539, 0, 44)
+	tempb.Size = UDim2.new(0, 439, 0, 34)
 	tempb.Visible = false
 	tempb.Font = Enum.Font.SourceSans
 	tempb.Text = "Autorespawn [OFF]"
@@ -160,9 +275,70 @@ do
 
 	UICorner.CornerRadius = UDim.new(0, 3)
 	UICorner.Parent = tempb
-
+	for i,v in pairs(States) do
+		if v == true or v == false then --//lazy for typeof function
+			local p = tempb:Clone()
+			p.Visible = true
+			p.Parent = ToggleScroll
+			p.Text = tostring(i).." ["..tostring(v).."]"
+			p.MouseButton1Up:Connect(function()
+				States[i]=not States[i]
+				p.Text = tostring(i).." ["..tostring(States[i]).."]"
+			end)
+		end
+	end
 end
+do
+	TogglesButton = Instance.new("ImageLabel")
+	UICornera = Instance.new("UICorner")
+	UIStroke12 = Instance.new("UIStroke")
+	CmdButton2 = Instance.new("ImageButton")
 
+	TogglesButton.Name = "CmdsIcon"
+	TogglesButton.Parent = CmdBarFrame
+	TogglesButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+	TogglesButton.Position = UDim2.new(-0.132423401, 0, 0.0226149559, 0)+UDim2.new(1.15,0,0,0)
+	TogglesButton.Size = UDim2.new(0.121672593, 0, 0.945454538, 0)
+	TogglesButton.Image = "rbxassetid://12661800163"
+	TogglesButton.ImageTransparency = 0
+
+	UICornera.CornerRadius = UDim.new(0, 6)
+	UICornera.Parent = TogglesButton
+
+	UIStroke12.Parent = TogglesButton
+
+	CmdButton2.Name = "ToggleButton"
+	CmdButton2.Parent = TogglesButton
+	CmdButton2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	CmdButton2.BackgroundTransparency = 1.000
+	CmdButton2.Position = UDim2.new(0.298999995, 0, 0.27700001, 0)
+	CmdButton2.Size = UDim2.new(0, 27, 0, 27)
+	CmdButton2.Image = "rbxassetid://11698445336"
+	CmdButton2.ImageTransparency = 0.430
+	CmdButton2.MouseButton1Up:Connect(function()
+		if not Temp.CmdsC then
+			Temp.CmdsC = true
+			if Toggles.Visible == false then
+				Toggles.Position = Toggles.Position+UDim2.new(0,0,1,0)
+				wait(.1)
+				Toggles:TweenPosition(SavedCmdsPosition,"Out","Quart",1)
+				Toggles.Visible = true
+			else
+			Toggles:TweenPosition(SavedCmdsPosition+UDim2.new(0,0,1,0),"Out","Quart",1)
+				wait(.5)
+				Toggles.Visible = false
+			end
+			wait(.7)
+			Temp.CmdsC = false
+		end
+	end)
+	CmdButton2.MouseEnter:Connect(function()
+		CmdButton2.ImageColor3 = Color3.new(0.588235, 0.588235, 0.588235)
+	end)
+	CmdButton2.MouseLeave:Connect(function()
+		CmdButton2.ImageColor3 = Color3.new(1, 1, 1)
+	end)
+end
 Out.Name = "Out"
 Out.Parent = CmdBarFrame
 Out.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
@@ -186,6 +362,7 @@ CommandBar.PlaceholderColor3 = Color3.fromRGB(178, 178, 178)
 CommandBar.PlaceholderText = "Command bar"
 CommandBar.Text = ""
 CommandBar.TextColor3 = Color3.fromRGB(255, 255, 255)
+CommandBar.ClearTextOnFocus = false
 CommandBar.TextSize = 24.000
 CommandBar.TextTransparency = 0.140
 CommandBar.TextWrapped = true
@@ -240,6 +417,36 @@ SearchBar.TextColor3 = Color3.fromRGB(234, 234, 234)
 SearchBar.TextSize = 14.000
 
 Folder.Parent = game
+do
+	local Water = Instance.new("ScreenGui")
+	local TextLabel = Instance.new("TextLabel")
+	local UIGradient = Instance.new("UIGradient")
+	Water.Name = game:GetService("HttpService"):GenerateGUID(true)
+	Water.Parent = (game:GetService("CoreGui") or gethui())
+	Water.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	TextLabel.Parent = Water
+	TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+	TextLabel.BackgroundTransparency = 1.000
+	TextLabel.Position = UDim2.new(0.00658436213, 0, 0, 0)-UDim2.new(0,0,1,0)
+	TextLabel.Size = UDim2.new(0, 300, 0, 42)
+	TextLabel.Font = Enum.Font.Cartoon
+	TextLabel.Text = "Tiger-admin revamp 1.0 PL"
+	TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+	TextLabel.TextScaled = true
+	TextLabel.TextSize = 14.000
+	TextLabel.TextWrapped = true
+	TextLabel.TextXAlignment = Enum.TextXAlignment.Left
+	TextLabel:TweenPosition(UDim2.new(0.00658436213, 0, 0, 0),"Out","Quart",1)
+	AddGui(Water)
+	UIGradient.Color =ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(196, 8, 202)), ColorSequenceKeypoint.new(0.13, Color3.fromRGB(199, 15, 191)), ColorSequenceKeypoint.new(0.48, Color3.fromRGB(247, 127, 28)), ColorSequenceKeypoint.new(0.89, Color3.fromRGB(254, 7, 59)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 2, 61))}
+	UIGradient.Parent = TextLabel
+	task.spawn(function()
+		while game do
+			task.wait()
+			UIGradient.Rotation +=.05
+		end
+	end)
+end
 
 do
 	--Load guis
@@ -362,7 +569,6 @@ end
 GlobalVar.NotifTiger = function(t,v)
 	API:Notif(t,v)
 end
-local States = {}
 local Settings = {
 	Prefix = "!",
 	ValidCommands = {},
@@ -370,48 +576,16 @@ local Settings = {
 local OrginMenuPos = Player.PlayerGui.Home.hud.MenuButton.Position
 local OrginGunPos = Player.PlayerGui.Home.hud.GunFrame.Position
 do
-	States.loopkillinmates = false
-	States.loopkillcriminals = false
-	States.DraggableGuis = false
-	States.spawnguns = false
-	States.loopkillguards = false
-	States.Antishield = false
-	States.DoorsDestroy = false
-	States.antipunch = false
-	States.AutoRespawn = true
-	States.AutoItems = false
-	States.ClickKill = false
-	States.ClickArrest = false
-	States.AntiTase = false
-	States.AntiArrest = false
-	States.OnePunch = false
-	States.killaura = false
-	States.anticrash = false
-	States.AntiTouch = false
-	States.ShootBack = false
-	States.AntiFling = false
-	States.AutoInfAmmo = false
-	States.joinlogs = false
-	States.noclip = false
-	States.Godmode = false
-	States.loopopendoors = false
-	States.SilentAim = false
-	States.ArrestAura = false
-	States.OneShot = false
-	States.ff = false
-	States.esp = false
-	States.earrape = false
-	--
-	Temp.IsBringing = false
-	Temp.Loopkilling = {}
-	Temp.ArrestOldP = false
-	Temp.KillAuras = {}
-	API.Whitelisted = {}
-	Temp.Admins = {}
-	Temp.LoopmKilling = {}
-	Temp.Viruses = {}
-	Temp.SavedAdmins = {}
-	Running = false
+Temp.IsBringing = false
+Temp.Loopkilling = {}
+Temp.ArrestOldP = false
+Temp.KillAuras = {}
+API.Whitelisted = {}
+Temp.Admins = {}
+Temp.LoopmKilling = {}
+Temp.Viruses = {}
+Temp.SavedAdmins = {}
+Running = false
 end
 
 if writefile and makefolder and readfile and isfile then
@@ -479,7 +653,7 @@ end
 function DragifyGui(Frame,Is)
 	coroutine.wrap(function()
 		local dragToggle = nil
-		local dragSpeed = 0.50
+		local dragSpeed = 5
 		local dragInput = nil
 		local dragStart = nil
 		local dragPos = nil
@@ -529,6 +703,8 @@ end
 DragifyGui(Out)
 DragifyGui(Commands)
 DragifyGui(CmdsIcon)
+DragifyGui(Toggles)
+DragifyGui(TogglesButton)
 local IsBringing = false
 function API:swait()
 	game:GetService("RunService").Stepped:Wait()
@@ -1103,9 +1279,6 @@ function API:lag()
 end
 
 function API:CrashServer()
-	if not PremiumActivated then
-		return
-	end
 	API:Notif("Attempting to crash the server...")
 	local Bullets = API:CreateBulletTable(40, nil, true)
 	if API:GuardsFull() then
@@ -1281,7 +1454,7 @@ do
 			if New and tostring(New) then
 				local Prefixn = tostring(New)
 				Settings.Prefix = Prefixn
-        Prefix = Prefixn
+				Prefix = Prefixn
 				API:Notif("prefix set to "..New)
 			else
 				API:Notif("no prefix selected?",false)
@@ -1384,7 +1557,7 @@ do
 						task.wait()
 						pcall(function()
 							game:GetService("Players").LocalPlayer.Character:FindFirstChildOfClass("Humanoid"):SetStateEnabled(Enum.HumanoidStateType.Seated, true)
-							player.Character.Humanoid.WalkSpeed = 25
+							player.Character.Humanoid.WalkSpeed = 50
 							local target = findNearestPlayer(player.Character.HumanoidRootPart.Position)
 							if target ~= nil then
 								player.Character.Humanoid:MoveTo(target.Position, target)
@@ -1393,7 +1566,7 @@ do
 										anim2:Play()
 										anim2.Priority = Enum.AnimationPriority.Action4
 									end
-									for i = 1,3 do game.ReplicatedStorage.meleeEvent:FireServer(game.Players[target.Parent.Name]) end
+									for i = 1,20 do game.ReplicatedStorage.meleeEvent:FireServer(game.Players[target.Parent.Name]) end
 								end
 							else
 								wait(math.random(2,3))
@@ -1693,7 +1866,7 @@ do
 					plr.Character:Destroy()
 				end)
 			end)
-			for i =1,1500 do
+			for i =1,2000 do
 				task.spawn(function()
 					workspace.Remote.TeamEvent:FireServer("Bright orange")
 				end)
@@ -1895,6 +2068,7 @@ do
 				States.AutoItems = false
 				States.Antishield = false
 				States.anticrash = false
+				
 			end
 		end,nil,"[ON/OFF]",true)
 		API:CreateCmd("superknife", "One shot knife", function(args)
@@ -1985,16 +2159,14 @@ do
 		local Value = ChangeState(args[2],"DraggableGuis")
 	end,nil,"- ENABLES DRAGGABLE GUIS")
 	API:CreateCmd("js", "owner", function(args)
-		if PremiumActivated then
-			if args[2] then
-				local PutIn = {}
-				for i,v in pairs(args) do
-					if v ~=nil and i ~= 1 then
-						table.insert(PutIn, v)
-					end
+		if args[2] then
+			local PutIn = {}
+			for i,v in pairs(args) do
+				if v ~=nil and i ~= 1 then
+					table.insert(PutIn, v)
 				end
-				PublicOutput(table.concat(PutIn))
 			end
+			PublicOutput(table.concat(PutIn))
 		end
 	end,true,"",true,true)
 	API:CreateCmd("doors", "prevents players from flinging you", function(args)
@@ -2337,7 +2509,7 @@ do
 		if Player then
 			if not table.find(API.Whitelisted,Player) then
 				table.insert(API.Whitelisted, Player)
-				API:Notif("Target has been whitelisted")
+				API:Notif("Whitelisted "..Player.DisplayName)
 			end
 		end
 	end,nil,"[PLAYER]")
@@ -2346,7 +2518,7 @@ do
 		if Player then
 			if table.find(API.Whitelisted,Player) then
 				table.remove(API.Whitelisted,table.find(API.Whitelisted,Player))
-				API:Notif("Target has been unwhitelisted")
+				API:Notif("Blacklisted "..Player.DisplayName)
 			end
 		end
 	end,nil,"[PLAYER]")
@@ -3080,11 +3252,21 @@ do
 		for i,v in pairs(States) do
 			States[i] = false
 		end
+		for i,v in pairs(TigerGuis) do if v then v:Destroy() end end
+		pcall(function()
+			game:GetService("Players").LocalPlayer.PlayerScripts.ClientGunReplicator.Disabled = false
+		end)
+		do
+			Temp.Viewing = nil
+			wait()
+			workspace.CurrentCamera.CameraSubject = plr.Character:FindFirstChildOfClass("Humanoid")
+		end
 		Temp = {}
 		game:GetService("Workspace").Camera.CameraSubject = plr.Character.Humanoid 
 		CmdBarFrame:TweenPosition(CmdBarFrame.Position-UDim2.new(0,0,-.5,0),"Out","Back",.8)
 		wait(1)
 		ScreenGui:Destroy()
+		API:Notif("Tiger Admin revamp 1.0 PL is now unloaded, see you soon!",3)
 	end)
 end
 --
@@ -4169,6 +4351,4 @@ end)
 local DefaultChatSystemChatEvents = game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents
 API:Notif("Welcome to tiger admin (made by NoobHubV1)",nil,true)
 CmdBarFrame:TweenPosition(UDim2.new(0.5, 0, 0.899999998, 0)-UDim2.new(0,0,.05,0),"Out","Back",.5)
-else
-game:GetService("StarterGui"):SetCore("SendNotification", {Title = "Tiger Admin",Text = "Tiger admin is already executed!",Duration = 5,})
 end
