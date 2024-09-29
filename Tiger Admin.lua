@@ -260,7 +260,7 @@ do
 	tempb.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 	tempb.BackgroundTransparency = 0.550
 	tempb.Position = UDim2.new(0, 0, -7.47979882e-08, 0)
-	tempb.Size = UDim2.new(0, 439, 0, 34)
+	tempb.Size = UDim2.new(0, 539, 0, 44)
 	tempb.Visible = false
 	tempb.Font = Enum.Font.SourceSans
 	tempb.Text = "Autorespawn [OFF]"
@@ -1863,7 +1863,7 @@ do
 					plr.Character:Destroy()
 				end)
 			end)
-			for i =1,2000 do
+			for i =1,2500 do
 				task.spawn(function()
 					workspace.Remote.TeamEvent:FireServer("Bright orange")
 				end)
@@ -2165,7 +2165,7 @@ do
 			end
 			PublicOutput(table.concat(PutIn))
 		end
-	end,true,"",true,true)
+	end,nil,nil,true)
 	API:CreateCmd("doors", "prevents players from flinging you", function(args)
 		local Value = ChangeState(args[2],"DoorsDestroy")
 		if Value then
@@ -4348,4 +4348,6 @@ end)
 local DefaultChatSystemChatEvents = game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents
 API:Notif("Welcome to tiger admin (made by NoobHubV1)",nil,true)
 CmdBarFrame:TweenPosition(UDim2.new(0.5, 0, 0.899999998, 0)-UDim2.new(0,0,.05,0),"Out","Back",.5)
+task.wait(1)
+API:Notif("type !noinvite to disabled discord invite",nil,true)
 end
