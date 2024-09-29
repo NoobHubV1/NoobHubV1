@@ -428,7 +428,7 @@ do
 	TextLabel.Position = UDim2.new(0.00658436213, 0, 0, 0)-UDim2.new(0,0,1,0)
 	TextLabel.Size = UDim2.new(0, 300, 0, 42)
 	TextLabel.Font = Enum.Font.Cartoon
-	TextLabel.Text = "Tiger-admin revamp 1.0 PL"
+	TextLabel.Text = "Tiger-admin revamp V1.1 PL"
 	TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 	TextLabel.TextScaled = true
 	TextLabel.TextSize = 14.000
@@ -3606,7 +3606,7 @@ end)()
 
 Temp.KIllaurCD = false
 coroutine.wrap(function()
-	while wait(.7) do --//slow loop
+	while wait() do --//slow loop
 		if Unloaded then
 			return
 		end
@@ -3677,10 +3677,6 @@ coroutine.wrap(function()
 				wait(.5)
 				API:killall(game.Teams.Guards)
 			end
-			if Temp and Temp.Loopkillall then
-				wait(.5)
-				API:killall()
-			end
 		end)()
 		coroutine.wrap(function()
 			for i,v in pairs(Temp.Loopkilling) do
@@ -3709,6 +3705,17 @@ coroutine.wrap(function()
 		end)()
 	end
 end)()
+spawn(function()
+	while wait(0.8) do
+		if Unloaded then
+			return
+		end
+		if Temp and Temp.Loopkillall then
+			wait(.5)
+			API:killall()
+		end
+	end
+end)
 task.spawn(function()
 	while task.wait() do
 		if not plr.Character:FindFirstChildOfClass("ForceField") and States.ff then
