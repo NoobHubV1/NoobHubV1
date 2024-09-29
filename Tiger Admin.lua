@@ -481,30 +481,32 @@ function API:CreateCmd(Header, Description, Callback,IsHide,Extra,IsPre,plsdonot
 		local Split = Text:split(" ")
 		local First = Split[1]
 		local Second = Split[2]
+		local Time = Split[3]
+		local Four = Split[4]
 
 		if First:lower() == Header:lower() or First:lower() == Prefix..Header:lower() then
-			local a,b = pcall(function()
+			local a,b,c,d = pcall(function()
 				Callback(Split)
 			end)
-			if not a and b then
+			if not a and b and c and d then
 				warn("--> TIGER ADMIN DETECTED AN ERROR")
 				warn("COMMAND: "..Prefix..Header)
 				warn("ERROR: "..tostring(b))
 			end
 		end
 	end
-	Player.Chatted:Connect(function(c)
-		if c and not Unloaded then
-			local Subbed = string.sub(c,1,1)
+	Player.Chatted:Connect(function(msg)
+		if msg and not Unloaded then
+			local Subbed = string.sub(msg,1,1,1,1)
 			if Subbed == Prefix then
-				FactCheck(c)
+				FactCheck(msg)
 			end
 		end
 	end)
 	CommandBar.FocusLost:Connect(function(EnterKey)
 		if EnterKey and not Unloaded then
 			FactCheck(CommandBar.Text)
-			task.wait(.04)
+			task.wait(0.22)
 			CommandBar.Text = ""
 		end
 	end)
@@ -629,7 +631,7 @@ task.spawn(function()
 end)
 	
 function API:CreateBulletTable(Bullet, Target)
-	for i =1,tonumber(Bullet) do
+	for i =1,Bullet do
 		BulletTable[#BulletTable + 1] = {
 			["RayObject"] = Ray.new(Vector3.new(), Vector3.new()),
 			["Hit"] = Target.Character:FindFirstChild("Head"),
@@ -955,6 +957,14 @@ function API:ChangeTeam(TeamPath,NoForce,Pos)
 	elseif TeamPath == game.Teams.Criminals then
 		if Player.Team == game.Teams.Inmates then
 			firetouchinterest(plr.Character.HumanoidRootPart, game.Workspace["Criminals Spawn"].SpawnLocation, 0)
+		elseif plr.Team == game.Teams.Guards then
+			pcall(function()
+			repeat task.wait() until game:GetService("Players").LocalPlayer.Character
+				game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+
+				API:WaitForRespawn(Pos or API:GetPosition(),NoForce)
+			end)
+			firetouchinterest(plr.Character.HumanoidRootPart, game.Workspace["Criminals Spawn"].SpawnLocation, 0)
 		elseif Player.Team == game.Teams.Criminals then
 		if #game.Teams.Guards:GetPlayers() == 8 and Player.Team ~= game.Teams.Guards then
 			pcall(function()
@@ -976,7 +986,7 @@ function API:ChangeTeam(TeamPath,NoForce,Pos)
 				API:WaitForRespawn(Pos or API:GetPosition(),NoForce)
 			end)
 			workspace.Remote.TeamEvent:FireServer("Bright blue")
-			plr.CharacterAdded:Wait() wait(0.03)
+			plr.CharacterAdded:Wait() wait()
 			repeat wait()
 				pcall(function()
 				repeat task.wait() until game:GetService("Players").LocalPlayer.Character
@@ -3728,6 +3738,7 @@ function MostClose(Position)
 	end
 	return Closest
 end
+				
 local CurrentTime = 0
 function GetPlayerHit(Part)
 	for i,v in pairs(game:GetService("Players"):GetPlayers()) do
