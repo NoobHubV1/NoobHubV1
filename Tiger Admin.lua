@@ -20,6 +20,7 @@ local BulletTable = {}
 local Temp = {}
 local API = {}
 local Reload_Guns = {}
+local TigerGuis = {}
 local Prefix = "!"
 
 States = {
@@ -55,11 +56,6 @@ States = {
 	esp = false,
 	earrape = false,
 }
-
-TigerGuis = {}
-function AddGui(Gui)
-	TigerGuis[#TigerGuis+1]=Gui
-end
 
 --------
 Folder.Name = "Tiger_revamp_loaded"
@@ -435,7 +431,7 @@ do
 	TextLabel.TextWrapped = true
 	TextLabel.TextXAlignment = Enum.TextXAlignment.Left
 	TextLabel:TweenPosition(UDim2.new(0.00658436213, 0, 0, 0),"Out","Quart",1)
-	AddGui(Water)
+	TigerGuis[#TigerGuis+1]=Water
 	UIGradient.Color =ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(196, 8, 202)), ColorSequenceKeypoint.new(0.13, Color3.fromRGB(199, 15, 191)), ColorSequenceKeypoint.new(0.48, Color3.fromRGB(247, 127, 28)), ColorSequenceKeypoint.new(0.89, Color3.fromRGB(254, 7, 59)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 2, 61))}
 	UIGradient.Parent = TextLabel
 	task.spawn(function()
@@ -927,7 +923,7 @@ function API:ChangeTeam(TeamPath,NoForce,Pos)
 		end)
 		workspace.Remote.TeamEvent:FireServer("Bright orange")
 	elseif TeamPath == game.Teams.Guards then
-		if #game.Teams.Guards:GetPlayers() == 8 and Player.Team == game.Teams.Guards then
+		if API:GuardsFull("b") then
 			pcall(function()
 			repeat task.wait() until game:GetService("Players").LocalPlayer.Character
 				game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
@@ -966,7 +962,7 @@ function API:ChangeTeam(TeamPath,NoForce,Pos)
 			end)
 			firetouchinterest(plr.Character.HumanoidRootPart, game.Workspace["Criminals Spawn"].SpawnLocation, 0)
 		elseif Player.Team == game.Teams.Criminals then
-		if #game.Teams.Guards:GetPlayers() == 8 and Player.Team ~= game.Teams.Guards then
+		if API:GuardsFull("c") then
 			pcall(function()
 			repeat task.wait() until game:GetService("Players").LocalPlayer.Character
 				game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
@@ -998,6 +994,8 @@ function API:ChangeTeam(TeamPath,NoForce,Pos)
 			until plr.Team == game.Teams.Criminals
 		end
 		end
+	elseif TeamPath == game.Teams.Neutral then
+		workspace.Remote.TeamEvent:FireServer("Medium stone grey")
 	end
 end
 function API:FindString(String,Table)
@@ -1016,7 +1014,7 @@ function API:UnSit()
 	game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid").Sit = false
 end
 function API:KillPlayer(Target,Failed,DoChange)
-	local Bullets = API:CreateBulletTable(5, Target)
+	local Bullets = API:CreateBulletTable(10, Target)
 	if not Target or not Target.Character or not Target.Character:FindFirstChildOfClass("Humanoid") or Target.Character:FindFirstChildOfClass("Humanoid").Health <1 then
 		return
 	end
@@ -1029,11 +1027,12 @@ function API:KillPlayer(Target,Failed,DoChange)
 		elseif Target.Team == game.Teams.Criminals then
 			CurrentTeam = Player.Team
 			API:ChangeTeam(game.Teams.Inmates,true)
+			plr.CharacterAdded:Wait() wait()
 		end
 	end
 
-	local Gun = Player.Backpack:FindFirstChild("Remington 870") or Player.Character:FindFirstChild("Remington 870")
-	repeat API:swait() API:GetGun("Remington 870") Gun = Player.Backpack:FindFirstChild("Remington 870") or Player.Character:FindFirstChild("Remington 870") until Gun
+	local Gun = Player.Backpack:FindFirstChild("AK-47") or Player.Character:FindFirstChild("AK-47")
+	repeat API:swait() API:GetGun("AK-47") Gun = Player.Backpack:FindFirstChild("AK-47") or Player.Character:FindFirstChild("AK-47") until Gun
 	API:FireGun(Gun)
 	coroutine.wrap(function()
 		wait(.7)
@@ -1109,30 +1108,30 @@ end
 function API:killall(TeamToKill)
 	if not TeamToKill then
 		local LastTeam = Player.Team
-		if Player.Team ~= game.Teams.Criminals then
-			API:ChangeTeam(game.Teams.Criminals,true)
+		if LastTeam ~= game.Teams.Criminals then
+			API:ChangeTeam(game.Teams.Criminals)
 		end
-		local Gun = Player.Backpack:FindFirstChild("Remington 870") or Player.Character:FindFirstChild("Remington 870")
-		repeat task.wait() API:GetGun("Remington 870") Gun = Player.Backpack:FindFirstChild("Remington 870") or Player.Character:FindFirstChild("Remington 870") until Gun
+		for i,v in pairs(game.Players:GetPlayers()) do
+			if v and v ~= plr and not table.find(API.Whitelisted,v) then
+				API:CreateBulletTable(10, v)
+			end
+		end
 
-		for i,v in pairs(game:GetService("Players"):GetPlayers()) do
-			if v and v~=Player  and v.Team == game.Teams.Inmates or v.Team == game.Teams.Guards and not table.find(API.Whitelisted,v)  then
-				API:CreateBulletTable(5, v)
-			end
-		end
+		local Gun = Player.Character:FindFirstChild("AK-47") or Player.Backpack:FindFirstChild("AK-47")
+		repeat task.wait() API:GetGun("AK-47") Gun = Player.Character:FindFirstChild("AK-47") or Player.Backpack:FindFirstChild("AK-47") until Gun
+
 		API:FireGun(Gun)
-		API:ChangeTeam(game.Teams.Inmates,true)
-		plr.CharacterAdded:Wait() wait(0.01)
-		repeat task.wait() API:GetGun("Remington 870") Gun = Player.Backpack:FindFirstChild("Remington 870") or Player.Character:FindFirstChild("Remington 870") until Gun
-		local Gun = Player.Backpack:FindFirstChild("Remington 870") or Player.Character:FindFirstChild("Remington 870")
-		for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
-			if v and v~=Player and not table.find(API.Whitelisted,v) then
-				API:CreateBulletTable(5, v)
-			end
-		end
+		wait(.1)
+		API:ChangeTeam(game.Teams.Inmates)
+		plr.CharacterAdded:Wait()
+		local Gun = Player.Character:FindFirstChild("AK-47") or Player.Backpack:FindFirstChild("AK-47")
+		repeat task.wait() API:GetGun("AK-47") Gun = Player.Character:FindFirstChild("AK-47") or Player.Backpack:FindFirstChild("AK-47") until Gun
+
 		API:FireGun(Gun)
-		if LastTeam ~= game.Teams.Inmates then
-			API:ChangeTeam(LastTeam,true)
+		if Temp.Loopkillall == false then
+			if LastTeam ~= game.Teams.Inmates then
+				API:ChangeTeam(game.Teams.Inmates)
+			end
 		end
 	elseif TeamToKill then
 		if TeamToKill == game.Teams.Inmates or TeamToKill == game.Teams.Guards then
@@ -1142,15 +1141,16 @@ function API:killall(TeamToKill)
 		elseif TeamToKill == game.Teams.Criminals then
 			if Player.Team ~= game.Teams.Inmates then
 				API:ChangeTeam(game.Teams.Inmates)
+				plr.CharacterAdded:Wait() wait()
 			end
 		end
 		for i,v in pairs(TeamToKill:GetPlayers()) do
 			if v and v~=Player and  not table.find(API.Whitelisted,v) then
-				API:CreateBulletTable(13, v)
+				API:CreateBulletTable(10, v)
 			end
 		end
-		local Gun = Player.Backpack:FindFirstChild("M9") or Player.Character:FindFirstChild("M9")
-		repeat task.wait() API:GetGun("M9") Gun = Player.Backpack:FindFirstChild("M9") or Player.Character:FindFirstChild("M9") until Gun
+		local Gun = Player.Backpack:FindFirstChild("AK-47") or Player.Character:FindFirstChild("AK-47")
+		repeat task.wait() API:GetGun("AK-47") Gun = Player.Backpack:FindFirstChild("AK-47") or Player.Character:FindFirstChild("AK-47") until Gun
 
 		API:FireGun(Gun)
 	end
@@ -1251,10 +1251,17 @@ function API:Unfly()
 		API:Refresh(true)
 	end
 end
+function API:GuardsFull(a)
+	if a == "b" then
+		return #game.Teams.Guards:GetPlayers() == 8 and Player.Team == game.Teams.Guards
+	elseif a == "c" then
+		return #game.Teams.Guards:GetPlayers() == 8 and Player.Team ~= game.Teams.Guards
+	end
+end
 function API:lag()
 	API:Notif("Lagging the server...")
 	local Bullets = API:CreateBulletTable(10, nil)
-	if API:GuardsFull() then
+	if API:GuardsFull("c") then
 		API:GetGun("M9")
 	else
 		API:ChangeTeam(game.Teams.Guards)
@@ -1282,7 +1289,7 @@ end
 function API:CrashServer()
 	API:Notif("Attempting to crash the server...")
 	local Bullets = API:CreateBulletTable(40, nil, true)
-	if API:GuardsFull() then
+	if API:GuardsFull("c") then
 		API:GetGun("M9")
 	else
 		API:ChangeTeam(game.Teams.Guards)
@@ -2891,7 +2898,7 @@ do
 		if plr.Character:FindFirstChild("Key card") or plr.Backpack:FindFirstChild("Key card") then
 			return API:Notif("You already have a keycard!",false)
 		end
-		if #game.Teams.Guards:GetPlayers() == 8 and plr.Team ~= game.Teams.Guards then
+		if API:GuardsFull("c") then
 			API:Notif("Guards team is full!")
 			return
 		end
@@ -3267,7 +3274,7 @@ do
 		CmdBarFrame:TweenPosition(CmdBarFrame.Position-UDim2.new(0,0,-.5,0),"Out","Back",.8)
 		wait(1)
 		ScreenGui:Destroy()
-		API:Notif("Tiger Admin revamp 1.0 PL is now unloaded, see you soon!",3)
+		API:Notif("Tiger Admin revamp 1.1 PL is now unloaded, see you soon!",3)
 	end)
 end
 --
@@ -4360,6 +4367,7 @@ end)
 local DefaultChatSystemChatEvents = game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents
 API:Notif("Welcome to tiger admin (made by NoobHubV1)",nil,true)
 CmdBarFrame:TweenPosition(UDim2.new(0.5, 0, 0.899999998, 0)-UDim2.new(0,0,.05,0),"Out","Back",.5)
-task.wait(2)
+wait(2)
 API:Notif("type !noinvite to disabled discord invite",nil,true)
 end
+ 
