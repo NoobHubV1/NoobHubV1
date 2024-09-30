@@ -6,7 +6,7 @@ if not getconnections or not hookmetamethod or not getnamecallmethod or not ((ge
 	game:GetService("StarterGui"):SetCore("SendNotification", {Title = "NoobHubV1 Admin",Text = "Executor is not supported!",Duration = 10,})
 end
 game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
-if game:FindFirstChild("NoobHubV1_revamp_loaded") then
+if game:FindFirstChild("NoobHubV1_Admin") then
 game:GetService("StarterGui"):SetCore("SendNotification", {Title = "NoobHubV1 Admin",Text = "NoobHubV1 admin is already executed!",Duration = 5,})
 else
 local Player, plr,Folder = game:GetService("Players").LocalPlayer, game:GetService("Players").LocalPlayer,Instance.new("Folder",game)
@@ -58,7 +58,7 @@ States = {
 }
 
 --------
-Folder.Name = "NoobHubV1_revamp_loaded"
+Folder.Name = "NoobHubV1_Admin"
 ScreenGui = Instance.new("ScreenGui")
 CmdBarFrame = Instance.new("Frame")
 UICorner = Instance.new("UICorner")
@@ -1121,7 +1121,7 @@ function API:killall(TeamToKill)
 		repeat task.wait() API:GetGun("AK-47") Gun = Player.Character:FindFirstChild("AK-47") or Player.Backpack:FindFirstChild("AK-47") until Gun
 
 		API:FireGun(Gun)
-		wait(.1)
+		wait(.5)
 		API:ChangeTeam(game.Teams.Inmates)
 		plr.CharacterAdded:Wait()
 		local Gun = Player.Character:FindFirstChild("AK-47") or Player.Backpack:FindFirstChild("AK-47")
@@ -3254,7 +3254,7 @@ do
 		end
 	end)
 	API:CreateCmd("unload", "Destroys the script unloading it", function(args)
-		API:Destroy(game:FindFirstChild("Tiger_revamp_loaded"))
+		API:Destroy(game:FindFirstChild("NoobHubV1_Admin"))
 		Unloaded = true
 
 		for i,v in pairs(States) do
@@ -3816,7 +3816,6 @@ coroutine.wrap(function()
 	game:GetService("ReplicatedStorage"):WaitForChild("ReplicateEvent").OnClientEvent:Connect(ReplicationEventFunction)
 end)()
 --ClientGunReplicator
-if PremiumActivated then
 	local BulletCoolDown = false
 	Temp.GunHandler =game:GetService("ReplicatedStorage"):WaitForChild("ReplicateEvent").OnClientEvent:connect(function(Amount, Value)
 		if not States.anticrash then
@@ -3890,7 +3889,6 @@ if PremiumActivated then
 		end
 		WarnGui.Frame.LocalScript.Disabled = false
 	end)
-end
 function Msg(player,Text)
 	local ohString1 = "/w "..player.Name.." "..Text
 	local ohString2 = "All"
@@ -3928,7 +3926,7 @@ function AdminChatted(Text,Speaker)
 	if Unloaded then return end
 	local TXT = string.lower(Text)
 	local SPLITED = TXT:split(" ")
-	Arg1_P = SPLITED[1]
+	local Arg1_P = SPLITED[1]
 	local Arg2_P = SPLITED[2]
 	local Arg3_P = SPLITED[3]
 	local Arg4_P = SPLITED[4]
