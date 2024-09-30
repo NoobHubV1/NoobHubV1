@@ -475,12 +475,12 @@ function API:CreateCmd(Header, Description, Callback,IsHide,Extra,IsPre,plsdonot
 			Text = TheText
 		end
 		local Split = Text:split(" ")
-		local First = Split[1]
-		local Second = Split[2]
-		local Time = Split[3]
+		local One = Split[1]
+		local Two = Split[2]
+		local Three = Split[3]
 		local Four = Split[4]
 
-		if First:lower() == Header:lower() or First:lower() == Prefix..Header:lower() then
+		if One:lower() == Header:lower() or One:lower() == Prefix..Header:lower() then
 			local a,b,c,d = pcall(function()
 				Callback(Split)
 			end)
@@ -1121,18 +1121,14 @@ function API:killall(TeamToKill)
 		repeat task.wait() API:GetGun("AK-47") Gun = Player.Character:FindFirstChild("AK-47") or Player.Backpack:FindFirstChild("AK-47") until Gun
 
 		API:FireGun(Gun)
-		wait(.5)
+		wait(.1)
 		API:ChangeTeam(game.Teams.Inmates)
 		plr.CharacterAdded:Wait()
 		local Gun = Player.Character:FindFirstChild("AK-47") or Player.Backpack:FindFirstChild("AK-47")
 		repeat task.wait() API:GetGun("AK-47") Gun = Player.Character:FindFirstChild("AK-47") or Player.Backpack:FindFirstChild("AK-47") until Gun
 
 		API:FireGun(Gun)
-		if Temp.Loopkillall == false then
-			if LastTeam ~= game.Teams.Inmates then
-				API:ChangeTeam(game.Teams.Inmates)
-			end
-		end
+		API:Refresh()
 	elseif TeamToKill then
 		if TeamToKill == game.Teams.Inmates or TeamToKill == game.Teams.Guards then
 			if Player.Team ~= game.Teams.Criminals then
@@ -4368,4 +4364,3 @@ CmdBarFrame:TweenPosition(UDim2.new(0.5, 0, 0.899999998, 0)-UDim2.new(0,0,.05,0)
 wait(2)
 API:Notif("type !noinvite to disabled discord invite",nil,true)
 end
- 
