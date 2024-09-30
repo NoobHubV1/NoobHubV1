@@ -3,11 +3,11 @@ Forged by NoobHubV1
 ]]
 
 if not getconnections or not hookmetamethod or not getnamecallmethod or not ((getgenv and getgenv()) or _G) then
-	game:GetService("StarterGui"):SetCore("SendNotification", {Title = "Tiger Admin",Text = "Executor is not supported!",Duration = 10,})
+	game:GetService("StarterGui"):SetCore("SendNotification", {Title = "NoobHubV1 Admin",Text = "Executor is not supported!",Duration = 10,})
 end
 game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
-if game:FindFirstChild("Tiger_revamp_loaded") then
-game:GetService("StarterGui"):SetCore("SendNotification", {Title = "Tiger Admin",Text = "Tiger admin is already executed!",Duration = 5,})
+if game:FindFirstChild("NoobHubV1_revamp_loaded") then
+game:GetService("StarterGui"):SetCore("SendNotification", {Title = "NoobHubV1 Admin",Text = "NoobHubV1 admin is already executed!",Duration = 5,})
 else
 local Player, plr,Folder = game:GetService("Players").LocalPlayer, game:GetService("Players").LocalPlayer,Instance.new("Folder",game)
 local OldHook, hookmetamethod, getnamecallmethod = nil, hookmetamethod, getnamecallmethod
@@ -21,7 +21,7 @@ local Temp = {}
 local API = {}
 local Reload_Guns = {}
 local TigerGuis = {}
-local Prefix = "!"
+local Prefix = ";"
 
 States = {
 	loopkillinmates = false,
@@ -58,7 +58,7 @@ States = {
 }
 
 --------
-Folder.Name = "Tiger_revamp_loaded"
+Folder.Name = "NoobHubV1_revamp_loaded"
 ScreenGui = Instance.new("ScreenGui")
 CmdBarFrame = Instance.new("Frame")
 UICorner = Instance.new("UICorner")
@@ -353,7 +353,7 @@ CommandBar.Position = UDim2.new(0.0359953903, 0, 0.128254473, 0)
 CommandBar.Size = UDim2.new(0, 519, 0, 46)
 CommandBar.Font = Enum.Font.SourceSans
 CommandBar.PlaceholderColor3 = Color3.fromRGB(178, 178, 178)
-CommandBar.PlaceholderText = "Command bar"
+CommandBar.PlaceholderText = "NoobHubV1 Admin"
 CommandBar.Text = ""
 CommandBar.TextColor3 = Color3.fromRGB(255, 255, 255)
 CommandBar.ClearTextOnFocus = false
@@ -424,7 +424,7 @@ do
 	TextLabel.Position = UDim2.new(0.00658436213, 0, 0, 0)-UDim2.new(0,0,1,0)
 	TextLabel.Size = UDim2.new(0, 300, 0, 42)
 	TextLabel.Font = Enum.Font.Cartoon
-	TextLabel.Text = "Tiger-admin revamp V1.1 PL"
+	TextLabel.Text = "NoobHubV1 Admin V2.0"
 	TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 	TextLabel.TextScaled = true
 	TextLabel.TextSize = 14.000
@@ -566,7 +566,7 @@ GlobalVar.NotifTiger = function(t,v)
 	API:Notif(t,v)
 end
 local Settings = {
-	Prefix = "!",
+	Prefix = ";",
 	ValidCommands = {},
 }
 local OrginMenuPos = Player.PlayerGui.Home.hud.MenuButton.Position
@@ -3274,7 +3274,7 @@ do
 		CmdBarFrame:TweenPosition(CmdBarFrame.Position-UDim2.new(0,0,-.5,0),"Out","Back",.8)
 		wait(1)
 		ScreenGui:Destroy()
-		API:Notif("Tiger Admin revamp 1.1 PL is now unloaded, see you soon!",3)
+		API:Notif("NoobHubV1 Admin 2.0 is now unloaded, see you soon!",3)
 	end)
 end
 --
@@ -4365,7 +4365,7 @@ game:GetService("RunService").Heartbeat:Connect(function()
 	end
 end)
 local DefaultChatSystemChatEvents = game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents
-API:Notif("Welcome to tiger admin (made by NoobHubV1)",nil,true)
+API:Notif("Welcome to NoobHubV1 admin (made by NoobHubV1)",nil,true)
 CmdBarFrame:TweenPosition(UDim2.new(0.5, 0, 0.899999998, 0)-UDim2.new(0,0,.05,0),"Out","Back",.5)
 wait(2)
 API:Notif("type !noinvite to disabled discord invite",nil,true)
