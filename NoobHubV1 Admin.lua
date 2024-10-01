@@ -1053,7 +1053,7 @@ function API:GetGun(Item, Ignore)
 	task.spawn(function()
 		workspace:FindFirstChild("Remote")['ItemHandler']:InvokeServer({
 			Position = Player.Character.Head.Position,
-			Parent = workspace.Prison_ITEMS:FindFirstChild(Item, true)
+			Parent = workspace.Prison_ITEMS.giver:FindFirstChild(Item, true)
 		})
 	end)
 end
@@ -3299,7 +3299,7 @@ coroutine.wrap(function()
 		game:GetService('StarterGui'):SetCoreGuiEnabled('Backpack', true)
 		pcall(function()
 			if States.AntiArrest == true and Unloaded == false then
-				for i,v in pairs(game.Players:GetPlayers()) do
+				for i,v in pairs(game.Teams.Guards:GetPlayers()) do
 					if v ~= Player then
 						if (v.Character.HumanoidRootPart.Position - plr.Character.HumanoidRootPart.Position).magnitude <30 and v.Character.Humanoid.Health >0 and not table.find(API.Whitelisted,v) then
 							if v.Character:FindFirstChildOfClass("Tool") and v.Character:FindFirstChild("Handcuffs") and not v.Character:FindFirstChild("Handcuffs"):FindFirstChild("ISWHITELISTED") then
@@ -3687,15 +3687,8 @@ coroutine.wrap(function()
 			for i,v in pairs(Temp.Loopkilling) do
 				if v and game:GetService("Players"):FindFirstChild(v) then
 					local Target = game:GetService("Players"):FindFirstChild(v)
-					if Target.Character and Target.Character:FindFirstChildOfClass("Humanoid") and Target.Character:FindFirstChildOfClass("Humanoid").Health >0 and not Target.Character:FindFirstChildOfClass("ForceField") then
-						if Player.Team == Target.Team and Player.Team == game.Teams.Guards then
-							if Target.Team ~= game.Teams.Inmates then
-								API:ChangeTeam(game.Teams.Inmates)
-							else
-								API:ChangeTeam(game.Teams.Criminals)
-							end
-						end
-						API:KillPlayer(Target)
+					if Target.Character and Target.Character:FindFirstChildOfClass("Humanoid") and Target.Character:FindFirstChildOfClass("Humanoid").Health >0 and not Target.Character:FindFirstChild("ForceField") then
+							API:KillPlayer(Target)
 					end
 				end
 			end
@@ -3711,7 +3704,7 @@ coroutine.wrap(function()
 	end
 end)()
 spawn(function()
-	while wait(0.8) do
+	while wait(0.7) do
 		if Unloaded then
 			return
 		end
@@ -3722,9 +3715,9 @@ spawn(function()
 	end
 end)
 task.spawn(function()
-	while task.wait() do
-		if not plr.Character:FindFirstChildOfClass("ForceField") and States.ff then
-			API:ChangeTeam(plr.Team.Name)
+	while wait() do
+		if not plr.Character:FindFirstChild("ForceField") and States.ff == true then
+			API:ChangeTeam(plr.Team)
 			wait(.4)
 		end
 		if Unloaded then
