@@ -4357,5 +4357,5 @@ local DefaultChatSystemChatEvents = game:GetService("ReplicatedStorage").Default
 API:Notif("Welcome to NoobHubV1 admin (made by NoobHubV1)",nil,true)
 CmdBarFrame:TweenPosition(UDim2.new(0.5, 0, 0.899999998, 0)-UDim2.new(0,0,.05,0),"Out","Back",.5)
 wait(2)
-API:Notif("type !noinvite to disabled discord invite",nil,true)
+API:Notif("type ;noinvite to disabled discord invite",nil,true)
 end
