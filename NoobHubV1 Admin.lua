@@ -55,6 +55,7 @@ States = {
 	ff = false,
 	esp = false,
 	earrape = false,
+	Visible = true,
 }
 
 --------
@@ -73,83 +74,87 @@ CommandsList = Instance.new("ScrollingFrame")
 UIListLayout = Instance.new("UIListLayout")
 TEMP_CMD = Instance.new("TextLabel")
 SearchBar = Instance.new("TextBox")
-do
-        local LoadingGUI = Instance.new("ScreenGui")
-	local Loading = Instance.new("Frame")
-	local UICorner = Instance.new("UICorner")
-	local UIStroke = Instance.new("UIStroke")
-	local Darken = Instance.new("Frame")
-	local Outter = Instance.new("Frame")
-	local UICorner_2 = Instance.new("UICorner")
-	local Tweener = Instance.new("Frame")
-	local UICorner_3 = Instance.new("UICorner")
-	local Text = Instance.new("TextLabel")
-	local UIGradient = Instance.new("UIGradient")
-	LoadingGUI.Name = "LoadingGUI"
-	LoadingGUI.Parent = (game:GetService("CoreGui") or gethui())
-	LoadingGUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-	Loading.Name = "Loading"
-	Loading.Parent = LoadingGUI
-	Loading.AnchorPoint = Vector2.new(0.5, 0.5)
-	Loading.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	Loading.BackgroundTransparency=1
-	Loading.Position = UDim2.new(0.5, 0, 0.5, 0)
-	Loading.Size = UDim2.new(0, 404, 0, 172)
-	UICorner.CornerRadius = UDim.new(0, 3)
-	UICorner.Parent = Loading
-	Darken.Name = "Darken"
-	Darken.Parent = Loading
-	Darken.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-	Darken.BackgroundTransparency = 1
-	Darken.BorderSizePixel = 0
-	Darken.Size = UDim2.new(0, 404, 0, 172)
-	Outter.Name = "Outter"
-	Outter.Parent = Darken
-	Outter.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
-	Outter.Position = UDim2.new(0.297029704, 0, 0.645348847, 0)
-	Outter.Size = UDim2.new(0, 164, 0, 5)
-	UICorner_2.Parent = Outter
-	Tweener.Name = "Tweener"
-	Tweener.Parent = Outter
-	Tweener.BackgroundColor3 = Color3.fromRGB(3, 196, 255)
-	Tweener.Position = UDim2.new(-0.00175066688, 0, 0, 0)
-	Tweener.Size = UDim2.new(0, 0, 0, 5)
-	UICorner_3.Parent = Tweener
-	Text.Name = "Text"
-	Text.Parent = Loading
-	Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	Text.BackgroundTransparency = 1.000
-	Text.Position = UDim2.new(0.252475262, 0, 0.401162773, 0)
-	Text.Size = UDim2.new(0, 200, 0, 33)
-	Text.Font = Enum.Font.Gotham
-	Text.Text = "Loading"
-	Text.TextColor3 = Color3.fromRGB(255, 255, 255)
-	Text.TextSize = 18.000
-	task.spawn(function()
-		Text.Text = "Loading {Guis}"
-		game:GetService("ContentProvider"):PreloadAsync({
-			Commands,
-			Out,
-			Commands,
-		})
-		Tweener:TweenSize(UDim2.new(.1, 0,0, 5),"Out","Quart",.06)
-		wait(.1)
-		Tweener:TweenSize(UDim2.new(.5, 0,0, 5),"Out","Quart",.06)
-		Text.Text = "Loading {Scripts/Character}"
-		repeat task.wait() until workspace:FindFirstChild("Criminals Spawn") or workspace:FindFirstChild("Criminals Spawn"):FindFirstChild("SpawnLocation")
-		Tweener.Size = UDim2.new(1,0,1,0)
-		wait(.7)
-		repeat wait() Tweener.Size = UDim2.new(1,0,1,0) until Tweener.Size == UDim2.new(1,0,1,0)
-		Text.Text = "Finished loading!"
-		wait(.4)
-		Loading:TweenPosition(Loading.Position-UDim2.new(0,0,1,0),"Out","Quart",.6)
-		wait(1.5)
-		Loading:Destroy()
-	end)
-end
+	
+ScreenGui.Name = math.random()
 ScreenGui.Parent = (game:GetService("CoreGui") or gethui())
 ScreenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-ScreenGui.Name = math.random()
+
+local Loading = Instance.new("Frame")
+local UICorner = Instance.new("UICorner")
+local UIStroke = Instance.new("UIStroke")
+local Darken = Instance.new("Frame")
+local Outter = Instance.new("Frame")
+local UICorner_2 = Instance.new("UICorner")
+local Tweener = Instance.new("Frame")
+local UICorner_3 = Instance.new("UICorner")
+local Text = Instance.new("TextLabel")
+local UIGradient = Instance.new("UIGradient")
+	
+Loading.Name = "Loading"
+Loading.Parent = ScreenGui
+Loading.AnchorPoint = Vector2.new(0.5, 0.5)
+Loading.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Loading.BackgroundTransparency=1
+Loading.Position = UDim2.new(0.5, 0, 0.5, 0)
+Loading.Size = UDim2.new(0, 404, 0, 172)
+	
+UICorner.CornerRadius = UDim.new(0, 3)
+UICorner.Parent = Loading
+	
+Darken.Name = "Darken"
+Darken.Parent = Loading
+Darken.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Darken.BackgroundTransparency = 1
+Darken.BorderSizePixel = 0
+Darken.Size = UDim2.new(0, 404, 0, 172)
+	
+Outter.Name = "Outter"
+Outter.Parent = Darken
+Outter.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+Outter.Position = UDim2.new(0.297029704, 0, 0.645348847, 0)
+Outter.Size = UDim2.new(0, 164, 0, 5)
+	
+UICorner_2.Parent = Outter
+	
+Tweener.Name = "Tweener"
+Tweener.Parent = Outter
+Tweener.BackgroundColor3 = Color3.fromRGB(3, 196, 255)
+Tweener.Position = UDim2.new(-0.00175066688, 0, 0, 0)
+Tweener.Size = UDim2.new(0, 0, 0, 5)
+	
+UICorner_3.Parent = Tweener
+	
+Text.Name = "Text"
+Text.Parent = Loading
+Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Text.BackgroundTransparency = 1.000
+Text.Position = UDim2.new(0.252475262, 0, 0.401162773, 0)
+Text.Size = UDim2.new(0, 200, 0, 33)
+Text.Font = Enum.Font.Gotham
+Text.Text = "Loading"
+Text.TextColor3 = Color3.fromRGB(255, 255, 255)
+Text.TextSize = 18.000
+task.spawn(function()
+Text.Text = "Loading {Guis}"
+game:GetService("ContentProvider"):PreloadAsync({
+	Commands,
+	Out,
+	Commands,
+})
+Tweener:TweenSize(UDim2.new(.1, 0,0, 5),"Out","Quart",.06)
+wait(.1)
+Tweener:TweenSize(UDim2.new(.5, 0,0, 5),"Out","Quart",.06)
+Text.Text = "Loading {Scripts/Character}"
+repeat task.wait() until workspace:FindFirstChild("Criminals Spawn") or workspace:FindFirstChild("Criminals Spawn"):FindFirstChild("SpawnLocation")
+Tweener.Size = UDim2.new(1,0,1,0)
+wait(.7)
+repeat wait() Tweener.Size = UDim2.new(1,0,1,0) until Tweener.Size == UDim2.new(1,0,1,0)
+Text.Text = "Finished loading!"
+wait(.4)
+Loading:TweenPosition(Loading.Position-UDim2.new(0,0,1,0),"Out","Quart",.6)
+wait(1.5)
+Loading:Destroy()
+end)
 
 CmdBarFrame.Name = "CmdBarFrame"
 CmdBarFrame.Parent = ScreenGui
@@ -160,6 +165,7 @@ CmdBarFrame.BorderSizePixel = 0
 CmdBarFrame.Position = UDim2.new(0.5, 0, 0.899999998, 0)
 CmdBarFrame.Position = CmdBarFrame.Position+UDim2.new(0,0,1.1,0)
 CmdBarFrame.Size = UDim2.new(0, 577, 0, 65)
+CmdBarFrame.Visible = true
 
 UICorner.CornerRadius = UDim.new(0, 3)
 UICorner.Parent = CmdBarFrame
@@ -177,6 +183,7 @@ do
 	CmdsIcon.Size = UDim2.new(0.121672593, 0, 0.945454538, 0)
 	CmdsIcon.Image = "rbxassetid://12661800163"
 	CmdsIcon.ImageTransparency = 0.030
+	CmdsIcon.Visible = true
 
 	UICornera.CornerRadius = UDim.new(0, 6)
 	UICornera.Parent = CmdsIcon
@@ -295,6 +302,7 @@ do
 	TogglesButton.Size = UDim2.new(0.121672593, 0, 0.945454538, 0)
 	TogglesButton.Image = "rbxassetid://12661800163"
 	TogglesButton.ImageTransparency = 0
+	TogglesButton.Visible = true
 
 	UICornera.CornerRadius = UDim.new(0, 6)
 	UICornera.Parent = TogglesButton
@@ -340,6 +348,7 @@ Out.Position = UDim2.new(0.0200897697, 0, 0.022615375, 0)
 Out.Size = UDim2.new(0.974358976, 0, 0.945454538, 0)
 Out.Image = "rbxassetid://11789397066"
 Out.ImageTransparency = 0.240
+Out.Visible = true
 
 UICorner_2.CornerRadius = UDim.new(0, 6)
 UICorner_2.Parent = Out
@@ -360,6 +369,7 @@ CommandBar.ClearTextOnFocus = false
 CommandBar.TextSize = 24.000
 CommandBar.TextTransparency = 0.140
 CommandBar.TextWrapped = true
+CommandBar.Visible = true
 
 UIStroke.Parent = Out
 
@@ -411,27 +421,22 @@ SearchBar.TextColor3 = Color3.fromRGB(234, 234, 234)
 SearchBar.TextSize = 14.000
 
 Folder.Parent = game
-do
-	local Water = Instance.new("ScreenGui")
-	local TextLabel = Instance.new("TextLabel")
-	local UIGradient = Instance.new("UIGradient")
-	Water.Name = game:GetService("HttpService"):GenerateGUID(true)
-	Water.Parent = (game:GetService("CoreGui") or gethui())
-	Water.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-	TextLabel.Parent = Water
-	TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-	TextLabel.BackgroundTransparency = 1.000
-	TextLabel.Position = UDim2.new(0.00658436213, 0, 0, 0)-UDim2.new(0,0,1,0)
-	TextLabel.Size = UDim2.new(0, 300, 0, 42)
-	TextLabel.Font = Enum.Font.Cartoon
-	TextLabel.Text = "NoobHubV1 Admin V2.0"
-	TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-	TextLabel.TextScaled = true
-	TextLabel.TextSize = 14.000
-	TextLabel.TextWrapped = true
-	TextLabel.TextXAlignment = Enum.TextXAlignment.Left
-	TextLabel:TweenPosition(UDim2.new(0.00658436213, 0, 0, 0),"Out","Quart",1)
-	TigerGuis[#TigerGuis+1]=Water
+local TextLabel = Instance.new("TextLabel")
+local UIGradient = Instance.new("UIGradient")
+TextLabel.Parent = ScreenGui
+TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.BackgroundTransparency = 1.000
+TextLabel.Position = UDim2.new(0.00658436213, 0, 0, 0)-UDim2.new(0,0,1,0)
+TextLabel.Size = UDim2.new(0, 300, 0, 42)
+TextLabel.Font = Enum.Font.Cartoon
+TextLabel.Text = "NoobHubV1 Admin V2.0"
+TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TextLabel.TextScaled = true
+TextLabel.TextSize = 14.000
+TextLabel.TextWrapped = true
+TextLabel.TextXAlignment = Enum.TextXAlignment.Left
+TextLabel:TweenPosition(UDim2.new(0.00658436213, 0, 0, 0),"Out","Quart",1)
+	TigerGuis[#TigerGuis+1]=ScreenGui
 	UIGradient.Color =ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(196, 8, 202)), ColorSequenceKeypoint.new(0.13, Color3.fromRGB(199, 15, 191)), ColorSequenceKeypoint.new(0.48, Color3.fromRGB(247, 127, 28)), ColorSequenceKeypoint.new(0.89, Color3.fromRGB(254, 7, 59)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 2, 61))}
 	UIGradient.Parent = TextLabel
 	task.spawn(function()
@@ -440,8 +445,6 @@ do
 			UIGradient.Rotation +=.05
 		end
 	end)
-end
-
 do
 	--Load guis
 	game:GetService("ContentProvider"):PreloadAsync({
