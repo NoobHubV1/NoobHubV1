@@ -707,8 +707,12 @@ end)
 PrisonLife:CreateButton("Admin Gui", function()LoadstringHttps("https://raw.githubusercontent.com/NoobHubV1/RobloxScripts/main/Prison%20Life%20Admin.lua")
 end)
 
-PrisonLife:CreateButton("Auto Respawn And More", function()Notif("Script Made by Me") task.wait(1)
-LoadstringHttps("https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/Auto%20Respawn%20And%20More%202.lua")
+PrisonLife:CreateButton("NoobHubV1 Admin (Made By Me)", function()
+LoadstringHttps("https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/NoobHubV1%20Admin.lua")
+end)
+
+PrisonLife:CreateButton("Tiger Admin (Made By Me)", function()
+LoadstringHttps("https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/Tiger%20Admin.txt")
 end)
 
 Notif("(Prison Life Script By NoobHubV1) Script Loaded!)")
