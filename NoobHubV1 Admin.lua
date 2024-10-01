@@ -55,7 +55,6 @@ States = {
 	ff = false,
 	esp = false,
 	earrape = false,
-	Visible = true,
 }
 
 --------
@@ -2869,7 +2868,7 @@ do
 	end)
 	API:CreateCmd("opengate", "Opens the main prison gate", function(args)
 		local OldPos = game:GetService("Players").LocalPlayer.Character:GetPrimaryPartCFrame()
-		API:MoveTo(CFrame.new(503.998993, 102.039917, 2242.79907, 0.99996537, -1.0554821e-08, -0.00832392555, 1.00791926e-08, 1, -5.71817864e-08, 0.00832392555, 5.70959067e-08, 0.99996537))
+		API:MoveTo(game.workspace.Prison_ITEMS.buttons["Prison Gate"]["Prison Gate"].CFrame)
 		wait(.1)
 		workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.buttons["Prison Gate"]["Prison Gate"])
 		API:MoveTo(OldPos)
