@@ -1115,8 +1115,10 @@ function API:killall(TeamToKill)
 			API:ChangeTeam(game.Teams.Criminals)
 		end
 		for i,v in pairs(game.Players:GetPlayers()) do
-			if v and v ~= plr and not table.find(API.Whitelisted,v) then
-				API:CreateBulletTable(10, v)
+			if v and v ~= game.Players.LocalPlayer and not table.find(API.Whitelisted,v) and v ~= nil and v.Team == game.Teams.Inmates or v.Team == game.Teams.Guards then
+				if not v.Character and not v.Character.Head and not v.Character.Humanoid <1 or not v.Character:FindFirstChild("ForceField") then
+					API:CreateBulletTable(10, v)
+				end
 			end
 		end
 
@@ -1126,6 +1128,14 @@ function API:killall(TeamToKill)
 		API:FireGun(Gun)
 		API:ChangeTeam(game.Teams.Inmates)
 		plr.CharacterAdded:Wait()
+		for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
+			if v and v ~= game.Players.LocalPlayer and not table.find(API.Whitelisted,v) and v ~= nil then
+				if not v.Character and not v.Character.Head and not v.Character.Humanoid <1 or not v.Character:FindFirstChild("ForceField") then
+					API:CreateBulletTable(10, v)
+				end
+			end
+		end
+			
 		local Gun = Player.Character:FindFirstChild("AK-47") or Player.Backpack:FindFirstChild("AK-47")
 		repeat task.wait() API:GetGun("AK-47") Gun = Player.Character:FindFirstChild("AK-47") or Player.Backpack:FindFirstChild("AK-47") until Gun
 
@@ -3704,7 +3714,7 @@ coroutine.wrap(function()
 	end
 end)()
 spawn(function()
-	while wait(0.6) do
+	while wait(0.5) do
 		if Unloaded then
 			return
 		end
