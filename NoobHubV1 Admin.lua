@@ -697,6 +697,7 @@ DragifyGui(Commands)
 DragifyGui(CmdsIcon)
 DragifyGui(Toggles)
 DragifyGui(TogglesButton)
+DragifyGui(TextLabel)
 local IsBringing = false
 function API:swait()
 	game:GetService("RunService").Stepped:Wait()
@@ -1123,7 +1124,6 @@ function API:killall(TeamToKill)
 		repeat task.wait() API:GetGun("AK-47") Gun = Player.Character:FindFirstChild("AK-47") or Player.Backpack:FindFirstChild("AK-47") until Gun
 
 		API:FireGun(Gun)
-		wait(.1)
 		API:ChangeTeam(game.Teams.Inmates)
 		plr.CharacterAdded:Wait()
 		local Gun = Player.Character:FindFirstChild("AK-47") or Player.Backpack:FindFirstChild("AK-47")
@@ -3704,7 +3704,7 @@ coroutine.wrap(function()
 	end
 end)()
 spawn(function()
-	while wait(0.7) do
+	while wait(0.6) do
 		if Unloaded then
 			return
 		end
@@ -4357,5 +4357,5 @@ local DefaultChatSystemChatEvents = game:GetService("ReplicatedStorage").Default
 API:Notif("Welcome to NoobHubV1 admin (made by NoobHubV1)",nil,true)
 CmdBarFrame:TweenPosition(UDim2.new(0.5, 0, 0.899999998, 0)-UDim2.new(0,0,.05,0),"Out","Back",.5)
 wait(2)
-API:Notif("type ;noinvite to disabled discord invite",nil,true)
+API:Notif("type "..Prefix.."noinvite to disabled discord invite",nil,true)
 end
