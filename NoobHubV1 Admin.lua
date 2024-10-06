@@ -147,7 +147,7 @@ Tweener:TweenSize(UDim2.new(.1, 0,0, 5),"Out","Quart",.06)
 wait(.1)
 Tweener:TweenSize(UDim2.new(.5, 0,0, 5),"Out","Quart",.06)
 Text.Text = "Loading {Scripts/Character}"
-repeat task.wait() until workspace:FindFirstChild("Criminals Spawn") or workspace:FindFirstChild("Criminals Spawn"):FindFirstChild("SpawnLocation")
+repeat task.wait() until workspace:FindFirstChild("Criminals Spawn") or workspace:FindFirstChild("Criminals Spawn"):FindFirstChild("SpawnLocation") or workspace.Prison_ITEMS.buttons:FindFirstChild("Prison Gate") or workspace.Prison_ITEMS.buttons:FindFirstChild("Prison Gate"):FindFirstChild("Prison Gate")
 Tweener.Size = UDim2.new(1,0,1,0)
 wait(.7)
 repeat wait() Tweener.Size = UDim2.new(1,0,1,0) until Tweener.Size == UDim2.new(1,0,1,0)
