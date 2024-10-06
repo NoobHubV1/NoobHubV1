@@ -934,7 +934,7 @@ function API:ChangeTeam(TeamPath,NoForce,Pos)
 				API:WaitForRespawn(Pos or API:GetPosition(),NoForce)
 			end)
 			workspace.Remote.TeamEvent:FireServer("Bright orange")
-			plr.CharacterAdded:Wait() wait(0.05)
+			plr.CharacterAdded:Wait()
 			pcall(function()
 			repeat task.wait() until game:GetService("Players").LocalPlayer.Character
 				game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
@@ -955,7 +955,11 @@ function API:ChangeTeam(TeamPath,NoForce,Pos)
 		end
 	elseif TeamPath == game.Teams.Criminals then
 		if Player.Team == game.Teams.Inmates then
-			firetouchinterest(plr.Character.HumanoidRootPart, game.Workspace["Criminals Spawn"].SpawnLocation, 0)
+			local saved = workspace["Criminals Spawn"].SpawnLocation.CFrame
+			repeat task.wait()
+				workspace["Criminals Spawn"].SpawnLocation.CFrame = plr.Character.Head.CFrame
+			until plr.Team == game.Teams.Criminals
+			workspace["Criminals Spawn"].SpawnLocation.CFrame = saved
 		elseif plr.Team == game.Teams.Guards then
 			pcall(function()
 			repeat task.wait() until game:GetService("Players").LocalPlayer.Character
@@ -963,7 +967,11 @@ function API:ChangeTeam(TeamPath,NoForce,Pos)
 
 				API:WaitForRespawn(Pos or API:GetPosition(),NoForce)
 			end)
-			firetouchinterest(plr.Character.HumanoidRootPart, game.Workspace["Criminals Spawn"].SpawnLocation, 0)
+			local saved = workspace["Criminals Spawn"].SpawnLocation.CFrame
+			repeat task.wait()
+				workspace["Criminals Spawn"].SpawnLocation.CFrame = plr.Character.Head.CFrame
+			until plr.Team == game.Teams.Criminals
+			workspace["Criminals Spawn"].SpawnLocation.CFrame = saved
 		elseif Player.Team == game.Teams.Criminals then
 		if API:GuardsFull("c") then
 			pcall(function()
@@ -973,10 +981,12 @@ function API:ChangeTeam(TeamPath,NoForce,Pos)
 				API:WaitForRespawn(Pos or API:GetPosition(),NoForce)
 			end)
 			workspace.Remote.TeamEvent:FireServer("Bright orange")
-			plr.CharacterAdded:Wait() wait()
-			repeat wait()
-				firetouchinterest(plr.Character.HumanoidRootPart, game.Workspace["Criminals Spawn"].SpawnLocation, 0)
+			plr.CharacterAdded:Wait()
+			local saved = workspace["Criminals Spawn"].SpawnLocation.CFrame
+			repeat task.wait()
+				workspace["Criminals Spawn"].SpawnLocation.CFrame = plr.Character.Head.CFrame
 			until plr.Team == game.Teams.Criminals
+			workspace["Criminals Spawn"].SpawnLocation.CFrame = saved
 		else
 			pcall(function()
 			repeat task.wait() until game:GetService("Players").LocalPlayer.Character
@@ -985,16 +995,18 @@ function API:ChangeTeam(TeamPath,NoForce,Pos)
 				API:WaitForRespawn(Pos or API:GetPosition(),NoForce)
 			end)
 			workspace.Remote.TeamEvent:FireServer("Bright blue")
-			plr.CharacterAdded:Wait() wait()
-			repeat wait()
+			plr.CharacterAdded:Wait()
+			local saved = workspace["Criminals Spawn"].SpawnLocation.CFrame
+			repeat task.wait()
 				pcall(function()
 				repeat task.wait() until game:GetService("Players").LocalPlayer.Character
 					game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
 
 					API:WaitForRespawn(Pos or API:GetPosition(),NoForce)
 				end)
-				firetouchinterest(plr.Character.Head, game.Workspace["Criminals Spawn"].SpawnLocation, 0)
+				workspace["Criminals Spawn"].SpawnLocation.CFrame = plr.Character.Head.CFrame
 			until plr.Team == game.Teams.Criminals
+				workspace["Criminals Spawn"].SpawnLocation.CFrame = saved
 		end
 		end
 	elseif TeamPath == game.Teams.Neutral then
