@@ -25,6 +25,7 @@ local TigerGuis = {}
 local Prefix = ";"
 
 States = {
+	OldItemMethod = false,
 	AutoRemoveff = false,
 	loopkillinmates = false,
 	loopkillcriminals = false,
@@ -1063,12 +1064,25 @@ function API:KillPlayer(Target,Failed,DoChange)
 	end
 end
 function API:GetGun(Item, Ignore)
-	task.spawn(function()
-		workspace:FindFirstChild("Remote")['ItemHandler']:InvokeServer({
-			Position = Player.Character.Head.Position,
-			Parent = workspace.Prison_ITEMS.giver:FindFirstChild(Item, true)
-		})
-	end)
+	if States.OldItemMethod == false and not Unloaded then
+		task.spawn(function()
+			workspace:FindFirstChild("Remote")['ItemHandler']:InvokeServer({
+				Position = Player.Character.Head.Position,
+				Parent = workspace.Prison_ITEMS.giver:FindFirstChild(Item, true)
+			})
+		end)
+	else
+		if not plr.Character:FindFirstChild(Item) or not plr.Backpack:FindFirstChild(Item) then
+			local LastPosition = API:GetPosition()
+			repeat task.wait()
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Prison_ITEMS.giver:FindFirstChild(Item):FindFirstChildWhichIsA("Part").CFrame
+				coroutine.wrap(function()
+					workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver:FindFirstChild(Item).ITEMPICKUP)
+				end)()
+			until plr.Character:FindFirstChild(Item) or plr.Backpack:FindFirstChild(Item)
+			API:MoveTo(LastPosition)
+		end
+	end
 end
 function API:CreateKillPart()
 	if Temp.KillPart then
@@ -2763,6 +2777,7 @@ do
 	end,nil,"[on/off]")
 	API:CreateCmd("antiarrest", "!!TRYS!! to Prevents you from getting arrested", function(args)
 		local value = ChangeState(args[2],"AntiArrest")
+		Temp.ArrestOldP = not States.AntiArrest
 	end,nil,"[on/off]")
 	API:CreateCmd("noinvite", "disables discord invite", function(args)
 		if writefile and readfile then
@@ -2819,6 +2834,9 @@ do
 			API:Notif("AntiTase has been changed to "..tostring(States.AntiTase))
 		end
 	end,nil,"[on/off]")
+	API:CreateCmd("olditemmethod", "Gets Guns On Teleport", function(args)
+		local value = ChangeState(args[2],"OldItemMethod")
+	end,nil,"[ON/OFF]")
 	API:CreateCmd("neutral", "Changes your team to Neutral", function(args)
 		API:ChangeTeam(game.Teams.Neutral,true)
 	end)
@@ -3039,9 +3057,9 @@ do
 	end)
 	API:CreateCmd("m4a1", "Gets a M4A1 gun", function(args)
 		if not game:GetService("MarketplaceService"):UserOwnsGamePassAsync(plr.UserId, 96651) then
-			API:GetGun("M4A1")
-		else
 			API:Notif("Not Gamepass")
+		else
+			API:GetGun("M4A1")
 		end
 	end)
 	API:CreateCmd("m9", "Gets a M9 gun", function(args)
