@@ -15,6 +15,7 @@ local HasGamepass,UserInputService = game:GetService("MarketplaceService"):UserO
 local GlobalVar = ((getgenv and getgenv()) or _G)
 local Unloaded = false
 local CriminalCFRAME = workspace["Criminals Spawn"].SpawnLocation.CFrame
+local saved = CFrame.new(9999, 9999, 9999)
 
 local BulletTable = {}
 local Temp = {}
@@ -24,6 +25,7 @@ local TigerGuis = {}
 local Prefix = ";"
 
 States = {
+	AutoRemoveff = false,
 	loopkillinmates = false,
 	loopkillcriminals = false,
 	DraggableGuis = false,
@@ -872,9 +874,9 @@ function PublicOutput(CODE)
 end
 function API:MoveTo(Cframe)
 	Cframe = API:ConvertPosition(Cframe)
-	local Amount = 10
+	local Amount = 7
 	if Player.PlayerGui['Home']['hud']['Topbar']['titleBar'].Title.Text:lower() == "lights out" or Player.PlayerGui.Home.hud.Topbar.titleBar.Title.Text:lower() == "lightsout" then
-		Amount = 16
+		Amount = 13
 	end
 	for i = 1, Amount do
 		API:UnSit()
@@ -898,12 +900,12 @@ function API:WaitForRespawn(Cframe,NoForce)
 					end)
 				end)()
 				NewCharacter:WaitForChild("HumanoidRootPart")
-				API:MoveTo(Cframe)
-				if NoForce then
+				if States.AutoRemoveff and not Unloaded then
 					task.spawn(function()
 						NewCharacter:WaitForChild("ForceField"):Destroy()
 					end)
 				end
+				API:MoveTo(Cframe)
 			end)
 			a:Disconnect()
 			Cframe = nil
@@ -944,6 +946,8 @@ function API:ChangeTeam(TeamPath,NoForce,Pos)
 			repeat wait()
 				workspace.Remote.TeamEvent:FireServer("Bright blue")
 			until plr.Team == game.Teams.Guards
+		elseif API:GuardsFull("c") then
+			API:Notif("Guards Full!",3)
 		else
 			pcall(function()
 			repeat task.wait() until game:GetService("Players").LocalPlayer.Character
@@ -955,7 +959,6 @@ function API:ChangeTeam(TeamPath,NoForce,Pos)
 		end
 	elseif TeamPath == game.Teams.Criminals then
 		if Player.Team == game.Teams.Inmates then
-			local saved = workspace["Criminals Spawn"].SpawnLocation.CFrame
 			repeat task.wait()
 				workspace["Criminals Spawn"].SpawnLocation.CFrame = plr.Character.Head.CFrame
 			until plr.Team == game.Teams.Criminals
@@ -967,7 +970,6 @@ function API:ChangeTeam(TeamPath,NoForce,Pos)
 
 				API:WaitForRespawn(Pos or API:GetPosition(),NoForce)
 			end)
-			local saved = workspace["Criminals Spawn"].SpawnLocation.CFrame
 			repeat task.wait()
 				workspace["Criminals Spawn"].SpawnLocation.CFrame = plr.Character.Head.CFrame
 			until plr.Team == game.Teams.Criminals
@@ -982,7 +984,6 @@ function API:ChangeTeam(TeamPath,NoForce,Pos)
 			end)
 			workspace.Remote.TeamEvent:FireServer("Bright orange")
 			plr.CharacterAdded:Wait()
-			local saved = workspace["Criminals Spawn"].SpawnLocation.CFrame
 			repeat task.wait()
 				workspace["Criminals Spawn"].SpawnLocation.CFrame = plr.Character.Head.CFrame
 			until plr.Team == game.Teams.Criminals
@@ -996,7 +997,6 @@ function API:ChangeTeam(TeamPath,NoForce,Pos)
 			end)
 			workspace.Remote.TeamEvent:FireServer("Bright blue")
 			plr.CharacterAdded:Wait()
-			local saved = workspace["Criminals Spawn"].SpawnLocation.CFrame
 			repeat task.wait()
 				pcall(function()
 				repeat task.wait() until game:GetService("Players").LocalPlayer.Character
@@ -1152,7 +1152,11 @@ function API:killall(TeamToKill)
 		repeat task.wait() API:GetGun("AK-47") Gun = Player.Character:FindFirstChild("AK-47") or Player.Backpack:FindFirstChild("AK-47") until Gun
 
 		API:FireGun(Gun)
-		API:Refresh()
+		if LastTeam ~= game.Teams.Criminals then
+			API:Refresh()
+		else
+			API:ChangeTeam(game.Teams.Inmates,true)
+		end
 	elseif TeamToKill then
 		if TeamToKill == game.Teams.Inmates or TeamToKill == game.Teams.Guards then
 			if Player.Team ~= game.Teams.Criminals then
@@ -1384,7 +1388,9 @@ plr.CharacterAdded:Connect(function(NewCharacter)
 	end)
 	if Temp.ArrestOldP and States.AntiArrest then
 		coroutine.wrap(function()
-			API:MoveTo(Temp.ArrestOldP)
+			for i = 1,2 do
+				API:MoveTo(Temp.ArrestOldP)
+			end
 			Temp.ArrestOldP = nil
 		end)()
 	end
@@ -1410,6 +1416,8 @@ plr.CharacterAdded:Connect(function(NewCharacter)
 	end
 end)
 API:Refresh(true)
+old = workspace["Criminals Spawn"].SpawnLocation.CFrame
+workspace:FindFirstChild("Criminals Spawn").SpawnLocation.CFrame = CFrame.new(9999, 9999, 9999)
 local Killcool1 = false
 plr:GetMouse().Button1Up:Connect(function()
 	local Target = plr:GetMouse().Target
@@ -1613,27 +1621,25 @@ do
 			end
 			local LastTeam =plr.Team
 			API:ChangeTeam(game.Teams.Guards)
-			wait(.7)
-			task.spawn(function()
-				local Arg_1 = game:GetService("Workspace")["Prison_ITEMS"].buttons["Prison Gate"]["Prison Gate"]
-				local Event = game:GetService("Workspace").Remote.ItemHandler
-				Event:InvokeServer(Arg_1)
-			end)
+			wait(.5)
 			for i,v in pairs(game:GetService("Workspace").Doors:GetChildren()) do
 				if v then
 					if v:FindFirstChild("block") and v:FindFirstChild("block"):FindFirstChild("hitbox") then
+						if not States.loopopendoors then
+							break
+						end
 						firetouchinterest(Player.Character.HumanoidRootPart,v.block.hitbox,0)
 						firetouchinterest(Player.Character.HumanoidRootPart,v.block.hitbox,1)
 					end
 				end
 			end
-			wait(1)
+			wait(0.5)
 			API:ChangeTeam(LastTeam)
 		end,nil,nil,true)
 		API:CreateCmd("loopopendoors", "Opens every single door on loop", function(args)
 			local value = ChangeState(args[2],"loopopendoors")
 			if value then
-				while wait(2.4) do
+				while wait(1) do
 					if not States.loopopendoors then
 						break
 					end
@@ -1642,12 +1648,7 @@ do
 					end
 					local LastTeam =plr.Team
 					API:ChangeTeam(game.Teams.Guards)
-					wait(.7)
-					task.spawn(function()
-						local Arg_1 = game:GetService("Workspace")["Prison_ITEMS"].buttons["Prison Gate"]["Prison Gate"]
-						local Event = game:GetService("Workspace").Remote.ItemHandler
-						Event:InvokeServer(Arg_1)
-					end)
+					wait(.5)
 					for i,v in pairs(game:GetService("Workspace").Doors:GetChildren()) do
 						if v then
 							if v:FindFirstChild("block") and v:FindFirstChild("block"):FindFirstChild("hitbox") then
@@ -1662,7 +1663,7 @@ do
 					if not States.loopopendoors then
 						break
 					end
-					wait(1)
+					wait(.5)
 					API:ChangeTeam(LastTeam)
 				end
 			end
@@ -2024,6 +2025,7 @@ do
 		end,nil,"[ON/OFF]",true)
 		API:CreateCmd("antifling", "prevents players from flinging you", function(args)
 			local Value = ChangeState(args[2],"AntiFling")
+			API:Refresh()
 		end,nil,"[ON/OFF]",true)
 		API:CreateCmd("mkill", "kills player by teleport", function(args)
 			local function MKILL(target,STOP,P)
@@ -2270,7 +2272,7 @@ do
 		if args[2] and args[2] == "all" then
 			local LastPosition = API:GetPosition()
 			for i,v in pairs(game:GetService("Players"):GetPlayers()) do
-				if v and v~= game:GetService("Players").LocalPlayer and v.Team == game.Teams.Criminals or (API:BadArea(v) and v.Team == game.Teams.Inmates) and v.Character.PrimaryPart and v.Character:FindFirstChildOfClass("Humanoid").Health>0 then
+				if v and v ~= game:GetService("Players").LocalPlayer and not table.find(API.Whitelisted,v) and v.Team == game.Teams.Criminals or (API:BadArea(v) and v.Team == game.Teams.Inmates) and v.Character.PrimaryPart and v.Character:FindFirstChildOfClass("Humanoid").Health>0 then
 					repeat API:swait()
 						API:MoveTo(v.Character:GetPrimaryPartCFrame()*CFrame.new(0,0,-4.5))
 						task.spawn(function()
@@ -2715,12 +2717,21 @@ do
 	API:CreateCmd("silentaim", "Fire and dont miss", function(args)
 		local value = ChangeState(args[2],"SilentAim")
 	end,nil,"[on/off]")
+	API:CreateCmd("autoremoveff", "Auto Remove forcefield if respawn", function(args)
+		local value = ChangeState(args[2],"AutoRemoveff")
+	end,nil,"[on/off]")
+	API:CreateCmd("autorff", "Auto Remove forcefield if respawn", function(args)
+		local value = ChangeState(args[2],"AutoRemoveff")
+	end,true,"[on/off]")
 	API:CreateCmd("clickkill", "click on someone to kill them", function(args)
 		local value = ChangeState(args[2],"ClickKill")
 	end,nil,"[on/off]")
 	API:CreateCmd("autorespawn", "you die and respawn back", function(args)
 		local value = ChangeState(args[2],"AutoRespawn")
 	end,nil,"[on/off]")
+	API:CreateCmd("autore", "you die and respawn back", function(args)
+		local value = ChangeState(args[2],"AutoRespawn")
+	end,true,"[on/off]")
 	API:CreateCmd("antisit", "Prevents you from sitting", function(args)
 		local value = ChangeState(args[2],"AntiSit")
 		if not value then
@@ -2888,11 +2899,45 @@ do
 			until Done
 		end)
 	end)
+	API:CreateCmd("respawn", "Respawn Character", function(args)
+		if Player.Team == game.Teams.Guards then
+			if API:GuardsFull("b") then
+				workspace.Remote.TeamEvent:FireServer("Bright orange")
+				plr.CharacterAdded:Wait()
+				repeat task.wait()
+					workspace.Remote.TeamEvent:FireServer("Bright blue")
+				until plr.Team == game.Teams.Guards
+			else
+				workspace.Remote.TeamEvent:FireServer("Bright blue")
+			end
+		elseif Player.Team == game.Teams.Inmates then
+			workspace.Remote.TeamEvent:FireServer("Bright orange")
+		elseif Player.Team == game.Teams.Criminals then
+			if not API:GuardsFull("c") then
+				workspace.Remote.TeamEvent:FireServer("Bright blue")
+				plr.CharacterAdded:Wait()
+				repeat task.wait()
+					workspace["Criminals Spawn"].SpawnLocation.CFrame = plr.Character.Head.CFrame
+				until plr.Team == game.Teams.Criminals
+				workspace["Criminals Spawn"].SpawnLocation.CFrame = saved
+			else
+				workspace.Remote.TeamEvent:FireServer("Bright orange")
+				plr.CharacterAdded:Wait()
+				repeat task.wait()
+					workspace["Criminals Spawn"].SpawnLocation.CFrame = plr.Character.Head.CFrame
+				until plr.Team == game.Teams.Criminals
+				workspace["Criminals Spawn"].SpawnLocation.CFrame = saved
+			end
+		end
+	end)
 	API:CreateCmd("opengate", "Opens the main prison gate", function(args)
 		local OldPos = game:GetService("Players").LocalPlayer.Character:GetPrimaryPartCFrame()
-		API:MoveTo(game.workspace.Prison_ITEMS.buttons["Prison Gate"]["Prison Gate"].CFrame)
-		wait(.1)
-		workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.buttons["Prison Gate"]["Prison Gate"])
+		repeat task.wait()
+                        API:MoveTo(game.Workspace.Prison_ITEMS.buttons["Prison Gate"]["Prison Gate"].CFrame)
+                        pcall(function()
+	                        workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.buttons["Prison Gate"]["Prison Gate"])
+                        end)
+		until workspace.Prison_ITEMS.buttons["Prison Gate"]["Prison Gate"]
 		API:MoveTo(OldPos)
 	end)
 	API:CreateCmd("fly", "Enter plane mode but dont hit towers", function(args)
@@ -2913,7 +2958,6 @@ do
 	end)
 
 	API:CreateCmd("keycard", "Gets a keycard", function(args)
-		local Oldc = API:GetPosition()
 		local OldT = Player.Team
 		if plr.Character:FindFirstChild("Key card") or plr.Backpack:FindFirstChild("Key card") then
 			return API:Notif("You already have a keycard!",false)
@@ -2922,8 +2966,19 @@ do
 			API:Notif("Guards team is full!")
 			return
 		end
+		if game:GetService("Workspace")["Prison_ITEMS"].single:FindFirstChild("Key card") then
+			local Key = workspace.Prison_ITEMS.single["Key card"]
+			workspace.Remote.ItemHandler:InvokeServer({
+				Position = plr.Character.Head.Position,
+				Parent = Key
+			})
+		end
+		if not plr.Character:FindFirstChild("Key card") or plr.Backpack:FindFirstChild("Key card") and not game:GetService("Workspace")["Prison_ITEMS"].single:FindFirstChild("Key card") and not API:GuardsFull("c") then
 		API:ChangeTeam(game.Teams.Guards)
-		repeat wait(.5)
+		if States.AutoRespawn == true then
+			States.AutoRespawn = false
+		end
+		repeat wait(.3)
 			Player.Character:FindFirstChildOfClass("Humanoid"):ChangeState(15)
 			wait()
 			API:Refresh()
@@ -2936,15 +2991,19 @@ do
 			wait()
 			repeat wait()
 				local a =pcall(function()
-					local Key = workspace.Prison_ITEMS.single["Key card"].ITEMPICKUP
-					game.Workspace.Remote["ItemHandler"]:InvokeServer(Key)
-					API:MoveTo(CFrame.new(workspace.Prison_ITEMS.single["Key card"].ITEMPICKUP.Position+Vector3.new(0,3,0)))
+					local Key = workspace.Prison_ITEMS.single["Key card"]
+					workspace.Remote.ItemHandler:InvokeServer({
+						Position = plr.Character.Head.Position,
+						Parent = Key
+					})
 				end)
 			until plr.Backpack:FindFirstChild("Key card")
 		end
-		API:MoveTo(Oldc)
+		end
+		if States.AutoRespawn == false then
+			States.AutoRespawn = true
+		end
 	end)
-
 	API:CreateCmd("refresh", "refreshes your character", function(args)
 		API:Refresh(true)
 	end)
@@ -2979,7 +3038,11 @@ do
 		end
 	end)
 	API:CreateCmd("m4a1", "Gets a M4A1 gun", function(args)
-		API:GetGun("M4A1")
+		if not game:GetService("MarketplaceService"):UserOwnsGamePassAsync(plr.UserId, 96651) then
+			API:GetGun("M4A1")
+		else
+			API:Notif("Not Gamepass")
+		end
 	end)
 	API:CreateCmd("m9", "Gets a M9 gun", function(args)
 		API:GetGun("M9")
@@ -3294,6 +3357,7 @@ do
 		CmdBarFrame:TweenPosition(CmdBarFrame.Position-UDim2.new(0,0,-.5,0),"Out","Back",.8)
 		wait(1)
 		ScreenGui:Destroy()
+		workspace["Criminals Spawn"].SpawnLocation.CFrame = old
 		API:Notif("NoobHubV1 Admin 2.0 is now unloaded, see you soon!",3)
 	end)
 end
@@ -4133,9 +4197,12 @@ function AdminChatted(Text,Speaker)
 	end
 	if PlayerCheckCommand("opengate") then
 		local OldPos = game:GetService("Players").LocalPlayer.Character:GetPrimaryPartCFrame()
-		API:MoveTo(CFrame.new(503.998993, 102.039917, 2242.79907, 0.99996537, -1.0554821e-08, -0.00832392555, 1.00791926e-08, 1, -5.71817864e-08, 0.00832392555, 5.70959067e-08, 0.99996537))
-		wait(.1)
-		workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.buttons["Prison Gate"]["Prison Gate"])
+		repeat task.wait()
+                        API:MoveTo(game.Workspace.Prison_ITEMS.buttons["Prison Gate"]["Prison Gate"].CFrame)
+                        pcall(function()
+	                        workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.buttons["Prison Gate"]["Prison Gate"])
+                        end)
+		until workspace.Prison_ITEMS.buttons["Prison Gate"]["Prison Gate"]
 		API:MoveTo(OldPos)
 	end
 	if PlayerCheckCommand("opendoors") then
@@ -4311,70 +4378,29 @@ game:GetService("RunService").RenderStepped:Connect(function()--//Global Runserv
 		end
 	end
 end)
-
-local function PlayerAddedANTIFLING(Player)
-	if Unloaded or not States.AntiFling then
-		return
-	end
-	local Detected = false
-	local Character;
-	local PrimaryPart;
-
-	local function CharacterAdded(NewCharacter)
-		Character = NewCharacter
-		repeat
-			wait()
-			PrimaryPart = NewCharacter:FindFirstChild("HumanoidRootPart")
-		until PrimaryPart
-		Detected = false
-	end
-
-	CharacterAdded(Player.Character or Player.CharacterAdded:Wait())
-	Player.CharacterAdded:Connect(CharacterAdded)
-	game:GetService("RunService").Heartbeat:Connect(function()
-		if not Unloaded and  States.AntiFling then
-			if (Character and Character:IsDescendantOf(workspace)) and (PrimaryPart and PrimaryPart:IsDescendantOf(Character)) then
-				if PrimaryPart.AssemblyAngularVelocity.Magnitude > 50 or PrimaryPart.AssemblyLinearVelocity.Magnitude > 100 then
-					Detected = true
-					for i,v in ipairs(Character:GetDescendants()) do
-						if v:IsA("BasePart") then
-							v.CanCollide = false
-							v.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
-							v.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
-							v.CustomPhysicalProperties = PhysicalProperties.new(0, 0, 0)
-						end
-					end
-					PrimaryPart.CanCollide = false
-					PrimaryPart.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
-					PrimaryPart.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
-					PrimaryPart.CustomPhysicalProperties = PhysicalProperties.new(0, 0, 0)
-				end
-			end
-		end
-	end)
-end
-for i,v in ipairs(game:GetService("Players"):GetPlayers()) do
-	if v ~= plr then
-		PlayerAddedANTIFLING(v)
-	end
-end
-game:GetService("Players").PlayerAdded:Connect(PlayerAddedANTIFLING)
-
-local LastPosition = nil
-game:GetService("RunService").Heartbeat:Connect(function()
-	if not Unloaded and States.AntiFling then
-		pcall(function()
-			local PrimaryPart = plr.Character.PrimaryPart
-			if PrimaryPart.AssemblyLinearVelocity.Magnitude > 250 or PrimaryPart.AssemblyAngularVelocity.Magnitude > 250 then
-				PrimaryPart.AssemblyAngularVelocity = Vector3.new(0, 0, 0)
-				PrimaryPart.AssemblyLinearVelocity = Vector3.new(0, 0, 0)
-				PrimaryPart.CFrame = LastPosition
-			elseif PrimaryPart.AssemblyLinearVelocity.Magnitude < 50 or PrimaryPart.AssemblyAngularVelocity.Magnitude > 50 then
-				LastPosition = PrimaryPart.CFrame
-			end
-		end)
-	end
-end)
+function NoCollision(PLR)
+	 if States.AntiFling and not Unloaded and PLR.Character then
+		 for _,x in pairs(PLR.Character:GetDescendants()) do
+			 if x:IsA("BasePart") and not Unloaded and States.AntiFling then
+				 x.CanCollide = false
+			 end
+		 end
+	 end
+ end
+ for _,v in pairs(game.Players:GetPlayers()) do
+	 if v ~= game.Players.LocalPlayer then
+		 local antifling = game:GetService('RunService').Stepped:connect(function()
+			 NoCollision(v)
+		 end)
+	 end
+ end
+ game.Players.PlayerAdded:Connect(function()
+	 if v ~= game.Players.LocalPlayer and antifling then
+		 local antifling = game:GetService('RunService').Stepped:connect(function()
+			NoCollision(v)
+		 end)
+	 end
+ end)
 local DefaultChatSystemChatEvents = game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents
 API:Notif("Welcome to NoobHubV1 admin (made by NoobHubV1)",nil,true)
 CmdBarFrame:TweenPosition(UDim2.new(0.5, 0, 0.899999998, 0)-UDim2.new(0,0,.05,0),"Out","Back",.5)
