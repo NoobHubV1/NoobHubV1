@@ -26,7 +26,7 @@ local Prefix = ";"
 
 States = {
 	OldItemMethod = false,
-	AutoRemoveff = false,
+	AutoRemoveff = true,
 	loopkillinmates = false,
 	loopkillcriminals = false,
 	DraggableGuis = false,
@@ -901,11 +901,6 @@ function API:WaitForRespawn(Cframe,NoForce)
 					end)
 				end)()
 				NewCharacter:WaitForChild("HumanoidRootPart")
-				if States.AutoRemoveff and not Unloaded then
-					task.spawn(function()
-						NewCharacter:WaitForChild("ForceField"):Destroy()
-					end)
-				end
 				API:MoveTo(Cframe)
 			end)
 			a:Disconnect()
@@ -1400,7 +1395,17 @@ plr.CharacterAdded:Connect(function(NewCharacter)
 			end)
 		end
 	end)
-	if Temp.ArrestOldP and States.AntiArrest then
+	if States.AntiTase then
+		for i,v in pairs(getconnections(workspace:WaitForChild("Remote").tazePlayer.OnClientEvent)) do
+			v:Disable()
+		end
+	end
+	if States.AutoRemoveff and Unloaded == false then
+		pcall(function()
+			NewCharacter:WaitForChild("ForceField"):Destroy()
+		end)
+	end
+	if Temp.ArrestOldP and States.AutoRespawn and not Unloaded then
 		coroutine.wrap(function()
 			for i = 1,2 do
 				API:MoveTo(Temp.ArrestOldP)
@@ -1409,13 +1414,12 @@ plr.CharacterAdded:Connect(function(NewCharacter)
 		end)()
 	end
 	task.spawn(function()
-		if States.AntiArrest then
+		if States.AutoRespawn then
 			plr.Character:FindFirstChild("Head").ChildAdded:Connect(function(a)
 				if not Unloaded then
-					if a and a:IsA("BillboardGui") and States.AntiArrest then
-						API:Refresh()
+					if a and a:IsA("BillboardGui") and States.AutoRespawn then
 						coroutine.wrap(function()
-							wait(1)
+							wait(.5)
 							Temp.ArrestOldP = API:GetPosition()
 						end)()
 					end
@@ -1423,11 +1427,6 @@ plr.CharacterAdded:Connect(function(NewCharacter)
 			end)
 		end
 	end)
-	if States.AntiTase then
-		for i,v in pairs(getconnections(workspace:WaitForChild("Remote").tazePlayer.OnClientEvent)) do
-			v:Disable()
-		end
-	end
 end)
 API:Refresh(true)
 old = workspace["Criminals Spawn"].SpawnLocation.CFrame
