@@ -3790,8 +3790,15 @@ coroutine.wrap(function()
 			for i,v in pairs(Temp.Loopkilling) do
 				if v and game:GetService("Players"):FindFirstChild(v) then
 					local Target = game:GetService("Players"):FindFirstChild(v)
-					if Target.Character and Target.Character:FindFirstChildOfClass("Humanoid") and Target.Character:FindFirstChildOfClass("Humanoid").Health >0 and not Target.Character:FindFirstChild("ForceField") then
-							API:KillPlayer(Target)
+					if Target.Character and Target.Character:FindFirstChildOfClass("Humanoid") and Target.Character:FindFirstChildOfClass("Humanoid").Health >0 and not Target.Character:FindFirstChildOfClass("ForceField") then
+						if Player.Team == Target.Team and Player.Team == game.Teams.Guards then
+							if Target.Team ~= game.Teams.Inmates then
+								API:ChangeTeam(game.Teams.Inmates)
+							else
+								API:ChangeTeam(game.Teams.Criminals)
+							end
+						end
+						API:KillPlayer(Target)
 					end
 				end
 			end
