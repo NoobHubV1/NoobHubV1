@@ -26,7 +26,7 @@ local Prefix = ";"
 
 States = {
 	OldItemMethod = false,
-	AutoRemoveff = true,
+	AutoRemoveff = false,
 	loopkillinmates = false,
 	loopkillcriminals = false,
 	DraggableGuis = false,
