@@ -956,6 +956,7 @@ function API:ChangeTeam(TeamPath,NoForce,Pos)
 	elseif TeamPath == game.Teams.Criminals then
 		if Player.Team == game.Teams.Inmates then
 			repeat task.wait()
+				plr.Character.Head.CanCollide = false
 				workspace["Criminals Spawn"].SpawnLocation.CFrame = plr.Character.Head.CFrame
 			until plr.Team == game.Teams.Criminals
 			workspace["Criminals Spawn"].SpawnLocation.CFrame = saved
@@ -967,6 +968,7 @@ function API:ChangeTeam(TeamPath,NoForce,Pos)
 				API:WaitForRespawn(Pos or API:GetPosition(),NoForce)
 			end)
 			repeat task.wait()
+				plr.Character.Head.CanCollide = false
 				workspace["Criminals Spawn"].SpawnLocation.CFrame = plr.Character.Head.CFrame
 			until plr.Team == game.Teams.Criminals
 			workspace["Criminals Spawn"].SpawnLocation.CFrame = saved
@@ -981,6 +983,7 @@ function API:ChangeTeam(TeamPath,NoForce,Pos)
 			workspace.Remote.TeamEvent:FireServer("Bright orange")
 			plr.CharacterAdded:Wait()
 			repeat task.wait()
+				plr.Character.Head.CanCollide = false
 				workspace["Criminals Spawn"].SpawnLocation.CFrame = plr.Character.Head.CFrame
 			until plr.Team == game.Teams.Criminals
 			workspace["Criminals Spawn"].SpawnLocation.CFrame = saved
@@ -1000,6 +1003,7 @@ function API:ChangeTeam(TeamPath,NoForce,Pos)
 				API:WaitForRespawn(Pos or API:GetPosition(),NoForce)
 			end)
 			repeat task.wait()
+				plr.Character.Head.CanCollide = false
 				workspace["Criminals Spawn"].SpawnLocation.CFrame = plr.Character.Head.CFrame
 			until plr.Team == game.Teams.Criminals
 				workspace["Criminals Spawn"].SpawnLocation.CFrame = saved
@@ -1435,7 +1439,7 @@ plr.CharacterAdded:Connect(function(NewCharacter)
 end)
 API:Refresh(true)
 old = workspace["Criminals Spawn"].SpawnLocation.CFrame
-workspace:FindFirstChild("Criminals Spawn").SpawnLocation.CFrame = CFrame.new(9999, 9999, 9999)
+workspace:FindFirstChild("Criminals Spawn").SpawnLocation.CFrame = saved
 local Killcool1 = false
 plr:GetMouse().Button1Up:Connect(function()
 	local Target = plr:GetMouse().Target
@@ -3718,7 +3722,7 @@ coroutine.wrap(function()
 			if States.AutoRemoveff == false then
 				States.AutoRemoveff = true
 			end
-			wait(1.5)
+			wait(2)
 			API:Refresh()
 		end
 		if States.AntiShield then
