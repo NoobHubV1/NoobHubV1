@@ -21,7 +21,6 @@ local BulletTable = {}
 local Temp = {}
 local API = {}
 local Reload_Guns = {}
-local TigerGuis = {}
 local Prefix = ";"
 
 States = {
@@ -438,7 +437,6 @@ TextLabel.TextSize = 14.000
 TextLabel.TextWrapped = true
 TextLabel.TextXAlignment = Enum.TextXAlignment.Left
 TextLabel:TweenPosition(UDim2.new(0.00658436213, 0, 0, 0),"Out","Quart",1)
-	TigerGuis[#TigerGuis+1]=ScreenGui
 	UIGradient.Color =ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(196, 8, 202)), ColorSequenceKeypoint.new(0.13, Color3.fromRGB(199, 15, 191)), ColorSequenceKeypoint.new(0.48, Color3.fromRGB(247, 127, 28)), ColorSequenceKeypoint.new(0.89, Color3.fromRGB(254, 7, 59)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 2, 61))}
 	UIGradient.Parent = TextLabel
 	task.spawn(function()
@@ -1073,10 +1071,31 @@ function API:GetGun(Item, Ignore)
 	else
 		if not plr.Character:FindFirstChild(Item) or not plr.Backpack:FindFirstChild(Item) then
 			local LastPosition = API:GetPosition()
-			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Prison_ITEMS.giver:FindFirstChild(Item):FindFirstChildWhichIsA("Part").CFrame
 			repeat task.wait()
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Prison_ITEMS.giver:FindFirstChild(Item):FindFirstChildWhichIsA("Part").CFrame
 				coroutine.wrap(function()
 					workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver:FindFirstChild(Item).ITEMPICKUP)
+				end)()
+			until plr.Character:FindFirstChild(Item) or plr.Backpack:FindFirstChild(Item)
+			API:MoveTo(LastPosition)
+		end
+	end
+end
+function API:GetSingle(Item, Ignore)
+	if States.OldItemMethod == false and not Unloaded then
+		task.spawn(function()
+			workspace:FindFirstChild("Remote")['ItemHandler']:InvokeServer({
+				Position = Player.Character.Head.Position,
+				Parent = workspace.Prison_ITEMS.single:FindFirstChild(Item, true)
+			})
+		end)
+	else
+		if not plr.Character:FindFirstChild(Item) or not plr.Backpack:FindFirstChild(Item) then
+			local LastPosition = API:GetPosition()
+			repeat task.wait()
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Prison_ITEMS.single:FindFirstChild(Item):FindFirstChildWhichIsA("Part").CFrame
+				coroutine.wrap(function()
+					workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.single:FindFirstChild(Item).ITEMPICKUP)
 				end)()
 			until plr.Character:FindFirstChild(Item) or plr.Backpack:FindFirstChild(Item)
 			API:MoveTo(LastPosition)
@@ -1202,6 +1221,22 @@ function API:AllGuns()
 		API:GetGun("Remington 870", true)
 	end)
 	API:GetGun("M9", true)
+	game:GetService("Players").LocalPlayer.Character:SetPrimaryPartCFrame(saved)
+end
+function API:AllItems()
+	local saved = game:GetService("Players").LocalPlayer.Character:GetPrimaryPartCFrame()
+	if game:GetService("MarketplaceService"):UserOwnsGamePassAsync(plr.UserId, 96651) then
+		API:GetGun("M4A1", true)
+	end
+	API:GetGun("AK-47", true)
+	task.spawn(function()
+		API:GetGun("Remington 870", true)
+	end)
+	API:GetGun("M9", true)
+	pcall(function()
+		API:GetSingle("Hammer", true)
+	end)
+	API:GetSingle("Crude Knife")
 	game:GetService("Players").LocalPlayer.Character:SetPrimaryPartCFrame(saved)
 end
 function API:GetHumanoid()
@@ -1380,6 +1415,12 @@ plr.CharacterAdded:Connect(function(NewCharacter)
 	end
 	task.spawn(function()
 		if States.AutoItems then
+			wait(.5)
+			API:AllItems()
+		end
+	end)
+	task.spawn(function()
+		if States.AutoGuns then
 			wait(.5)
 			API:AllGuns()
 		end
@@ -1562,7 +1603,7 @@ do
 				function blackpeople()
 					repeat
 						wait()
-						workspace.Remote.ItemHandler:InvokeServer({Position=player.Character.Head.Position,Parent=workspace.Prison_ITEMS.single["Crude Knife"]})
+						API:GetSingle("Crude Knife")
 					until player.Backpack:FindFirstChild("Crude Knife")
 					local crude = player.Backpack:WaitForChild("Crude Knife")
 					crude.Parent = player.Character
@@ -1643,7 +1684,7 @@ do
 			end
 			local LastTeam =plr.Team
 			API:ChangeTeam(game.Teams.Guards)
-			wait(.5)
+			wait(.7)
 			for i,v in pairs(game:GetService("Workspace").Doors:GetChildren()) do
 				if v then
 					if v:FindFirstChild("block") and v:FindFirstChild("block"):FindFirstChild("hitbox") then
@@ -1661,7 +1702,7 @@ do
 		API:CreateCmd("loopopendoors", "Opens every single door on loop", function(args)
 			local value = ChangeState(args[2],"loopopendoors")
 			if value then
-				while wait(1) do
+				while wait(1.3) do
 					if not States.loopopendoors then
 						break
 					end
@@ -1670,7 +1711,7 @@ do
 					end
 					local LastTeam =plr.Team
 					API:ChangeTeam(game.Teams.Guards)
-					wait(.5)
+					wait(.7)
 					for i,v in pairs(game:GetService("Workspace").Doors:GetChildren()) do
 						if v then
 							if v:FindFirstChild("block") and v:FindFirstChild("block"):FindFirstChild("hitbox") then
@@ -1693,7 +1734,7 @@ do
 
 		API:CreateCmd("grabknife", "Cool script [REJOIN TO STOP]", function(args)
 			task.spawn(function()
-				workspace.Remote.ItemHandler:InvokeServer({Position=game:GetService("Players").LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.single["Crude Knife"]})
+				API:GetSingle("Crude Knife")
 				repeat task.wait() until game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Crude Knife")
 				game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Crude Knife").Parent = game:GetService("Players").LocalPlayer.Character
 				local Player = game:GetService("Players").LocalPlayer
@@ -1706,7 +1747,7 @@ do
 					a:WaitForChild("Humanoid")
 					Character = a
 					wait(.7)
-					workspace.Remote.ItemHandler:InvokeServer({Position=game:GetService("Players").LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.single["Crude Knife"]})
+					API:GetSingle("Crude Knife")
 					repeat task.wait() until game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Crude Knife")
 					game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Crude Knife").Parent = game:GetService("Players").LocalPlayer.Character
 					Crude= Player.Backpack:FindFirstChild("Crude Knife") or Player.Character:FindFirstChild("Crude Knife")
@@ -2101,7 +2142,7 @@ do
 			local Value = ChangeState(args[2],"Godmode")
 		end,nil,"[ON/OFF]",true)
 		API:CreateCmd("superknife", "One shot knife", function(args)
-			workspace.Remote.ItemHandler:InvokeServer({Position=game:GetService("Players").LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.single["Crude Knife"]})
+			API:GetSingle("Crude Knife")
 			wait(.6)
 			local tool = plr.Backpack:WaitForChild("Crude Knife")
 			tool.Name = "Super knife"
@@ -2757,8 +2798,11 @@ do
 		end
 
 	end,nil,"[on/off]")
-	API:CreateCmd("autoitems", "Gets guns after you die", function(args)
+	API:CreateCmd("autoitems", "Gets all items after you die", function(args)
 		local value = ChangeState(args[2],"AutoItems")
+	end,nil,"[on/off]")
+	API:CreateCmd("autoguns", "Gets guns after you die", function(args)
+		local value = ChangeState(args[2],"AutoGuns")
 	end,nil,"[on/off]")
 	API:CreateCmd("antiarrest", "!!TRYS!! to Prevents you from getting arrested", function(args)
 		local value = ChangeState(args[2],"AntiArrest")
@@ -2920,6 +2964,7 @@ do
 				workspace.Remote.TeamEvent:FireServer("Bright blue")
 				plr.CharacterAdded:Wait()
 				repeat task.wait()
+					plr.Character.Head.CanCollide = false
 					workspace["Criminals Spawn"].SpawnLocation.CFrame = plr.Character.Head.CFrame
 				until plr.Team == game.Teams.Criminals
 				workspace["Criminals Spawn"].SpawnLocation.CFrame = saved
@@ -2927,6 +2972,7 @@ do
 				workspace.Remote.TeamEvent:FireServer("Bright orange")
 				plr.CharacterAdded:Wait()
 				repeat task.wait()
+					plr.Character.Head.CanCollide = false
 					workspace["Criminals Spawn"].SpawnLocation.CFrame = plr.Character.Head.CFrame
 				until plr.Team == game.Teams.Criminals
 				workspace["Criminals Spawn"].SpawnLocation.CFrame = saved
@@ -3057,10 +3103,10 @@ do
 		API:GetGun("AK-47")
 	end)
 	API:CreateCmd("knife", "Gets a knife", function(args)
-		workspace.Remote.ItemHandler:InvokeServer({Position=game:GetService("Players").LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.single["Crude Knife"]})
+		API:GetSingle("Crude Knife")
 	end)
 	API:CreateCmd("hammer", "Gets a hammer", function(args)
-		workspace.Remote.ItemHandler:InvokeServer({Position=game:GetService("Players").LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.single["Hammer"]})
+		API:GetSingle("Hammer")
 	end)
 	API:CreateCmd("yard", "Teleports to location", function(args)
 		if args[2] then
@@ -3217,8 +3263,8 @@ do
 		API:AllGuns()
 	end)
 
-	API:CreateCmd("items", "Gets every single gun", function(args)
-		API:AllGuns()
+	API:CreateCmd("items", "Gets all items", function(args)
+		API:AllItems()
 	end)
 	API:CreateCmd("noclip", "Go through walls", function(args)
 		if States.noclip == nil then
@@ -3342,23 +3388,13 @@ do
 	API:CreateCmd("unload", "Destroys the script unloading it", function(args)
 		API:Destroy(game:FindFirstChild("NoobHubV1_Admin"))
 		Unloaded = true
-
 		for i,v in pairs(States) do
 			States[i] = false
-		end
-		for i,v in pairs(TigerGuis) do if v then v:Destroy() end end
-		pcall(function()
-			game:GetService("Players").LocalPlayer.PlayerScripts.ClientGunReplicator.Disabled = false
-		end)
-		do
-			Temp.Viewing = nil
-			wait()
-			workspace.CurrentCamera.CameraSubject = plr.Character:FindFirstChildOfClass("Humanoid")
 		end
 		Temp = {}
 		game:GetService("Workspace").Camera.CameraSubject = plr.Character.Humanoid 
 		CmdBarFrame:TweenPosition(CmdBarFrame.Position-UDim2.new(0,0,-.5,0),"Out","Back",.8)
-		wait()
+		wait(1)
 		ScreenGui:Destroy()
 		API:Notif("NoobHubV1 Admin V2.1 is now unloaded, see you soon!",3)
 	end)
@@ -3724,6 +3760,9 @@ coroutine.wrap(function()
 			end
 			wait(2)
 			API:Refresh()
+			if States.AutoRemoveff == true then
+				States.AutoRemoveff = false
+			end
 		end
 		if States.AntiShield then
 			for i,v in pairs(game:GetService("Players"):GetPlayers()) do
