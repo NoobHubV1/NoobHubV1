@@ -940,8 +940,6 @@ function API:ChangeTeam(TeamPath,NoForce,Pos)
 			repeat wait()
 				workspace.Remote.TeamEvent:FireServer("Bright blue")
 			until plr.Team == game.Teams.Guards
-		elseif API:GuardsFull("c") then
-			API:Notif("Guards Full!",3)
 		else
 			pcall(function()
 			repeat task.wait() until game:GetService("Players").LocalPlayer.Character
@@ -2873,7 +2871,11 @@ do
 		API:ChangeTeam(game.Teams.Inmates,true)
 	end)
 	API:CreateCmd("guard", "Changes your team to guard", function(args)
-		API:ChangeTeam(game.Teams.Guards,true)
+		if not API:GuardsFull("c") then
+			API:ChangeTeam(game.Teams.Guards)
+		else
+			API:Notif("Guards Full!")
+		end
 	end)
 	API:CreateCmd("criminal", "Changes your team to criminal or a person", function(args)
 		if args[2] == "random" then
