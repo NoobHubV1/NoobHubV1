@@ -993,13 +993,13 @@ function API:ChangeTeam(TeamPath,NoForce,Pos)
 			end)
 			workspace.Remote.TeamEvent:FireServer("Bright blue")
 			plr.CharacterAdded:Wait()
-			repeat task.wait()
-				pcall(function()
-				repeat task.wait() until game:GetService("Players").LocalPlayer.Character
-					game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+			pcall(function()
+			repeat task.wait() until game:GetService("Players").LocalPlayer.Character
+				game:GetService("Players").LocalPlayer.Character:WaitForChild("HumanoidRootPart")
 
-					API:WaitForRespawn(Pos or API:GetPosition(),NoForce)
-				end)
+				API:WaitForRespawn(Pos or API:GetPosition(),NoForce)
+			end)
+			repeat task.wait()
 				workspace["Criminals Spawn"].SpawnLocation.CFrame = plr.Character.Head.CFrame
 			until plr.Team == game.Teams.Criminals
 				workspace["Criminals Spawn"].SpawnLocation.CFrame = saved
@@ -1421,6 +1421,17 @@ plr.CharacterAdded:Connect(function(NewCharacter)
 			end)
 		end
 	end)
+	if States.Godmode then
+		game.Players.LocalPlayer.Character.Humanoid.Name = 1
+		local l = game.Players.LocalPlayer.Character["1"]:Clone()
+		l.Parent = game.Players.LocalPlayer.Character
+		l.Name = "Humanoid"
+		game.Players.LocalPlayer.Character.Animate.Disabled = true
+		wait()
+		game.Players.LocalPlayer.Character.Animate.Disabled = false
+		game.Players.LocalPlayer.Character["1"]:Destroy()
+		game.Workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character
+	end
 end)
 API:Refresh(true)
 old = workspace["Criminals Spawn"].SpawnLocation.CFrame
@@ -3707,15 +3718,6 @@ coroutine.wrap(function()
 			if States.AutoRemoveff == false then
 				States.AutoRemoveff = true
 			end
-			game.Players.LocalPlayer.Character.Humanoid.Name = 1
-			local l = game.Players.LocalPlayer.Character["1"]:Clone()
-			l.Parent = game.Players.LocalPlayer.Character
-			l.Name = "Humanoid"
-			game.Players.LocalPlayer.Character.Animate.Disabled = true
-			task.wait()
-			game.Players.LocalPlayer.Character.Animate.Disabled = false
-			game.Players.LocalPlayer.Character["1"]:Destroy()
-			game.Workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character
 			wait(1.5)
 			API:Refresh()
 		end
