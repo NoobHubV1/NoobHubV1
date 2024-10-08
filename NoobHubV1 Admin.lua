@@ -147,7 +147,7 @@ Tweener:TweenSize(UDim2.new(.1, 0,0, 5),"Out","Quart",.06)
 wait(.1)
 Tweener:TweenSize(UDim2.new(.5, 0,0, 5),"Out","Quart",.06)
 Text.Text = "Loading {Scripts/Character}"
-repeat task.wait() until workspace:FindFirstChild("Criminals Spawn") or workspace:FindFirstChild("Criminals Spawn"):FindFirstChild("SpawnLocation") or workspace.Prison_ITEMS.buttons:FindFirstChild("Prison Gate") or workspace.Prison_ITEMS.buttons:FindFirstChild("Prison Gate"):FindFirstChild("Prison Gate")
+repeat task.wait() until workspace:FindFirstChild("Criminals Spawn") or workspace:FindFirstChild("Criminals Spawn"):FindFirstChild("SpawnLocation") and workspace.Prison_ITEMS.buttons:FindFirstChild("Prison Gate") or workspace.Prison_ITEMS.buttons:FindFirstChild("Prison Gate"):FindFirstChild("Prison Gate")
 Tweener.Size = UDim2.new(1,0,1,0)
 wait(.7)
 repeat wait() Tweener.Size = UDim2.new(1,0,1,0) until Tweener.Size == UDim2.new(1,0,1,0)
@@ -431,7 +431,7 @@ TextLabel.BackgroundTransparency = 1.000
 TextLabel.Position = UDim2.new(0.00658436213, 0, 0, 0)-UDim2.new(0,0,1,0)
 TextLabel.Size = UDim2.new(0, 300, 0, 42)
 TextLabel.Font = Enum.Font.Cartoon
-TextLabel.Text = "NoobHubV1 Admin V2.0"
+TextLabel.Text = "NoobHubV1 Admin V2.1"
 TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 TextLabel.TextScaled = true
 TextLabel.TextSize = 14.000
@@ -1069,8 +1069,8 @@ function API:GetGun(Item, Ignore)
 	else
 		if not plr.Character:FindFirstChild(Item) or not plr.Backpack:FindFirstChild(Item) then
 			local LastPosition = API:GetPosition()
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Prison_ITEMS.giver:FindFirstChild(Item):FindFirstChildWhichIsA("Part").CFrame
 			repeat task.wait()
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Prison_ITEMS.giver:FindFirstChild(Item):FindFirstChildWhichIsA("Part").CFrame
 				coroutine.wrap(function()
 					workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver:FindFirstChild(Item).ITEMPICKUP)
 				end)()
@@ -1387,12 +1387,6 @@ plr.CharacterAdded:Connect(function(NewCharacter)
 	NewCharacter:WaitForChild("Humanoid").Died:Connect(function()
 		if not Unloaded and States.AutoRespawn == true then
 			API:Refresh()
-			task.spawn(function()
-				if States.AutoItems then
-					wait(.5)
-					API:AllGuns()
-				end
-			end)
 		end
 	end)
 	if States.AntiTase then
@@ -2090,29 +2084,6 @@ do
 		end,nil,"[PLAYER]",true)
 		API:CreateCmd("godmode", "Turns on all settings that prevent you from harm", function(args)
 			local Value = ChangeState(args[2],"Godmode")
-			if Value then
-				States.AntiArrest = true
-				States.AntiTase = true
-				States.AntiFling = true
-				States.antipunch = true
-				States.ShootBack = true
-				States.AutoItems = true
-				States.Antishield = true
-				States.anticrash = true
-				States.AutoRespawn = true
-				wait(.1)
-				API:Refresh(true)
-			else
-				States.AntiArrest = false
-				States.AntiTase = false
-				States.AntiFling = false
-				States.antipunch = false
-				States.ShootBack = false
-				States.AutoItems = false
-				States.Antishield = false
-				States.anticrash = false
-				
-			end
 		end,nil,"[ON/OFF]",true)
 		API:CreateCmd("superknife", "One shot knife", function(args)
 			workspace.Remote.ItemHandler:InvokeServer({Position=game:GetService("Players").LocalPlayer.Character.Head.Position,Parent=workspace.Prison_ITEMS.single["Crude Knife"]})
@@ -3372,10 +3343,9 @@ do
 		Temp = {}
 		game:GetService("Workspace").Camera.CameraSubject = plr.Character.Humanoid 
 		CmdBarFrame:TweenPosition(CmdBarFrame.Position-UDim2.new(0,0,-.5,0),"Out","Back",.8)
-		wait(1)
+		wait()
 		ScreenGui:Destroy()
-		workspace["Criminals Spawn"].SpawnLocation.CFrame = old
-		API:Notif("NoobHubV1 Admin 2.0 is now unloaded, see you soon!",3)
+		API:Notif("NoobHubV1 Admin V2.1 is now unloaded, see you soon!",3)
 	end)
 end
 --
@@ -3409,7 +3379,7 @@ coroutine.wrap(function()
 								local args = {
 									[1] = v
 								}
-								for i =1,3 do
+								for i =1,7 do
 									task.spawn(function()
 										game:GetService("ReplicatedStorage").meleeEvent:FireServer(unpack(args))
 									end)
@@ -3732,6 +3702,22 @@ coroutine.wrap(function()
 					end
 				end
 			end
+		end
+		if States.Godmode then
+			if States.AutoRemoveff == false then
+				States.AutoRemoveff = true
+			end
+			game.Players.LocalPlayer.Character.Humanoid.Name = 1
+			local l = game.Players.LocalPlayer.Character["1"]:Clone()
+			l.Parent = game.Players.LocalPlayer.Character
+			l.Name = "Humanoid"
+			game.Players.LocalPlayer.Character.Animate.Disabled = true
+			task.wait()
+			game.Players.LocalPlayer.Character.Animate.Disabled = false
+			game.Players.LocalPlayer.Character["1"]:Destroy()
+			game.Workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character
+			wait(1.5)
+			API:Refresh()
 		end
 		if States.AntiShield then
 			for i,v in pairs(game:GetService("Players"):GetPlayers()) do
@@ -4426,7 +4412,7 @@ function NoCollision(PLR)
 	 end
  end)
 local DefaultChatSystemChatEvents = game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents
-API:Notif("Welcome to NoobHubV1 admin (made by NoobHubV1)",nil,true)
+API:Notif("Welcome to NoobHubV1 admin V2.1 (made by NoobHubV1)",nil,true)
 CmdBarFrame:TweenPosition(UDim2.new(0.5, 0, 0.899999998, 0)-UDim2.new(0,0,.05,0),"Out","Back",.5)
 wait(2)
 API:Notif("type "..Prefix.."noinvite to disabled discord invite",nil,true)
