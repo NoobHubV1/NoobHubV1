@@ -2764,7 +2764,7 @@ do
 	API:CreateCmd("clickkill", "click on someone to kill them", function(args)
 		local value = ChangeState(args[2],"ClickKill")
 	end,nil,"[on/off]")
-	API:CreateCmd("autorespawn", "you die and respawn back", function(args)
+	API:CreateCmd("autorespawn", "Auto Respawn Character (if died) and save Position", function(args)
 		local value = ChangeState(args[2],"AutoRespawn")
 	end,nil,"[on/off]")
 	API:CreateCmd("autore", "you die and respawn back", function(args)
@@ -2948,7 +2948,7 @@ do
 			until Done
 		end)
 	end)
-	API:CreateCmd("respawn", "Respawn Character", function(args)
+	API:CreateCmd("respawn", "Respawn Character and not save Position", function(args)
 		if Player.Team == game.Teams.Guards then
 			if API:GuardsFull("b") then
 				workspace.Remote.TeamEvent:FireServer("Bright orange")
@@ -3040,22 +3040,18 @@ do
 				repeat task.wait() until Player.Team == OldT
 			end
 			wait()
-			repeat wait()
-				local a =pcall(function()
-					local Key = workspace.Prison_ITEMS.single["Key card"]
-					workspace.Remote.ItemHandler:InvokeServer({
-						Position = plr.Character.Head.Position,
-						Parent = Key
-					})
-				end)
-			until plr.Backpack:FindFirstChild("Key card")
+			local Key = workspace.Prison_ITEMS.single["Key card"]
+			workspace.Remote.ItemHandler:InvokeServer({
+				Position = plr.Character.Head.Position,
+				Parent = Key
+			})
 		end
 		end
 		if States.AutoRespawn == false then
 			States.AutoRespawn = true
 		end
 	end)
-	API:CreateCmd("refresh", "refreshes your character", function(args)
+	API:CreateCmd("refresh", "Respawn Character and save Position", function(args)
 		API:Refresh(true)
 	end)
 	API:CreateCmd("roof", "", function(args)
