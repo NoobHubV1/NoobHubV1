@@ -3009,27 +3009,28 @@ do
 	end)
 
 	API:CreateCmd("keycard", "Gets a keycard", function(args)
-		local OldT = Player.Team
-		if plr.Character:FindFirstChild("Key card") or plr.Backpack:FindFirstChild("Key card") then
-			return API:Notif("You already have a keycard!",false)
-		end
-		if API:GuardsFull("c") then
-			API:Notif("Guards team is full!")
-			return
-		end
-		if game:GetService("Workspace")["Prison_ITEMS"].single:FindFirstChild("Key card") then
-			local Key = workspace.Prison_ITEMS.single["Key card"]
-			workspace.Remote.ItemHandler:InvokeServer({
-				Position = plr.Character.Head.Position,
-				Parent = Key
-			})
-		end
-		if not plr.Character:FindFirstChild("Key card") or plr.Backpack:FindFirstChild("Key card") and not game:GetService("Workspace")["Prison_ITEMS"].single:FindFirstChild("Key card") and not API:GuardsFull("c") then
-		API:ChangeTeam(game.Teams.Guards)
 		if States.AutoRespawn == true then
 			States.AutoRespawn = false
 		end
-		repeat wait(.3)
+		local Oldc = API:GetPosition()
+		local OldT = Player.Team
+		if plr.Character:FindFirstChild("Key card") or plr.Backpack:FindFirstChild("Key card") then
+			return API:Notif("You already have a keycard!",false)
+		elseif API:GuardsFull("c") then
+			API:Notif("Guards team is full!")
+			return
+		elseif workspace.Prison_ITEMS.single:FindFirstChild("Key card") then
+			repeat task.wait()
+				local a =pcall(function()
+					local Key = workspace.Prison_ITEMS.single["Key card"].ITEMPICKUP
+					game.Workspace.Remote["ItemHandler"]:InvokeServer(Key)
+					plr.Character.HumanoidRootPart.CFrame = workspace.Prison_ITEMS.single["Key card"].ITEMPICKUP.CFrame
+				end)
+			until plr.Backpack:FindFirstChild("Key card")
+			API:MoveTo(Oldc)
+		elseif not game.Players.LocalPlayer.Backpack:FindFirstChild("Key card") or not workspace.Prison_ITEMS.single:FindFirstChild("Key card") or not API:GuardsFull("c") then
+		API:ChangeTeam(game.Teams.Guards)
+		repeat wait(.25)
 			Player.Character:FindFirstChildOfClass("Humanoid"):ChangeState(15)
 			wait()
 			API:Refresh()
@@ -3040,13 +3041,16 @@ do
 				repeat task.wait() until Player.Team == OldT
 			end
 			wait()
-			local Key = workspace.Prison_ITEMS.single["Key card"]
-			workspace.Remote.ItemHandler:InvokeServer({
-				Position = plr.Character.Head.Position,
-				Parent = Key
-			})
+			repeat task.wait()
+				local a =pcall(function()
+					local Key = workspace.Prison_ITEMS.single["Key card"].ITEMPICKUP
+					game.Workspace.Remote["ItemHandler"]:InvokeServer(Key)
+					game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = workspace.Prison_ITEMS.single["Key card"].ITEMPICKUP.CFrame
+				end)
+			until plr.Backpack:FindFirstChild("Key card")
 		end
 		end
+		API:MoveTo(Oldc)
 		if States.AutoRespawn == false then
 			States.AutoRespawn = true
 		end
