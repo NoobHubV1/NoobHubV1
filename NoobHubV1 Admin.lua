@@ -1570,7 +1570,7 @@ do
 		end,nil,nil,true)
 		API:CreateCmd("pp", "sus", function(args)
 			API:AllGuns()
-			wait(1)
+			wait(.5)
 			for i,v in pairs(Player.Character:GetChildren()) do
 				if v:IsA("Tool") then
 					v.Parent = Player.Backpack
@@ -2329,13 +2329,14 @@ do
 			if Target then
 				if Target.Team == game.Teams.Guards or not API:BadArea(Target) then
 					return API:Notif("Can't arrest this player!")
-				end
-				repeat API:swait()
-					API:MoveTo(Target.Character:GetPrimaryPartCFrame()*CFrame.new(0,0,-4.5))
-					task.spawn(function()
-						workspace.Remote.arrest:InvokeServer(Target.Character.PrimaryPart)
-					end)
-				until Target.Character["Head"]:FindFirstChildOfClass("BillboardGui")
+				else
+					repeat API:swait()
+						API:MoveTo(Target.Character:GetPrimaryPartCFrame()*CFrame.new(0,0,-4.5))
+							task.spawn(function()
+								workspace.Remote.arrest:InvokeServer(Target.Character.PrimaryPart)
+							end)
+					until Target.Character["Head"]:FindFirstChildOfClass("BillboardGui")
+			        end
 			end
 			API:MoveTo(LastPosition)
 		end
@@ -2654,7 +2655,7 @@ do
 		game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("LAUNCHING IN 1", "ALL")
 		wait(1)
 		API:killall()
-		API:Notif("Nuke from player has been removed.")
+		API:Notif("Nuke from "..Target.DisplayName.." has been removed.")
 	end,nil,"[PLAYER]")
 	API:CreateCmd("to", "Teleports to a player", function(args)
 		local Player = API:FindPlayer(args[2])
