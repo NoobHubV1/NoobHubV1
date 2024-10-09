@@ -23,7 +23,8 @@ local API = {}
 local Reload_Guns = {}
 local Prefix = ";"
 
-States = {
+local States = {
+	Infjump = false,
 	OldItemMethod = false,
 	AutoRemoveff = false,
 	loopkillinmates = false,
@@ -2864,6 +2865,9 @@ do
 	API:CreateCmd("olditemmethod", "Gets Guns On Teleport", function(args)
 		local value = ChangeState(args[2],"OldItemMethod")
 	end,nil,"[ON/OFF]")
+	API:CreateCmd("infjump", "Infinite Jumps", function(args)
+		local value = ChangeState(args[2],"Infjump")
+	end,nil,"[ON/OFF")
 	API:CreateCmd("neutral", "Changes your team to Neutral", function(args)
 		API:ChangeTeam(game.Teams.Neutral,true)
 	end)
@@ -4458,9 +4462,16 @@ function NoCollision(PLR)
 		 end)
 	 end
  end)
+coroutine.wrap(function()
+	game:GetService("UserInputService").JumpRequest:connect(function()
+		if States.Infjump and not Unloaded then
+			game.Players.LocalPlayer.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+		end
+	end)
+end)()
 local DefaultChatSystemChatEvents = game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents
 API:Notif("Welcome to NoobHubV1 admin V2.1 (made by NoobHubV1)",nil,true)
 CmdBarFrame:TweenPosition(UDim2.new(0.5, 0, 0.899999998, 0)-UDim2.new(0,0,.05,0),"Out","Back",.5)
-wait(2)
+wait(2.1)
 API:Notif("type "..Prefix.."noinvite to disabled discord invite",nil,true)
 end
