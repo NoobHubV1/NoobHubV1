@@ -1481,10 +1481,13 @@ plr.CharacterAdded:Connect(function(NewCharacter)
 		if API:GuardsFull("c") then
 			-- nothing
 		elseif API:GuardsFull("b") then
-			-- nothing
+			if Player.Team ~= game.Teams.Guards then
+				wait(.055)
+				API:ChangeTeam(game.Teams.Guards)
+			end
 		else
 			if Player.Team ~= game.Teams.Guards then
-				wait(.04)
+				wait(.05)
 				API:ChangeTeam(game.Teams.Guards)
 			end
 		end
