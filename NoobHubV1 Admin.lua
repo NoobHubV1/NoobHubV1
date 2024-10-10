@@ -14,7 +14,7 @@ local OldHook, hookmetamethod, getnamecallmethod = nil, hookmetamethod, getnamec
 local HasGamepass,UserInputService = game:GetService("MarketplaceService"):UserOwnsGamePassAsync(Player.UserId, 96651),game:GetService("UserInputService")
 local GlobalVar = ((getgenv and getgenv()) or _G)
 local Unloaded = false
-local CriminalCFRAME = workspace["Criminals Spawn"].SpawnLocation.CFrame
+local Pos = workspace["Criminals Spawn"].SpawnLocation.CFrame
 local saved = CFrame.new(9999, 9999, 9999)
 
 local BulletTable = {}
@@ -24,6 +24,7 @@ local Reload_Guns = {}
 local Prefix = ";"
 
 local States = {
+	Autoguard = false,
 	Infjump = false,
 	OldItemMethod = false,
 	AutoRemoveff = false,
@@ -1443,9 +1444,9 @@ plr.CharacterAdded:Connect(function(NewCharacter)
 			NewCharacter:WaitForChild("ForceField"):Destroy()
 		end)
 	end
-	if Temp.ArrestOldP and States.AutoRespawn and not Unloaded then
+	if Temp.ArrestOldP and States.AutoRespawn then
 		coroutine.wrap(function()
-			for i = 1,2 do
+			for i = 1,5 do
 				API:MoveTo(Temp.ArrestOldP)
 			end
 			Temp.ArrestOldP = nil
@@ -1457,7 +1458,7 @@ plr.CharacterAdded:Connect(function(NewCharacter)
 				if not Unloaded then
 					if a and a:IsA("BillboardGui") and States.AutoRespawn then
 						coroutine.wrap(function()
-							wait(.5)
+							wait(1)
 							Temp.ArrestOldP = API:GetPosition()
 						end)()
 					end
@@ -1476,9 +1477,20 @@ plr.CharacterAdded:Connect(function(NewCharacter)
 		game.Players.LocalPlayer.Character["1"]:Destroy()
 		game.Workspace.CurrentCamera.CameraSubject = game.Players.LocalPlayer.Character
 	end
+	if States.Autoguard then
+		if API:GuardsFull("c") then
+			-- nothing
+		elseif API:GuardsFull("b") then
+			-- nothing
+		else
+			if Player.Team ~= game.Teams.Guards then
+				wait(.04)
+				API:ChangeTeam(game.Teams.Guards)
+			end
+		end
+	end
 end)
 API:Refresh(true)
-old = workspace["Criminals Spawn"].SpawnLocation.CFrame
 workspace:FindFirstChild("Criminals Spawn").SpawnLocation.CFrame = saved
 local Killcool1 = false
 plr:GetMouse().Button1Up:Connect(function()
@@ -2869,6 +2881,13 @@ do
 	API:CreateCmd("infjump", "Infinite Jumps", function(args)
 		local value = ChangeState(args[2],"Infjump")
 	end,nil,"[ON/OFF")
+	API:CreateCmd("autoguard", "Auto Teams Guards", function(args)
+		if API:GuardsFull("c") and API:GuardsFull("b") then
+			API:Notif("Guards Full",3)
+		else
+			local value = ChangeState(args[2],"Autoguard")
+		end
+	end,nil,"[on/off]")
 	API:CreateCmd("neutral", "Changes your team to Neutral", function(args)
 		API:ChangeTeam(game.Teams.Neutral,true)
 	end)
@@ -3395,14 +3414,12 @@ do
 	API:CreateCmd("unload", "Destroys the script unloading it", function(args)
 		API:Destroy(game:FindFirstChild("NoobHubV1_Admin"))
 		Unloaded = true
-		for i,v in pairs(States) do
-			States[i] = false
-		end
 		Temp = {}
 		game:GetService("Workspace").Camera.CameraSubject = plr.Character.Humanoid 
 		CmdBarFrame:TweenPosition(CmdBarFrame.Position-UDim2.new(0,0,-.5,0),"Out","Back",.8)
 		wait(1)
 		ScreenGui:Destroy()
+		workspace["Criminals Spawn"].SpawnLocation.CFrame = Pos
 		API:Notif("NoobHubV1 Admin V2.1 is now unloaded, see you soon!",3)
 	end)
 end
