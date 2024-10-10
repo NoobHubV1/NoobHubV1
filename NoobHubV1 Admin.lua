@@ -148,7 +148,7 @@ Tweener:TweenSize(UDim2.new(.1, 0,0, 5),"Out","Quart",.06)
 wait(.1)
 Tweener:TweenSize(UDim2.new(.5, 0,0, 5),"Out","Quart",.06)
 Text.Text = "Loading {Scripts/Character}"
-repeat task.wait() until workspace:FindFirstChild("Criminals Spawn") or workspace:FindFirstChild("Criminals Spawn"):FindFirstChild("SpawnLocation") and workspace.Prison_ITEMS.buttons:FindFirstChild("Prison Gate") or workspace.Prison_ITEMS.buttons:FindFirstChild("Prison Gate"):FindFirstChild("Prison Gate")
+repeat task.wait() until workspace:FindFirstChild("Criminals Spawn") or workspace:FindFirstChild("Criminals Spawn"):FindFirstChild("SpawnLocation") and workspace.Prison_ITEMS.buttons:FindFirstChild("Prison Gate") or workspace.Prison_ITEMS.buttons:FindFirstChild("Prison Gate"):FindFirstChild("Prison Gate") and workspace.Prison_ITEMS.giver:FindFirstChild("AK-47") or workspace.Prison_ITEMS.giver:FindFirstChild("AK-47").ITEMPICKUP and workspace.Prison_ITEMS.giver:FindFirstChild("Remington 870") or workspace.Prison_ITEMS.giver:FindFirstChild("Remington 870").ITEMPICKUP 
 Tweener.Size = UDim2.new(1,0,1,0)
 wait(.7)
 repeat wait() Tweener.Size = UDim2.new(1,0,1,0) until Tweener.Size == UDim2.new(1,0,1,0)
@@ -1490,8 +1490,6 @@ plr.CharacterAdded:Connect(function(NewCharacter)
 		end
 	end
 end)
-API:Refresh(true)
-workspace:FindFirstChild("Criminals Spawn").SpawnLocation.CFrame = saved
 local Killcool1 = false
 plr:GetMouse().Button1Up:Connect(function()
 	local Target = plr:GetMouse().Target
@@ -4488,6 +4486,8 @@ coroutine.wrap(function()
 	end)
 end)()
 local DefaultChatSystemChatEvents = game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents
+API:Refresh(true)
+workspace:FindFirstChild("Criminals Spawn").SpawnLocation.CFrame = saved
 API:Notif("Welcome to NoobHubV1 admin V2.1 (made by NoobHubV1)",nil,true)
 CmdBarFrame:TweenPosition(UDim2.new(0.5, 0, 0.899999998, 0)-UDim2.new(0,0,.05,0),"Out","Back",.5)
 wait(2.1)
