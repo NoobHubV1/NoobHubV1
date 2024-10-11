@@ -6,7 +6,9 @@ local BG = Instance.new("Frame")
 local Title = Instance.new("TextLabel")
 local Unload = Instance.new("TextButton")
 local Minimum = Instance.new("TextButton")
+local Toggle_2 = Instance.new("TextButton")
 local Toggle = Instance.new("TextButton")
+local Button = Instance.new("TextButton")
 local StatusPF = Instance.new("TextLabel")
 local Status = Instance.new("TextLabel")
 local Credit = Instance.new("TextLabel")
@@ -20,7 +22,7 @@ BG.BackgroundColor3 = Color3.new(0.0980392, 0.0980392, 0.0980392)
 BG.BorderColor3 = Color3.new(0.0588235, 0.0588235, 0.0588235)
 BG.BorderSizePixel = 2
 BG.Position = UDim2.new(0.149479166, 0, 0.82087779, 0)
-BG.Size = UDim2.new(0, 210, 0, 127)
+BG.Size = UDim2.new(0, 410, 0, 127)
 BG.Active = true
 BG.Draggable = true
 
@@ -29,7 +31,7 @@ Title.Parent = BG
 Title.BackgroundColor3 = Color3.new(0.266667, 0.00392157, 0.627451)
 Title.BorderColor3 = Color3.new(0.180392, 0, 0.431373)
 Title.BorderSizePixel = 2
-Title.Size = UDim2.new(0, 210, 0, 33)
+Title.Size = UDim2.new(0, 410, 0, 33)
 Title.Font = Enum.Font.Highway
 Title.Text = "Gun Ball"
 Title.TextColor3 = Color3.new(1, 1, 1)
@@ -68,20 +70,62 @@ Minimum.TextStrokeTransparency = 0
 Minimum.MouseButton1Click:Connect(function()
 	if BG.BackgroundTransparency == 0 then
 		BG.BackgroundTransparency = 1
-		BG.Size = UDim2.new(0, 210, 0, 25)
+		BG.Size = UDim2.new(0, 410, 0, 25)
 		Toggle.Visible = false
 		StatusPF.Visible = false
 		Status.Visible = false
 		Credit.Visible = false
+		Button.Visible = false
+		Toggle_2.Visible = false
 		Minimum.Text = "+"
+		if not Button.Visible then
+			Title.Size = UDim2.new(0, 210, 0, 33)
+		end
 	elseif BG.BackgroundTransparency == 1 then
 		BG.BackgroundTransparency = 0
-		BG.Size = UDim2.new(0, 210, 0, 127)
+		BG.Size = UDim2.new(0, 410, 0, 127)
 		Toggle.Visible = true
 		StatusPF.Visible = true
 		Status.Visible = true
 		Credit.Visible = true
+		Button.Visible = true
+		Toggle_2.Visible = true
 		Minimum.Text = "="
+		Minimum.Position = UDim2.new(0.842857122, 0, 0.00571428565, 0)
+		Unload.Position = UDim2.new(0.942857122, 0, 0.00571428565, 0)
+		if Button.Visible then
+			Title.Size = UDim2.new(0, 410, 0, 33)
+		end
+	end
+end)
+
+Toggle_2.Parent = BG
+Toggle_2.BackgroundColor3 = Color3.new(255, 0, 0)
+Toggle_2.BorderColor3 = Color3.new(0.180392, 0, 0.431373)
+Toggle_2.BorderSizePixel = 2
+Toggle_2.Size = UDim2.new(0, 20, 0, 20)
+Toggle_2.Font = Enum.Font.Highway
+Toggle_2.FontSize = Enum.FontSize.Size28
+Toggle_2.Text = "_<"
+Toggle_2.TextColor3 = Color3.new(1, 1, 1)
+Toggle_2.TextSize = 25
+Toggle_2.TextStrokeColor3 = Color3.new(0.180392, 0, 0.431373)
+Toggle_2.TextStrokeTransparency = 0
+Toggle_2.MouseButton1Click:Connect(function()
+	if Button.Visible == false then
+		Button.Visible = true
+		BG.Size = UDim2.new(0, 410, 0, 127)
+		Title.Size = UDim2.new(0, 410, 0, 33)
+		StatusPF.Position = UDim2.new(0.414285725, 0, 0.708661377, 0)
+		Status.Position = UDim2.new(0.580952346, 0, 0.708661377, 0)
+		Credit.Position = UDim2.new(0.195238099, 0, 0.866141737, 0)
+	else
+		Button.Visible = false
+		BG.Size = UDim2.new(0, 210, 0, 127)
+		Title.Size = UDim2.new(0, 210, 0, 33)
+		StatusPF.Position = UDim2.new(0.314285725, 0, 0.708661377, 0)
+		Status.Position = UDim2.new(0.580952346, 0, 0.708661377, 0)
+		Credit.Position = UDim2.new(0.195238099, 0, 0.866141737, 0)
 	end
 end)
 
@@ -99,11 +143,28 @@ Toggle.TextSize = 25
 Toggle.TextStrokeColor3 = Color3.new(0.180392, 0, 0.431373)
 Toggle.TextStrokeTransparency = 0
 
+Button.Parent = BG
+Button.BackgroundColor3 = Color3.new(0.266667, 0.00392157, 0.627451)
+Button.BorderColor3 = Color3.new(0.180392, 0, 0.431373)
+Button.BorderSizePixel = 2
+Button.Position = UDim2.new(0.552380958, 0, 0.374192119, 0)
+Button.Size = UDim2.new(0, 146, 0, 36)
+Button.Font = Enum.Font.Highway
+Button.FontSize = Enum.FontSize.Size28
+Button.Text = "Parry"
+Button.TextColor3 = Color3.new(1, 1, 1)
+Button.TextSize = 25
+Button.TextStrokeColor3 = Color3.new(0.180392, 0, 0.431373)
+Button.TextStrokeTransparency = 0
+Button.MouseButton1Click:Connect(function()
+	game:GetService("ReplicatedStorage").RemoteEvent:FireServer({["name"] = "defense",["origin"] = "balltargets"},{})
+end)
+
 StatusPF.Name = "StatusPF"
 StatusPF.Parent = BG
 StatusPF.BackgroundColor3 = Color3.new(1, 1, 1)
 StatusPF.BackgroundTransparency = 1
-StatusPF.Position = UDim2.new(0.314285725, 0, 0.708661377, 0)
+StatusPF.Position = UDim2.new(0.414285725, 0, 0.708661377, 0)
 StatusPF.Size = UDim2.new(0, 56, 0, 20)
 StatusPF.Font = Enum.Font.Highway
 StatusPF.FontSize = Enum.FontSize.Size24
@@ -134,7 +195,7 @@ Credit.Name = "Credit"
 Credit.Parent = BG
 Credit.BackgroundColor3 = Color3.new(1, 1, 1)
 Credit.BackgroundTransparency = 1
-Credit.Position = UDim2.new(0.195238099, 0, 0.866141737, 0)
+Credit.Position = UDim2.new(0.395238099, 0, 0.866141737, 0)
 Credit.Size = UDim2.new(0, 128, 0, 17)
 Credit.Font = Enum.Font.SourceSans
 Credit.FontSize = Enum.FontSize.Size18
@@ -150,10 +211,6 @@ local States = {
 }
 
 local ScriptDisabled = false
-
-local function ParryAttempt()
-	game:GetService("ReplicatedStorage").RemoteEvent:FireServer({["name"] = "defense",["origin"] = "balltargets"},{})
-end
 
 local function Tween(Obj, Prop, New, Time)
 	if not Time then
@@ -234,7 +291,7 @@ end)
 spawn(function()
 	while task.wait() do
 		if States.AutoParry and not ScriptDisabled then
-			task.spawn(ParryAttempt)
+			game:GetService("ReplicatedStorage").RemoteEvent:FireServer({["name"] = "defense",["origin"] = "balltargets"},{})
 		end
 	end
 end)
