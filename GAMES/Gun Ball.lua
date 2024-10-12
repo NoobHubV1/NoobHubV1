@@ -78,9 +78,6 @@ Minimum.MouseButton1Click:Connect(function()
 		Button.Visible = false
 		Toggle_2.Visible = false
 		Minimum.Text = "+"
-		if not Button.Visible then
-			Title.Size = UDim2.new(0, 210, 0, 33)
-		end
 	elseif BG.BackgroundTransparency == 1 then
 		BG.BackgroundTransparency = 0
 		BG.Size = UDim2.new(0, 410, 0, 127)
@@ -91,11 +88,6 @@ Minimum.MouseButton1Click:Connect(function()
 		Button.Visible = true
 		Toggle_2.Visible = true
 		Minimum.Text = "="
-		Minimum.Position = UDim2.new(0.842857122, 0, 0.00571428565, 0)
-		Unload.Position = UDim2.new(0.942857122, 0, 0.00571428565, 0)
-		if Button.Visible then
-			Title.Size = UDim2.new(0, 410, 0, 33)
-		end
 	end
 end)
 
@@ -114,18 +106,10 @@ Toggle_2.TextStrokeTransparency = 0
 Toggle_2.MouseButton1Click:Connect(function()
 	if Button.Visible == false then
 		Button.Visible = true
-		BG.Size = UDim2.new(0, 410, 0, 127)
-		Title.Size = UDim2.new(0, 410, 0, 33)
-		StatusPF.Position = UDim2.new(0.414285725, 0, 0.708661377, 0)
-		Status.Position = UDim2.new(0.580952346, 0, 0.708661377, 0)
-		Credit.Position = UDim2.new(0.195238099, 0, 0.866141737, 0)
+		Toggle.Position = UDim2.new(0.122380958, 0, 0.374192119, 0)
 	else
 		Button.Visible = false
-		BG.Size = UDim2.new(0, 210, 0, 127)
-		Title.Size = UDim2.new(0, 210, 0, 33)
-		StatusPF.Position = UDim2.new(0.314285725, 0, 0.708661377, 0)
-		Status.Position = UDim2.new(0.580952346, 0, 0.708661377, 0)
-		Credit.Position = UDim2.new(0.195238099, 0, 0.866141737, 0)
+		Toggle.Position = UDim2.new(0.31380958, 0, 0.374192119, 0)
 	end
 end)
 
@@ -133,7 +117,7 @@ Toggle.Parent = BG
 Toggle.BackgroundColor3 = Color3.new(0.266667, 0.00392157, 0.627451)
 Toggle.BorderColor3 = Color3.new(0.180392, 0, 0.431373)
 Toggle.BorderSizePixel = 2
-Toggle.Position = UDim2.new(0.152380958, 0, 0.374192119, 0)
+Toggle.Position = UDim2.new(0.122380958, 0, 0.374192119, 0)
 Toggle.Size = UDim2.new(0, 146, 0, 36)
 Toggle.Font = Enum.Font.Highway
 Toggle.FontSize = Enum.FontSize.Size28
@@ -147,7 +131,7 @@ Button.Parent = BG
 Button.BackgroundColor3 = Color3.new(0.266667, 0.00392157, 0.627451)
 Button.BorderColor3 = Color3.new(0.180392, 0, 0.431373)
 Button.BorderSizePixel = 2
-Button.Position = UDim2.new(0.552380958, 0, 0.374192119, 0)
+Button.Position = UDim2.new(0.522380958, 0, 0.374192119, 0)
 Button.Size = UDim2.new(0, 146, 0, 36)
 Button.Font = Enum.Font.Highway
 Button.FontSize = Enum.FontSize.Size28
@@ -179,7 +163,7 @@ Status.Name = "Status"
 Status.Parent = BG
 Status.BackgroundColor3 = Color3.new(1, 1, 1)
 Status.BackgroundTransparency = 1
-Status.Position = UDim2.new(0.580952346, 0, 0.708661377, 0)
+Status.Position = UDim2.new(0.550952346, 0, 0.708661377, 0)
 Status.Size = UDim2.new(0, 56, 0, 20)
 Status.Font = Enum.Font.Highway
 Status.FontSize = Enum.FontSize.Size14
@@ -195,7 +179,7 @@ Credit.Name = "Credit"
 Credit.Parent = BG
 Credit.BackgroundColor3 = Color3.new(1, 1, 1)
 Credit.BackgroundTransparency = 1
-Credit.Position = UDim2.new(0.395238099, 0, 0.866141737, 0)
+Credit.Position = UDim2.new(0.355238099, 0, 0.866141737, 0)
 Credit.Size = UDim2.new(0, 128, 0, 17)
 Credit.Font = Enum.Font.SourceSans
 Credit.FontSize = Enum.FontSize.Size18
