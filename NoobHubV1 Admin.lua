@@ -1073,7 +1073,7 @@ function API:GetGun(Item, Ignore)
 		if not plr.Character:FindFirstChild(Item) or not plr.Backpack:FindFirstChild(Item) then
 			local LastPosition = API:GetPosition()
 			repeat task.wait()
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Prison_ITEMS.giver:FindFirstChild(Item):FindFirstChildWhichIsA("Part").CFrame
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Prison_ITEMS.giver:FindFirstChild(Item).ITEMPICKUP.CFrame
 				coroutine.wrap(function()
 					workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver:FindFirstChild(Item).ITEMPICKUP)
 				end)()
@@ -1094,7 +1094,7 @@ function API:GetSingle(Item, Ignore)
 		if not plr.Character:FindFirstChild(Item) or not plr.Backpack:FindFirstChild(Item) then
 			local LastPosition = API:GetPosition()
 			repeat task.wait()
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Prison_ITEMS.single:FindFirstChild(Item):FindFirstChildWhichIsA("Part").CFrame
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Prison_ITEMS.single:FindFirstChild(Item).ITEMPICKUP.CFrame
 				coroutine.wrap(function()
 					workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.single:FindFirstChild(Item).ITEMPICKUP)
 				end)()
