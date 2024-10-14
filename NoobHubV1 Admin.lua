@@ -493,21 +493,23 @@ function API:CreateCmd(Header, Description, Callback,IsHide,Extra,IsPre,plsdonot
 			end
 		end
 	end
-	Player.Chatted:Connect(function(msg)
-		if msg and not Unloaded then
-			local Subbed = string.sub(msg,1,1,1,1)
+	local function PlrChatted(Message)
+		if Message and not Unloaded then
+			local Subbed = string.sub(Message,1,1,1,1)
 			if Subbed == Prefix then
-				FactCheck(msg)
+				FactCheck(Message)
 			end
 		end
-	end)
-	CommandBar.FocusLost:Connect(function(EnterKey)
-		if EnterKey and not Unloaded then
+	end
+	Player.Chatted:Connect(PlrChatted)
+	local function CommandB(Key)
+		if Key and not Unloaded then
 			FactCheck(CommandBar.Text)
 			task.wait(0.22)
 			CommandBar.Text = ""
 		end
-	end)
+	end
+	CommandBar.FocusLost:Connect(CommandB)
 end
 
 function API:Tween(Obj, Prop, New, Time)
@@ -894,7 +896,7 @@ function API:WaitForRespawn(Cframe,NoForce)
 			pcall(function()
 				coroutine.wrap(function()
 					workspace.CurrentCamera:GetPropertyChangedSignal("CFrame"):Wait()
-					API:Loop(3, function()
+					API:Loop(2, function()
 						workspace["CurrentCamera"].CFrame = CameraCframe
 					end)
 				end)()
