@@ -1,6 +1,7 @@
 local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/NoobHubV1/RobloxScripts/main/Arceus%20X%20V3%20Lib.lua"))()
-local States = {}
-      States.AutoParry = false
+local States = {
+      AutoParry = false
+}
 local ScriptDisabled = false
 
 lib:SetTitle("Gun Ball")
