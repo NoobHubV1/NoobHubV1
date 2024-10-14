@@ -1072,13 +1072,16 @@ function API:GetGun(Item, Ignore)
 	else
 		if not plr.Character:FindFirstChild(Item) or not plr.Backpack:FindFirstChild(Item) then
 			local LastPosition = API:GetPosition()
+			local CameraPosition = plr.Character
 			repeat task.wait()
+				workspace.CurrentCamera.CameraSubject = workspace.Prison_ITEMS.giver:FindFirstChild(Item, true).ITEMPICKUP
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Prison_ITEMS.giver:FindFirstChild(Item).ITEMPICKUP.CFrame
 				coroutine.wrap(function()
 					workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver:FindFirstChild(Item).ITEMPICKUP)
 				end)()
 			until plr.Character:FindFirstChild(Item) or plr.Backpack:FindFirstChild(Item)
 			API:MoveTo(LastPosition)
+			workspace.CurrentCamera.CameraSubject = CameraPosition
 		end
 	end
 end
@@ -1093,13 +1096,16 @@ function API:GetSingle(Item, Ignore)
 	else
 		if not plr.Character:FindFirstChild(Item) or not plr.Backpack:FindFirstChild(Item) then
 			local LastPosition = API:GetPosition()
+			local CameraPosition = plr.Character
 			repeat task.wait()
+				workspace.CurrentCamera.CameraSubject = workspace.Prison_ITEMS.single:FindFirstChild(Item, true).ITEMPICKUP
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Prison_ITEMS.single:FindFirstChild(Item).ITEMPICKUP.CFrame
 				coroutine.wrap(function()
 					workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.single:FindFirstChild(Item).ITEMPICKUP)
 				end)()
 			until plr.Character:FindFirstChild(Item) or plr.Backpack:FindFirstChild(Item)
 			API:MoveTo(LastPosition)
+			workspace.CurrentCamera.CameraSubject = CameraPosition
 		end
 	end
 end
@@ -1459,6 +1465,7 @@ plr.CharacterAdded:Connect(function(NewCharacter)
 				if not Unloaded then
 					if a and a:IsA("BillboardGui") and States.AutoRespawn then
 						coroutine.wrap(function()
+							API:Refresh()
 							wait(1)
 							Temp.ArrestOldP = API:GetPosition()
 						end)()
@@ -1530,6 +1537,9 @@ local ChangeState = function(Type,StateType)
 	States[StateType] = Value
 	API:Notif(StateType.." has been changed to "..tostring(Value))
 	return Value
+end
+function API:LoadsHttp(Https)
+	loadstring(Game:HttpGet("https://raw.githubusercontent.com/"..Https, true))()
 end
 do
 		API:CreateCmd("removecars", "deletes all cars that are not seated", function(args)
@@ -3416,10 +3426,43 @@ do
 		Temp = {}
 		game:GetService("Workspace").Camera.CameraSubject = plr.Character.Humanoid 
 		CmdBarFrame:TweenPosition(CmdBarFrame.Position-UDim2.new(0,0,-.5,0),"Out","Back",.8)
-		wait(1)
+		wait()
 		ScreenGui:Destroy()
 		workspace["Criminals Spawn"].SpawnLocation.CFrame = Pos
 		API:Notif("NoobHubV1 Admin V2.1 is now unloaded, see you soon!",3)
+	end)
+	API:CreateCmd("oldtiger", "Tiger Admin version 1.1 (old version)", function(args)
+		API:Destroy(game:FindFirstChild("NoobHubV1_Admin"))
+		Unloaded = true
+		Temp = {}
+		game:GetService("Workspace").Camera.CameraSubject = plr.Character.Humanoid 
+		CmdBarFrame:TweenPosition(CmdBarFrame.Position-UDim2.new(0,0,-.5,0),"Out","Back",.8)
+		wait()
+		ScreenGui:Destroy()
+		workspace["Criminals Spawn"].SpawnLocation.CFrame = Pos
+		API:LoadsHttp("NoobHubV1/NoobHubV1/main/Old%20Tiger%20Admin.txt")	
+	end)
+	API:CreateCmd("tiger", "Tiger Admin new version", function(args)
+		API:Destroy(game:FindFirstChild("NoobHubV1_Admin"))
+		Unloaded = true
+		Temp = {}
+		game:GetService("Workspace").Camera.CameraSubject = plr.Character.Humanoid 
+		CmdBarFrame:TweenPosition(CmdBarFrame.Position-UDim2.new(0,0,-.5,0),"Out","Back",.8)
+		wait()
+		ScreenGui:Destroy()
+		workspace["Criminals Spawn"].SpawnLocation.CFrame = Pos
+		API:LoadsHttp("NoobHubV1/NoobHubV1/main/Tiger%20Admin.txt")	
+	end)
+	API:CreateCmd("prizz", "Prizz Life Admin v0.81", function(args)
+		API:Destroy(game:FindFirstChild("NoobHubV1_Admin"))
+		Unloaded = true
+		Temp = {}
+		game:GetService("Workspace").Camera.CameraSubject = plr.Character.Humanoid 
+		CmdBarFrame:TweenPosition(CmdBarFrame.Position-UDim2.new(0,0,-.5,0),"Out","Back",.8)
+		wait()
+		ScreenGui:Destroy()
+		workspace["Criminals Spawn"].SpawnLocation.CFrame = Pos
+		API:LoadsHttp("NoobHubV1/RobloxScripts/main/Prison%20Life%20Admin.lua")	
 	end)
 end
 --
