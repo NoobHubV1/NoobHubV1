@@ -3461,6 +3461,17 @@ do
 		workspace["Criminals Spawn"].SpawnLocation.CFrame = Pos
 		API:LoadsHttp("NoobHubV1/RobloxScripts/main/Prison%20Life%20Admin.lua")	
 	end)
+	API:CreateCmd("superoldtiger", "Tiger admin super old version (V0.5 and Patched)", function(args)
+		API:Destroy(game:FindFirstChild("NoobHubV1_Admin"))
+		Unloaded = true
+		Temp = {}
+		game:GetService("Workspace").Camera.CameraSubject = plr.Character.Humanoid 
+		CmdBarFrame:TweenPosition(CmdBarFrame.Position-UDim2.new(0,0,-.5,0),"Out","Back",.8)
+		wait()
+		ScreenGui:Destroy()
+		workspace["Criminals Spawn"].SpawnLocation.CFrame = Pos
+		API:LoadsHttp("NoobHubV1/NoobHubV1/main/Tiger%20Admin%20V0.5%20(Patched).txt")	
+	end)
 end
 --
 local cdv = false
