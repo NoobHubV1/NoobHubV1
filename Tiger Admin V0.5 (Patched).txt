@@ -1,0 +1,627 @@
+repeat wait() until game:IsLoaded()
+function randomString()
+	local length = math.random(10,20)
+	local array = {}
+	for i = 1, length do
+		array[i] = string.char(math.random(32, 126))
+	end
+	return table.concat(array)
+end
+function FindPlayer(String)
+	if not String then return end
+	local N = {}
+	for i,v in ipairs(game.Players:GetPlayers()) do
+		if string.lower(v.Name):match(string.lower(String)) or string.lower(v.DisplayName):match(string.lower(String)) then
+			table.insert(N, v.Name)
+		end
+	end
+	if #N > 0 then
+		return N[1]
+	elseif #N < 1 then
+		return nil
+	end
+end
+local noc = false
+local IsR15 = false
+local unloaded = false
+local Prefix = "!"
+local plr = game.Players.LocalPlayer
+local char = plr.Character or plr.CharacterAdded:Wait()
+local Humanoid = char["Humanoid"]
+local rad = Instance.new("ScreenGui")
+local Main = Instance.new("Frame")
+local UICorner = Instance.new("UICorner")
+local title_1 = Instance.new("TextLabel")
+local title_2 = Instance.new("TextLabel")
+local title_3 = Instance.new("TextLabel")
+local CMDBAR = Instance.new("TextBox")
+local CMDSFRAME = Instance.new("ScrollingFrame")
+local UIListLayout = Instance.new("UIListLayout")
+local cmdtemp = Instance.new("TextButton")
+
+--Properties:
+noclip = false
+rad.Name = randomString()
+rad.Parent = game.CoreGui
+rad.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+if syn and syn.protect_gui then
+	syn.protect_gui(rad)
+end
+Main.Name = "Main"
+Main.Parent = rad
+Main.BackgroundColor3 = Color3.fromRGB(56, 56, 56)
+Main.BackgroundTransparency = 0.100
+Main.Position = UDim2.new(0.177658141, 0, 0.303370774, 0)
+Main.Size = UDim2.new(0, 165, 0, 242)
+antibringc = false
+antibring = false
+UICorner.CornerRadius = UDim.new(0, 3)
+UICorner.Parent = Main
+Spamming = false
+SpammingPlr = nil
+title_1.Name = "title_1"
+title_1.Parent = Main
+title_1.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+title_1.BackgroundTransparency = 1.000
+title_1.Position = UDim2.new(0.157575786, 0, 0, 0)
+title_1.Size = UDim2.new(0, 105, 0, 30)
+title_1.Font = Enum.Font.Roboto
+title_1.Text = "iger"
+title_1.TextColor3 = Color3.fromRGB(255, 255, 255)
+title_1.TextScaled = true
+title_1.TextSize = 14.000
+title_1.TextWrapped = true
+
+title_2.Name = "title_2"
+title_2.Parent = Main
+title_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+title_2.BackgroundTransparency = 1.000
+title_2.Position = UDim2.new(0.200000018, 0, 0, 0)
+title_2.Size = UDim2.new(0, 33, 0, 30)
+title_2.Font = Enum.Font.SciFi
+title_2.Text = "T"
+title_2.TextColor3 = Color3.fromRGB(255, 0, 0)
+title_2.TextScaled = true
+title_2.TextSize = 14.000
+title_2.TextWrapped = true
+
+title_3.Name = "title_3"
+title_3.Parent = Main
+title_3.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+title_3.BackgroundTransparency = 1.000
+title_3.Position = UDim2.new(0.448484838, 0, 0.0950413197, 0)
+title_3.Size = UDim2.new(0, 72, 0, 14)
+title_3.Font = Enum.Font.Roboto
+title_3.Text = "Admin"
+title_3.TextColor3 = Color3.fromRGB(170, 170, 170)
+title_3.TextScaled = true
+title_3.TextSize = 14.000
+title_3.TextWrapped = true
+
+CMDBAR.Name = "CMDBAR"
+CMDBAR.Parent = Main
+CMDBAR.BackgroundColor3 = Color3.fromRGB(63, 63, 63)
+CMDBAR.BackgroundTransparency = 0.100
+CMDBAR.BorderSizePixel = 0
+CMDBAR.Position = UDim2.new(0.0606060624, 0, 0.752066135, 0)
+CMDBAR.Size = UDim2.new(0, 145, 0, 41)
+CMDBAR.Font = Enum.Font.SourceSans
+CMDBAR.PlaceholderText = "Command bar"
+CMDBAR.Text = ""
+CMDBAR.TextColor3 = Color3.fromRGB(255, 255, 255)
+CMDBAR.TextScaled = true
+CMDBAR.TextSize = 14.000
+CMDBAR.TextWrapped = true
+CMDSFRAME.Name = "CMDSFRAME"
+CMDSFRAME.Parent = Main
+CMDSFRAME.Active = true
+CMDSFRAME.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+CMDSFRAME.BackgroundTransparency = 1.000
+CMDSFRAME.BorderColor3 = Color3.fromRGB(255, 255, 255)
+CMDSFRAME.Position = UDim2.new(0, 0, 0.15289256, 0)
+CMDSFRAME.Size = UDim2.new(0, 165, 0, 145)
+CMDSFRAME.ScrollBarThickness = 3
+CMDSFRAME.CanvasSize = UDim2.new(0, 0, 6, 0)
+
+UIListLayout.Parent = CMDSFRAME
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout.Padding = UDim.new(0, 2)
+godmm = false
+cmdtemp.Name = "cmdtemp"
+cmdtemp.Parent = rad
+cmdtemp.BackgroundColor3 = Color3.fromRGB(81, 81, 81)
+cmdtemp.BackgroundTransparency = 0.150
+cmdtemp.BorderSizePixel = 0
+cmdtemp.Size = UDim2.new(0, 165, 0, 16)
+cmdtemp.Visible = false
+cmdtemp.Font = Enum.Font.Nunito
+cmdtemp.TextColor3 = Color3.fromRGB(255, 255, 255)
+cmdtemp.TextScaled = true
+cmdtemp.TextSize = 14.000
+cmdtemp.TextWrapped = true
+local ShowCMddoes = Instance.new("TextLabel")
+
+ShowCMddoes.Name = "ShowCMddoes"
+ShowCMddoes.Parent = rad
+ShowCMddoes.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+ShowCMddoes.BackgroundTransparency = 1.000
+ShowCMddoes.Position = UDim2.new(0.730821013, 0, 0.91974318, 0)
+ShowCMddoes.Size = UDim2.new(0, 200, 0, 50)
+ShowCMddoes.Font = Enum.Font.SourceSans
+ShowCMddoes.Text = "nil"
+ShowCMddoes.TextColor3 = Color3.fromRGB(255, 255, 255)
+ShowCMddoes.TextScaled = true
+ShowCMddoes.TextSize = 14.000
+ShowCMddoes.TextWrapped = true
+repeat wait() until game.Players.LocalPlayer.Character
+if game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid").RigType == Enum.HumanoidRigType.R15 then
+	IsR15 = true
+else
+	IsR15 = false
+end
+MouseOnMain = false
+autore = false
+AutoItems = false
+onepunch = false
+
+Main.MouseEnter:Connect(function()
+	MouseOnMain = true
+end)
+Main.MouseLeave:Connect(function()
+	MouseOnMain = false
+end)
+spawn(function()
+	while wait() do
+		if MouseOnMain == false then
+			if ShowCMddoes.Visible == true then
+				ShowCMddoes.Text = "nil"
+				ShowCMddoes.Visible = false
+			end
+		end
+	end
+end)
+--//
+function addcmd(cmd, does,putoncmdbar,isvip)
+	if cmd and does and putoncmdbar then
+		local c = cmdtemp:Clone()
+		c.Text = cmd
+		c.Parent = CMDSFRAME
+		c.Visible = true
+		c.Name = "cmdtemp1"
+		if isvip ~= nil then
+			if isvip == "VIP" then
+				spawn(function()
+					while wait(.1) do
+						local TweenService = game:GetService("TweenService")
+
+						local part = c
+
+						local tweenInfo = TweenInfo.new(
+							2, -- Time
+							Enum.EasingStyle.Linear, 
+							Enum.EasingDirection.Out, 
+							-1, 
+							true, 
+							0 
+						)
+						local tweenInfo2 = TweenInfo.new(
+							2, -- Time
+							Enum.EasingStyle.Linear, 
+							Enum.EasingDirection.Out, 
+							-1, 
+							true, 
+							0 
+						)
+						local tween = TweenService:Create(part, tweenInfo, {BackgroundColor3 = Color3.fromRGB(255, 238, 0)})
+						local tween2 = TweenService:Create(part, tweenInfo, {BackgroundColor3 = Color3.fromRGB(204, 191, 0)})
+						tween:Play()
+						wait(5)
+						tween2:Play()
+						wait(.4)
+					end
+				end)
+			end
+		end
+		c.MouseEnter:Connect(function()
+			if MouseOnMain == true then
+				ShowCMddoes.Visible = true
+				ShowCMddoes.Text = does
+			end
+		end)
+		c.MouseButton1Down:Connect(function()
+			if MouseOnMain == true then
+				CMDBAR:CaptureFocus()
+				wait()
+				CMDBAR.Text = putoncmdbar
+				CMDBAR.CursorPosition = #CMDBAR.Text+1
+			end
+		end)
+	end
+end
+--addcmd(Prefix.."kill [PLAYER]","Kills player","kill")
+function AddAllCmds()
+	addcmd(Prefix.."kill [PLAYER]","Kills player","kill")
+	addcmd(Prefix.."bring [PLAYER]","brings player","bring")
+	addcmd(Prefix.."re/respawn","Respawns you","respawn")
+	addcmd(Prefix.."freefall [PLAYER]","Brings player into the sky","freefall")
+	addcmd(Prefix.."void [PLAYER]","sends player to the void","void")
+	addcmd(Prefix.."speed [NUMBER]","sets your jumppower to a numbe","speed")
+	addcmd(Prefix.."jump [NUMBER]","sets your speed to a number","jump")
+	addcmd(Prefix.."noclip","lets you go through walls","jump")
+	addcmd(Prefix.."clip","stops noclip","jump")
+end
+
+AddAllCmds()
+CMDBAR.Changed:Connect(function(c)
+	if c == "Text" or c == "text" or c =="txt" then
+		CMDSFRAME.CanvasPosition = Vector2.new(0,0)
+		if CMDBAR.Text == "" or #CMDBAR.Text <1 then
+			for i,v in pairs(rad:GetChildren()) do
+				if v.Name == "cmdtemp1" or v.Name == "cmdtemp" then
+					v:Destroy()
+				end
+			end
+			for i,v in pairs(CMDSFRAME:GetChildren()) do
+				if v.Name == "cmdtemp1" or v.Name == "cmdtemp" then
+					v:Destroy()
+				end
+			end
+			AddAllCmds()
+		else
+
+			for i,v in pairs(CMDSFRAME:GetChildren()) do
+				if v:IsA("TextButton") then
+					if not string.lower(v.Text):match(string.lower(CMDBAR.Text)) then
+						v.Parent = rad
+						v.Visible = false
+					end
+				end
+			end
+
+			for i,v in pairs(rad:GetChildren()) do
+				if v.Name == "cmdtemp1" then
+					if string.lower(v.Text):match(string.lower(CMDBAR.Text)) then
+						v.Parent = CMDSFRAME
+						v.Visible = true
+					end
+				end
+			end
+		end
+	end
+end)
+function AddDrag(frame)
+
+	local dragging
+	local dragInput
+	local dragStart
+	local startPos
+	local MB1,END,Movement=Enum.UserInputType.MouseButton1,Enum.UserInputState.End,Enum.UserInputType.MouseMovement
+
+	frame.InputBegan:Connect(function(input)
+		if input.UserInputType == MB1 then
+			dragging = true
+			dragStart = input.Position
+			startPos = frame.Position
+			input.Changed:Connect(function()
+				if input.UserInputState == END then
+					dragging = false
+				end
+			end)
+		end
+	end)
+	frame.InputChanged:Connect(function(input)
+		if input.UserInputType == Movement then
+			dragInput = input
+		end
+	end)
+	game:GetService("UserInputService").InputChanged:Connect(function(input)
+		if input == dragInput and dragging then
+			local delta = input.Position - dragStart
+			frame.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
+		end
+	end)
+end
+AddDrag(Main)
+function Notif(txt, Type, Time) 
+	if unloaded == false then
+		local gotType = Type
+		local gotTime = Time
+		if gotTime == nil then
+			gotTime = 1
+		end
+		if Type == nil then
+			gotType = "none"
+		end
+		local ScreenGu1i = Instance.new("ScreenGui")
+		local NotifFrame = Instance.new("Frame")
+		local TypeNot = Instance.new("TextLabel")
+		local TextNot = Instance.new("TextLabel")
+
+
+		ScreenGu1i.Parent = game.Players.LocalPlayer:WaitForChild("PlayerGui")
+		ScreenGu1i.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+		ScreenGu1i.Name = math.random()
+		NotifFrame.Name = "NotifFrame"
+		NotifFrame.Parent = ScreenGu1i
+		NotifFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+		NotifFrame.BackgroundTransparency = 0.500
+		NotifFrame.Position = UDim2.new(-3.7252903e-09, 0, 0.897271276, 0)
+		NotifFrame.Size = UDim2.new(0, 168, 0, 56)
+
+		TypeNot.Name = "TypeNot"
+		TypeNot.Parent = NotifFrame
+		TypeNot.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		TypeNot.BackgroundTransparency = 1.000
+		TypeNot.Size = UDim2.new(0, 168, 0, 15)
+		TypeNot.Font = Enum.Font.SourceSans
+		TypeNot.Text = "Type"
+		TypeNot.TextColor3 = Color3.fromRGB(255, 0, 0)
+		TypeNot.TextScaled = true
+		TypeNot.TextSize = 14.000
+		TypeNot.TextWrapped = true
+
+		TextNot.Name = "TextNot"
+		TextNot.Parent = NotifFrame
+		TextNot.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+		TextNot.BackgroundTransparency = 1.000
+		TextNot.Position = UDim2.new(0.0416666679, 0, 0.214285716, 0)
+		TextNot.Size = UDim2.new(0, 153, 0, 44)
+		TextNot.Font = Enum.Font.SourceSans
+		TextNot.Text = txt
+		TextNot.TextColor3 = Color3.fromRGB(255, 255, 255)
+		TextNot.TextScaled = true
+		TextNot.TextSize = 14.000
+		TextNot.TextWrapped = true
+		if 		string.lower(gotType) == "good" then
+			TypeNot.Text = "Success"
+			TypeNot.TextColor3 = Color3.new(0, 1, 0.317647)
+		elseif 		string.lower(gotType) == "error" then
+			TypeNot.Text = "Error"
+			TypeNot.TextColor3 = Color3.new(1, 0, 0.0156863)
+		elseif string.lower(gotType) == "none" then
+			TypeNot.Text = "Notification"
+			TypeNot.TextColor3 = Color3.new(0.741176, 0.741176, 0.741176)
+		end
+		NotifFrame:TweenPosition(UDim2.new(-0, 0,0.867, 0),"Out", "Quart",Time)
+		wait(Time +0.2)
+		NotifFrame:TweenPosition(UDim2.new(-0.133, 0,0.864, 0),"Out", "Quart",0.3)
+		wait(0.27)
+		ScreenGu1i:Destroy()
+	end
+end
+function Respawn(Position)
+	if not game.Players.LocalPlayer.Character or not game.Players.LocalPlayer.Character:FindFirstChildOfClass("Part") then
+		warn("Character not found")
+		return "NoCharacter"
+	end
+	local PLR = game.Players.LocalPlayer
+	local CHAR = PLR.Character
+	local NAME = CHAR.Name
+	local SAVE = Position or CHAR["HumanoidRootPart"].CFrame --//You can also add a arg CFrame not Position
+	local STOP = false
+	if CHAR:FindFirstChildOfClass("Humanoid") then
+		if STOP == false then
+			local HUM = nil
+			if CHAR:FindFirstChildOfClass("Humanoid") then
+				HUM = CHAR:FindFirstChildOfClass("Humanoid")
+				wait()
+				HUM:ChangeState(15)
+			end
+			CHAR:BreakJoints()
+			for _,v in pairs(PLR.Backpack:GetChildren()) do
+				if v:IsA("Tool") or v:IsA("BackpackItem") then
+					v.Parent = CHAR
+				end
+			end
+			for _,v in pairs(CHAR:GetChildren()) do
+				if v:IsA("Tool") or v:IsA("BackpackItem") then
+					v:Destroy()
+				end
+			end
+			wait(.05)
+			if CHAR:FindFirstChildOfClass("Humanoid") then
+				HUM:Destroy()
+			end
+			wait()
+			CHAR.Parent = game.Lighting
+			game.Lighting[NAME]:Destroy()
+			wait(1)
+			PLR.CharacterAdded:Wait():WaitForChild("HumanoidRootPart").CFrame = SAVE
+			return "Respawned"
+		end
+	end
+end
+function setvalue(value,value2)
+	if value and value2 then
+		value = value2
+	end
+end
+function GetPos()
+	return game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+end
+function hastool()
+	if game.Players.LocalPlayer.Backpack:FindFirstChildOfClass("Tool") or game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool") then
+		return true
+	end
+	return nil
+end
+function bring(target, Position,BringType)
+	if hastool() == nil then Notif("You need a tool","error",1) return end
+	if target == nil then return end
+	local Position1 = nil
+	if Position == nil then
+		Position1 = GetPos()
+	else
+		Position1 = Position
+	end
+	local savedcf = GetPos()
+	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = savedcf
+	local CHAR = game.Players.LocalPlayer.Character
+	CHAR.Humanoid.Name = "1"
+	local c = CHAR["1"]:Clone()
+	c.Name = "Humanoid"
+	c.Parent = CHAR
+	CHAR["1"]:Destroy()
+	game.Workspace.CurrentCamera.CameraSubject = CHAR
+	CHAR.Animate.Disabled = true
+	wait()
+	CHAR.Animate.Disabled = false
+	CHAR.Humanoid.DisplayDistanceType = "None"
+	game.Players.LocalPlayer:FindFirstChild("Backpack"):FindFirstChildOfClass("Tool").Parent = CHAR	
+	local STOP = 0
+	repeat wait(.1)
+		STOP = STOP + 1
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players[target].Character.HumanoidRootPart.CFrame * CFrame.new(0, 0, 0.75)
+	until (not game.Players.LocalPlayer.Character:FindFirstChildOfClass("Tool") or not game.Players.LocalPlayer.Character.HumanoidRootPart or not game.Players[target].Character.HumanoidRootPart or not game.Players.LocalPlayer.Character.HumanoidRootPart.Parent or not game.Players[target].Character.HumanoidRootPart.Parent or STOP > 500) and STOP > 3
+	local STOP_2 = 0
+	repeat wait()
+		STOP_2 = STOP_2 + 1
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Position1
+	until STOP_2 > 10
+	Respawn(savedcf)
+end
+function notfound()
+	Notif("Player not found","error",1)
+end
+local function Command(Cmd)
+	return Arg1 == Prefix..Cmd
+end
+function kill(target)
+	if target then
+		bring(target,CFrame.new(0,workspace.FallenPartsDestroyHeight+2,0),"kill")
+	end
+end
+function void(target)
+	if target then
+		bring(target,CFrame.new(9999999,9999999,9999999))
+	end
+end
+function freefall(target)
+	if target then
+		bring(target,CFrame.new(plr.Character.Head.Position +Vector3.new(0,1000,0)))
+	end
+end
+--[[
+local r = FindPlayer(Arg2)
+			if r ~= nil then
+				
+			else
+				notfound()
+			end
+]]
+
+function Chatted(v)
+	if unloaded == false then
+		local chat = string.lower(v)
+		Split = chat:split(" ")
+		Arg1 = Split[1]
+		Arg2 = Split[2]
+		Arg3 = Split[3]
+		Arg4 = Split[4]
+		if Command("unload") then
+			unloaded = true
+			rad:Destroy()
+		end
+		if Command("freefall") then
+			local r = FindPlayer(Arg2)
+			if r ~= nil then
+				freefall(r)
+			else
+				notfound()
+			end
+		end
+		if Command("kill") then
+			if Arg2 == "all" then
+				local e = Respawn()
+				repeat wait() until e == "Respawned"
+				if hastool() ~= true then
+					Notif("You need a tool everytime you respawn","error",1)
+				else
+					for _,v in pairs(game.Players:GetPlayers()) do
+						pcall(function()
+							if v and v.Character and v.Character:FindFirstChildOfClass("Humanoid") and v.Character:FindFirstChildOfClass("Humanoid").Health >1 then
+								kill(v.Name)
+								wait(5)
+							end
+						end)
+					end
+				end
+			else
+				local r = FindPlayer(Arg2)
+				if r ~= nil then
+					kill(r)
+				else
+					notfound()
+				end
+			end
+		end
+		if Command("void") then
+			local r = FindPlayer(Arg2)
+			if r ~= nil then
+				void(r)
+			else
+				notfound()
+			end
+		end
+		if Command("noclip") then
+			noc = true
+		end
+		if Command("clip") then
+			noc = false
+		end
+		if Command("speed") then
+			pcall(function()
+				plr.Character.Humanoid.WalkSpeed = tonumber(Arg2)
+			end)
+		end
+		if Command("jump") then
+			pcall(function()
+				plr.Character.Humanoid.JumpPower = tonumber(Arg2)
+			end)
+		end
+		if Command("bring") then
+			local r = FindPlayer(Arg2)
+			if r ~= nil then
+				bring(r)
+			else
+				notfound()
+			end
+		end
+		if Command("re") or Command("respawn") then
+			Respawn()
+		end
+	end
+end
+game.Players.LocalPlayer.Chatted:Connect(Chatted)
+CMDBAR.FocusLost:Connect(function(FocusLost)
+	if unloaded == false then
+		if FocusLost then
+			if CMDBAR.Text:sub(1,#Prefix) ~= Prefix then
+				Chatted(Prefix..CMDBAR.Text)
+				wait()
+				CMDBAR.Text = ""
+			else
+				Chatted(CMDBAR.Text)
+				wait()
+				CMDBAR.Text = ""
+			end
+		end
+	end
+end)
+local rs = game:GetService("RunService")
+rs.RenderStepped:Connect(function()
+	if unloaded == false then
+		pcall(function()
+			if noc == true then
+				if IsR15 == false then
+					plr.Character.Head.CanCollide = false
+					plr.Character.Torso.CanCollide = false
+					plr.Character["Left Leg"].CanCollide = false
+					plr.Character["Right Leg"].CanCollide = false
+				else
+					plr.Character.Humanoid:ChangeState(11)
+				end
+			end
+		end)
+	end
+end)
