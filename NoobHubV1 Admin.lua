@@ -537,12 +537,9 @@ function API:Notif(Text,Dur)
 		if not Dur then
 			Dur = 1.5
 		end
-		local Notif = Instance.new("ScreenGui")
 		local Frame_1 = Instance.new("Frame")
 		local TextLabel = Instance.new("TextLabel")
-		Notif.Parent = (game:GetService("CoreGui") or gethui())
-		Notif.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-		Frame_1.Parent = Notif
+		Frame_1.Parent = ScreenGui
 		Frame_1.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 		Frame_1.BackgroundTransparency=1
 		Frame_1.BorderSizePixel = 0
