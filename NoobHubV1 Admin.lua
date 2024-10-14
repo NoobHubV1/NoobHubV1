@@ -810,16 +810,20 @@ function API:bring(Target,TeleportTo,MoreTP,DontBreakCar)
 end
 
 function API:FindPlayer(String,IgnoreError)
-	String = String:gsub("%s+", "")
-	for _, v in pairs(game:GetService("Players"):GetPlayers()) do
-		if v.Name:lower():match("^" .. String:lower()) or v.DisplayName:lower():match("^" .. String:lower()) then
-			return v
-		end
+	if not String or String == plr or String == "me" then
+		return plr
+	else
+		String = String:gsub("%s+", "")
+		for _, v in pairs(game:GetService("Players"):GetPlayers()) do
+			 if v.Name:lower():match("^" .. String:lower()) or v.DisplayName:lower():match("^" .. String:lower()) then
+				return v
+		         end
+	        end
+	        if not IgnoreError then
+		         API:Notif("Player has left or is not in your current game.",false)
+	        end
+	        return nil
 	end
-	if not IgnoreError then
-		API:Notif("Player has left or is not in your current game.",false)
-	end
-	return nil
 end
 function API:ConvertPosition(Position)
 	if typeof(Position):lower() == "position" then
@@ -2651,14 +2655,11 @@ do
 		local Target = API:FindPlayer(args[2])
 		game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("!!!A NUKE HAS BEEN PLACED ON "..Target.Name.." KILLING HIM WILL GET EVERYONE DEAD!!!", "ALL")
 		repeat task.wait()
-			if Target.Character and Target.Character:FindFirstChildOfClass("Humanoid") and Target.Character:FindFirstChildOfClass("Humanoid").Health <1 then
+			if Target.Character.Humanoid.Health <1 then
 				break
 			end
 		until not game
-		game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(Target.Name.." IS DEAD NUKE LAUNCHING!!!", "ALL")
-		wait(1.5)
-		--//This is what I call perfect work 
-		game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("LAUNCHING IN 3", "ALL")
+		game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(Target.Name.." IS DEAD NUKE LAUNCHING IN 3!!!", "ALL")
 		wait(1.5)
 		game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer("LAUNCHING IN 2", "ALL")			
 		wait(1.5)
@@ -3757,7 +3758,7 @@ end)()
 
 Temp.KIllaurCD = false
 coroutine.wrap(function()
-	while wait() do --//slow loop
+	while wait(0.58) do --//slow loop
 		if Unloaded then
 			return
 		end
@@ -3838,6 +3839,10 @@ coroutine.wrap(function()
 				wait(.5)
 				API:killall(game.Teams.Guards)
 			end
+			if Temp and Temp.Loopkillall then
+				wait(.5)
+				API:killall()
+			end
 		end)()
 		coroutine.wrap(function()
 			for i,v in pairs(Temp.Loopkilling) do
@@ -3866,17 +3871,6 @@ coroutine.wrap(function()
 		end)()
 	end
 end)()
-spawn(function()
-	while wait(0.5) do
-		if Unloaded then
-			return
-		end
-		if Temp and Temp.Loopkillall then
-			wait(.5)
-			API:killall()
-		end
-	end
-end)
 task.spawn(function()
 	while wait() do
 		if not plr.Character:FindFirstChild("ForceField") and States.ff == true then
