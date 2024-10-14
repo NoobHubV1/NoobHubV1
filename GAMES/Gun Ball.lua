@@ -2,7 +2,9 @@ local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/NoobHubV1
 local States = {}
       States.AutoParry = false
 local ScriptDisabled = false
+
 lib:SetTitle("Gun Ball")
+lib:SetTitleColor(0, 0, 255)
 
 local function Tween(Obj, Prop, New, Time)
 	if not Time then
@@ -77,6 +79,12 @@ lib:AddButton("Parry", function()
 	ParryAttempt()
 end)
 
+lib:AddButton("Unload", function()
+	lib:Destroy()
+	ScriptDisabled = true
+	Notif("Script is Unloaded",3,Color3.fromRGB(0, 255, 255),"Unload")
+end)
+
 spawn(function()
 	while task.wait() do
 		if States.AutoParry and not ScriptDisabled then
@@ -86,7 +94,4 @@ spawn(function()
 end)
 
 lib:SetTheme("Default")
-lib:SetButtonsColor(55, 155, 255)
-lib:SetBackgroundColor(255, 155, 0)
-lib:SetTitleColor(0, 255, 255)
-lib:SetCloseBtnColor(255, 0, 255)
+Notif("Script Loaded!",6,Color3.fromRGB(255, 0, 0),"Loads")
