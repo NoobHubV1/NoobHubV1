@@ -23,6 +23,7 @@ local Reload_Guns = {}
 local Prefix = ";"
 
 local States = {
+	Notify = false,
 	CopyChat = false,
 	Autoguard = false,
 	Infjump = false,
@@ -46,7 +47,6 @@ local States = {
 	ShootBack = false,
 	AntiFling = false,
 	AutoInfAmmo = false,
-	joinlogs = false,
 	noclip = false,
 	Godmode = false,
 	loopopendoors = false,
@@ -2092,22 +2092,8 @@ do
 				game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(ohString1, ohString2)
 			end
 		end,nil,"[TARGET]",true)
-		API:CreateCmd("joinlogs", "tells you who is leaving and joining", function(args)
-			local Value = ChangeState(args[2],"joinlogs")
-			if Value then
-				Temp.joinning = game:GetService("Players").PlayerAdded:Connect(function(a)
-					game.StarterGui:SetCore("ChatMakeSystemMessage",  { Text = "[JOIN LOGS]: "..a.Name.." has joined the game!", Color = Color3.fromRGB(16, 243, 255), Font = Enum.Font.SourceSansBold, FontSize = Enum.FontSize.Size24 } )
-
-				end)
-				Temp.joinning2 = game:GetService("Players").PlayerRemoving:Connect(function(a)
-					game.StarterGui:SetCore("ChatMakeSystemMessage",  { Text = "[JOIN LOGS]: "..a.Name.." has left the game!", Color = Color3.fromRGB(50, 14, 255), Font = Enum.Font.SourceSansBold, FontSize = Enum.FontSize.Size24 } )
-				end)
-			else
-				pcall(function()
-					Temp.joinning2:Disconnect()
-					Temp.joinning:Disconnect()
-				end)
-			end
+		API:CreateCmd("notify", "tells you who is leaving and joining and Pick Up", function(args)
+			local Value = ChangeState(args[2],"Notify")
 		end,nil,"[ON/OFF]",true)
 		API:CreateCmd("antifling", "prevents players from flinging you", function(args)
 			local Value = ChangeState(args[2],"AntiFling")
@@ -3930,15 +3916,35 @@ function CopyChat(Target)
 		end
 	end)
 end
+function PickUp(Target)
+        Target.Backpack.ChildAdded:Connect(function(Item)
+                if States.Notify and not Unloaded then
+                        game.StarterGui:SetCore("ChatMakeSystemMessage",  { Text = "[NOTIFY]: "..Target.Name.." Pick Up "..Item.Name, Color = Color3.fromRGB(16, 243, 255), Font = Enum.Font.SourceSansBold, FontSize = Enum.FontSize.Size24 } )
+                end
+        end)
+end
 coroutine.wrap(function()
 	for i,v in pairs(game.Players:GetPlayers()) do
 		if v and v ~= plr then
 			CopyChat(v)
+			PickUp(v)
 		end
 	end
 end)()
-game.Players.PlayerAdded:Connect(CopyChat)
-game.Players.PlayerRemoving:Connect(CopyChat)
+game.Players.PlayerAdded:Connect(function(player)
+	if States.Notify and not Unloaded then
+		game.StarterGui:SetCore("ChatMakeSystemMessage",  { Text = "[NOTIFY]: "..player.Name.." has joined the game!", Color = Color3.fromRGB(16, 243, 255), Font = Enum.Font.SourceSansBold, FontSize = Enum.FontSize.Size24 } )
+	end
+	CopyChat(player)
+	PickUp(player)
+end)
+game.Players.PlayerRemoving:Connect(function(player)
+	if States.Notify and not Unloaded then
+		game.StarterGui:SetCore("ChatMakeSystemMessage",  { Text = "[NOTIFY]: "..player.Name.." has left the game!", Color = Color3.fromRGB(50, 14, 255), Font = Enum.Font.SourceSansBold, FontSize = Enum.FontSize.Size24 } )
+	end
+	CopyChat(player)
+	PickUp(player)
+end)
 task.spawn(function()
 	while wait() do
 		if not plr.Character:FindFirstChild("ForceField") and States.ff == true then
