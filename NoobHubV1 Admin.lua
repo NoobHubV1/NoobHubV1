@@ -24,6 +24,7 @@ local Reload_Guns = {}
 local Prefix = ";"
 
 local States = {
+	CopyChat = false,
 	Autoguard = false,
 	Infjump = false,
 	OldItemMethod = false,
@@ -1540,6 +1541,9 @@ end
 function API:LoadsHttp(Https)
 	loadstring(Game:HttpGet("https://raw.githubusercontent.com/"..Https, true))()
 end
+function API:Chat(msg)
+	game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(msg, "all")
+end
 do
 		API:CreateCmd("removecars", "deletes all cars that are not seated", function(args)
 			local Old = API:GetPosition()
@@ -2889,6 +2893,9 @@ do
 	API:CreateCmd("infjump", "Infinite Jumps", function(args)
 		local value = ChangeState(args[2],"Infjump")
 	end,nil,"[ON/OFF")
+	API:CreateCmd("copychat", "Copy chat everyone", function(args)
+		local value = ChangeState(args[2],"CopyChat")
+	end,nil,"[ON/OFF")
 	API:CreateCmd("autoguard", "Auto Teams Guards", function(args)
 		if API:GuardsFull("c") and API:GuardsFull("b") then
 			API:Notif("Guards Full",3)
@@ -3811,7 +3818,7 @@ end)()
 
 Temp.KIllaurCD = false
 coroutine.wrap(function()
-	while wait(0.58) do --//slow loop
+	while wait(0.65) do --//slow loop
 		if Unloaded then
 			return
 		end
@@ -3924,6 +3931,22 @@ coroutine.wrap(function()
 		end)()
 	end
 end)()
+function CopyChat(Target)
+	Target.Chatted:Connect(function(Message)
+		if States.CopyChat and not Unloaded then
+			API:Chat("["..Target.DisplayName.."]: "..Message)
+		end
+	end)
+end
+coroutine.wrap(function()
+	for i,v in pairs(game.Players:GetPlayers()) do
+		if v and v ~= plr then
+			CopyChat(v)
+		end
+	end
+end)()
+game.Players.PlayerAdded:Connect(CopyChat)
+game.Players.PlayerRemoving:Connect(CopyChat)
 task.spawn(function()
 	while wait() do
 		if not plr.Character:FindFirstChild("ForceField") and States.ff == true then
