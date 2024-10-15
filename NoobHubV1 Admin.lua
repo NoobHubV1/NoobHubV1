@@ -14,8 +14,7 @@ local OldHook, hookmetamethod, getnamecallmethod = nil, hookmetamethod, getnamec
 local HasGamepass,UserInputService = game:GetService("MarketplaceService"):UserOwnsGamePassAsync(Player.UserId, 96651),game:GetService("UserInputService")
 local GlobalVar = ((getgenv and getgenv()) or _G)
 local Unloaded = false
-local Pos = workspace["Criminals Spawn"].SpawnLocation.CFrame
-local saved = CFrame.new(9999, 9999, 9999)
+local saved = workspace["Criminals Spawn"].SpawnLocation.CFrame
 
 local BulletTable = {}
 local Temp = {}
@@ -456,16 +455,13 @@ end
 for i,v in pairs(ScreenGui:GetDescendants()) do v.Name = game:GetService("HttpService"):GenerateGUID(true) end
 local AmmountCurrent = 0
 local commandsLol = {}
-function API:CreateCmd(Header, Description, Callback,IsHide,Extra,IsPre,plsdonotlower)
+function API:CreateCmd(Header, Description, Callback,IsHide,Extra,plsdonotlower)
 	local CloneTXT = TEMP_CMD:Clone()
 	CloneTXT.Text = Prefix..Header.." "..(Extra or "").." | "..Description
 	if IsHide then
 		CloneTXT.Parent =nil
 	else
 		CloneTXT.Parent = CommandsList
-	end
-	if IsPre then
-		CloneTXT.TextColor3 = Color3.new(1, 0.796078, 0.0666667)
 	end
 	AmmountCurrent=AmmountCurrent+1
     commandsLol[Header] = Callback
@@ -1191,11 +1187,6 @@ function API:killall(TeamToKill)
 		repeat task.wait() API:GetGun("AK-47") Gun = Player.Character:FindFirstChild("AK-47") or Player.Backpack:FindFirstChild("AK-47") until Gun
 
 		API:FireGun(Gun)
-		if LastTeam ~= game.Teams.Criminals then
-			API:Refresh()
-		else
-			API:ChangeTeam(game.Teams.Inmates,true)
-		end
 	elseif TeamToKill then
 		if TeamToKill == game.Teams.Inmates or TeamToKill == game.Teams.Guards then
 			if Player.Team ~= game.Teams.Criminals then
@@ -1340,13 +1331,16 @@ end
 function API:lag()
 	API:Notif("Lagging the server...")
 	local Bullets = API:CreateBulletTable(10, nil)
-	if API:GuardsFull("c") then
-		API:GetGun("M9")
-	else
+	if not API:GuardsFull("c") then
 		API:ChangeTeam(game.Teams.Guards)
+		plr.CharacterAdded:Wait()
+		API:ChangeTeam(game.Teams.Criminals)
+		plr.CharacterAdded:Wait()
+	else
+		--
 	end
-	repeat
-		task.wait()
+	repeat task.wait()
+		API:GetGun("M9")
 	until Player.Backpack:FindFirstChild("M9") or Player.Character:FindFirstChild("M9") 
 	game:GetService("ReplicatedStorage").ReloadEvent:FireServer(Player.Backpack:FindFirstChild("M9") or Player.Character:FindFirstChild("M9"))
 	for i = 1,40 do
@@ -1368,13 +1362,16 @@ end
 function API:CrashServer()
 	API:Notif("Attempting to crash the server...")
 	local Bullets = API:CreateBulletTable(40, nil, true)
-	if API:GuardsFull("c") then
-		API:GetGun("M9")
-	else
+	if not API:GuardsFull("c") then
 		API:ChangeTeam(game.Teams.Guards)
+		plr.CharacterAdded:Wait()
+		API:ChangeTeam(game.Teams.Criminals)
+		plr.CharacterAdded:Wait()
+	else
+		--
 	end
-	repeat
-		task.wait()
+	repeat task.wait()
+		API:GetGun("M9")
 	until Player.Backpack:FindFirstChild("M9") or Player.Character:FindFirstChild("M9") 
 	game:GetService("ReplicatedStorage").ReloadEvent:FireServer(Player.Backpack:FindFirstChild("M9") or Player.Character:FindFirstChild("M9"))
 	local Gun = Player.Backpack:FindFirstChild("M9") or Player.Character:FindFirstChild("M9") 
@@ -2164,9 +2161,12 @@ do
 				API:Notif("Now unloopkilling player")
 			end
 		end,nil,"[PLAYER]",true)
-		API:CreateCmd("godmode", "Turns on all settings that prevent you from harm", function(args)
+		API:CreateCmd("godmode", "Turn on Godmode", function(args)
 			local Value = ChangeState(args[2],"Godmode")
 		end,nil,"[ON/OFF]",true)
+		API:CreateCmd("god", "Turn on Godmode", function(args)
+			local Value = ChangeState(args[2],"Godmode")
+		end,true,"[ON/OFF]",true)
 		API:CreateCmd("superknife", "One shot knife", function(args)
 			API:GetSingle("Crude Knife")
 			wait(.6)
@@ -3434,7 +3434,6 @@ do
 		CmdBarFrame:TweenPosition(CmdBarFrame.Position-UDim2.new(0,0,-.5,0),"Out","Back",.8)
 		wait()
 		ScreenGui:Destroy()
-		workspace["Criminals Spawn"].SpawnLocation.CFrame = Pos
 		API:Notif("NoobHubV1 Admin V2.1 is now unloaded, see you soon!",3)
 	end)
 	API:CreateCmd("oldtiger", "Tiger Admin version 1.1 (old version)", function(args)
@@ -3445,7 +3444,6 @@ do
 		CmdBarFrame:TweenPosition(CmdBarFrame.Position-UDim2.new(0,0,-.5,0),"Out","Back",.8)
 		wait()
 		ScreenGui:Destroy()
-		workspace["Criminals Spawn"].SpawnLocation.CFrame = Pos
 		API:LoadsHttp("NoobHubV1/NoobHubV1/main/Old%20Tiger%20Admin.txt")	
 	end)
 	API:CreateCmd("tiger", "Tiger Admin new version", function(args)
@@ -3456,7 +3454,6 @@ do
 		CmdBarFrame:TweenPosition(CmdBarFrame.Position-UDim2.new(0,0,-.5,0),"Out","Back",.8)
 		wait()
 		ScreenGui:Destroy()
-		workspace["Criminals Spawn"].SpawnLocation.CFrame = Pos
 		API:LoadsHttp("NoobHubV1/NoobHubV1/main/Tiger%20Admin.txt")	
 	end)
 	API:CreateCmd("prizz", "Prizz Life Admin v0.81", function(args)
@@ -3467,7 +3464,6 @@ do
 		CmdBarFrame:TweenPosition(CmdBarFrame.Position-UDim2.new(0,0,-.5,0),"Out","Back",.8)
 		wait()
 		ScreenGui:Destroy()
-		workspace["Criminals Spawn"].SpawnLocation.CFrame = Pos
 		API:LoadsHttp("NoobHubV1/RobloxScripts/main/Prison%20Life%20Admin.lua")	
 	end)
 	API:CreateCmd("superoldtiger", "Tiger admin super old version (V0.5 and Patched)", function(args)
@@ -3478,7 +3474,6 @@ do
 		CmdBarFrame:TweenPosition(CmdBarFrame.Position-UDim2.new(0,0,-.5,0),"Out","Back",.8)
 		wait()
 		ScreenGui:Destroy()
-		workspace["Criminals Spawn"].SpawnLocation.CFrame = Pos
 		API:LoadsHttp("NoobHubV1/NoobHubV1/main/Tiger%20Admin%20V0.5%20(Patched).txt")	
 	end)
 end
@@ -3843,9 +3838,6 @@ coroutine.wrap(function()
 			end
 			wait(2)
 			API:Refresh()
-			if States.AutoRemoveff == true then
-				States.AutoRemoveff = false
-			end
 		end
 		if States.AntiShield then
 			for i,v in pairs(game:GetService("Players"):GetPlayers()) do
@@ -4557,7 +4549,6 @@ coroutine.wrap(function()
 end)()
 local DefaultChatSystemChatEvents = game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents
 API:Refresh(true)
-workspace:FindFirstChild("Criminals Spawn").SpawnLocation.CFrame = saved
 API:Notif("Welcome to NoobHubV1 admin V2.1 (made by NoobHubV1)",nil,true)
 CmdBarFrame:TweenPosition(UDim2.new(0.5, 0, 0.899999998, 0)-UDim2.new(0,0,.05,0),"Out","Back",.5)
 wait(2.1)
