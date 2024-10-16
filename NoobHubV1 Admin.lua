@@ -533,9 +533,13 @@ function API:Notif(Text,Dur)
 		if not Dur then
 			Dur = 1.5
 		end
+		local Notif = Instance.new("ScreenGui")
 		local Frame_1 = Instance.new("Frame")
 		local TextLabel = Instance.new("TextLabel")
-		Frame_1.Parent = ScreenGui
+		Notif.Name = math.random()
+		Notif.Parent = (game:GetService("CoreGui") or gethui())
+		Notif.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+		Frame_1.Parent = Notif
 		Frame_1.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 		Frame_1.BackgroundTransparency=1
 		Frame_1.BorderSizePixel = 0
@@ -3558,6 +3562,20 @@ coroutine.wrap(function()
 				end
 			end
 		end)
+                if States.Godmode and Unloaded == false then
+			if States.AutoRemoveff == false then
+				States.AutoRemoveff = true
+			end
+			wait(2)
+			API:Refresh()
+		end
+                if not plr.Character:FindFirstChild("ForceField") and States.ff and not Unloaded then
+                         if States.AutoRemoveff then
+                                  States.AutoRemoveff = false
+                         end
+                         API:Refresh()
+                         wait(.3)
+                end
 	end
 end)()
 
@@ -3818,13 +3836,6 @@ coroutine.wrap(function()
 				end
 			end
 		end
-		if States.Godmode then
-			if States.AutoRemoveff == false then
-				States.AutoRemoveff = true
-			end
-			wait(2)
-			API:Refresh()
-		end
 		if States.AntiShield then
 			for i,v in pairs(game:GetService("Players"):GetPlayers()) do
 				if v and v.Character and v:FindFirstChild("Torso") and v:FindFirstChild("Torso"):FindFirstChild("ShieldFolder") then
@@ -3944,17 +3955,6 @@ game.Players.PlayerRemoving:Connect(function(player)
 	end
 	CopyChat(player)
 	PickUp(player)
-end)
-task.spawn(function()
-	while wait() do
-		if not plr.Character:FindFirstChild("ForceField") and States.ff == true then
-			API:ChangeTeam(plr.Team)
-			wait(.4)
-		end
-		if Unloaded then
-			break
-		end
-	end
 end)
 function MostClose(Position)
 	local Max, Closest = math.huge,nil
