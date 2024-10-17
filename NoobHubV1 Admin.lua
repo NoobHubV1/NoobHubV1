@@ -467,21 +467,17 @@ function API:CreateCmd(Header, Description, Callback,IsHide,Extra,plsdonotlower)
     commandsLol[Header] = Callback
 	local function FactCheck(TheText)
 		if Unloaded then return end
-		local Text = nil
-		if not plsdonotlower then
-			Text=TheText:lower()
+		local Text =nil
+		if plsdonotlower then
+			Text = TheText:lower()
 		else
 			Text = TheText
 		end
-		local Split = Text:split(" ")
-		local One = Split[1]
-		local Two = Split[2]
-		local Three = Split[3]
-		local Four = Split[4]
-
-		if One:lower() == Header:lower() or One:lower() == Prefix..Header:lower() then
+		local Args = Text:split(" ")
+			
+		if Args[1]:lower() == Header:lower() or Args[1]:lower() == Prefix..Header:lower() then
 			local a,b,c,d = pcall(function()
-				Callback(Split)
+				Callback(Args)
 			end)
 			if not a and b and c and d then
 				warn("--> TIGER ADMIN DETECTED AN ERROR")
@@ -755,7 +751,7 @@ function API:bring(Target,TeleportTo,MoreTP,DontBreakCar)
 			Seat:Sit(Player.Character:FindFirstChildOfClass("Humanoid"))
 		until Player.Character:FindFirstChildOfClass("Humanoid").Sit == true
 		wait() --// so it doesnt break
-		repeat API:swait()
+		repeat task.wait()
 			if CheckForBreak() or not Player.Character:FindFirstChildOfClass("Humanoid") or Player.Character:FindFirstChildOfClass("Humanoid").Sit == false then
 				break
 			end
@@ -3324,6 +3320,11 @@ do
 	API:CreateCmd("items", "Gets all items", function(args)
 		API:AllItems()
 	end)
+	API:CreateCmd("tp", "Teleports player 1 to player2", function(args)
+		local player1 = API:FindPlayer(args[2])
+		local player2 = API:FindPlayer(args[3])
+		API:bring(player1, player2.Character.HumanoidRootPart.CFrame)
+	end,nil,"[PLAYER1,PLAYER2]",true)
 	API:CreateCmd("noclip", "Go through walls", function(args)
 		if States.noclip == nil then
 			States.noclip = false
@@ -4367,6 +4368,11 @@ function AdminChatted(Text,Speaker)
 			API:bring(Target,Speaker.Character.Head.CFrame)
 		end
 	end
+        if PlayerCheckCommand("tp") then
+                local player1 = API:FindPlayer(Arg2_P)
+                local player2 = API:FindPlayer(Arg3_P)
+                API:bring(player1,player2.Character.HumanoidRootPart.CFrame)
+        end
 	if PlayerCheckCommand("opengate") then
 		local OldPos = game:GetService("Players").LocalPlayer.Character:GetPrimaryPartCFrame()
 		repeat task.wait()
