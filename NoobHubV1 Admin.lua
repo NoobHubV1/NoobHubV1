@@ -429,7 +429,7 @@ TextLabel.BackgroundTransparency = 1.000
 TextLabel.Position = UDim2.new(0.00658436213, 0, 0, 0)-UDim2.new(0,0,1,0)
 TextLabel.Size = UDim2.new(0, 300, 0, 42)
 TextLabel.Font = Enum.Font.Cartoon
-TextLabel.Text = "NoobHubV1 Admin V2.1"
+TextLabel.Text = "NoobHubV1 Admin V2.2"
 TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 TextLabel.TextScaled = true
 TextLabel.TextSize = 14.000
@@ -457,7 +457,7 @@ local AmmountCurrent = 0
 local commandsLol = {}
 function API:CreateCmd(Header, Description, Callback,IsHide,Extra,plsdonotlower)
 	local CloneTXT = TEMP_CMD:Clone()
-	CloneTXT.Text = Prefix..Header.." "..(Extra or "").." | "..Description
+	CloneTXT.Text = Header.." "..(Extra or "").." | "..Description
 	if IsHide then
 		CloneTXT.Parent =nil
 	else
@@ -473,20 +473,21 @@ function API:CreateCmd(Header, Description, Callback,IsHide,Extra,plsdonotlower)
 		else
 			Text = TheText
 		end
-		local Args = Text:split(" ")
+		local Split = Text:split(" ")
+		local Arg1 = Split[1]
 			
-		if Args[1]:lower() == Header:lower() or Args[1]:lower() == Prefix..Header:lower() then
+		if Arg1:lower() == Header:lower() or Arg1:lower() == Prefix..Header:lower() then
 			local a,b,c,d = pcall(function()
-				Callback(Args)
+				Callback(Split)
 			end)
 			if not a and b and c and d then
-				warn("--> TIGER ADMIN DETECTED AN ERROR")
-				warn("COMMAND: "..Prefix..Header)
-				warn("ERROR: "..tostring(b))
+				API:Notif("--> TIGER ADMIN DETECTED AN ERROR")
+				API:Notif("COMMAND: "..Prefix..Header)
+				API:Notif("ERROR: "..tostring(b))
 			end
 		end
 	end
-	local function PlrChatted(Message)
+	local function PlayerChatted(Message)
 		if Message and not Unloaded then
 			local Subbed = string.sub(Message,1,1,1,1)
 			if Subbed == Prefix then
@@ -494,7 +495,7 @@ function API:CreateCmd(Header, Description, Callback,IsHide,Extra,plsdonotlower)
 			end
 		end
 	end
-	Player.Chatted:Connect(PlrChatted)
+	Player.Chatted:Connect(PlayerChatted)
 	local function CommandB(Key)
 		if Key and not Unloaded then
 			FactCheck(CommandBar.Text)
@@ -1023,8 +1024,8 @@ end
 function API:UnSit()
 	game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid").Sit = false
 end
-function API:KillPlayer(Target,Failed,DoChange)
-	local Bullets = API:CreateBulletTable(10, Target)
+function API:KillPlayer(Target,Hit,Failed,DoChange)
+	local Bullets = API:CreateBulletTable(Hit, Target)
 	if not Target or not Target.Character or not Target.Character:FindFirstChildOfClass("Humanoid") or Target.Character:FindFirstChildOfClass("Humanoid").Health <1 then
 		return
 	end
@@ -1048,7 +1049,7 @@ function API:KillPlayer(Target,Failed,DoChange)
 		wait(.7)
 		pcall(function()
 			if Target.Character:FindFirstChildOfClass("Humanoid").Health >1 and not Failed then
-				API:KillPlayer(Target,true)
+				API:KillPlayer(Target,Bullet,true)
 			end
 		end)
 	end)()
@@ -1155,8 +1156,8 @@ function API:MKILL(target,STOP,P)
 	end
 	API:MoveTo(saved)
 end
-function API:killall(TeamToKill)
-	if not TeamToKill then
+function API:killall(TeamToKill,Hit)
+	if TeamToKill == "all" then
 		local LastTeam = Player.Team
 		if LastTeam ~= game.Teams.Criminals then
 			API:ChangeTeam(game.Teams.Criminals)
@@ -1164,7 +1165,7 @@ function API:killall(TeamToKill)
 		for i,v in pairs(game.Players:GetPlayers()) do
 			if v and v ~= game.Players.LocalPlayer and not table.find(API.Whitelisted,v) and v ~= nil and v.Team == game.Teams.Inmates or v.Team == game.Teams.Guards then
 				if not v.Character and not v.Character.Head and not v.Character.Humanoid <1 or not v.Character:FindFirstChild("ForceField") then
-					API:CreateBulletTable(10, v)
+					API:CreateBulletTable(Hit, v)
 				end
 			end
 		end
@@ -1178,7 +1179,7 @@ function API:killall(TeamToKill)
 		for i,v in pairs(game.Teams.Criminals:GetPlayers()) do
 			if v and v ~= game.Players.LocalPlayer and not table.find(API.Whitelisted,v) and v ~= nil then
 				if not v.Character and not v.Character.Head and not v.Character.Humanoid <1 or not v.Character:FindFirstChild("ForceField") then
-					API:CreateBulletTable(10, v)
+					API:CreateBulletTable(Hit, v)
 				end
 			end
 		end
@@ -1187,27 +1188,26 @@ function API:killall(TeamToKill)
 		repeat task.wait() API:GetGun("AK-47") Gun = Player.Character:FindFirstChild("AK-47") or Player.Backpack:FindFirstChild("AK-47") until Gun
 
 		API:FireGun(Gun)
-	elseif TeamToKill then
-		if TeamToKill == game.Teams.Inmates or TeamToKill == game.Teams.Guards then
-			if Player.Team ~= game.Teams.Criminals then
-				API:ChangeTeam(game.Teams.Criminals)
-			end
-		elseif TeamToKill == game.Teams.Criminals then
-			if Player.Team ~= game.Teams.Inmates then
-				API:ChangeTeam(game.Teams.Inmates)
-				plr.CharacterAdded:Wait() wait()
-			end
-		end
-		for i,v in pairs(TeamToKill:GetPlayers()) do
-			if v and v~=Player and  not table.find(API.Whitelisted,v) then
-				API:CreateBulletTable(10, v)
-			end
-		end
-		local Gun = Player.Backpack:FindFirstChild("AK-47") or Player.Character:FindFirstChild("AK-47")
-		repeat task.wait() API:GetGun("AK-47") Gun = Player.Backpack:FindFirstChild("AK-47") or Player.Character:FindFirstChild("AK-47") until Gun
-
-		API:FireGun(Gun)
 	end
+	if TeamToKill == game.Teams.Inmates or TeamToKill == game.Teams.Guards then
+		if Player.Team ~= game.Teams.Criminals then
+			API:ChangeTeam(game.Teams.Criminals)
+		end
+	elseif TeamToKill == game.Teams.Criminals then
+		if Player.Team ~= game.Teams.Inmates then
+			API:ChangeTeam(game.Teams.Inmates)
+			plr.CharacterAdded:Wait() wait()
+		end
+	end
+	for i,v in pairs(TeamToKill:GetPlayers()) do
+		if v and v~=Player and  not table.find(API.Whitelisted,v) then
+			API:CreateBulletTable(Hit, v)
+		end
+	end
+	local Gun = Player.Backpack:FindFirstChild("AK-47") or Player.Character:FindFirstChild("AK-47")
+	repeat task.wait() API:GetGun("AK-47") Gun = Player.Backpack:FindFirstChild("AK-47") or Player.Character:FindFirstChild("AK-47") until Gun
+
+	API:FireGun(Gun)
 end
 function API:AllGuns()
 	local saved = game:GetService("Players").LocalPlayer.Character:GetPrimaryPartCFrame()
@@ -1584,6 +1584,7 @@ do
 				local Prefixn = tostring(New)
 				Settings.Prefix = Prefixn
 				Prefix = Prefixn
+				CommandBar.PlaceholderText = "Press "..New.." To Enter"
 				API:Notif("prefix set to "..New)
 			else
 				API:Notif("no prefix selected?",false)
@@ -2298,17 +2299,17 @@ do
 	end,nil,"[PLAYER]")
 	API:CreateCmd("kill", "Kills a player", function(args)
 		if args[2] == "all" then
-			API:killall()
+			API:killall("all",7)
 		elseif args[2] == "everyone" then
-			API:killall()
+			API:killall("all",7)
 		elseif args[2] == "others" then
-			API:killall()
+			API:killall("all",7)
 		elseif args[2] == "guards" then
-			API:killall(game.Teams.Guards)
+			API:killall(game.Teams.Guards,7)
 		elseif args[2] == "inmates" then
-			API:killall(game.Teams.Inmates)
+			API:killall(game.Teams.Inmates,7)
 		elseif args[2] == "criminals" then
-			API:killall(game.Teams.Criminals)
+			API:killall(game.Teams.Criminals,7)
 		elseif args[2] == "random" then
 			local random = nil
 			while true do
@@ -2318,12 +2319,12 @@ do
 					break
 				end
 			end
-			API:KillPlayer(random)
+			API:KillPlayer(random,7)
 			API:Notif("Killed "..random.Name)
 		else
 			local Player = API:FindPlayer(args[2])
 			if Player then
-				API:KillPlayer(Player)
+				API:KillPlayer(Player,7)
 			end
 		end
 	end,nil,"[PLAYER,ALL,TEAM]")
@@ -2581,6 +2582,46 @@ do
 			end
 		end
 	end,nil,"[PLAYER,ALL]")
+	API:CreateCmd("damage", "Damages player(s)", function(val)
+		local Amount = tonumber(val[3])
+		if val[2] == "all" or val[2] == "everyone" or val[2] == "others" then
+			if Amount ~= nil then
+				API:killall("all",Amount)
+				API:Notif("Damage all "..Amount)
+			else
+				API:Notif("Not Amount")
+			end
+		elseif val[2] == "inmates" then
+			if Amount ~= nil then
+				API:killall(game.Teams.Inmates,Amount)
+				API:Notif("Damage inmates "..Amount)
+			else
+				API:Notif("Not Amount")
+			end
+		elseif val[2] == "guards" then
+			if Amount ~= nil then
+				API:killall(game.Teams.Guards,Amount)
+				API:Notif("Damage guards "..Amount)
+			else
+				API:Notif("Not Amount")
+			end
+		elseif val[2] == "criminals" then
+			if Amount ~= nil then
+				API:killall(game.Teams.Criminals,Amount)
+				API:Notif("Damage criminals "..Amount)
+			else
+				API:Notif("Not Amount")
+			end
+		else
+			local Tar = API:FindPlayer(val[2])
+			if Amount ~= nil then
+				API:KillPlayer(Tar,Amount)
+				API:Notif("Damage "..Tar.DisplayName.." "..Amount)
+			else
+				API:Notif("Not Amount")
+			end
+		end
+	end,nil,"[PLAYER,ALL,TEAM]",true)
 	API:CreateCmd("heaven", "Teleports a player to the void", function(args)
 		local Player = API:FindPlayer(args[2])
 		if Player then
@@ -3275,7 +3316,7 @@ do
 		API:Refresh(true)
 	end, true)
 	API:CreateCmd("allcmds", "tells you the ammount of commands tiger admin has", function(args)
-		API:Notif("Tiger admin has "..tostring(AmmountCurrent).." commands.")
+		API:Notif("NoobHubV1 admin has "..tostring(AmmountCurrent).." commands.")
 	end)
 	API:CreateCmd("tptool", "Teleport to tool(s)", function(args)
 		if args[2] == "shotgun" then
@@ -3452,7 +3493,7 @@ do
 		CmdBarFrame:TweenPosition(CmdBarFrame.Position-UDim2.new(0,0,-.5,0),"Out","Back",.8)
 		wait()
 		ScreenGui:Destroy()
-		API:Notif("NoobHubV1 Admin V2.1 is now unloaded, see you soon!",3)
+		API:Notif("NoobHubV1 Admin V2.2 is now unloaded, see you soon!",3)
 	end)
 	API:CreateCmd("oldtiger", "Tiger Admin version 1.1 (old version)", function(args)
 		API:Destroy(game:FindFirstChild("NoobHubV1_Admin"))
@@ -3906,19 +3947,19 @@ coroutine.wrap(function()
 		coroutine.wrap(function()
 			if States.loopkillcriminals then
 				wait(.5)
-				API:killall(game.Teams.Criminals)
+				API:killall(game.Teams.Criminals,7)
 			end
 			if States.loopkillinmates then
 				wait(.5)
-				API:killall(game.Teams.Inmates)
+				API:killall(game.Teams.Inmates,7)
 			end
 			if States.loopkillguards then
 				wait(.5)
-				API:killall(game.Teams.Guards)
+				API:killall(game.Teams.Guards,7)
 			end
 			if Temp and Temp.Loopkillall then
 				wait(.5)
-				API:killall()
+				API:killall("all",7)
 			end
 		end)()
 		coroutine.wrap(function()
@@ -4163,6 +4204,7 @@ function AdminChatted(Text,Speaker)
 		Prefix.."unloopkill [PLAYER,ALL]",
 		Prefix.."bring [PLAYER]",
 		Prefix.."goto [PLAYER]",
+		Prefix.."tp [PLAYER1,PLAYER2]",
 	}
 	local Commands2 = { --//Teleports
 		Prefix.."nex [ME,PLAYER]",
@@ -4588,8 +4630,10 @@ coroutine.wrap(function()
 end)()
 local DefaultChatSystemChatEvents = game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents
 API:Refresh(true)
-API:Notif("Welcome to NoobHubV1 admin V2.1 (made by NoobHubV1)",nil,true)
+API:Notif("Welcome to NoobHubV1 admin V2.2 (made by NoobHubV1)",nil,true)
 CmdBarFrame:TweenPosition(UDim2.new(0.5, 0, 0.899999998, 0)-UDim2.new(0,0,.05,0),"Out","Back",.5)
 wait(2.1)
 API:Notif("type "..Prefix.."noinvite to disabled discord invite",nil,true)
+wait(1)
+CommandBar.PlaceholderText = "Press "..Prefix.." To Enter"
 end
