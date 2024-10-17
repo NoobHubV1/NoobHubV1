@@ -1273,7 +1273,7 @@ function AntiPunchC(v2)
 								end)
 							end
 						end
-					end
+			                end
 				end
 			end)
 		end)
@@ -1544,6 +1544,13 @@ function API:LoadsHttp(Https)
 end
 function API:Chat(msg)
 	game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest:FireServer(msg, "all")
+end
+function API:TPTool(Tool)
+	if Tool == "Crude Knife" or Tool == "Hammer" or Tool == "Key card" then
+		API:MoveTo(workspace.Prison_ITEMS.single:FindFirstChild(Tool).ITEMPICKUP.CFrame)
+	else
+		API:MoveTo(workspace.Prison_ITEMS.giver:FindFirstChild(Tool).ITEMPICKUP.CFrame)
+	end
 end
 do
 		API:CreateCmd("removecars", "deletes all cars that are not seated", function(args)
@@ -3274,7 +3281,27 @@ do
 	API:CreateCmd("allcmds", "tells you the ammount of commands tiger admin has", function(args)
 		API:Notif("Tiger admin has "..tostring(AmmountCurrent).." commands.")
 	end)
-
+	API:CreateCmd("tptool", "Teleport to tool(s)", function(args)
+		if args[2] == "shotgun" then
+			API:TPTool("Remington 870")
+		elseif args[2] == "ak" then
+			API:TPTool("AK-47")
+		elseif args[2] == "m9" then
+			API:TPTool("M9")
+		elseif args[2] == "m4a1" then
+			API:TPTool("M4A1")
+		elseif args[2] == "hammer" then
+			API:TPTool("Hammer")
+		elseif args[2] == "knife" or args[2] == "crude knife" then
+			API:TPTool("Crude Knife")
+		elseif args[2] == "key" or args[2] == "keycard" then
+			if not workspace.Prison_ITEMS.single["Key card"] then
+				API:Notif("Not Key card")
+			else
+				API:TPTool("Key card")
+			end
+		end
+	end,nil,"[TOOL]")
 	API:CreateCmd("serverhop", "Joins a different server", function(args)
 		local Ids = {}
 		for _, v in ipairs(game:GetService("HttpService"):JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100")).data) do
