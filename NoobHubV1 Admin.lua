@@ -899,8 +899,15 @@ function API:WaitForRespawn(Cframe,NoForce)
 					end)
 				end)()
 				NewCharacter:WaitForChild("HumanoidRootPart")
-				for i = 1,8 do
-					NewCharacter.HumanoidRootPart.CFrame = Cframe
+				Cframe = API:ConvertPosition(Cframe)
+				local Amount = 10
+				if Player.PlayerGui['Home']['hud']['Topbar']['titleBar'].Title.Text:lower() == "lights out" or Player.PlayerGui.Home.hud.Topbar.titleBar.Title.Text:lower() == "lightsout" then
+					Amount = 16
+				end
+				for i = 1, Amount do
+					API:UnSit()
+					NewCharacter:WaitForChild("HumanoidRootPart").CFrame = Cframe
+					API:swait()
 				end
 			end)
 			a:Disconnect()
@@ -1071,16 +1078,13 @@ function API:GetGun(Item, Ignore)
 	else
 		if not plr.Character:FindFirstChild(Item) or not plr.Backpack:FindFirstChild(Item) then
 			local LastPosition = API:GetPosition()
-			local CameraPosition = plr.Character
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Prison_ITEMS.giver:FindFirstChild(Item).ITEMPICKUP.CFrame
 			repeat task.wait()
-				workspace.CurrentCamera.CameraSubject = workspace.Prison_ITEMS.giver:FindFirstChild(Item, true).ITEMPICKUP
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Prison_ITEMS.giver:FindFirstChild(Item).ITEMPICKUP.CFrame
 				coroutine.wrap(function()
 					workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.giver:FindFirstChild(Item).ITEMPICKUP)
 				end)()
 			until plr.Character:FindFirstChild(Item) or plr.Backpack:FindFirstChild(Item)
 			API:MoveTo(LastPosition)
-			workspace.CurrentCamera.CameraSubject = CameraPosition
 		end
 	end
 end
@@ -1095,16 +1099,13 @@ function API:GetSingle(Item, Ignore)
 	else
 		if not plr.Character:FindFirstChild(Item) or not plr.Backpack:FindFirstChild(Item) then
 			local LastPosition = API:GetPosition()
-			local CameraPosition = plr.Character
+			game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Prison_ITEMS.single:FindFirstChild(Item).ITEMPICKUP.CFrame
 			repeat task.wait()
-				workspace.CurrentCamera.CameraSubject = workspace.Prison_ITEMS.single:FindFirstChild(Item, true).ITEMPICKUP
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Workspace.Prison_ITEMS.single:FindFirstChild(Item).ITEMPICKUP.CFrame
 				coroutine.wrap(function()
 					workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.single:FindFirstChild(Item).ITEMPICKUP)
 				end)()
 			until plr.Character:FindFirstChild(Item) or plr.Backpack:FindFirstChild(Item)
 			API:MoveTo(LastPosition)
-			workspace.CurrentCamera.CameraSubject = CameraPosition
 		end
 	end
 end
@@ -1487,14 +1488,8 @@ plr.CharacterAdded:Connect(function(NewCharacter)
 	if States.Autoguard then
 		if API:GuardsFull("c") then
 			-- nothing
-		elseif API:GuardsFull("b") then
-			if Player.Team ~= game.Teams.Guards then
-				wait(.055)
-				API:ChangeTeam(game.Teams.Guards)
-			end
 		else
 			if Player.Team ~= game.Teams.Guards then
-				wait(.05)
 				API:ChangeTeam(game.Teams.Guards)
 			end
 		end
@@ -2299,11 +2294,7 @@ do
 		API:Notif("Unloop teamed")
 	end,nil,"[PLAYER]")
 	API:CreateCmd("kill", "Kills a player", function(args)
-		if args[2] == "all" then
-			API:killall("all",7)
-		elseif args[2] == "everyone" then
-			API:killall("all",7)
-		elseif args[2] == "others" then
+		if args[2] == "all" or args[2] == "everyone" or args[2] == "others" then
 			API:killall("all",7)
 		elseif args[2] == "guards" then
 			API:killall(game.Teams.Guards,7)
@@ -3058,7 +3049,7 @@ do
 	API:CreateCmd("opengate", "Opens the main prison gate", function(args)
 		local OldPos = game:GetService("Players").LocalPlayer.Character:GetPrimaryPartCFrame()
 		repeat task.wait()
-                        API:MoveTo(game.Workspace.Prison_ITEMS.buttons["Prison Gate"]["Prison Gate"].CFrame)
+                        plr.Character.HumanoidRootPart.CFrame = game.Workspace.Prison_ITEMS.buttons["Prison Gate"]["Prison Gate"].CFrame
                         pcall(function()
 	                        workspace.Remote.ItemHandler:InvokeServer(workspace.Prison_ITEMS.buttons["Prison Gate"]["Prison Gate"])
                         end)
@@ -3887,7 +3878,7 @@ end)()
 
 Temp.KIllaurCD = false
 coroutine.wrap(function()
-	while wait(0.65) do --//slow loop
+	while wait(0.70) do --//slow loop
 		if Unloaded then
 			return
 		end
