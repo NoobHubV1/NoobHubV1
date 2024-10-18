@@ -29,7 +29,7 @@ local States = {
 	Infjump = false,
 	OldItemMethod = false,
 	AutoRemoveff = false,
-	DraggableGuis = false,
+	DraggableGuis = true,
 	spawnguns = false,
 	Antishield = false,
 	DoorsDestroy = false,
@@ -362,7 +362,7 @@ CommandBar.Position = UDim2.new(0.0359953903, 0, 0.128254473, 0)
 CommandBar.Size = UDim2.new(0, 519, 0, 46)
 CommandBar.Font = Enum.Font.SourceSans
 CommandBar.PlaceholderColor3 = Color3.fromRGB(178, 178, 178)
-CommandBar.PlaceholderText = "NoobHubV1 Admin"
+CommandBar.PlaceholderText = "Press "..Prefix.." To Enter"
 CommandBar.Text = ""
 CommandBar.TextColor3 = Color3.fromRGB(255, 255, 255)
 CommandBar.ClearTextOnFocus = false
@@ -427,9 +427,9 @@ TextLabel.Parent = ScreenGui
 TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 TextLabel.BackgroundTransparency = 1.000
 TextLabel.Position = UDim2.new(0.00658436213, 0, 0, 0)-UDim2.new(0,0,1,0)
-TextLabel.Size = UDim2.new(0, 300, 0, 42)
+TextLabel.Size = UDim2.new(0, 400, 0, 52)
 TextLabel.Font = Enum.Font.Cartoon
-TextLabel.Text = "NoobHubV1 Admin V2.2"
+TextLabel.Text = "NoobHubV1 Admin V2.2 | Prefix set "..Prefix
 TextLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 TextLabel.TextScaled = true
 TextLabel.TextSize = 14.000
@@ -899,7 +899,9 @@ function API:WaitForRespawn(Cframe,NoForce)
 					end)
 				end)()
 				NewCharacter:WaitForChild("HumanoidRootPart")
-				API:MoveTo(Cframe)
+				for i = 1,8 do
+					NewCharacter.HumanoidRootPart.CFrame = Cframe
+				end
 			end)
 			a:Disconnect()
 			Cframe = nil
@@ -1576,8 +1578,6 @@ do
 		API:CreateCmd("lag", "lags the server", function(args)
 			API:lag()
 		end,nil,nil,true)
-		API:CreateCmd("kick", "!KICKS TIGER ADMIN USERS ONLY! SAY IN CHAT", function(args)
-		end,nil,"[TIGER ADMIN USER]",true)
 		API:CreateCmd("prefix", "Sets a different prefix", function(args)
 			local New = args[2]
 			if New and tostring(New) then
@@ -1585,6 +1585,7 @@ do
 				Settings.Prefix = Prefixn
 				Prefix = Prefixn
 				CommandBar.PlaceholderText = "Press "..New.." To Enter"
+				TextLabel.Text = "NoobHubV1 Admin V2.2 | Prefix set "..New
 				API:Notif("prefix set to "..New)
 			else
 				API:Notif("no prefix selected?",false)
@@ -4634,6 +4635,4 @@ API:Notif("Welcome to NoobHubV1 admin V2.2 (made by NoobHubV1)",nil,true)
 CmdBarFrame:TweenPosition(UDim2.new(0.5, 0, 0.899999998, 0)-UDim2.new(0,0,.05,0),"Out","Back",.5)
 wait(2.1)
 API:Notif("type "..Prefix.."noinvite to disabled discord invite",nil,true)
-wait(1)
-CommandBar.PlaceholderText = "Press "..Prefix.." To Enter"
 end
