@@ -95,4 +95,5 @@ spawn(function()
 end)
 
 lib:SetTheme("Default")
+lib:SetIcon(game:GetService("Players"):GetUserThumbnailAsync(4798820665, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420))
 Notif("Script Loaded!",6,Color3.fromRGB(255, 0, 0),"Loads")
