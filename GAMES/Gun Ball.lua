@@ -39,11 +39,9 @@ lib:AddButton("Unload", function()
 end)
 
 spawn(function()
-	while wait() do
+	while task.wait() do
 		if States.AutoParry and not ScriptDisabled then
-			if game.Players.LocalPlayer.Character:FindFirstChild("Highlight") then
-				ParryAttempt()
-			end
+			ParryAttempt()
 		end
 	end
 end)
