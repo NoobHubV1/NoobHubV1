@@ -1,12 +1,23 @@
 local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/NoobHubV1/RobloxScripts/main/Arceus%20X%20V3%20Lib.lua"))()
 local States = {}
       States.AutoParry = false
+      States.InfiniteRange = false
 local ScriptDisabled = false
 
 lib:SetTitle("Gun Ball")
 lib:SetTitleColor(0, 0, 255)
 
 function ParryAttempt()
+	if States.InfiniteRange and not ScriptDisabled then
+		local args = {
+			[1] = {
+				["success"] = false,
+				["reason"] = "blocked"
+			}
+		}
+		game:GetService("ReplicatedStorage").resources.assets.balls.communication.network_remote_event:FireServer(unpack(args))
+		game:GetService("ReplicatedStorage").resources.assets.balls.communication.network_remote_event:FireServer(unpack(args))
+	end
 	game.ReplicatedStorage.RemoteEvent:FireServer({["name"] = "defense",["origin"] = "balltargets"},{})
 end
 
@@ -28,6 +39,11 @@ lib:AddToggle("Auto Parry", function(v)
 	Notify("Success", 'Auto Parry has been changed to '..tostring(States.AutoParry), Color3.fromRGB(0, 255, 0), 3)
 end)
 
+lib:AddToggle("Infinite Range Parry", function(v)
+	States.InfiniteRange = v
+	Notify("Success", 'Infinite Range has been changed to '..tostring(States.InfiniteRange), Color3.fromRGB(0, 255, 0), 3)
+end)
+
 lib:AddButton("Parry", function()
 	ParryAttempt()
 end)
@@ -41,7 +57,9 @@ end)
 spawn(function()
 	while task.wait() do
 		if States.AutoParry and not ScriptDisabled then
-			ParryAttempt()
+			task.spawn(ParryAttempt)
+			task.spawn(ParryAttempt)
+			task.spawn(ParryAttempt)
 		end
 	end
 end)
