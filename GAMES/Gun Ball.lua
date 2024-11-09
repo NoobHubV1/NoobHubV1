@@ -57,9 +57,7 @@ end)
 spawn(function()
 	while task.wait() do
 		if States.AutoParry and not ScriptDisabled then
-			task.spawn(ParryAttempt)
-			task.spawn(ParryAttempt)
-			task.spawn(ParryAttempt)
+			ParryAttempt()
 		end
 	end
 end)
