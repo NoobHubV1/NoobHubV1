@@ -38,7 +38,9 @@ end)
 while task.wait() do
 if(_G.farm2==true and _G.globalTarget~=nil and _G.globalTarget:FindFirstChild("Head") and Player.Character:FindFirstChildOfClass("Tool"))then
 local target = _G.globalTarget
+for i = 1,5 do
 game.ReplicatedStorage.Gun:FireServer({["Normal"] = Vector3.new(0, 0, 0), ["Direction"] = target.Head.Position, ["Name"] = Player.Character:FindFirstChildOfClass("Tool").Name, ["Hit"] = target.Head, ["Origin"] = target.Head.Position, ["Pos"] = target.Head.Position,})
+end
 end
 end
 end
@@ -47,5 +49,5 @@ local Window = Library:NewWindow("NoobHubV1 Hub")
 
 local Section = Window:NewSection("Main")
 
-Section:CreateToggle("Auto Farm", function(Value)AutoFarm(Value, AutoTeleport)
+Section:CreateToggle("Auto Farm", function(Value)AutoFarm(Value)
 end)
