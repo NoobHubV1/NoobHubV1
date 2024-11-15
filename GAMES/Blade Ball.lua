@@ -3,14 +3,16 @@ while getgenv().god and task.wait() do
     for _,ball in next, workspace.Balls:GetChildren() do
         if ball then
             if game:GetService("Players").LocalPlayer.Character and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(ball.Position + Vector3.new(0, -19, 0))
+                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(ball.Position + Vector3.new(0, 0, 20))
                 if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Highlight") then
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = ball.CFrame * CFrame.new(0, 0, 2)
                     game:GetService("VirtualInputManager"):SendKeyEvent(true,"F",false,game)
                 end
             end
         end
     end
 end
+wait(.5)
 local function get_plr()
   return game.Players.LocalPlayer
 end
@@ -90,7 +92,7 @@ task.spawn(function()
 end)
 
 local function DetectSpam()
-  local Balls = workspace:WaitForChild("Balls", 20)
+  local Balls = workspace:WaitForChild("Balls", 30)
   
   local OldPos = Vector3.new()
   local OldTick1 = tick()
