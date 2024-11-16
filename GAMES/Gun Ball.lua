@@ -63,5 +63,5 @@ spawn(function()
 end)
 
 lib:SetTheme("Default")
-lib:SetIcon(game:GetService("Players"):GetUserThumbnailAsync(4798820665, Enum.ThumbnailType.HeadShot, Enum.ThumbnailSize.Size420x420))
+lib:SetIcon("rbxassetid://99482688387044")
 Notify("Loads", 'Loaded Script!', Color3.fromRGB(255, 0, 0), 10)
