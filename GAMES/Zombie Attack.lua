@@ -76,7 +76,7 @@ game:GetService("RunService").RenderStepped:Connect(function()
 if(_G.Teleport2==true)then
 local target = getNearest()
 if(target~=nil)then
-game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = target.HumanoidRootPart.CFrame * CFrame.new(0, 12, 9)
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = target.HumanoidRootPart.CFrame * CFrame.new(0, 15, 11)
 _G.globalTarget = target
 end
 end
