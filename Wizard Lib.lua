@@ -1533,3 +1533,5 @@ function Library:NewWindow(name)
 	end
 	return Sections
 end
+
+return Library
