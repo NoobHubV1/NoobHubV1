@@ -1,5 +1,8 @@
-local Library = loadstring(Game:HttpGet('https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/wizard'))()
+local Library = loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/Wizard%20Lib.lua'))()
 
+local function AutoFarm(State)
+        local groundDistance = 8
+local Player = game:GetService("Players").LocalPlayer
 local function getNearest()
 local nearest, dist = nil, 99999
 for _,v in pairs(game.Workspace.BossFolder:GetChildren()) do
@@ -22,10 +25,6 @@ end
 end
 return nearest
 end
-
-local function AutoFarm(State)
-        local groundDistance = 8
-local Player = game:GetService("Players").LocalPlayer
 _G.farm2 = State
 _G.globalTarget = nil
 game:GetService("RunService").RenderStepped:Connect(function()
@@ -36,7 +35,7 @@ _G.globalTarget = target
 end
 end
 end)
-while _G.farm2 and task.wait() do
+while _G.farm2 and wait() do
 if(_G.farm2==true and _G.globalTarget~=nil and _G.globalTarget:FindFirstChild("Head") and Player.Character:FindFirstChildOfClass("Tool"))then
 local target = _G.globalTarget
 for i = 1,1 do
@@ -135,4 +134,4 @@ Section:CreateToggle("Auto Teleport", function(Value)AutoTeleport(Value)
 end)
 
 Section:CreateToggle("Auto Camera", function(Value)AutoCamera(Value)
-end)
+end) 
