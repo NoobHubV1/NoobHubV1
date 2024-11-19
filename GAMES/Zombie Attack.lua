@@ -117,6 +117,7 @@ if(_G.Camera2==true)then
 local target = getNearest()
 if(target~=nil)then
 workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame.Position, target.Torso.Position)
+game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(game.Players.LocalPlayer.Character.HumanoidRootPart.Position, target.HumanoidRootPart.Position)
 _G.globalTarget = target
 end
 end
@@ -127,6 +128,10 @@ local Window = Library:NewWindow("NoobHubV1 Hub")
 
 local Section = Window:NewSection("Main")
 
+local Section2 = Window:NewSection("Player")
+
+local Section3 = Window:NewSection("Destroy Script")
+
 Section:CreateToggle("Auto Farm", function(Value)AutoFarm(Value)
 end)
 
@@ -134,4 +139,19 @@ Section:CreateToggle("Auto Teleport", function(Value)AutoTeleport(Value)
 end)
 
 Section:CreateToggle("Auto Camera", function(Value)AutoCamera(Value)
-end) 
+end)
+
+Section2:CreateTextbox("Walk Speed", function(number)
+        game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = number
+end)
+
+Section2:CreateTextbox("Jump Power", function(number)
+        game.Players.LocalPlayer.Character.Humanoid.JumpPower = number
+end)
+
+Section3:CreateButton("Destroy", function()
+        Library:Destroy()
+        AutoFarm(false)
+        AutoTeleport(false)
+        AutoCamera(false)
+end)
