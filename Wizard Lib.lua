@@ -1534,4 +1534,8 @@ function Library:NewWindow(name)
 	return Sections
 end
 
+function Library:Destroy()
+	CoastifiedLibrary:Destroy()
+end
+
 return Library
