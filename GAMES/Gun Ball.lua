@@ -46,6 +46,9 @@ end)
 
 lib:AddButton("Parry", function()
 	ParryAttempt()
+	local Sound = Instance.new('Sound', workspace)
+	Sound.SoundId = "rbxassetid://1905367471"
+	Sound:Play()
 end)
 
 lib:AddButton("Unload", function()
