@@ -84,6 +84,7 @@ end)()
 
 
 local Library = {}
+local NotificationLib = loadstring(Game:HttpGet('https://raw.githubusercontent.com/NoobHubV1/NoobHubV1/main/Notification%20Lib.lua'))()
 
 function Library:NewWindow(name)
 	local Window = Instance.new("ImageLabel")
@@ -1536,6 +1537,20 @@ end
 
 function Library:Destroy()
 	CoastifiedLibrary:Destroy()
+end
+
+function Library:MakeNotification(Config)
+	Config.Name = Config.Name or "Title not found"
+	Config.Content = Config.Content or "Content not found"
+	Config.Color = Config.Color or 255, 255, 255
+	Config.Time = Config.Time
+
+	NotificationLib:MakeNotification({
+		Name = Config.Name,
+		Content = Config.Content,
+		Color = Color3.fromRGB(Config.Color),
+		Time = Config.Time
+	})
 end
 
 return Library
