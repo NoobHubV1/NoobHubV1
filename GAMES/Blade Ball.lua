@@ -3,8 +3,10 @@ while getgenv().god and task.wait() do
     for _,ball in next, workspace.Balls:GetChildren() do
         if ball then
             if game:GetService("Players").LocalPlayer.Character and game:GetService("Players").LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
-                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(ball.Position + Vector3.new(0, -18, 0))
+                game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(ball.Position, game.Players.LocalPlayer.Character.HumanoidRootPart.Position)
+                workspace.CurrentCamera.CFrame = CFrame.new(workspace.CurrentCamera.CFrame.p, ball.Position)
                 if game:GetService("Players").LocalPlayer.Character:FindFirstChild("Highlight") then
+                    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(ball.Position)
                     game:GetService("VirtualInputManager"):SendKeyEvent(true,"F",false,game)
                 end
             end
