@@ -3537,6 +3537,16 @@ do
 		ScreenGui:Destroy()
 		API:LoadsHttp("NoobHubV1/RobloxScripts/main/Septex%20Admin.lua")
 	end)
+	API:CreateCmd("auto", "Auto Respawn GUI", function(args)
+		API:Destroy(game:FindFirstChild("NoobHubV1_Admin"))
+		Unloaded = true
+		Temp = {}
+		game:GetService("Workspace").Camera.CameraSubject = plr.Character.Humanoid 
+		CmdBarFrame:TweenPosition(CmdBarFrame.Position-UDim2.new(0,0,-.5,0),"Out","Back",.8)
+		wait()
+		ScreenGui:Destroy()
+		API:LoadsHttp("NoobHubV1/FE/main/Prison%20Life%20Auto%20Respawn.lua")
+	end)
 end
 --
 local cdv = false
